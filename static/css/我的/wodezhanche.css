@@ -1,0 +1,96 @@
+/*我的展车*/
+.full-item{
+	padding:0.533333rem 0.4rem;
+	border-top:1px solid #2c2c2c;
+	overflow:hidden;
+	background:#fff;
+}
+.full-item p{
+	max-height:9999px;
+}
+.full-item h3{
+	font-size:0.426667rem;
+}
+.full-item .interior{
+	font-size:0.346667rem;
+	color:#999;
+	margin-top:0.266667rem;
+}
+.full-item .payment{
+	font-size:0.373333rem;
+	color:#2c2c2c;
+	border-bottom:1px solid #e0e0e0;
+	padding:0.533333rem 0;
+}
+.full-item .payment span,.state-wait{
+	color:#fc3036;
+}
+.full-item .payment.payment-active span{
+	color:#2c2c2c;
+}
+.full-state{
+	height:1.066667rem;
+	overflow:hidden;
+	margin-top:0.533333rem;
+}
+.state-lt{
+	float:left;
+	width:6.266667rem;
+	line-height:0.533333rem;
+	font-size:0.373333rem;
+}
+.state-time{
+	font-size:0.32rem;
+	color:#999;
+}
+.state-rt{
+	float:left;
+	width:2.773333rem;
+	height:1.066667rem;
+	line-height:1.066667rem;
+	text-align:center;
+	color:#fff;
+	font-size:0.373333rem;
+	background:#d5aa5c;
+	border-radius:0.533333rem;
+}
+.state-wait{
+	line-height:1.066667rem;
+}
+.state-rt.active{
+	background:#cccccc;
+}
+.wait-active .state-wait{
+	line-height:0.533333rem;
+}
+.condition-tit{
+	padding:0.533333rem 0.4rem;
+	border-top:1px solid #2c2c2c;
+	background:#fff;
+}
+.condition-tit b{
+	display:block;
+	font-size:0.453333rem;
+	border-left:0.066667rem solid #2c2c2c;
+	padding-left:0.4rem;
+	font-size:0.453333rem;
+	font-weight:normal;
+	line-height:0.466667rem;
+}
+.condition:last-child .full-item:last-child{
+	border-bottom:none;
+}
+.branch{
+	margin-top:0.4rem;
+	background:#fff;
+}
+.branch p{
+	padding:0.533333rem 0.4rem;
+	border-bottom:1px solid #eee;
+	font-size:0.346667rem;
+	color:#2c2c2c;
+	overflow:hidden;
+}
+.branch p i{
+	float:right;
+}

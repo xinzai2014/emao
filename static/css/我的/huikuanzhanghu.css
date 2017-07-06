@@ -1,0 +1,44 @@
+/*汇款账户管理*/
+.remits-item{
+	background:#fff;
+	padding:0.533333rem 0.4rem;
+	overflow:hidden;
+	margin-bottom:0.4rem;
+}
+.remits-info{
+	font-size:0.453333rem;
+	color:#2c2c2c;
+}
+.remits-add{
+	font-size:0.373333rem;
+	color:#999;
+	margin-top:0.266667rem;
+}
+.remits-btn{
+	text-align:right;
+	margin-top:0.8rem;
+}
+.remits-btn i{
+	display:inline-block;
+	width:1.573333rem;
+	height:0.773333rem;
+	line-height:0.773333rem;
+	border:1px solid #27282f;
+	color:#27282f;
+	font-size:0.373333rem;
+	text-align:center;
+	border-radius:0.066667rem;
+	margin-left:0.4rem;
+}
+.remits-fixed{
+	width:100%;
+	height:1.306667rem;
+	background:#d5aa5c;
+	text-align:center;
+	line-height:1.306667rem;
+	color:#fff;
+	font-size:0.453333rem;
+	position:fixed;
+	left:0;
+	bottom:0;
+}

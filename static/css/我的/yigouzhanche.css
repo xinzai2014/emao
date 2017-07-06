@@ -1,0 +1,39 @@
+/*已购展车*/
+.bought-item{
+	padding:0.533333rem 0.4rem;
+	background:#fff;
+	overflow:hidden;
+	border-bottom:1px solid #2c2c2c;
+}
+.bought-item:last-child{
+	border-bottom:none;
+}
+.bought-tit{
+	font-size:0.453333rem;
+	color:#2c2c2c;
+}
+.bought-color{
+	font-size:0.346667rem;
+	color:#999;
+	margin-top:0.266667rem;
+}
+.bought-ct{
+	padding-bottom:0.533333rem;
+	border-bottom:1px solid #e0e0e0;
+}
+.bought-state{
+	padding-top:0.533333rem;
+	font-size:0.373333rem;
+}
+.bought-state span,.bought-spend{
+	color:#fc3036;
+}
+.bought-spend{
+	font-size:0.373333rem;
+	padding-top:0.533333rem;
+}
+.bought-spend span{
+	float:right;
+	font-size:0.32rem;
+	color:#999;
+}

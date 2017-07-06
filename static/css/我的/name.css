@@ -1,0 +1,22 @@
+/*编辑姓名*/
+.edit-name{
+	background:#fff;
+	padding:0.4rem;
+	font-size:0.4rem;
+	color:#2c2c2c;
+	position:relative;
+}
+.edit-name input{
+	height:0.4rem;
+	line-height:0.4rem;
+	border:none;
+	width:8.4rem;
+}
+.edit-name .close-icon{
+	position:absolute;
+	top:0.506667rem;
+	right:0.533333rem;
+}
+.user-wrap .close-bt{
+	margin-top:1.066667rem;
+}

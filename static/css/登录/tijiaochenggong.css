@@ -1,0 +1,42 @@
+/*订购成功*/
+body,html{
+	background:#fff;
+}
+.referred{
+	text-align:center;
+	overflow:hidden;
+	margin-top:2.666667rem;
+	margin-bottom:4.8rem;
+}
+.referred-info{
+	width:4.0rem;
+	height:4.0rem;
+	margin:0 auto;
+	background:#f5f5f5;
+	text-align:center;
+	line-height:4.0rem;
+	font-size:0.4rem;
+	color:#999;
+}
+.referred-tp{
+	font-size:0.453333rem;
+	color:#2c2c2c;
+	margin-top:1.2rem;
+}
+.referred-tit{
+	font-size:0.373333rem;
+	color:#999;
+	margin-top:0.4rem;
+}
+.referred-phone{
+	text-align:center;
+	font-size:0.4rem;
+}
+.phone-icon{
+	display:inline-block;
+	width:0.28rem;
+	height:0.306667rem;
+	background:url(../../images/phone-icon.png) no-repeat;
+	background-size:contain;
+	margin-right:0.066667rem;
+}

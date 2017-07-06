@@ -1,0 +1,323 @@
+/*展车详情*/
+.details-wrap p{
+	max-height: 99999px;
+}
+.pending p{
+	text-align:center;
+	font-size:0.453333rem;
+	color:#999;
+	margin-top:6.666667rem;
+}
+.receipt-title{
+	font-size:0.453333rem;
+	color:#2c2c2c;
+	border-bottom:1px solid #eee;
+	padding-bottom:0.533333rem;
+	margin-bottom:0.533333rem;
+}
+.details-tit{
+	padding:0.533333rem 0.4rem;
+	background:#d5aa5c;
+}
+.details-tit h4{
+	font-size:0.506667rem;
+	color:#fff;
+	line-height:0.533333rem;
+}
+.details-tit h4 span{
+	float:right;
+	font-size:0.346667rem;
+}
+.details-tit p{
+	font-size:0.346667rem;
+	color:#fff;
+	margin-top:0.533333rem;
+}
+.details-addres{
+	padding:0 0.4rem 0.533333rem 0.4rem;
+	background:#fff;
+	margin-bottom:0.4rem;
+	font-size:0.4rem;
+	color:#2c2c2c;
+	position:relative;
+}
+.details-user span{
+	float:right;
+}
+.details-addres p{
+	margin-top:0.533333rem;
+	color:#999;
+}
+.details-addres .white-rt{
+	position:absolute;
+	right:0.4rem;
+	top:1.306667rem;
+}
+.order-ct{
+	padding:0.533333rem 0.4rem;
+	background:#fff;
+}
+.order-number{
+	font-size:0.373333rem;
+	color:#999;
+	overflow:hidden;
+	padding-bottom:0.533333rem;
+	border-bottom:1px solid #e0e0e0;
+}
+.order-number span{
+	float:right;
+}
+.leave{
+    border-bottom: 1px solid #e0e0e0;
+    overflow: hidden;
+    padding: 0.533333rem 0;
+}
+.order-full h3 {
+    font-size: 0.426667rem;
+}
+.order-full .interior {
+    color: #999;
+    font-size: 0.346667rem;
+}
+.order-full .payment {
+    border-bottom: 1px solid #e0e0e0;
+    color: #2c2c2c;
+    font-size: 0.373333rem;
+    padding: 0.533333rem 0;
+}
+.order-full .payment span{
+    color: #fc3036;
+}
+.order-full .payment em{
+	float:right;
+}
+.leave{
+	font-size:0.32rem;
+	color:#999;
+}
+.leave span{
+	color:#2c2c2c;
+}
+.request-ct{
+	padding:0 0.4rem;
+	background:#fff;
+	margin-top:0.4rem;
+}
+.remit-tit{
+	font-size:0.453333rem;
+	padding-bottom:0.533333rem;
+	border-bottom:1px solid #e0e0e0;
+}
+.bond{
+	font-size:0.373333rem;
+	color:#2c2c2c;
+	margin-top:0.533333rem;
+}
+.bond span{
+	float:right;
+	color:#fc3036;
+}
+.send-to{
+	border:1px solid #d5aa5c;
+	margin:0.533333rem auto;
+}
+.send-to p{
+	overflow:hidden;
+	font-size:0.4rem;
+	color:#2c2c2c;
+	margin-top:0.533333rem;
+}
+.send-to p label,.send-to span{
+	display:block;
+	float:left;
+}
+.send-to p label{
+	color:#999;
+	width:2.266667rem;
+	text-align:right;
+}
+.send-to span{
+	width:6.333333rem;
+}
+.send-to p.send-phone{
+	font-size:0.453333rem;
+	color:#fff;
+	text-align:center;
+	height:1.173333rem;
+	line-height:1.173333rem;
+	background:#d5aa5c;
+}
+.nstructions{
+	color:#999;
+	font-size:0.32rem;
+	padding-bottom:0.4rem;
+	border-bottom:1px solid #e0e0e0;
+	line-height:0.6rem;
+}
+.nstructions span,.nstructions em{
+	display:block;
+}
+.nstructions em{
+	padding-left:0.266667rem;
+}
+.cancel{
+	text-align:center;
+	padding-top:0.4rem;
+	font-size:0.453333rem;
+	color:#2c2c2c;
+	text-decoration:underline;
+}
+.mask{
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.8);
+	position:fixed;
+	left:0;
+	top:0;
+}
+.cancel-car{
+	position:fixed;
+	width:7.2rem;
+	height:3.733333rem;
+	background:#fff;
+	border-radius:0.133333rem;
+	overflow:hidden;
+	left:50%;
+	top:50%;
+	margin-top:-1.866667rem;
+	margin-left:-3.6rem;
+}
+.prompt-tit{
+	text-align:center;
+	font-size:0.453333rem;
+	color:#2c2c2c;
+	margin:0.986667rem 0;
+}
+.prompt-btn{
+	background:#f5f5f5;
+	overflow:hidden;
+	height:1.173333rem;
+	line-height:1.173333rem;
+}
+.prompt-btn span{
+	display:block;
+	width:50%;
+	float:left;
+	text-align:center;
+	font-size:0.453333rem;
+}
+.prompt-btn span.confirm{
+	background:#d6ab55;
+	color:#fff;
+}
+.record{
+	background:#fff;
+	padding-bottom:0.4rem;
+	margin-top:0.4rem;
+}
+.record span{
+	display:block;
+	padding:0.533333rem 0.4rem;
+	font-size:0.453333rem;
+	color:#2c2c2c;
+	border-bottom:1px solid #e0e0e0;
+}
+.record span em{
+	float:right;
+	color:#999;
+}
+.record span.record-time{
+	font-size:0.373333rem;
+}
+
+/*第二种状态*/
+.ayment-info{
+	border:1px solid #d5aa5c;
+	margin-top:0.533333rem;
+}
+.ayment-info p {
+    color: #2c2c2c;
+    font-size: 0.4rem;
+    margin-top: 0.533333rem;
+    overflow: hidden;
+}
+.ayment-info p label, .ayment-info span {
+    display: block;
+    float: left;
+}
+.ayment-info p label {
+    color: #999;
+    text-align: right;
+    width: 2.26667rem;
+}
+.ayment-info span {
+    width: 6.33333rem;
+}
+.ayment-info p.ayment-details {
+    background: #f5f5f5;
+    font-size: 0.453333rem;
+    height: 1.17333rem;
+    line-height: 1.17333rem;
+    text-align: center;
+}
+
+/*待收货弹框*/
+.mask-receipt{
+	width:100%;
+	height:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	background:rgba(0,0,0,0.8);
+}
+.receipt{
+	width:7.2rem;
+	position:fixed;
+	left:50%;
+	margin-left:-3.6rem;
+	top:25%;
+	background:#fff;
+	border-radius:0.133333rem;
+	overflow:hidden;
+}
+.receipt-tit{
+	width:5.026667rem;
+	height:2.053333rem;
+	border-bottom:1px solid #2c2c2c;
+	margin:0.533333rem auto;
+	text-align:center;
+}
+.receipt-tit b{
+	display:block;
+	font-size:0.453333rem;
+	color:#2c2c2c;
+}
+.receipt-tit span{
+	display:block;
+	font-size:0.32rem;
+	color:#999;
+	padding:0.133333rem 0;
+}
+.receipt-code{
+	font-size:0.453333rem;
+	color:#d6ab55;
+	text-align:center;
+	margin-bottom:0.533333rem;
+}
+.options{
+	padding:0 0.533333rem;
+	font-size:0.346667rem;
+	color:#2c2c2c;
+	padding-bottom:0.533333rem;
+}
+.options b{
+	display:block;
+	
+}
+.receipt-btn{
+	font-size:0.453333rem;
+	color:#fff;
+	text-align:center;
+	line-height:1.173333rem;
+	background:#d6ab55;
+}

@@ -1,0 +1,67 @@
+/*提交*/
+.voucher-item{
+	margin-bottom:0.4rem;
+	background:#fff;
+	overflow:hidden;
+}
+.voucher-item p{
+	max-height:9999px;
+	padding:0.533333rem 0;
+	margin:0 0.4rem;
+	font-size:0.4rem;
+	color:#2c2c2c;
+	overflow:hidden;
+	line-height:0.466667rem;
+	border-bottom:1px solid #eee;
+}
+.voucher-item p span{
+	float:right;
+	font-size:0.346667rem;
+	color:#999;
+}
+.voucher-gray p span{
+	color:#2c2c2c;
+}
+.voucher-item p em{
+	margin-left:3.0rem;
+}
+.voucher-img{
+	overflow:hidden;
+	padding:0 0.4rem 0.533333rem 0.4rem;
+}
+.voucher-lt{
+	width:3.666667rem;
+	overflow:hidden;
+	float:left;
+	margin:0 0.466667rem;
+}
+.voucher-lt img{
+	width:100%;
+	height:100%;
+}
+.voucher-item .white-rt{
+	margin-left:0.133333rem;
+	vertical-align:text-top;
+}
+.voucher-lt b{
+	display:block;
+	font-weight:normal;
+	width:2.626667rem;
+	height:1.04rem;
+	line-height:1.04rem;
+	text-align:center;
+	border-radius:0.533333rem;
+	font-size:0.373333rem;
+	color:#bb8800;
+	border:1px solid #bb8800;
+	margin:0.4rem auto;
+}
+.voucher-item .yellow-rt{
+	float:right;
+}
+.voucher-title{
+	padding:0.533333rem 0.4rem;
+	background:#d4a962;
+	font-size:0.346667rem;
+	color:#fff;
+}
