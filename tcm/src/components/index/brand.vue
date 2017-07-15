@@ -13,13 +13,12 @@
         <section class="brand-content-list">
             <ul>
                 <li>A</li>
-                <li @click="getBrand(item.id,item.brandName)" v-for="(item,index) in brandList">
+                <li @click="getBrand(item.id,item.brandName)"  v-for="(item,index) in brandList">
                     
                         <div class="brand-content-img active">
                              <img v-bind:src="src">
                         </div>
                         <span>{{item.brandName}}</span>
-                    
                 </li>
             </ul>
             <ul>
@@ -380,6 +379,5 @@ export default {
 .brand-models ul{}
 .brand-models ul li{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;}
 .brand-models ul li:first-of-type{width:8.42667rem;height:1.44rem;margin-left:0;padding-left:.4rem;line-height:1.44rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
-
 
 </style>

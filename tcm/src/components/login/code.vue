@@ -30,6 +30,7 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
+		        	console.log(response);
 		            sessionStorage.dataToken = response.body.data.dataToken;
 		            sessionStorage.phone = response.body.data.phone;
 		            this.$router.push('/index'); //路由跳转
@@ -63,7 +64,7 @@
 	    beforeRouteLeave (to, from, next) {
 		    window.clearInterval(window.timer);
 	    	next();
-	  }
+	    }
 	}
 
 </script>

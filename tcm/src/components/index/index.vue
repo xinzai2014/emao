@@ -26,28 +26,14 @@
         <section class="index-brand">
             <div class="index-brand-in">
                 <ul class="index-brand-info clearfix">
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
+                    <li v-for="(item,index) in showList" :brandID = item.id  @click="">
+                        <img :src=item.logoUrl alt="">
+                        <span>{{item.name}}</span>
                     </li>
                 </ul>
-                <p class="index-more-brand">更多品牌 <i class="yellow-bt"></i></p>
+                <p class="index-more-brand"  @click="showAll = !showAll">
+                    {{word}} <i class="yellow-bt" :class="{active:showAll}"></i>
+                </p>
             </div>
         </section>
         <!--本地车源-->
@@ -55,7 +41,7 @@
             <p class="index-car-title">本地车源</p>
             <ul class="index-car-con">
                 <li v-for="(item,index) in serieList" :serieID = item.id  @click="goSerie(item.id)">
-                    <img src="../../assets/pic-1.jpg" alt="">
+                    <img :src=item.imgUrl alt="">
                     <p class="index-car-name">{{item.name}}</p>
                     <p class="index-car-price"><span>{{item.minPrice}}</span>万起</p>
                     <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
@@ -116,7 +102,9 @@ export default {
         brandName:"选择车型", //选中的车型名字
         brandId:null, //选中的品牌ID
         mybrand:false, //车型弹层
-        serieList:[]
+        serieList:[],
+        brandList:[],
+        showAll:false,
     }
   },
   methods:{
@@ -131,6 +119,31 @@ export default {
     },
     goSerie(index){
         console.log(index);
+    },
+    showMoreBrand(){
+        this.brandList=this.brandListAll;
+    }
+  },
+  computed:{
+    showList:function(){
+      if(this.showAll == false){                    
+        var showList = [];　　　　　　　　　　　　　　　 
+        if(this.brandList.length > 5){　　　　　　　
+          showList=this.brandList.slice(0,5);
+        }else{
+          showList = this.brandList;
+        }
+        return showList;　　　　　　　　　　　　　　　　
+      }else{
+        return this.brandList;
+      }
+    },
+    word:function(){
+      if(this.showAll == false){　　　　　　　　　　　
+        return '更多品牌'
+      }else{
+        return '收起'
+      }
     }
   },
   mounted(){
@@ -149,9 +162,11 @@ export default {
             params:data
         }).then(function (response) {
             console.log(response);
+            let brandList = response.body.data.brands;           
+            this.brandList=brandList;
             this.serieList = response.body.data.series;
-            console.log(this.serieList);
-            console.log("请求成功了");
+            console.log(this.brandList);
+            //console.log("请求成功了");
           }).catch(function (error) {
             console.log("请求失败了");
           });
@@ -241,5 +256,13 @@ export default {
 .index-my span{display:block;margin-top:.1333rem;}
 .index-my.active i{background:url("../../assets/my-active-cion.png") no-repeat;background-size:contain;}
 .index-my.active{color:#d5aa5c;}
+
+.active.yellow-bt{
+    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
 
 </style>
