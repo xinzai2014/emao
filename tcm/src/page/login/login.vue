@@ -65,7 +65,6 @@ export default {
             console.log(response);
             sessionStorage.dataToken = response.body.data.dataToken;
             sessionStorage.phone = response.body.data.phone;
-            this.$router.push('/my'); //路由跳转
           }).catch(function (error) {
             console.log("登录失败了");
           });

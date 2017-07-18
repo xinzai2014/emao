@@ -30,6 +30,7 @@
 		        }).then(function (response) {
 		            sessionStorage.dataToken = response.body.data.dataToken;
 		            sessionStorage.phone = response.body.data.phone;
+		            sessionStorage.token = 'b943c46b5dbde5ccf1341a80da439509';
 		            this.$router.push('/index'); //路由跳转
 		          }).catch(function (error) {
 		          	console.log(error);
