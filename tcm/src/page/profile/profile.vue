@@ -3,32 +3,37 @@
         <section>
             <!--公司认证-->
             <section class="company">
-                <div class="news">
-                    <i class="news-icon"></i>
-                    <span class="process-in">6</span>
-                </div>
+                <router-link to="/message">
+                    <div class="news">
+                        <i class="news-icon"></i>
+                        <span class="process-in">{{messageNum}}</span>
+                    </div>
+                </router-link>
                 <div class="company-ct">
                     <router-link to="/profile/info">
                         <a class="white-rt" href="javascript:;"></a>
-                        <h3>北京一猫信息科技有限公司<i class="company-icon"></i></h3>
-                        <p>认证级别<i></i><i></i><i></i></p>
+                        <h3>{{name}}<i class="company-icon" v-show="auth_status=='已完成认证'"></i></h3>
+                        <p>
+                            认证级别
+                            <i v-for="n in level"></i>
+                        </p>
                     </router-link>                   
                     <div class="company-bt">
-                        <router-link to="/profile/info">
+                        <router-link to="/rebate">
                             <div class="item">
-                                <b>0.00</b>
+                                <b>{{rebate}}</b>
                                 <span>返利</span>
                             </div>
                         </router-link>
-                        <router-link to="/profile/info">
+                        <router-link to="/marketing">
                             <div class="item">
-                                <b>1,000.00</b>
+                                <b>{{capital}}</b>
                                 <span>营销支持费</span>
                             </div>
                         </router-link>
-                        <router-link to="/profile/info">
+                        <router-link to="/coupon">
                             <div class="item">
-                                <b>1</b>
+                                <b>{{coupon_num}}</b>
                                 <span>优惠券</span>
                             </div>
                         </router-link>
@@ -37,33 +42,47 @@
             </section>
             <!--我的订单-->
             <section class="order">
-                <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
-                <div class="item">
-                    <i class="payment-icon"><span class="process-in">12</span></i>
-                    <span>待付款</span>
-                </div>
-                <div class="item">
-                    <i class="send-icon"><span class="process-in">8</span></i>
-                    <span>待发货</span>
-                </div>
-                <div class="item">
-                    <i class="receipt-icon"><span class="process-in">3</span></i>
-                    <span>待收货</span>
-                </div>
+                <router-link to="/order">
+                    <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
+                </router-link>
+                 <router-link to="/obliga">
+                    <div class="item">
+                        <i class="payment-icon"><span class="process-in">{{payment_num}}</span></i>
+                        <span>待付款</span>
+                    </div>
+                </router-link>
+                <router-link to="/sending">
+                    <div class="item">
+                        <i class="send-icon"><span class="process-in">{{delivered_num}}</span></i>
+                        <span>待发货</span>
+                    </div>
+                </router-link>
+                <router-link to="/receiving">
+                    <div class="item">
+                        <i class="receipt-icon"><span class="process-in">{{received_num}}</span></i>
+                        <span>待收货</span>
+                    </div>
+                </router-link>
             </section>
-            <section class="order mar-pd">
-                <div class="item">
-                    <i class="show-icon"></i>
-                    <span>我的展车</span>
-                </div>
+            <section class="order mar-pd" v-show="is_transtor=='1'">
+                <router-link to="/display">
+                    <div class="item">
+                        <i class="show-icon"></i>
+                        <span>我的展车</span>
+                    </div>
+                </router-link>
+                <router-link to="/declare">
                 <div class="item">
                     <i class="car-icon"></i>
                     <span>售车申报</span>
                 </div>
+                </router-link>
+                <router-link to="/storage">
                 <div class="item">
                     <i class="transfer-icon"></i>
                     <span>中转库管理</span>
                 </div>
+                </router-link>
             </section>
             <p class="footer-bt"></p>
         </section>
@@ -73,10 +92,20 @@
 
 <script>
 export default {
-  name: 'index',
   data () {
     return {
       //初始数据结构
+      messageNum:0, //消息数
+      name:'',  //公司名称
+      auth_status:'',   //认证状态
+      level:'', //等级
+      rebate:'', //返利金额
+      capital:'',    //营销支持费
+      coupon_num:'', //优惠券
+      payment_num:'',    //待付款
+      delivered_num:'',  //待发货
+      received_num:'',   //待收货
+      is_transtor:''    //是否是中转库管理员
     }
   },
   methods:{
@@ -84,6 +113,39 @@ export default {
   },
   mounted(){
     //组件初始完成需要做什么
+    var dataToken = sessionStorage.token;
+    var data = {
+        token:dataToken
+    }
+    //用户信息
+    this.$http({
+        url:"dealerInfo/index",
+        method:"GET",
+        params:data
+    }).then(function (response) {
+        this.name = response.body.data.name;     //公司名称
+        this.auth_status = response.body.data.auth_status;   //认证状态
+        this.level = response.body.data.level;    //等级
+        this.rebate = response.body.data.rebate;    //返利金额
+        this.capital = response.body.data.capital;    //营销支持费
+        this.coupon_num = response.body.data.coupon_num;   //优惠券
+        this.payment_num = response.body.data.payment_num;   //待付款
+        this.delivered_num = response.body.data.delivered_num;   //待发货
+        this.received_num = response.body.data.received_num;    //待收货
+        this.is_transtor = response.body.data.is_transtor;   //是否是中转库管理员
+      }).catch(function (error) {
+        console.log("请求失败了");
+      });
+    //消息数
+      this.$http({
+        url:"dealerMessage/messageList",
+        method:"GET",
+        params:data
+     }).then(function (response) {
+        this.messageNum = response.body.data.length;    
+      }).catch(function (error) {
+        console.log("请求失败了");
+      });
   }
 }
 </script>
