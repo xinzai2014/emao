@@ -21,6 +21,7 @@ const serie = r => require.ensure([], () => r(require('../page/serie/serie')), '
 
 //个人中心组件
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
+const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
 
 Vue.use(Router)
 
@@ -98,11 +99,11 @@ export default new Router({
       path: '/profile', //个人主页
       name: 'profile',
       component:profile,
-    //   children: [
-    //     {
-    //       path: 'info',   //账户信息 子路由
-    //       name: 'info'
-    //       component: info,
+       children: [
+         {
+           path: 'info',   //账户信息 子路由
+           name: 'info',
+           component: info,
     //       children: [
     //         {
     //           path: 'address',   //收货地址列表
@@ -139,8 +140,8 @@ export default new Router({
     //           ]
     //         }
     //       ]
-    //     }
-    //   ]
+         }
+       ]
     }
     // {
     //   path: 'rebate',  //我的返利

@@ -97,10 +97,12 @@
                     <i></i>
                     <span>订车</span>
                 </li>
-                <li class="index-my">
-                    <i></i>
-                    <span>我的</span>
-                </li>
+                <router-link to="/profile">
+                    <li class="index-my">
+                        <i></i>
+                        <span>我的</span>
+                    </li>
+                </router-link>
             </ul>
         </footer>
     </div>

@@ -1,62 +1,73 @@
 <template>
   <div>
-        <!--公司认证-->
-        <section class="company">
-            <div class="news">
-                <i class="news-icon"></i>
-                <span class="process-in">6</span>
-            </div>
-            <div class="company-ct">
-                <a class="white-rt" href="javascript:;"></a>
-                <h3>北京一猫信息科技有限公司<i class="company-icon"></i></h3>
-                <p>认证级别<i></i><i></i><i></i></p>
-                <div class="company-bt">
-                    <div class="item">
-                        <b>0.00</b>
-                        <span>返利</span>
-                    </div>
-                    <div class="item">
-                        <b>1,000.00</b>
-                        <span>营销支持费</span>
-                    </div>
-                    <div class="item">
-                        <b>1</b>
-                        <span>优惠券</span>
+        <section>
+            <!--公司认证-->
+            <section class="company">
+                <div class="news">
+                    <i class="news-icon"></i>
+                    <span class="process-in">6</span>
+                </div>
+                <div class="company-ct">
+                    <router-link to="/profile/info">
+                        <a class="white-rt" href="javascript:;"></a>
+                        <h3>北京一猫信息科技有限公司<i class="company-icon"></i></h3>
+                        <p>认证级别<i></i><i></i><i></i></p>
+                    </router-link>                   
+                    <div class="company-bt">
+                        <router-link to="/profile/info">
+                            <div class="item">
+                                <b>0.00</b>
+                                <span>返利</span>
+                            </div>
+                        </router-link>
+                        <router-link to="/profile/info">
+                            <div class="item">
+                                <b>1,000.00</b>
+                                <span>营销支持费</span>
+                            </div>
+                        </router-link>
+                        <router-link to="/profile/info">
+                            <div class="item">
+                                <b>1</b>
+                                <span>优惠券</span>
+                            </div>
+                        </router-link>
                     </div>
                 </div>
-            </div>
+            </section>
+            <!--我的订单-->
+            <section class="order">
+                <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
+                <div class="item">
+                    <i class="payment-icon"><span class="process-in">12</span></i>
+                    <span>待付款</span>
+                </div>
+                <div class="item">
+                    <i class="send-icon"><span class="process-in">8</span></i>
+                    <span>待发货</span>
+                </div>
+                <div class="item">
+                    <i class="receipt-icon"><span class="process-in">3</span></i>
+                    <span>待收货</span>
+                </div>
+            </section>
+            <section class="order mar-pd">
+                <div class="item">
+                    <i class="show-icon"></i>
+                    <span>我的展车</span>
+                </div>
+                <div class="item">
+                    <i class="car-icon"></i>
+                    <span>售车申报</span>
+                </div>
+                <div class="item">
+                    <i class="transfer-icon"></i>
+                    <span>中转库管理</span>
+                </div>
+            </section>
+            <p class="footer-bt"></p>
         </section>
-        <!--我的订单-->
-        <section class="order">
-            <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
-            <div class="item">
-                <i class="payment-icon"><span class="process-in">12</span></i>
-                <span>待付款</span>
-            </div>
-            <div class="item">
-                <i class="send-icon"><span class="process-in">8</span></i>
-                <span>待发货</span>
-            </div>
-            <div class="item">
-                <i class="receipt-icon"><span class="process-in">3</span></i>
-                <span>待收货</span>
-            </div>
-        </section>
-        <section class="order mar-pd">
-            <div class="item">
-                <i class="show-icon"></i>
-                <span>我的展车</span>
-            </div>
-            <div class="item">
-                <i class="car-icon"></i>
-                <span>售车申报</span>
-            </div>
-            <div class="item">
-                <i class="transfer-icon"></i>
-                <span>中转库管理</span>
-            </div>
-        </section>
-        <p class="footer-bt"></p>
+        <router-view></router-view>
     </div>
 </template>
 
