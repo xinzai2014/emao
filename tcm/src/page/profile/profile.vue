@@ -86,7 +86,9 @@
             </section>
             <p class="footer-bt"></p>
         </section>
-        <router-view></router-view>
+        <transition name="router-slid">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
@@ -151,7 +153,13 @@ export default {
 </script>
 
 <style>
-
+.router-slid-enter-active, .router-slid-leave-active {
+    transition: all .4s;
+}
+.router-slid-enter, .router-slid-leave-active {
+    transform: translate3d(2rem, 0, 0);
+    opacity: 0;
+}
 /*公司认证*/
 .company{
     background:url(../../assets/me-bg.jpg) no-repeat;

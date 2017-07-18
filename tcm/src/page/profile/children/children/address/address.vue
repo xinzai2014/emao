@@ -1,183 +1,107 @@
- <template>
-  	<div class="rating_page">
-        <head-top head-title="编辑地址" go-back='true'>
-        	<span slot="edit" class="edit" @click="editThing">{{editText}}</span>
-        </head-top>
-        <section class="address">
-        	<ul class="addresslist">
-        		<li v-for="(item,index) in removeAddress">
-        			<div>
-        				<p>{{item.address}}</p>
-        				<p><span>{{item.phone}}</span><span v-if="item.phonepk">、{{item.phonepk}}</span></p>
-        			</div>
-        			<div class="deletesite" v-if="deletesite">
-        				<span @click="deleteSite(index, item)">x</span>
-        			</div>
-        		</li>
-        	</ul>
-			<router-link to='/profile/info/address/add'>
-				<div class="addsite">
-						<span>新增地址</span>
-						<span class="addsvg">
-							<svg fill="#d8d8d8">
-							    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
-							</svg>
-						</span>
+<template>
+    <div class="rating_page">
+		<!--头部-->
+		<header class="user-tit">
+			<a href="javascript:;" class="white-lt"></a>收货地址管理
+		</header>
+		<!--收货地址管理-->
+		<section class="adders-wrap">
+			<div class="adres-ct">
+				<div class="addres-item">
+					<p class="addres-info">李云龙<span>13878965874</span></p>
+					<p class="addres-add">地址：内蒙古自治区呼和浩特北四环西路52号方正国际08号</p>
+					<p class="addres-btn"><i class="edit">编辑</i><i class="del">删除</i></p>
 				</div>
-			</router-link>
-        </section>
-        <transition name="router-slid" mode="out-in">
-            <router-view></router-view>
-        </transition>
+				<div class="addres-item">
+					<p class="addres-info">李云龙<span>13878965874</span></p>
+					<p class="addres-add">地址：内蒙古自治区呼和浩特北四环西路52号方正国际08号</p>
+					<p class="addres-btn"><i class="edit">编辑</i><i class="del">删除</i></p>
+				</div>
+			</div>
+			<p class="visib-98"></p>
+			<div class="addres-fixed">新增收货地址</div>
+		</section>
     </div>
 </template>
 
 <script>
-    import headTop from 'src/components/header/head'
-    import {getImgPath} from 'src/components/common/mixin'
-    import {mapState,mapActions,} from 'vuex'
-    import {getAddressList, deleteAddress} from 'src/service/getData'
-
     export default {
-      data(){
-            return{
-    			deletesite:false, //是否编辑状态
-    			editText:'编辑',
-    			adressList:[], //地址列表
+        data () {
+            return {
+              //初始数据结构
+              infoData:{}
+            }
+        },
+        methods:{
+            //组件方法
+            resetIndex(){
+                this.$router.go(-1);
             }
         },
         mounted(){
-            this.initData();
-        },
-        mixins: [getImgPath],
-        mounted(){
-        	
-        },
-        components: {
-            headTop,
-        },
-        computed:{
-             ...mapState([
-                'userInfo','removeAddress'
-            ]),
-             
-        },
-        props:[],
-        methods: {
-        	...mapActions([
-                'saveAddress'
-            ]),
-            //初始化信息
-            initData(){
-                if (this.userInfo && this.userInfo.user_id) {
-                   this.saveAddress();
-                }
-            },
-            //编辑
-            editThing(){
-            	if(this.editText == '编辑'){
-            		this.editText='完成';
-            		this.deletesite=true;
-            	}else{
-            		this.editText='编辑';
-            		this.deletesite=false;
-            	}
-            },
-            //删除地址
-            async deleteSite(index, item){
-                if (this.userInfo && this.userInfo.user_id) {
-                    await deleteAddress(this.userInfo.user_id, item.id);
-            	    this.removeAddress.splice(index, 1);
-                }
-            }
-        },
-        watch: {
-            userInfo: function (value) {
-                if (value && value.user_id) {
-                    this.initData();
-                }
-            }
+        //组件初始完成需要做什么
+           
+
         }
-    }
+    }   
 </script>
-  
-<style lang="scss" scoped>
-    @import 'src/style/mixin';
-  
-    .rating_page{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #f2f2f2;
-        z-index: 202;
-        padding-top: 1.95rem;
-        p, span{
-            font-family: Helvetica Neue,Tahoma,Arial;
-        }
-    }
-    .edit{
-    	right: 0.4rem;
-        @include sc(0.7rem, #fff);
-        @include ct;
-    }
-    .address{
-    	width:100%;
-    	margin-top:.4rem;
-    	border-top:1px solid #d9d9d9;
-    	border-bottom:1px solid #d9d9d9;
-    	.addresslist{
-    		background:#fff;
-    		li{
-    			border-bottom:1px solid #d9d9d9;
-    			padding:.4rem;
-    			@include fj(space-between);
-    			p{
-    				line-height:.9rem;
-    				@include sc(.6rem,#333);
-    				span{
-    					display:inline-block;
-    					@include sc(.6rem,#333);
-    				}
-    			}
-    			.deletesite{
-    				display:flex;
-    				align-items:center;
-    				span{
-    					display:block;
-    					@include sc(.8rem,#999)
-    				}
-    			}
-    		}
-    		li:nth-of-type(1){
-    			background:#FFF8C3;
-    		}
-    	}
-    	.addsite{
-    		margin-top:.4rem;
-    		background:#fff;
-    		padding:.2rem .4rem;
-    		border-top:1px solid #d9d9d9;
-    		@include fj(space-between);
-    		span{
-    			display:block;
-    			@include sc(.7rem,#333);
-    			line-height:1.4rem;
-    		}
-    		.addsvg{
-    			@include wh(.66667rem,1.4rem);
-    			svg{
-    				@include wh(100%,100%);
-    			}
-    		}
-    	}
-    }
-.router-slid-enter-active, .router-slid-leave-active {
-    transition: all .4s;
+
+<style>
+.rating_page{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f5f5f5;
+    width:10.0rem;
+    z-index: 203;
 }
-.router-slid-enter, .router-slid-leave-active {
-    transform: translate3d(2rem, 0, 0);
-    opacity: 0;
+/*收货地址管理*/
+.addres-item{
+	background:#fff;
+	padding:0.533333rem 0.4rem;
+	overflow:hidden;
+	margin-bottom:0.4rem;
+}
+.addres-info{
+	font-size:0.453333rem;
+	color:#2c2c2c;
+}
+.addres-info span{
+	margin-left:0.4rem;
+}
+.addres-add{
+	font-size:0.373333rem;
+	color:#999;
+	margin:0.4rem 0;
+}
+.addres-btn{
+	text-align:right;
+	margin-top:0.8rem;
+}
+.addres-btn i{
+	display:inline-block;
+	width:1.573333rem;
+	height:0.773333rem;
+	line-height:0.773333rem;
+	border:1px solid #27282f;
+	color:#27282f;
+	font-size:0.373333rem;
+	text-align:center;
+	border-radius:0.066667rem;
+	margin-left:0.4rem;
+}
+.addres-fixed{
+	width:100%;
+	height:1.306667rem;
+	background:#d5aa5c;
+	text-align:center;
+	line-height:1.306667rem;
+	color:#fff;
+	font-size:0.453333rem;
+	position:fixed;
+	left:0;
+	bottom:0;
 }
 </style>

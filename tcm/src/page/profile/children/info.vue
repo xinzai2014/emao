@@ -6,23 +6,25 @@
         </header>
         <!--内容-->
         <section class="user-ct">
-            <router-link to="/profile/info/setusername">
-                <div class="user-bt"><span>{{infoData.link_name}}</span>姓名：</div>
-            </router-link>
+            <div class="user-bt"><span>{{infoData.link_name}}</span>姓名：</div>
             <div class="user-bt"><span>{{infoData.link_phone}}</span>手机号：</div>
             <div><span>{{infoData.city_name}}</span>所在城市：</div>
             <div class="user-bt"><span><b class="company-icon"></b>{{infoData.name}}</span>公司名称：</div>
             <div class="user-bt"><span>{{infoData.address}}</span>公司地址：</div>
             <div><span>{{infoData.activities}}</span>经营类型：</div>
-            <div><i class="yellow-rt"></i>汇款账户管理</div>
-            <div><i class="yellow-rt"></i>收货地址管理</div>
+            <router-link to="/profile/info/remit">
+                <div><i class="yellow-rt"></i>汇款账户管理</div>
+            </router-link>
+            <router-link to="/profile/info/address">
+                <div><i class="yellow-rt"></i>收货地址管理</div>
+            </router-link>
             <div><i class="yellow-rt"></i>设置密码</div>
             <div><i class="yellow-rt"></i>设置</div>
             <button class="close-bt">退出登录</button>
         </section>
-        <transition name="fade">
-          <router-view></router-view>
-      </transition>
+        <transition name="router-slid">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
@@ -72,14 +74,12 @@
     width:10.0rem;
     z-index: 203;
 }
-.fade-enter-active {
-  transition: opacity 2.5s
-}
-.fade-leave-active{
-  transition: opacity 0
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0 
+.router-slid-enter-active, .router-slid-leave-active {
+        transition: all .4s;
+    }
+.router-slid-enter, .router-slid-leave-active {
+    transform: translate3d(2rem, 0, 0);
+    opacity: 0;
 }
 /*内容*/
 .user-ct div{

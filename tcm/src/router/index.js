@@ -22,7 +22,12 @@ const serie = r => require.ensure([], () => r(require('../page/serie/serie')), '
 //个人中心组件
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
-const setusername = r => require.ensure([], () => r(require('../page/profile/children/children/setusername')), 'setusername')
+const address = r => require.ensure([], () => r(require('../page/profile/children/children/address/address')), 'address')
+const addressAdd = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/add')), 'addressAdd')
+const addressEdit = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/edit')), 'addressEdit')
+const remit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/remit')), 'remit')
+const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/add')), 'remitAdd')
+const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/edit')), 'remitEdit')
 
 Vue.use(Router)
 
@@ -101,53 +106,48 @@ export default new Router({
         name: 'profile',
         component:profile,
         children: [
-            {
-               path: 'info',   //账户信息 子路由
-               name: 'info',
-               component: info,
+         {
+           path: 'info',   //账户信息 子路由
+           name: 'info',
+           component: info,
+           children: [
+             {
+               path: 'address',   //收货地址列表
+               name: 'address',
+               component: address,
                children: [
-                    {
-                      path: 'setusername',   //验证码登录
-                      name: 'setusername',
-                      component: setusername
-                    }
-        //         {
-        //           path: 'address',   //收货地址列表
-        //           name: 'address'
-        //           component: address,
-        //           children: [
-        //             {
-        //               path: 'add',   //新增地址
-        //               name: 'addressAdd',
-        //               component: addressAdd
-        //             },
-        //             {
-        //               path: 'edit/:id',   //编辑地址
-        //               name: 'addressEdit',
-        //               component: addressEdit
-        //             }
-        //           ]
-        //         },
-        //         {
-        //           path: 'remit',   //汇款账户列表
-        //           name: 'remit'
-        //           component: remit,
-        //           children: [
-        //             {
-        //               path: 'add',   //新增账户列表
-        //               name: 'remitAdd',
-        //               component: remitAdd
-        //             },
-        //             {
-        //               path: 'edit/:id',   //编辑账户列表
-        //               name: 'remitEdit',
-        //               component: remitEdit
-        //             }
-        //           ]
-        //         }
-              ]
-            }
-        ]
+                 {
+                   path: 'add',   //新增地址
+                   name: 'addressAdd',
+                   component: addressAdd
+                 },
+                 {
+                   path: 'edit/:id',   //编辑地址
+                   name: 'addressEdit',
+                   component: addressEdit
+                 }
+               ]
+             },
+             {
+               path: 'remit',   //汇款账户列表
+               name: 'remit',
+               component: remit,
+               children: [
+                 {
+                   path: 'add',   //新增账户列表
+                   name: 'remitAdd',
+                   component: remitAdd
+                 },
+                 {
+                   path: 'edit/:id',   //编辑账户列表
+                   name: 'remitEdit',
+                   component: remitEdit
+                 }
+               ]
+             }
+           ]
+        }
+    ]
     }
     // {
     //   path: 'rebate',  //我的返利
