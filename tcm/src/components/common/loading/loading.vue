@@ -21,14 +21,31 @@
 		    
 	    },
 	    mounted(){
-	    	setTimeout(()=>{
-	    		var dataToken = sessionStorage.dataToken 
-	            if(dataToken){
-	            	this.$router.push('/index'); 
-	            }else{
-	            	this.$router.push('/login/account');
+	    	const data = {
+	            	phone:18611985439,
+	            	password:123456
 	            }
-	    	},2000)
+	    	this.$http({
+	            url:"test/mockLogin",
+	            method:"GET",
+	            params:data
+	        }).then(function (response) {
+	            sessionStorage.dataToken = response.body.data.dataToken;
+	            this.$router.push('/login/code'); //路由跳转
+	          }).catch(function (error) {
+	          	console.log(error);
+	            console.log("登录失败了");
+	          });
+
+	    	setTimeout(()=>{
+	    		var token = "b943c46b5dbde5ccf1341a80da439509";
+	    		sessionStorage.token = token;
+	            // if(token){
+	            // 	this.$router.push('/index'); 
+	            // }else{
+	            // 	this.$router.push('/login/account');
+	            // }
+	    	},0)
 	  	}
 	}
 

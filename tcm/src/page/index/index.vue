@@ -3,15 +3,18 @@
         <!--首页头部-->
         <header class="index-header">
             <strong class="index-title">淘车猫</strong>
-            <div class="index-news news-icon">
+            <div class="index-news news-icon" v-show="message">
                 <span>6</span>
             </div>
         </header>
         <!--首页图片滚动-->
         <section class="index-slider">
+
+            <brand :showBrand="mybrand"  @getBrandChild="brandStatus"></brand>
+
             <ul>
-                <li>
-                    <img src="../../assets/banner.jpg" alt="">
+                <li v-for="(item,index) in circular" :circuid=item.id >
+                    <img :src=item.imgUrl >
                 </li>
             </ul>
             <ul class="index-icon">
@@ -25,29 +28,13 @@
         <!--首页品牌-->
         <section class="index-brand">
             <div class="index-brand-in">
-                <ul class="index-brand-info clearfix">
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
-                    </li>
-                    <li>
-                        <img src="../../assets/logo.png" alt="">
-                        <span>大众</span>
+                <ul class="clearfix" :class='{"index-brand-info":lookAll}'>
+                    <li v-for="(item,index) in brands" :brand=item.id @click="goBrand(item.id)">
+                        <img :src=item.logoUrl >
+                        <span>{{item.name}}</span>
                     </li>
                 </ul>
-                <p class="index-more-brand">更多品牌 <i class="yellow-bt"></i></p>
+                <p class="index-more-brand" @click="seeMore" v-show="lookAll">更多品牌 <i class="yellow-bt"></i></p>
             </div>
         </section>
         <!--本地车源-->
@@ -55,7 +42,7 @@
             <p class="index-car-title">本地车源</p>
             <ul class="index-car-con">
                 <li v-for="(item,index) in serieList" :serieID = item.id  @click="goSerie(item.id)">
-                    <img src="../../assets/pic-1.jpg" alt="">
+                    <img :src= item.imgUrl alt="">
                     <p class="index-car-name">{{item.name}}</p>
                     <p class="index-car-price"><span>{{item.minPrice}}</span>万起</p>
                     <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
@@ -108,6 +95,7 @@
 
 <script>
 import brand from './brand'
+// import swiper from '../components/common/swiper/swiper'
 
 export default {
   name: 'index',
@@ -116,11 +104,65 @@ export default {
         brandName:"选择车型", //选中的车型名字
         brandId:null, //选中的品牌ID
         mybrand:false, //车型弹层
+        lookAll:true,
+        message:2,
+        circular:[
+             {
+                 "id":"1", // id不为0时，URL为空，id为0时，URL不为空
+                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
+                "url":"http://mall.emao.com/car/4584.html"
+             },
+             {
+                 "id":"2", // id不为0时，URL为空，id为0时，URL不为空
+                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
+                 "url":"http://mall.emao.com/car/4584.html"
+             },
+             {
+                 "id":"3", // id不为0时，URL为空，id为0时，URL不为空
+                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
+                 "url":"http://mall.emao.com/car/4584.html"
+             }
+        ],
+        brands:[
+            {
+                "id":"1", // 品牌id
+                "name":"宝马", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"2", // 品牌id
+                "name":"标致", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"3", // 品牌id
+                "name":"奥迪", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"1", // 品牌id
+                "name":"宝马", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"2", // 品牌id
+                "name":"标致", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"3", // 品牌id
+                "name":"奥迪", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            }
+        ],
         serieList:[]
     }
   },
   methods:{
     //组件方法
+    seeMore(){
+        this.lookAll = false;
+    },
     chooseCar(){
         this.mybrand = !this.mybrand;
     },
@@ -129,21 +171,23 @@ export default {
         this.brandName = brandName;
         this.brandId = index;
     },
+    goBrand(brandID){
+        this.$router.push('/brand/'+brandID); //品牌路由跳转
+    },
     goSerie(index){
         console.log(index);
-        this.$router.push('/serieList/'+index); //路由跳转
+        this.$router.push('/serieList/'+index); //车系路由跳转
     }
   },
   mounted(){
     //组件初始完成需要做什么
-        var dataToken = 'b943c46b5dbde5ccf1341a80da439509';
+        var token = sessionStorage.token;
         var data = {
-            token:dataToken,
-            city:142,
+            token:token,
             ltime:0,
             offset:1,
             len:10
-        }
+        };
         this.$http({
             url:"index",
             method:"GET",
@@ -151,6 +195,7 @@ export default {
         }).then(function (response) {
             console.log(response);
             this.serieList = response.body.data.series;
+            this.message = response.body.data.msg;
             console.log(this.serieList);
             console.log("请求成功了");
           }).catch(function (error) {
@@ -195,10 +240,10 @@ export default {
 /*首页品牌*/
 .index-brand{padding:.5333rem;}
 .index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-info{height:1.8266rem;}
-.index-brand-info li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;}
-.index-brand-info li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
-.index-brand-info li span{color:#2c2c2c;font-size:0.3733rem;}
+.index-brand-info{height:1.8266rem;overflow:hidden;}
+.index-brand-in li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;}
+.index-brand-in li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
+.index-brand-in li span{color:#2c2c2c;font-size:0.3733rem;}
 .index-more-brand{margin-top:.8rem;text-align:center;}
 .index-more-brand i{margin-left:.1333rem;}
 
