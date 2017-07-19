@@ -1,57 +1,18 @@
 <template>
   <div>
         <!--首页头部-->
-        <header class="index-header">
-            <strong class="index-title">淘车猫</strong>
-            <div class="index-news news-icon" v-show="message">
-                <span>6</span>
-            </div>
-        </header>
+        <header-mess :myMessage="message"></header-mess>
         <!--首页图片滚动-->
-        <section class="index-slider">
+        <swiper :circular="circular"></swiper>
 
-            <brand :showBrand="mybrand"  @getBrandChild="brandStatus"></brand>
-
-            <ul>
-                <li v-for="(item,index) in circular" :circuid=item.id >
-                    <img :src=item.imgUrl >
-                </li>
-            </ul>
-            <ul class="index-icon">
-                <li></li>
-                <li class="active"></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </section>
         <!--首页品牌-->
-        <section class="index-brand">
-            <div class="index-brand-in">
-                <ul class="clearfix" :class='{"index-brand-info":lookAll}'>
-                    <li v-for="(item,index) in brands" :brand=item.id @click="goBrand(item.id)">
-                        <img :src=item.logoUrl >
-                        <span>{{item.name}}</span>
-                    </li>
-                </ul>
-                <p class="index-more-brand" @click="seeMore" v-show="lookAll">更多品牌 <i class="yellow-bt"></i></p>
-            </div>
-        </section>
+        <brand :brandList="brands"></brand>
+
         <!--本地车源-->
-        <section class="index-car-source">
-            <p class="index-car-title">本地车源</p>
-            <ul class="index-car-con">
-                <li v-for="(item,index) in serieList" :serieID = item.id  @click="goSerie(item.id)">
-                    <img :src= item.imgUrl alt="">
-                    <p class="index-car-name">{{item.name}}</p>
-                    <p class="index-car-price"><span>{{item.minPrice}}</span>万起</p>
-                    <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
-                    <p class="index-car-sale">最高下降 <strong>{{item.maxFall}}万</strong></p>
-                </li>
-            </ul>
-            <p class="index-more-brand">查看更多 <i class="yellow-bt"></i></p>
-        </section>
-        <!--查询表单-->
+        <serie :serieList="serieList"></serie>
+
+
+        <!--查询表单--> 
         <section class="index-search">
             <div class="index-search-in">
                 <p class="index-search-title">急需要什么车型？告诉我</p>
@@ -72,30 +33,24 @@
         </section>
         
         <!-- 自定义组件 -->
-        <brand :showBrand="mybrand"  @getBrandChild="brandStatus"></brand>
+        <car :showBrand="mybrand"  @getBrandChild="brandStatus"></car>
 
 
         <!--首页底部留白-->
         <p class="footer-bt"></p>
         <!--首页底部-->
-        <footer class="index-fooer">
-            <ul class="clearfix">
-                <li class="index-order-car active">
-                    <i></i>
-                    <span>订车</span>
-                </li>
-                <li class="index-my">
-                    <i></i>
-                    <span>我的</span>
-                </li>
-            </ul>
-        </footer>
+        <footerTo></footerTo>
     </div>
 </template>
 
 <script>
+import headerMess from './header'
+import swiper from '../../components/common/swiper/swiper'
 import brand from './brand'
-// import swiper from '../components/common/swiper/swiper'
+import serie from './serie'
+import car from './car'
+import footer from './footer'
+
 
 export default {
   name: 'index',
@@ -104,41 +59,26 @@ export default {
         brandName:"选择车型", //选中的车型名字
         brandId:null, //选中的品牌ID
         mybrand:false, //车型弹层
-        lookAll:true,
-        message:2,
-        circular:[
+        lookAll:true, //品牌查看更多
+        message:2,    //消息个数
+        circular:[    //轮播图数据
              {
-                 "id":"1", // id不为0时，URL为空，id为0时，URL不为空
+                 "id":"1",
                  "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
                 "url":"http://mall.emao.com/car/4584.html"
              },
              {
-                 "id":"2", // id不为0时，URL为空，id为0时，URL不为空
+                 "id":"2", 
                  "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
                  "url":"http://mall.emao.com/car/4584.html"
              },
              {
-                 "id":"3", // id不为0时，URL为空，id为0时，URL不为空
+                 "id":"3", 
                  "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
                  "url":"http://mall.emao.com/car/4584.html"
              }
         ],
-        brands:[
-            {
-                "id":"1", // 品牌id
-                "name":"宝马", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"2", // 品牌id
-                "name":"标致", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"3", // 品牌id
-                "name":"奥迪", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
+        brands:[ //品牌数据
             {
                 "id":"1", // 品牌id
                 "name":"宝马", // 品牌名称
@@ -155,11 +95,10 @@ export default {
                 "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
             }
         ],
-        serieList:[]
+        serieList:[] //车系数据
     }
   },
   methods:{
-    //组件方法
     seeMore(){
         this.lookAll = false;
     },
@@ -204,7 +143,12 @@ export default {
 
   },
   components:{
-    "brand":brand
+    headerMess,
+    swiper,
+    brand,
+    serie,
+    car,
+    footerTo:footer
   }
   // },
   // beforeRouteEnter (to, from, next) {
@@ -231,10 +175,10 @@ export default {
 
 /*首页图片滚动*/
 .index-slider{position:relative;height:4.5333rem;}
-.index-slider ul li img{width:100%;height:4.5333rem;}
-.index-icon{position:absolute;left:.4rem;bottom:.24rem;}
-.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:#fff;margin-right:.1333rem;border-radius:0.0666rem;}
-.index-icon li.active{width:.2666rem;background-color:#d6ab55;}
+.index-slider img{width:100%;height:4.5333rem;}
+.index-icon{position:absolute;left:.4rem !important;bottom:.24rem !important;z-index:1;}
+.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:red;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;}
+.index-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;}
 
 
 /*首页品牌*/

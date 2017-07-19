@@ -31,7 +31,8 @@
 	            params:data
 	        }).then(function (response) {
 	            sessionStorage.dataToken = response.body.data.dataToken;
-	            this.$router.push('/login/code'); //路由跳转
+	            //this.$router.push('/login/code'); //路由跳转
+	            this.$router.push('/index'); //路由跳转
 	          }).catch(function (error) {
 	          	console.log(error);
 	            console.log("登录失败了");

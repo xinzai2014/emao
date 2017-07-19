@@ -77,8 +77,10 @@
 		            url:"message/verify",
 		            method:"POST",
 		            data:{
-		            	token:sessionStorage.token,
 		            	phone:this.$parent.telephone
+		            },
+		            params:{
+		            	token:sessionStorage.token
 		            }
 		        }).then(function (response) {
 		        	console.log(response);

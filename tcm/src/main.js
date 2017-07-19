@@ -40,6 +40,8 @@ Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 import '../plugins/flexible.js'
 import '../style/reset.css';
 import '../style/common.css';
+import '../plugins/swiper.min.js'
+import '../plugins/swiper.min.css';
 
 
 
