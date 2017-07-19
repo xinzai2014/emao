@@ -73,24 +73,18 @@
 		    	if(this.disabled){
 		    		return false;
 		    	};
-		    	this.$http({
-		            url:"message/verify",
-		            method:"POST",
-		            data:{
+		    	this.$http.post(
+		            "message/verify?token="+sessionStorage.token,
+		            {
 		            	phone:this.$parent.telephone
-		            },
-		            params:{
-		            	token:sessionStorage.token
 		            }
-		        }).then(function (response) {
+		        ).then(function (response) {
 		        	console.log(response);
 		            //this.$router.push('/index'); //路由跳转
 		          },function(error){
 		          	console.log(error);
-		            console.log("登录失败了");
 		          }).catch(function (error) {
 		          	console.log(error);
-		            console.log("登录失败了");
 		          });
 		    	this.codeText = this.num+"s后重新获取";
 		    	this.disabled = true;

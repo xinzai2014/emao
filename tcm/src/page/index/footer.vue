@@ -1,5 +1,6 @@
 <template>
-
+	<div>
+	<p class="footer-bt"></p>
 	<footer class="index-fooer">
         <ul class="clearfix">
             <li class="index-order-car active">
@@ -12,7 +13,7 @@
             </li>
         </ul>
     </footer>
-
+	</div>
 </template>
 
 <script>

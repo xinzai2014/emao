@@ -9,35 +9,14 @@
         <brand :brandList="brands"></brand>
 
         <!--本地车源-->
-        <serie :serieList="serieList"></serie>
-
+        <serie :serieList="serieList" :initData="initData" :serieMore="serieMore"></serie>
 
         <!--查询表单--> 
-        <section class="index-search">
-            <div class="index-search-in">
-                <p class="index-search-title">急需要什么车型？告诉我</p>
-                <div class="index-search-condition">
-                    <div class="index-serach-type" @click="chooseCar">
-                        <label for="" :brandID="brandId">{{brandName}}</label>
-                        <p></p>
-                        <i class="white-rt"></i>
-                    </div>
-                    <div class="index-search-price">
-                        <label for="">期望价格：</label>
-                        <input type="text">
-                        <span>万元</span>
-                    </div>
-                </div>
-                <input type="submit" name="提交" value="提交">
-            </div>
-        </section>
+        <search @getCar="getCar" :carMess="carMess"></search>
         
-        <!-- 自定义组件 -->
-        <car :showBrand="mybrand"  @getBrandChild="brandStatus"></car>
-
-
-        <!--首页底部留白-->
-        <p class="footer-bt"></p>
+        <!-- 车型数据 -->
+        <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showCar"></car>
+      
         <!--首页底部-->
         <footerTo></footerTo>
     </div>
@@ -48,6 +27,7 @@ import headerMess from './header'
 import swiper from '../../components/common/swiper/swiper'
 import brand from './brand'
 import serie from './serie'
+import search from './search'
 import car from './car'
 import footer from './footer'
 
@@ -58,9 +38,21 @@ export default {
     return {
         brandName:"选择车型", //选中的车型名字
         brandId:null, //选中的品牌ID
-        mybrand:false, //车型弹层
+        showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
         message:2,    //消息个数
+        serieMore:false,//车系查看更多
+        showCar:false, //初始的时候不加载选车弹出层
+        carMess:{     //搜索车型的时的数据
+          brandName:"选择车型",
+          brandID:null
+        },
+        initData:{ //初始化接口数据
+            token:null,
+            ltime:0,
+            offset:1,
+            len:10
+        },
         circular:[    //轮播图数据
              {
                  "id":"1",
@@ -93,72 +85,81 @@ export default {
                 "id":"3", // 品牌id
                 "name":"奥迪", // 品牌名称
                 "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"1", // 品牌id
+                "name":"宝马", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"2", // 品牌id
+                "name":"标致", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            },
+            {
+                "id":"3", // 品牌id
+                "name":"奥迪", // 品牌名称
+                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
             }
         ],
         serieList:[] //车系数据
     }
   },
-  methods:{
-    seeMore(){
-        this.lookAll = false;
-    },
-    chooseCar(){
-        this.mybrand = !this.mybrand;
-    },
+  methods:{ //选取车型后回传
     brandStatus(index,brandName){
-        console.log(index+"---"+brandName);
-        this.brandName = brandName;
-        this.brandId = index;
+        this.carMess.brandName = brandName;
+        this.carMess.brandID = index;
+        this.showbrand = !this.showbrand;
     },
-    goBrand(brandID){
+    goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
     },
-    goSerie(index){
+    goSerie(index){ //点击车系跳转
         console.log(index);
         this.$router.push('/serieList/'+index); //车系路由跳转
+    },
+    getCar(carBoolean){ //自组件选车型控制显示隐藏
+      this.showbrand = carBoolean;
+      this.showCar = !this.showCar;
+    },
+    getSerie(){ //获取车系数据
+       this.initData.token = sessionStorage.token
+        this.$http({
+            url:"index",
+            method:"GET",
+            params:this.initData
+        }).then(function (response) {
+            this.serieList = response.body.data.series;
+            this.message = response.body.data.msg;
+            if(response.body.data.series.length>=this.initData.len){
+              this.serieMore = !this.serieMore;
+            }
+          }).catch(function (error) {
+            console.log("请求失败了");
+          });
     }
   },
   mounted(){
     //组件初始完成需要做什么
-        var token = sessionStorage.token;
-        var data = {
-            token:token,
-            ltime:0,
-            offset:1,
-            len:10
-        };
-        this.$http({
-            url:"index",
-            method:"GET",
-            params:data
-        }).then(function (response) {
-            console.log(response);
-            this.serieList = response.body.data.series;
-            this.message = response.body.data.msg;
-            console.log(this.serieList);
-            console.log("请求成功了");
-          }).catch(function (error) {
-            console.log("请求失败了");
-          });
-
+    this.getSerie();
   },
   components:{
     headerMess,
     swiper,
     brand,
     serie,
+    search,
     car,
     footerTo:footer
+  },
+  beforeRouteEnter (to, from, next) {
+        console.log("来首页看看吧");
+        next();
+    },
+    beforeRouteLeave (to, from, next) {
+        console.log("你要离开吗");
+        next();
   }
-  // },
-  // beforeRouteEnter (to, from, next) {
-  //       console.log("来首页看看吧");
-  //       next();
-  //   },
-  //   beforeRouteLeave (to, from, next) {
-  //       console.log("你要离开吗");
-  //       next();
-  // }
 }
 </script>
 
@@ -190,11 +191,10 @@ export default {
 .index-brand-in li span{color:#2c2c2c;font-size:0.3733rem;}
 .index-more-brand{margin-top:.8rem;text-align:center;}
 .index-more-brand i{margin-left:.1333rem;}
-
+.brand-collect i{transform:rotateX(180deg)}
 /*首页本地车源*/
 .index-car-source{padding-top:.5333rem;padding-bottom:.5333rem;background-color:#fff;}
 .index-car-title{padding-left:.4rem;margin:0 0 .5333rem .4rem;font-size:.5066rem;color:#2c2c2c;border-left:2px solid #2c2c2c;}
-.index-car-con{}
 .index-car-con li{margin-bottom:.1333rem;color:#fff;}
 .index-car-con li{display:block;position:relative;color:#fff;}
 .index-car-con li img{display:block;width:10rem;height:5.333rem;}

@@ -11,7 +11,7 @@
                 <p class="index-car-sale">最高下降 <strong>{{item.maxFall}}万</strong></p>
             </li>
         </ul>
-        <p class="index-more-brand">查看更多 <i class="yellow-bt"></i></p>
+        <p class="index-more-brand" v-show="serieMore" @click="getSerie">查看更多 <i class="yellow-bt"></i></p>
     </section>
 
 </template>
@@ -19,7 +19,7 @@
 <script>
 export default {
 	  name: 'serie',
-	  props:["serieList"],
+	  props:["serieList","initData","serieMore"],
 	  data () {
 	    return {
 	      lookAll:true
@@ -28,7 +28,23 @@ export default {
 	  methods:{
 	  	seeMore(){
 	  		this.lookAll = false;
-	  	}
+	  	},
+	  	getSerie(){ //获取车系数据
+	       this.initData.token = sessionStorage.token;
+	       this.initData.offset += this.initData.len;
+	        this.$http({
+	            url:"index",
+	            method:"GET",
+	            params:this.initData
+	        }).then(function (response) {
+	            this.serieList = this.serieList.concat(response.body.data.series);
+	            if(response.body.data.series.length<this.initData.len){
+	            	this.serieMore = !this.serieMore;
+	            }
+	          }).catch(function (error) {
+	            console.log("请求失败了");
+	          });
+	    }
 	  },
 	  mounted(){
 		

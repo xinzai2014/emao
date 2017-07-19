@@ -1,7 +1,7 @@
 <template>
   <div>
     
-  <div class="brand" v-show="brand" :class="{brandActive:brand}">
+  <div class="brand" v-show="showBrand" :class="{brandActive:showBrand}">
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion"></i>
@@ -11,200 +11,25 @@
     <div class="brand-list-in">
         <!--首页-选择车型-车型按字母排序-->
         <section class="brand-content-list">
-            <ul>
-                <li>A</li>
-                <li @click="getBrand(item.id,item.brandName)" v-for="(item,index) in brandList">
+            <ul v-for="(item,index) in brandList">
+                <li>{{item.name}}</li>
+                <li @click="getBrand(e.id,e.name)" v-for="(e,i) in item.list">
                     
                         <div class="brand-content-img active">
-                             <img v-bind:src="src">
+                             <img v-bind:src=e.logoUrl >
                         </div>
-                        <span>{{item.brandName}}</span>
+                        <span>{{e.name}}</span>
                     
                 </li>
             </ul>
-            <ul>
-                <li>B</li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-            </ul>
-            <ul>
-                <li>C</li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-            </ul>
-            <ul>
-                <li>D</li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>阿斯顿·马丁</span>
-                    
-                </li>
-                <li>
-                    
-                        <div class="brand-content-img">
-                            <img src="../../assets/brand-logo.png" alt="">
-                        </div>
-                        <span>奥迪</span>
-                    
-                </li>
-            </ul>
+            
+            
+            
         </section>
         <!--首页-选择车型-首字母-->
         <section class="brand-list-letters">
-            <ul>
-                <li>A</li>
-                <li>B</li>
-                <li>C</li>
-                <li>D</li>
-                <li>E</li>
-                <li>F</li>
-                <li>G</li>
-                <li>H</li>
-                <li>I</li>
-                <li>J</li>
-                <li>K</li>
-                <li>L</li>
-                <li>M</li>
-                <li>N</li>
-                <li>O</li>
-                <li>P</li>
-                <li>Q</li>
-                <li>R</li>
-                <li>S</li>
-                <li>T</li>
-                <li>U</li>
-                <li>V</li>
-                <li>W</li>
-                <li>X</li>
-                <li>Y</li>
-                <li>Z</li>
+             <ul v-for="(item,index) in brandList">
+                <li>{{item.name}}</li>
             </ul>
         </section>
         <!--首页-选择车型-车型列表页-->
@@ -268,46 +93,31 @@ export default {
     return {
       brand:false,
       src:"http://img.emao.net/car/logo/nd/bah/nech.png/120",
-      brandList:[
-        {
-            id:1,
-            brandName:"阿斯顿·马丁",
-            img:"http://img.emao.net/car/logo/nd/bah/nech.png/120"
-        },
-        {
-            id:2,
-            brandName:"奥迪",
-            img:"http://img.emao.net/car/logo/nd/bah/nech.png/120"
-        },
-        {
-            id:3,
-            brandName:"阿斯顿·马丁",
-            img:"http://img.emao.net/car/logo/nd/bah/nech.png/120"
-        },
-        {
-            id:4,
-            brandName:"奥迪",
-            img:"http://img.emao.net/car/logo/nd/bah/nech.png/120"
-        }
-      ]
+      brandList:null
     }
   },
   methods:{
+    //获取素有品牌
+    getAllBrand(){
+       var token = sessionStorage.token;
+        this.$http({
+            url:"car/choose/brand?token=" + token,
+            method:"GET"
+        }).then(function (response) {
+            console.log(response);
+            this.brandList = response.body.data;
+          }).catch(function (error) {
+            console.log("请求失败了");
+          });
+    },
     //组件方法
     getBrand(index,brandName){
-        this.brand = false;
-        console.log(index);
-        this.$emit('getBrandChild',index,brandName);
+       this.showBrand = false;
+       this.$emit('getBrandChild',index,brandName);
     },
   },
   mounted(){
-
-  },
-  watch:{
-    showBrand(){
-        this.brand = true;
-        console.log(this.brand+"----------dddddddddddddddd");
-    }
+    this.getAllBrand();
   }
 }
 </script>
@@ -318,6 +128,7 @@ export default {
     top:0;
     left:100%;
     width: 100%;
+    z-index:100;
 }
 
 
