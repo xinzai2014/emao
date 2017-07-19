@@ -1,0 +1,117 @@
+<template>
+    <div class="rating_page">
+		<!--头部-->
+		<header class="user-tit">
+			<i class="white-lt brand-left-cion" @click="resetIndex"></i>
+	        <strong class="brand-list-title">编辑收货地址</strong>
+		</header>
+
+		<section class="address-edit">
+	        <div class="address-edit-out">
+	            <ul class="address-edit-in">
+	                <li class="clearfix">
+	                    <span>收货人：</span>
+	                    <input type="text" name="" v-model="name">
+	                </li>
+	                <li class="clearfix">
+	                    <span>联系电话：</span>
+	                    <input type="text" name="" v-model="phone">
+	                </li>
+	                <li class="clearfix">
+	                    <span>收货地址：</span>
+	                    <input type="text" name="" v-model="address">
+	                </li>
+	            </ul>
+	        </div>
+	        <input class="address-save" type="button" name="" value="保存并使用" @click="saveEdit">
+	    </section>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        data () {
+            return {
+            //初始数据结构
+            id:'',	//id
+            dealer_id:'',	//经销商id
+            is_default:'',	//是否是默认
+            address:'',	//收货地址
+            name:'',	//收货人姓名
+            phone:'',	//收货人电话
+            created_at:'',	//创建时间      
+            deleted_at:'',	//删除时间
+            updated_at:''	//修改时间
+
+            }
+        },
+        methods:{
+            //组件方法
+            resetIndex(){
+               this.$router.push({ name: 'address'});
+            },
+            fillData(){
+            	var id=this.$route.params.id;
+	    		var token=sessionStorage.getItem('token');
+            	var data = {
+		            token:token,
+		            id:id
+		        }
+		        this.$http({
+		            url:"dealer/detailById",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            this.id = response.body.data.id;
+		            this.dealer_id = response.body.data.dealer_id;
+		            this.is_default = response.body.data.is_default;
+		            this.address = response.body.data.address;
+		            this.name = response.body.data.name;
+		            this.phone = response.body.data.phone;
+		            this.created_at = response.body.data.created_at;
+		            this.deleted_at = response.body.data.deleted_at;
+		            this.updated_at = response.body.data.updated_at;
+		        }).catch(function (error) {
+		            console.log("请求失败了");
+		        });
+            },
+            saveEdit(){
+	    		var token=sessionStorage.getItem('token');
+            	var data = {
+		            id:this.id,
+		            name:this.name,
+		            address:this.address,
+		            phone:this.phone,
+		            is_default:this.is_default
+		        }
+            	this.$http.post(
+            		"dealer/updateById?token="+token,
+            		data
+		        ).then(function (response) {
+		        	alert('保存成功！');
+		        	this.$router.push({ name: 'address'});
+		        }).catch(function (error) {
+		            console.log("请求失败了");		            
+		        });
+            }
+        },
+        mounted(){
+        //组件初始完成需要做什么
+        	this.fillData();
+
+        }
+    }   
+</script>
+
+<style>
+.address-edit{}
+.address-edit-out{padding:0 .4rem 0 .4rem;background-color:#fff;}
+.address-edit-in{}
+.address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;}
+.address-edit-in li:last-child{border-bottom:none;}
+.address-edit-in li span{display:block;float:left;width:2rem;height:1.333rem;line-height:1.333rem;}
+.address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;line-height:1.333rem;border:none;}
+.address-save{display:block;margin:1.0667rem auto 0;padding:.36rem 1rem .36rem 1rem;font-size:.4533rem;color:#fff;text-align:center;border:none;border-radius:.8rem;background-color:#d5aa5c;}
+
+</style>

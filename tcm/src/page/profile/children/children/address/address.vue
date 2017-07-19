@@ -2,25 +2,37 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<a href="javascript:;" class="white-lt"></a>收货地址管理
+			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>收货地址管理
 		</header>
 		<!--收货地址管理-->
-		<section class="adders-wrap">
+		<section class="adders-wrap" v-if="!show">
 			<div class="adres-ct">
-				<div class="addres-item">
-					<p class="addres-info">李云龙<span>13878965874</span></p>
-					<p class="addres-add">地址：内蒙古自治区呼和浩特北四环西路52号方正国际08号</p>
-					<p class="addres-btn"><i class="edit">编辑</i><i class="del">删除</i></p>
+				<div class="addres-item" v-for="(item,index) in addressList">
+					<p class="addres-info">{{item.name}}<span>{{item.phone}}</span></p>
+					<p class="addres-add">地址：{{item.address}}</p>
+					<p class="addres-btn">
+						<router-link :to="{name:'addressEdit',params:{id:item.id}}">
+							<i class="edit">编辑</i>
+						</router-link>
+				        <i class="del" @click="remove(item,index)">删除</i>
+					</p>
 				</div>
-				<div class="addres-item">
-					<p class="addres-info">李云龙<span>13878965874</span></p>
-					<p class="addres-add">地址：内蒙古自治区呼和浩特北四环西路52号方正国际08号</p>
-					<p class="addres-btn"><i class="edit">编辑</i><i class="del">删除</i></p>
-				</div>
-			</div>
-			<p class="visib-98"></p>
-			<div class="addres-fixed">新增收货地址</div>
+			</div>	
 		</section>
+
+		<section class="no-auto server-no-response" v-if="show">
+	        <img src="../../../../../assets/no-order.png" alt="">
+	        <p>未添加收货地址</p>
+	    </section>
+
+	    <p class="visib-98"></p>
+		<router-link to="/profile/info/address/add">
+			<div class="addres-fixed">新增收货地址</div>
+		</router-link>
+
+		<transition name="router-slid">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
@@ -29,24 +41,98 @@
         data () {
             return {
               //初始数据结构
-              infoData:{}
+              addressList:[],
+              show:true
             }
         },
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+                this.$router.push({ name: 'info'});
+            },
+            remove(item,index){
+            	if(confirm('确认要删除么?')){
+	            	var token = sessionStorage.getItem('token');
+	            	var id = item.id;
+			        var data = {
+			            token:token,
+			            id:id
+			        }
+	            	this.$http.post(
+			            "dealer/deleteById?token="+token,
+			            data
+			        ).then(function (response) {
+			            this.addressList.splice(index, 1);
+			        }).catch(function (error) {
+			            console.log("请求失败了");
+			        });
+		    	}
+            },
+            fillData(){
+            	var token = sessionStorage.getItem('token');
+		        var id = sessionStorage.getItem('phone');
+		        var data = {
+		            token:token,
+		            id:id
+		        }
+		        this.$http({
+		            url:"dealer/listByDealerId",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            this.addressList = response.body.data;
+		        }).catch(function (error) {
+		            console.log("请求失败了");
+		        });
             }
         },
         mounted(){
         //组件初始完成需要做什么
-           
-
+        	this.fillData();
+        },
+        watch:{
+        	addressList(curVal,oldVal){
+        		var length = curVal.length;
+        		if(!length){
+	            	this.show=true;
+	            }else{
+	            	this.show=false;
+	            }
+        	},
+        	$route(){
+        		this.fillData();
+        	}
+        },
+        beforeRouteEnter(to, from, next){
+        	next();
+        	//this.fillData();
+        },
+        created(){
+        	//this.fillData();
         }
-    }   
+   	 }   
 </script>
 
 <style>
+.no-auto{position: absolute;
+    width: 10rem;
+    top: 1.173333rem;
+    bottom: 1.306667rem;
+    overflow-y: auto;
+    background-color: #fff;
+    padding-top: 3.867rem;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
+
+.adders-wrap{
+	position: absolute;
+    width: 10rem;
+    top: 1.173333rem;
+    bottom: 1.306667rem;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
 .rating_page{
     position: absolute;
     top: 0;

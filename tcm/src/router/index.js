@@ -29,6 +29,9 @@ const remit = r => require.ensure([], () => r(require('../page/profile/children/
 const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/add')), 'remitAdd')
 const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/edit')), 'remitEdit')
 
+const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'remitEdit')
+
+
 Vue.use(Router)
 
 
@@ -148,7 +151,7 @@ export default new Router({
            ]
         }
     ]
-    }
+    },
     // {
     //   path: 'rebate',  //我的返利
     //   name: 'rebate',
@@ -159,11 +162,11 @@ export default new Router({
     //   name: 'marketing',
     //   component: marketing
     // },
-    // {
-    //   path: 'coupon',  //我的优惠券
-    //   name: 'coupon',
-    //   component: coupon
-    // },
+    {
+       path: '/coupon',  //我的优惠券
+       name: 'coupon',
+       component: coupon
+     },
     // {
     //   path: 'order',  //我的订单列表
     //   name: 'order',
