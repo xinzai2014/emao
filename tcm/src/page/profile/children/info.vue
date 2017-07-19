@@ -39,7 +39,7 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+                this.$router.push({name:'profile'});
             }
         },
         mounted(){
@@ -54,7 +54,6 @@
                 params:data
             }).then(function (response) {
                 this.infoData = response.body.data;
-                console.log("请求成功了");
             }).catch(function (error) {
                 console.log("请求失败了");
             });
@@ -65,7 +64,7 @@
 
 <style>
 .rating_page{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;

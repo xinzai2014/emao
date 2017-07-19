@@ -26,10 +26,16 @@ const address = r => require.ensure([], () => r(require('../page/profile/childre
 const addressAdd = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/add')), 'addressAdd')
 const addressEdit = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/edit')), 'addressEdit')
 const remit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/remit')), 'remit')
-const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/add')), 'remitAdd')
-const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/address/children/edit')), 'remitEdit')
+const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/add')), 'remitAdd')
+const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/edit')), 'remitEdit')
 
-const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'remitEdit')
+//优惠券
+const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
+
+//返利
+const rebate = r => require.ensure([], () => r(require('../page/rebate/rebate')), 'rebate')
+//营销支持费
+const marketing = r => require.ensure([], () => r(require('../page/marketing/marketing')), 'marketing')
 
 
 Vue.use(Router)
@@ -152,16 +158,16 @@ export default new Router({
         }
     ]
     },
-    // {
-    //   path: 'rebate',  //我的返利
-    //   name: 'rebate',
-    //   component: rebate
-    // },
-    // {
-    //   path: 'marketing',  //我的营销支持费
-    //   name: 'marketing',
-    //   component: marketing
-    // },
+    {
+      path: '/rebate',  //我的返利
+      name: 'rebate',
+      component: rebate
+    },
+    {
+      path: '/marketing',  //我的营销支持费
+      name: 'marketing',
+      component: marketing
+    },
     {
        path: '/coupon',  //我的优惠券
        name: 'coupon',
