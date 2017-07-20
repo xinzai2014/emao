@@ -60,7 +60,7 @@
 		            params:data
 		        }).then(function (response) {
 
-		            //this.$router.push('/index'); //路由跳转
+		           	this.$router.push('/index'); //路由跳转
 		          }).catch(function (error) {
 		          	console.log(error);
 		            console.log("登录失败了");

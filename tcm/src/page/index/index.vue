@@ -1,29 +1,29 @@
 <template>
   <div>
-        <!--首页头部-->
-        <header-mess :myMessage="message"></header-mess>
-        <!--首页图片滚动-->
-        <swiper :circular="circular"></swiper>
+    <!--首页头部-->
+    <header-mess :myMessage="message"></header-mess>
+    <!--首页图片滚动-->
+    <swiper :circular="circular"></swiper>
 
-        <!--首页品牌-->
-        <brand :brandList="brands"></brand>
+    <!--首页品牌-->
+    <brand :brandList="brands"></brand>
 
-        <!--本地车源-->
-        <serie :serieList="serieList" :initData="initData" :serieMore="serieMore"></serie>
+    <!--本地车源-->
+    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
 
-        <!--查询表单--> 
-        <search @getCar="getCar" :carMess="carMess"></search>
-        
-        <!-- 车型数据 -->
-        <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showCar"></car>
-      
-        <!--首页底部-->
-        <footerTo></footerTo>
-    </div>
+    <!--查询表单--> 
+    <search @getCar="getCar" :carMess="carMess"></search>
+    
+    <!-- 车型数据 -->
+    <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showCar"></car>
+  
+    <!--首页底部-->
+    <footerTo></footerTo>
+  </div>
 </template>
 
 <script>
-import headerMess from './header'
+import headerMess from '../../components/header/header'
 import swiper from '../../components/common/swiper/swiper'
 import brand from './brand'
 import serie from './serie'
@@ -36,7 +36,6 @@ export default {
   name: 'index',
   data () {
     return {
-        brandName:"选择车型", //选中的车型名字
         brandId:null, //选中的品牌ID
         showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
@@ -55,8 +54,8 @@ export default {
         },
         circular:[    //轮播图数据
              {
-                 "id":"1",
-                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
+                "id":"1",
+                "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
                 "url":"http://mall.emao.com/car/4584.html"
              },
              {
@@ -114,10 +113,6 @@ export default {
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
     },
-    goSerie(index){ //点击车系跳转
-        console.log(index);
-        this.$router.push('/serieList/'+index); //车系路由跳转
-    },
     getCar(carBoolean){ //自组件选车型控制显示隐藏
       this.showbrand = carBoolean;
       this.showCar = !this.showCar;
@@ -174,12 +169,7 @@ export default {
 
 
 
-/*首页图片滚动*/
-.index-slider{position:relative;height:4.5333rem;}
-.index-slider img{width:100%;height:4.5333rem;}
-.index-icon{position:absolute;left:.4rem !important;bottom:.24rem !important;z-index:1;}
-.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:red;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;}
-.index-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;}
+
 
 
 /*首页品牌*/
@@ -210,9 +200,9 @@ export default {
 .index-search-in{padding-top:.5333rem;box-shadow: 0 0 3px rgba(204, 192, 0, 0.5);background-color:#fff;}
 .index-search-title{padding-left:.4rem;margin:0 0 .5333rem 0;font-size:.5066rem;color:#2c2c2c;border-left:2px solid #2c2c2c;}
 .index-search-condition{padding-left:.4rem;padding-right:.4rem;font-size:.4266rem;color:#2c2c2c;}
-.index-serach-type{height:.9327rem;padding-top:.5333rem;border-bottom:1px solid #e0e0e0;}
+.index-serach-type{height:.9327rem;padding-top:.5333rem;border-bottom:1px solid #e0e0e0;position:relative;}
 .index-serach-type p{display:inline-block;width:5.1333rem;height:.5333rem;}
-.index-serach-type i{margin-left:.833rem;}
+.index-serach-type i{position:absolute;top:50%;right:0;}
 .index-search-price{height:.9327rem;padding-top:.5333rem;border-bottom:1px solid #e0e0e0;}
 .index-search-price input{display:inline-block;width:4.8333rem;height:.5333rem;border:none;}
 .index-search-in input[type="submit"]{width:100%;height:1.1733rem;margin-top:.5333rem;font-size:.3733rem;text-align:center;line-height:1.17333rem;color:#fff;border:none; background-color:#d6ab55;}

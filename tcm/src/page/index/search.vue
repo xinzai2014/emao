@@ -5,7 +5,6 @@
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
                     <label for="" :brandID=carMess.brandID>{{carMess.brandName}}</label>
-                    <p></p>
                     <i class="white-rt"></i>
                 </div>
                 <div class="index-search-price">
