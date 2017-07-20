@@ -21,7 +21,7 @@
                 <!-- 可用 -->
                 <transition name="router-fade">
                     <div class="coupon-info" v-if="categoryType === 'use'">
-                        <div class="coupon-item available" v-for="(item,index) in use">
+                        <div class="coupon-item available" v-for="(item,index) in use" v-if="useNum">
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
@@ -38,12 +38,16 @@
                                 </p>
                             </div>
                         </div>
+                        <p class="rebate-no" v-if="!useNum">
+                            暂无此类优惠券
+                        </p>
                     </div>
+                    
                 </transition>
                 <!--已使用 -->
                 <transition name="router-fade">
                     <div class="coupon-info" v-if="categoryType === 'used'">
-                        <div class="coupon-item" v-for="(item,index) in used">
+                        <div class="coupon-item" v-for="(item,index) in used" v-if="usedNum">
                             <i class="use-icon"></i>
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
@@ -61,12 +65,16 @@
                                 </p>
                             </div>
                         </div>
+                        <p class="rebate-no" v-if="!usedNum">
+                            暂无此类优惠券
+                        </p>
                     </div>
+                    
                 </transition>
                 <!--已失效 -->
                 <transition name="router-fade">
                     <div class="coupon-info" v-if="categoryType === 'choosed'">
-                        <div class="coupon-item" v-for="(item,index) in disable">
+                        <div class="coupon-item" v-for="(item,index) in disable" v-if="disableNum">
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
@@ -83,7 +91,11 @@
                                 </p>
                             </div>
                         </div>
+                        <p class="rebate-no" v-if="!disableNum">
+                            暂无此类优惠券
+                        </p>
                     </div>
+                    
                 </transition>
             </div>
         </section>
@@ -317,6 +329,15 @@ export default {
     width:1.306667rem;
     height:1.386667rem;
     display:inline-block;
+}
+.rebate-no {
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 3rem;
 }
 
 </style>

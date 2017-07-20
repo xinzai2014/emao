@@ -37,6 +37,18 @@ const rebate = r => require.ensure([], () => r(require('../page/rebate/rebate'))
 //营销支持费
 const marketing = r => require.ensure([], () => r(require('../page/marketing/marketing')), 'marketing')
 
+//订单列表
+const order = r => require.ensure([], () => r(require('../page/order/order')), 'order')
+const obliga = r => require.ensure([], () => r(require('../page/obliga/obliga')), 'obliga')
+const sending = r => require.ensure([], () => r(require('../page/sending/sending')), 'sending')
+const receiving = r => require.ensure([], () => r(require('../page/receiving/receiving')), 'receiving')
+const display = r => require.ensure([], () => r(require('../page/display/display')), 'display')
+
+//订单详情
+const orderDetail = r => require.ensure([], () => r(require('../page/orderDetail/orderDetail')), 'orderDetail')
+const displayDetail = r => require.ensure([], () => r(require('../page/displayDetail/displayDetail')), 'displayDetail')
+
+
 
 Vue.use(Router)
 
@@ -173,43 +185,43 @@ export default new Router({
        name: 'coupon',
        component: coupon
      },
+    {
+       path: '/order',  //我的订单列表
+       name: 'order',
+       component: order
+    },
+    {
+       path: '/order/:id',  //我的订单详情页
+       name: 'orderDetail',
+       component: orderDetail
+    },
+    {
+       path: '/obliga',  //我的待付款列表
+       name: 'obliga',
+       component: obliga
+    },
+    {
+       path: '/sending',  //我的待发货列表
+       name: 'sending',
+       component: sending
+    },
+    {
+       path: '/receiving',  //我的待收货列表
+       name: 'receiving',
+       component: receiving
+     },
+     {
+       path: '/display',  //我的展车列表
+       name: 'display',
+       component: display
+     },
+    {
+       path: '/display/:id',  //我的展车订单详情页
+       name: 'displayDetail',
+       component: displayDetail
+    },
     // {
-    //   path: 'order',  //我的订单列表
-    //   name: 'order',
-    //   component: order
-    // },
-    // {
-    //   path: 'order/:id',  //我的订单详情页
-    //   name: 'orderDetail',
-    //   component: orderDetail
-    // },
-    // {
-    //   path: 'obliga',  //我的待付款列表
-    //   name: 'obliga',
-    //   component: obliga
-    // },
-    // {
-    //   path: 'sending',  //我的待发货列表
-    //   name: 'sending',
-    //   component: sending
-    // },
-    // {
-    //   path: 'receiving',  //我的待收货列表
-    //   name: 'receiving',
-    //   component: receiving
-    // },
-    // {
-    //   path: 'display',  //我的展车列表
-    //   name: 'display',
-    //   component: display
-    // },
-    // {
-    //   path: 'display/:id',  //我的订单详情页
-    //   name: 'displayDetail',
-    //   component: displayDetail
-    // },
-    // {
-    //   path: 'declare',  //我的售车申报列表
+    //   path: '/declare',  //我的售车申报列表
     //   name: 'declare',
     //   component: declare,
     //   children: [
@@ -221,12 +233,12 @@ export default new Router({
     //   ]
     // },
     // {
-    //   path: 'storage',  //我的中转库列表
+    //   path: '/storage',  //我的中转库列表
     //   name: 'storage',
     //   component: storage
     // },
     // {
-    //   path: 'message',  //我的消息列表
+    //   path: '/message',  //我的消息列表
     //   name: 'message',
     //   component: message,
     //   children: [
