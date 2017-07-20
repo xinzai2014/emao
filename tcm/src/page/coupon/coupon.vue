@@ -2,103 +2,91 @@
   <div>
         <!--头部-->
         <header class="user-tit">
-            <a href="javascript:;" class="white-lt"></a>我的优惠券
+            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>我的优惠券
         </header>
         <!--我的优惠券-->
         <section class="coupon-wrap">
             <ul class="coupon-li">
-                <li class="active">可用(1)</li>
-                <li>已使用(1)</li>
-                <li>已失效(1)</li>
+                <li :class="{active:categoryType === 'use'}" @click="categoryType = 'use'">
+                    可用({{useNum}})
+                </li>
+                <li :class="{active:categoryType === 'used'}" @click="categoryType = 'used'">
+                    已使用({{usedNum}})
+                </li>
+                <li :class="{active:categoryType === 'choosed'}" @click="categoryType = 'choosed'" >
+                    已失效({{disableNum}})
+                </li>
             </ul>
             <div class="coupon-ct">
                 <!-- 可用 -->
-                <div class="coupon-info">
-                    <div class="coupon-item available">
-                        <dl>
-                            <dt>¥ 3,000</dt>
-                            <dd>
-                                <h4>优惠券标题名称</h4>
-                                <p>使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉</p>
-                                <p>有效期：2017.03.02 - 2017.05.01</p>
-                            </dd>
-                        </dl>
-                        <div class="coupon-prompt">
-                            <span>展开详情<i class="white-rt"></i></span>
-                            <p>
-                                <b>适用车型</b>
-                                <em>日产骊威2015款</em>
-                                <em>日产骊威2015款</em>
-                            </p>
+                <transition name="router-fade">
+                    <div class="coupon-info" v-if="categoryType === 'use'">
+                        <div class="coupon-item available" v-for="(item,index) in use">
+                            <dl>
+                                <dt>¥ {{item.price}}</dt>
+                                <dd>
+                                    <h4>{{item.name}}</h4>
+                                    <p>{{item.note}}</p>
+                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                                </dd>
+                            </dl>
+                            <div class="coupon-prompt" :class="{active:item.active}">
+                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <p>
+                                    <b>适用车型</b>
+                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="coupon-item available">
-                        <dl>
-                            <dt>¥ 3,000</dt>
-                            <dd>
-                                <h4>优惠券标题名称</h4>
-                                <p>使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉</p>
-                                <p>有效期：2017.03.02 - 2017.05.01</p>
-                            </dd>
-                        </dl>
-                        <div class="coupon-prompt active">
-                            <span>展开详情<i class="white-rt"></i></span>
-                            <p>
-                                <b>适用车型</b>
-                                <em>日产骊威2015款</em>
-                                <em>日产骊威2015款</em>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                </transition>
                 <!--已使用 -->
-                <div class="coupon-info">
-                    <div class="coupon-item">
-                        <i class="use-icon"></i>
-                        <dl>
-                            <dt>¥ 3,000</dt>
-                            <dd>
-                                <h4>已使用</h4>
-                                <p>使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉</p>
-                                <p>有效期：2017.03.02 - 2017.05.01</p>
-                            </dd>
-                        </dl>
-                        <div class="coupon-prompt">
-                            <span>展开详情<i class="white-rt"></i></span>
-                            <p>
-                                <b>适用车型</b>
-                                <em>日产骊威2015款</em>
-                                <em>日产骊威2015款</em>
-                            </p>
+                <transition name="router-fade">
+                    <div class="coupon-info" v-if="categoryType === 'used'">
+                        <div class="coupon-item" v-for="(item,index) in used">
+                            <i class="use-icon"></i>
+                            <dl>
+                                <dt>¥ {{item.price}}</dt>
+                                <dd>
+                                    <h4>已使用</h4>
+                                    <p>{{item.note}}</p>
+                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                                </dd>
+                            </dl>
+                            <div class="coupon-prompt" :class="{active:item.active}">
+                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <p>
+                                    <b>适用车型</b>
+                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </transition>
                 <!--已失效 -->
-                <div class="coupon-info">
-                    <div class="coupon-item">
-                        <dl>
-                            <dt>¥ 3,000</dt>
-                            <dd>
-                                <h4>已失效</h4>
-                                <p>使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉使用说明巴拉巴拉巴拉</p>
-                                <p>有效期：2017.03.02 - 2017.05.01</p>
-                            </dd>
-                        </dl>
-                        <div class="coupon-prompt">
-                            <span>展开详情<i class="white-rt"></i></span>
-                            <p>
-                                <b>适用车型</b>
-                                <em>日产骊威2015款</em>
-                                <em>日产骊威2015款</em>
-                            </p>
+                <transition name="router-fade">
+                    <div class="coupon-info" v-if="categoryType === 'choosed'">
+                        <div class="coupon-item" v-for="(item,index) in disable">
+                            <dl>
+                                <dt>¥ {{item.price}}</dt>
+                                <dd>
+                                    <h4>已失效</h4>
+                                    <p>{{item.note}}</p>
+                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                                </dd>
+                            </dl>
+                            <div class="coupon-prompt" :class="{active:item.active}">
+                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <p>
+                                    <b>适用车型</b>
+                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </transition>
             </div>
         </section>
-        <transition name="router-slid">
-            <router-view></router-view>
-        </transition>
     </div>
 </template>
 
@@ -107,12 +95,19 @@ export default {
   data () {
     return {
         use:[],
+        useNum:0,
         disable:[],
-        used:[]
+        disableNum:0,
+        used:[],
+        usedNum:0,
+        categoryType:'use'
     }
   },
   methods:{
     //组件方法
+    resetIndex(){
+        this.$router.push({name:'profile'});
+    },
     fillData(){
         var dataToken = sessionStorage.token;
         var data = {
@@ -125,12 +120,31 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
-            this.use = response.body.data.use;   
-            this.disable = response.body.data.use;  
-            this.used = response.body.data.used;    
+
+            let use = response.body.data.use; 
+            this.use=this.bActive(use);
+            this.useNum = this.use.length; 
+
+            let disable = response.body.data.use;
+            this.disable=this.bActive(disable); 
+            this.disableNum= this.disable.length;  
+
+            let used = response.body.data.used;
+            this.used=this.bActive(used);   
+            this.usedNum = this.used.length;   
+
         }).catch(function (error) {
             console.log("请求失败了");
         });
+    },
+    bActive(arr){
+        for(var i=0;i<arr.length;i++){
+            arr[i].active=false;
+        }
+        return arr;
+    },
+    slideDown(item){
+        item.active = !item.active;
     }
   },
   mounted(){
@@ -148,6 +162,12 @@ export default {
 </script>
 
 <style>
+.router-fade-enter-active, .router-fade-leave-active {
+        transition: opacity .3s;
+    }
+    .router-fade-enter, .router-fade-leave-active {
+        opacity: 0;
+    }
 .router-slid-enter-active, .router-slid-leave-active {
     transition: all .4s;
 }
@@ -160,14 +180,15 @@ export default {
     height:1.066667rem;
     line-height:1.066667rem;
     background:#fff;
+    margin-bottom: 0.4rem;
 }
 .coupon-li li{
-    width:1.8rem;
-    text-align:center;
-    border-bottom:2px solid #fff;
-    margin:0 0.733333rem;
-    float:left;
-    font-size:0.4rem;
+    width: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #fff;
+    margin: 0 0.633333rem;
+    float: left;
+    font-size: 0.4rem;
 }
 .coupon-li li.active{
     color:#d5aa5c;
@@ -187,15 +208,16 @@ export default {
     overflow:hidden;
 }
 .coupon-item dt{
-    height:2.6rem;
-    width:2.4rem;
-    text-align:center;
-    line-height:2.6rem;
-    border-right:1px dashed #efeff4;
-    font-size:0.586667rem;
-    color:#d7d7d7;
-    position:relative;
-    float:left;
+    height: 2.6rem;
+    width: 2.5rem;
+    text-align: center;
+    line-height: 2.6rem;
+    border-right: 1px dashed #efeff4;
+    font-size: 0.54rem;
+    /* padding-right: 0.1rem; */
+    color: #d7d7d7;
+    position: relative;
+    float: left;
 }
 .coupon-item dt:before,.coupon-item dt:after{
     content: "";   
