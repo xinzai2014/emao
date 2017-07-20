@@ -86,6 +86,27 @@
             </section>
             <p class="footer-bt"></p>
         </section>
+
+        <!--首页底部留白-->
+        <p class="footer-bt"></p>
+        <!--首页底部-->
+        <footer class="index-fooer">
+            <ul class="clearfix">
+                <router-link to="/index">
+                    <li class="index-order-car">
+                        <i></i>
+                        <span>订车</span>
+                    </li>
+                </router-link>
+                <router-link to="/profile">
+                    <li class="index-my active">
+                        <i></i>
+                        <span>我的</span>
+                    </li>
+                </router-link>
+            </ul>
+        </footer>
+
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
@@ -350,5 +371,20 @@ export default {
 .mar-pd{
     padding:0.8rem 0;
 }
+
+
+/*首页底部定位*/
+.index-fooer{position:fixed;bottom:0;width:10rem;height:1.3066rem;background-color:#fff;}
+.index-fooer ul li{float:left;width:50%;padding-top:.2666rem;text-align:center;}
+.index-order-car{color:#2c2c2c;font-size:.2666rem;}
+.index-order-car i{display:inline-block;width:.56rem;height:.4rem;margin:0 auto;background:url("../../assets/car-cion.png") no-repeat;background-size:contain;}
+.index-order-car span{display:block;margin-top:.1333rem;}
+.index-order-car.active i{background:url("../../assets/car-active-cion.png") no-repeat;background-size:contain;}
+.index-order-car.active{color:#d5aa5c;}
+.index-my{color:#2c2c2c;font-size:.2666rem;}
+.index-my i{display:block;width:.4266rem;height:.4533rem;margin:0 auto;background:url("../../assets/my-cion.png") no-repeat;background-size:contain;}
+.index-my span{display:block;margin-top:.1333rem;}
+.index-my.active i{background:url("../../assets/my-active-cion.png") no-repeat;background-size:contain;}
+.index-my.active{color:#d5aa5c;}
 
 </style>
