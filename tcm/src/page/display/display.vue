@@ -13,99 +13,20 @@
 	            <div class="full-item" v-for="(item,index) in games">
 	                <h3>{{item.name}}</h3>
 	                <p class="interior">{{item.color}}</p>
-	                <p class="payment">需付保证金：<span>{{item.price}}元</span></p>
+	                <p class="payment" v-if="item.status == 7 || item.status ==2">需付保证金：<span>{{item.price}}元</span></p>
+	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元{{item.status}}</span></p>
 	                <div class="full-state">
 	                    <div class="state-lt wait-active">
-	                        <p class="state-wait">等待付款</p>
-	                        <p class="state-time">剩余：{{item.remainingTime}}</p>
+	                        <p class="state-wait">{{item.waitActive}}</p>
+	                        <p class="state-time"  v-if="item.status == 7 || item.status ==27">剩余：{{remaining(item)}} {{item.times}}</p>
 	                    </div>
-	                    <div class="state-rt">提交汇款凭证</div>
+	                    <div v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'">{{item.btnActive}}</div>
 	                </div>
 	            </div>
-	            <!-- <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment">需付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">付款审核中</p>
-	                    </div>
-	                    <div class="state-rt active">提交汇款凭证</div>
-	                </div>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment">需付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt wait-active">
-	                        <p class="state-wait">请重新提交</p>
-	                        <p class="state-time">剩余：23小时21分钟自动取消</p>
-	                    </div>
-	                    <div class="state-rt">提交汇款凭证</div>
-	                </div>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment payment-active">已付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">车辆出库中</p>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment">已付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">车辆在途</p>
-	                    </div>
-	                    <div class="state-rt">确认收货</div>
-	                </div>
-	            </div> -->
 	        </div>
-	        <!-- <div class="condition">
-	            <div class="condition-tit">
-	                <b>在展</b>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment payment-active">需付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">展车在展</p>
-	                    </div>
-	                    <div class="state-rt">补余款</div>
-	                </div>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <p class="payment payment-active">需付保证金：<span>29,000.00元</span></p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">补款中</p>
-	                    </div>
-	                    <div class="state-rt active">补余款</div>
-	                </div>
-	            </div>
-	            <div class="full-item">
-	                <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-	                <p class="interior">闪光黑/黑色内饰</p>
-	                <div class="full-state">
-	                    <div class="state-lt">
-	                        <p class="state-wait">展车退订已受理，等待接车</p>
-	                    </div>
-	                </div>
-	            </div>
-	        </div> -->
 	        <div class="branch">
-	            <p><i class="white-rt"></i>退订&取消展车</p>
-	            <p><i class="white-rt"></i>已购展车</p>
+	            <router-link to="/cancel"><p><i class="white-rt"></i>退订&取消展车</p></router-link>
+	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
 	    </section>
     </div>
@@ -119,8 +40,9 @@
                 token : sessionStorage.token,
                 perPage : 10, //每页条数，默认10
                 page : 1, //第几页
-                switchShow:false,
-        		games: []
+        		games: [],
+        		arr:[], //用于判断状态
+        		countNum:900
                 
             }
         },
@@ -129,12 +51,11 @@
             resetIndex(){
                 this.$router.push({name:'profile'});
             },
-            fullData(){
+            showData(){
             	var data = {
 	            	token:this.token,
 	            	perPage:this.perPage,
 	            	page:this.page
-
 	            }
 	            this.$http({
 	                url:"order/show/index",
@@ -142,16 +63,101 @@
 	                params:data
 	            }).then(function (response) {
 	            	console.log(response)
-	                this.games = response.body.data.list
+	                var list = response.body.data.list
+	                for(var a in list){
+	                	this.arr.push(list[a].status);
+                		for(var i =0;i<=a;i++){
+		                	if(this.arr[i] == 27){
+		                		list[a].waitActive = '请重新提交';
+						  		list[a].btnActive = '提交汇款凭证';
+		                		continue;
+		                	}else if(this.arr[i] == 3){
+							  	list[a].waitActive = '出库中';
+							  	list[a].btnActive = '审核通过';
+		                		continue;
+		                	}else if(this.arr[i] == 4){
+							  	list[a].waitActive = '在途';
+							  	list[a].btnActive = '等待收货';
+		                		continue;
+		                	} else if(this.arr[i] == 5){
+		                		list[a].waitActive = '在展';
+							  	list[a].btnActive = '收货成功';
+		                		continue;
+		                	}else if(this.arr[i] == 6){
+							  	list[a].waitActive = '退订';
+							  	list[a].btnActive = '取消展车申请';
+		                		continue;
+		                	}else if(this.arr[i] == 7){
+							  	list[a].waitActive = '等待付款';
+							  	list[a].btnActive = '提交汇款凭证';
+		                		continue;
+		                	}else if(this.arr[i] == 8){
+							  	list[a].waitActive = '补款中';
+							  	list[a].btnActive = '补款中';
+		                		continue;
+		                	}else if(this.arr[i] == 9){
+							  	list[a].waitActive = '已购买';
+								list[a].btnActive = '补余款凭证通过';
+		                		continue;
+		                	}else if(this.arr[i] == 10){
+							  	list[a].waitActive = '退订展车';
+								list[a].btnActive = '在展车辆退订';
+		                		continue;
+		                	}else if(this.arr[i] == 11){
+							  	list[a].waitActive = '已完成退车';
+								list[a].btnActive = '退订展车完成';
+		                		continue;
+		                	}else if(this.arr[i] == 28){
+							  	list[a].waitActive = '补款中';
+							  	list[a].btnActive = '补款中';
+		                		continue;
+		                	}
+		                }
+					}
+					this.games = list
 	            }).catch(function (error) {
 	                console.log("请求失败了");
 	            });
-            }
-            
+            },
+            //计算时间
+            remainingTime(){
+                clearInterval(this.timer);
+                this.timer = setInterval(() => {
+                    this.countNum --;
+                    if (this.countNum == 0) {
+                        clearInterval(this.timer);                    
+                    }
+                }, 1000);
+            },
+            //转换时间成分秒
+            remaining: function (item){
+            	this.countNum = item.remainingTime;
+            	let days = parseInt(this.countNum / 60 / 60 / 24, 10); //天
+                let hours = parseInt(this.countNum / 60 / 60 % 24, 10); //时
+                let minute = parseInt(this.countNum / 60 % 60, 10); //分
+                if (hours < 10) {
+                    hours = '0' + hours;
+                }
+                if (minute < 10) {
+                    minute = '0' + minute;
+                }
+                return days + '天' + hours + '时' + minute + '分'
+            },
+            //订单返回时间秒分分别处理
+           /* numTime: function (){
+                if (this.time.toString().indexOf('分钟') !== -1) {
+                    return parseInt(this.time)*60;
+                }else{
+                    return parseInt(this.time);
+                }
+            }*/
         },
         mounted(){
         //组件初始完成需要做什么
-        	this.fullData();
+        	this.showData();
+        	//this.countNum -= this.numTime;
+            this.remainingTime();
+        	
         }
     }   
 </script>
@@ -167,9 +173,6 @@ body,html{
 	border-top:1px solid #2c2c2c;
 	overflow:hidden;
 	background:#fff;
-}
-.full-item p{
-	max-height:9999px;
 }
 .full-item h3{
 	font-size:0.426667rem;

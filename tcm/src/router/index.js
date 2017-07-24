@@ -42,10 +42,12 @@ const order = r => require.ensure([], () => r(require('../page/order/order')), '
 const obliga = r => require.ensure([], () => r(require('../page/obliga/obliga')), 'obliga')
 const sending = r => require.ensure([], () => r(require('../page/sending/sending')), 'sending')
 const receiving = r => require.ensure([], () => r(require('../page/receiving/receiving')), 'receiving')
-const display = r => require.ensure([], () => r(require('../page/display/display')), 'display')
-
-//订单详情
 const orderDetail = r => require.ensure([], () => r(require('../page/orderDetail/orderDetail')), 'orderDetail')
+
+//展车列表
+const display = r => require.ensure([], () => r(require('../page/display/display')), 'display')
+const cancel = r => require.ensure([], () => r(require('../page/cancel/cancel')), 'cancel')
+const purchase = r => require.ensure([], () => r(require('../page/purchase/purchase')), 'purchase')
 const displayDetail = r => require.ensure([], () => r(require('../page/displayDetail/displayDetail')), 'displayDetail')
 
 
@@ -215,6 +217,16 @@ export default new Router({
        name: 'display',
        component: display
      },
+      {
+        path: '/cancel',   //退订&取消展车
+        name: 'cancel',
+        component: cancel
+      },
+      {
+        path: '/purchase',   //已购展车
+        name: 'purchase',
+        component: purchase
+      },
     {
        path: '/display/:id',  //我的展车订单详情页
        name: 'displayDetail',
