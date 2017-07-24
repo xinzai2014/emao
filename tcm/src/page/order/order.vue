@@ -5,84 +5,39 @@
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>全部订单
         </header>
         <!--全部订单-->
-          <section class="full-wrap">
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
+        <section v-if="orderList.length">
+          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+              <div class="full-item" v-for="(item,index) in orderList">
+                  <h3>{{item.name}}</h3>
+                  <p class="interior">{{item.color}}</p>
+                  <p class="payment">需付款：<span>{{item.price}}元</span></p>
                   <div class="full-state">
-                      <div class="state-lt wait-active">
-                          <p class="state-wait">等待付款</p>
-                          <p class="state-time">剩余：23小时21分钟自动取消</p>
+                      <div class="state-lt" :class="{'wait-active':item.status=='7'||item.status=='27'}">
+                          <p class="state-wait">{{item.state}}</p>
+                          <p class="state-time">剩余：{{item.remaining}}自动取消</p>
                       </div>
-                      <div class="state-rt">提交汇款凭证</div>
-                  </div>
-              </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt">
-                          <p class="state-wait">付款审核中</p>
+                      <div class="state-rt" v-if="item.status=='7'||item.status=='27'">
+                        <router-link to="">提交汇款凭证</router-link>
                       </div>
-                      <div class="state-rt active">提交汇款凭证</div>
-                  </div>
-              </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt wait-active">
-                          <p class="state-wait">请重新提交</p>
-                          <p class="state-time">剩余：23小时21分钟自动取消</p>
+                      <div class="state-rt active" v-if="item.status=='8'">
+                        提交汇款凭证
                       </div>
-                      <div class="state-rt">提交汇款凭证</div>
-                  </div>
-              </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt">
-                          <p class="state-wait">车辆出库中</p>
+                      <div class="state-rt" v-if="item.status=='4'">
+                        <router-link to="">确认收货</router-link>
                       </div>
                   </div>
               </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt">
-                          <p class="state-wait">车辆在途</p>
-                      </div>
-                      <div class="state-rt">确认收货</div>
-                  </div>
-              </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt">
-                          <p class="state-wait">交易完成</p>
-                      </div>
-                  </div>
-              </div>
-              <div class="full-item">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment">需付款：<span>29,000.00元</span></p>
-                  <div class="full-state">
-                      <div class="state-lt">
-                          <p class="state-wait">已取消</p>
-                      </div>
-                  </div>
-              </div>
-          </section>
+          </div>
+          <transition name="loading">
+            <div v-show="showLoading">正在加载中</div>
+          </transition>
+          <p v-if="touchend" class="empty_data">没有更多了</p>
+        </section>
+
+        <section class="no-auto server-no-response" v-if="!orderList.length">
+            <img src="../../assets/no-order.png" alt="">
+            <p>暂无此类订单</p>
+        </section>
     </div>
 </template>
 
@@ -90,7 +45,14 @@
 export default {
   data () {
     return {
-        
+        orderList:[],
+        currentPage:'1',
+        lastPage:'0',
+        perPage:'10',
+        touchend: false,
+        preventRepeatReuqest: false,
+        showLoading: true,
+        countNum:0,
     }
   },
   methods:{
@@ -99,39 +61,149 @@ export default {
         this.$router.push({name:'profile'});
     },
     fillData(){
-        var dataToken = sessionStorage.token;
+        var dataToken =sessionStorage.token;
         var data = {
             token:dataToken,
+            perPage:this.perPage,
+            page:this.currentPage,            
         }
         this.$http({
-            url:"dealer/coupon",
+            url:"order/full/index",
             method:"GET",
             params:data
         }).then(function (response) {
-
-            
+            var orderList=response.body.data.list;
+            this.stateAdd(orderList);
+            this.orderList=this.orderList.concat(orderList);
+            this.currentPage=response.body.data.page.currentPage;
+            this.lastPage=response.body.data.page.lastPage;
+            this.perPage=response.body.data.page.perPage;
+            this.hideLoading();
+            this.preventRepeatReuqest = false;
+            if (this.currentPage === this.lastPage) {
+              this.touchend = true;
+              return
+            }
         }).catch(function (error) {
-            console.log("请求失败了");
+             console.log("请求失败了");
         });
+    },
+    stateAdd(arr){
+      for(var i=0;i<arr.length;i++){
+          switch (arr[i].status){
+            case '7' : 
+                arr[i].state='待付款';
+                this.countNum=arr[i].remainingTime;
+                arr[i].remaining=this.remaining;
+                this.remainingTime(arr[i]);
+            break;
+            case '27' : 
+                arr[i].state='请重新提交';
+                this.countNum=arr[i].remainingTime;
+                arr[i].remaining=this.remaining;  
+                this.remainingTime(arr[i]);          
+            break;
+            case '8' : 
+                arr[i].state='审核中';
+            break; 
+            case '6' : 
+                arr[i].state='已取消';
+            break; 
+            case '5' : 
+                arr[i].state='交易完成';
+            break;
+            case '3' : 
+                arr[i].state='车辆出库中';
+            break;
+            case '4' : 
+                arr[i].state='车辆在途';
+            break;
+          }
+          
+      }
+    },   
+    remainingTime(item){
+        clearInterval(item.timer);
+        item.timer = setInterval(() => {
+            if(item.remainingTime != 0) {
+              item.remainingTime = parseInt(item.remainingTime)-60;
+              if (item.remainingTime <=0) {
+                  clearInterval(item.timer);
+                  item.status=6;
+                  item.state='已取消';
+              }
+              this.countNum=item.remainingTime;
+              item.remaining=this.remaining;  
+            }
+        }, 60000);
+    },   
+    /*返回顶部
+    backTop(){
+      animate(document.body, {scrollTop: '0'}, 400,'ease-out');
+    },*/
+    hideLoading(){
+      this.showLoading = false;
+    },
+    loaderMore(){
+      if (this.touchend) {
+        return
+      }
+      //防止重复请求
+      if (this.preventRepeatReuqest) {
+        return 
+      }
+      this.showLoading = true;
+      this.preventRepeatReuqest = true;
+
+      this.currentPage=parseInt(this.currentPage)+1;
+      this.fillData();   
     }
   },
   mounted(){
     //组件初始完成需要做什么
     this.fillData();
-    
+  },
+  computed: {
+      //转换时间成小时,分
+      remaining: function (){
+          let hours = parseInt(this.countNum/60/60);
+          let minutes = parseInt((this.countNum-hours*3600)/60);
+          if (hours < 10) {
+              hours = '0' + hours;
+          }
+          if (minutes < 10) {
+              minutes = '0' + minutes;
+          }
+          return hours + '小时' + minutes + '分钟';
+      }        
   },
   watch:{ 
     $route(){
         this.fillData();
     }
   }
-
 }
 </script>
 
 <style>
+.full-wrap{
+  height: 100%;
+}
+.no-auto{background-color: #fff;
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 100%;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
+
 /*全部订单*/
 .full-item{
+  height: 4.5rem;
   padding:0.533333rem 0.4rem;
   border-bottom:1px solid #2c2c2c;
   overflow:hidden;
@@ -186,6 +258,9 @@ export default {
   background:#d5aa5c;
   border-radius:0.533333rem;
 }
+.state-rt a{
+  color:#fff;
+}
 .state-wait{
   line-height:1.066667rem;
 }
@@ -195,4 +270,15 @@ export default {
 .wait-active .state-wait{
   line-height:0.533333rem;
 }
+.loading-enter-active, .loading-leave-active {
+    transition: opacity 1s
+  }
+  .loading-enter, .loading-leave-active {
+    opacity: 0
+  }
+.empty_data{
+    color:#666;
+    text-align: center;
+    line-height: 2rem;
+  }
 </style>
