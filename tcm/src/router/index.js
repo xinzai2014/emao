@@ -22,6 +22,12 @@ const serie = r => require.ensure([], () => r(require('../page/serie/serie')), '
 //个人中心组件
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 
+//售车申报组件
+const declare = r => require.ensure([], () => r(require('../page/declare/declare')), 'declare')
+
+//已售车申报组件
+const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
+
 Vue.use(Router)
 
 
@@ -141,7 +147,7 @@ export default new Router({
     //       ]
     //     }
     //   ]
-    }
+    },
     // {
     //   path: 'rebate',  //我的返利
     //   name: 'rebate',
@@ -192,18 +198,23 @@ export default new Router({
     //   name: 'displayDetail',
     //   component: displayDetail
     // },
-    // {
-    //   path: 'declare',  //我的售车申报列表
-    //   name: 'declare',
-    //   component: declare,
-    //   children: [
-    //     {
-    //       path: '/edit/:id',   //提交申报资料
-    //       name: 'editDeclare',
-    //       component: editDeclare 
-    //     }
-    //   ]
-    // },
+     {
+       path: '/declare',  //我的售车申报列表
+       name: 'declare',
+       component: declare
+       //children: [
+       //  {
+       //    path: '/edit/:id',   //提交申报资料
+       //    name: 'editDeclare',
+       //    component: editDeclare
+       //  }
+       //]
+     },
+    {
+      path: '/soldCar',  //已售车辆申报列表
+          name: 'soldCar',
+        component: soldCar
+    }
     // {
     //   path: 'storage',  //我的中转库列表
     //   name: 'storage',
