@@ -28,7 +28,12 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 //已售车申报组件
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
+
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'profile')
+
+//中转库组件
+const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
+
 
 Vue.use(Router)
 
@@ -216,12 +221,12 @@ export default new Router({
       path: '/soldCar',  //已售车辆申报列表
           name: 'soldCar',
         component: soldCar
-    }
-    // {
-    //   path: 'storage',  //我的中转库列表
-    //   name: 'storage',
-    //   component: storage
-    // },
+    },
+     {
+       path: '/storage',  //我的中转库列表
+       name: 'storage',
+       component: storage
+     }
     // {
     //   path: 'message',  //我的消息列表
     //   name: 'message',

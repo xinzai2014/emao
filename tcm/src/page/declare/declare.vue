@@ -1,4 +1,4 @@
-soldCar<template>
+<template>
     <div>
         <!--头部-->
         <header class="user-tit declare-head">
@@ -22,6 +22,7 @@ soldCar<template>
 </template>
 <script>
     export default{
+        name:'declare',
         data(){
         return{
             declareList:[],
