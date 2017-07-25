@@ -27,8 +27,8 @@
                </div>
                <div class="book-car-action clearfix">
                    <span>配置参数</span>
-                   <input class="book-car-buy" @click="showFullpay(item.id)" type="text" name="" value="全款购车" v-if="item.sale==1">
-                   <input class="book-car-apply" type="text" name="" value="申请展车" v-if="item.show==1">
+                   <input class="book-car-buy" @click="showFullpay(item.id,index)" type="text" name="" value="全款购车" v-if="item.sale==1">
+                   <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="text" name="" value="申请展车" v-if="item.show==1">
                    <input class="book-car-remind" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
                </div>
            </li>
@@ -53,11 +53,11 @@
         </div>
     </section>
     <!-- 全款购车弹出层 -->
-    <section class="book-car-popup" v-if="showMoney" >
-        <div class="book-order">
+    <section class="book-car-popup" :class="{dialogBack:showMoney}" v-if="showMoney" @click="closeFullpay">
+        <div class="book-order" :class="{dialogShow:showMoney}">
             <p class="book-order-title">
                <span>全款购车</span>
-                <i @click="closeFullpay"></i>
+                <i @click.stop="closeFullpay"></i>
             </p>
             <div class="book-order-info">
                 <p class="book-car-name">{{fullData.name}} </p>
@@ -77,14 +77,49 @@
             <div class="book-order-colors" v-if="fullData.stock.length>0">
                 <p>可选颜色</p>
                 <ul class="clearfix">
-                    <li class="choosable" @click="updateFullIndex(index,item.sum)" :class="{unavailable:disabledFullIndex == index,active:ActiveIndex == index}" v-for="(item,index) in fullData.stock">{{item.color}}/{{item.inColor}}</li>
+                    <li class="choosable" @click.stop="updateFullIndex(index,item.sum)" :class="{unavailable:disabledFullIndex == index,active:ActiveIndex == index}" v-for="(item,index) in fullData.stock">{{item.color}}/{{item.inColor}}</li>
                 </ul>
             </div>
             <section class="book-buy-now">
-                <input type="text" class="active" name="" value="立即购买">
+                <input type="text" class="active" name="" @click.stop="fullBay" value="立即购买">
             </section>
         </div>
     </section>
+
+    <!-- 申请展车-->
+    <section class="book-car-popup" :class="{dialogBack:showExhib}" v-if="showExhib" @click.stop="closeExhibPay">
+          <div class="book-order" :class="{dialogShow:showExhib}">
+              <p class="book-order-title">
+                  <span>申请展车</span>
+                  <i @click.stop="closeExhibPay"></i>
+              </p>
+              <div class="book-order-info">
+                  <p class="book-car-name">{{ExhibData.name}}</p>
+                  <div class="book-car-price-info clearfix">
+                      <div class="book-car-price">
+                          <strong>{{ExhibData.price}}万</strong>
+                      </div>
+                      <div class="book-guide-price clearfix">
+                          <span>指导价：</span>
+                          <em>{{ExhibData.guidePrice}}万</em>
+                      </div>
+                  </div>
+                  <p class="book-car-repertory">{{exhibCount}}</p>
+              </div>
+              <div class="book-order-colors">
+                  <p>可选颜色</p>
+                  <ul class="clearfix">
+                      <li class="choosable" @click.stop="updateExhibIndex(index,item.sum)" v-for="(item,index) in ExhibData.stock" :class="{unavailable:disabledExhibIndex == index,active:ActiveExhibIndex == index}">{{item.color}}/{{item.inColor}}</li>
+                  </ul>
+              </div>
+              <section class="book-buy-now">
+                  <!--立即申请展车-->
+                  <input type="text" class="active" v-if="ExhibData.apply>=0" name="" value="立即申请展车">
+                  <!--您已申请此展车-->
+                  <input type="text" class="unavailable" name="" v-else value="您已申请此展车">
+              </section>
+          </div>
+      </section>
 </div>
 </template>
 
@@ -99,27 +134,40 @@ export default {
         serieId:null,
         serieTitle:null,
         serieData:[],
-        fullData:{
-          name:null,
-          fallPrice:null,
-          guidePrice:null,
-          price:null,
-          stock:[]
+        fullData:{ //全款购车数据
+          
         },
-        disabledFullIndex:null, //
-        ActiveIndex:null,
-        fullCount:null,
+        showMoney:false,//全款购车弹出层
+        disabledFullIndex:null, //全款购车颜色置灰索引
+        ActiveIndex:null, //全款购车默认选中颜色索引
+        fullCount:null, //各颜色对应库存
+        ExhibData:{ //展车数据
+          
+        },
+        showExhib:false,//申请展车弹出层
+        disabledExhibIndex:null, //全款购车颜色置灰索引
+        ActiveExhibIndex:null, //全款购车默认选中颜色索引
+        exhibCount:null, //各颜色对应库存
         circular:[    //轮播图数据
             
         ],
-        showMoney:false
+        showExhib:false //申请展车弹出层
     }
   },
   methods:{
-    showFullpay(id){
-      this.getFullData(id);
+    showFullpay(id,index){
+      this.serieData.forEach(function(ele,ind){
+        if(index != ind){
+          ele.flag = false;
+        }
+      });
+      if(this.serieData[index].flag){ //避免重复请求
+        this.showMoney = !this.showMoney; 
+        return false;
+      }
+      this.getFullData(id,index);
     },
-    closeFullpay(id){
+    closeFullpay(){
       this.showMoney = !this.showMoney;
     },
     updateFullIndex(index,sum){
@@ -129,7 +177,30 @@ export default {
       this.ActiveIndex = index;
       this.fullCount = sum;
     },
-    getFullData(id){
+    showExhibpay(id,index){
+      this.serieData.forEach(function(ele,ind){
+        if(index != ind){
+          ele.exhibFlag = false;
+        }
+      });
+      if(this.serieData[index].exhibFlag){ //避免重复请求
+        this.showExhib = !this.showExhib; 
+        return false;
+      }
+      this.getExhibData(id,index);
+    },
+    closeExhibPay(){
+      this.showExhib = !this.showExhib;
+    },
+    updateExhibIndex(index,sum){
+      if(this.disabledExhibIndex == index){
+        return false;
+      }
+      this.ActiveExhibIndex = index;
+      this.exhibCount = sum;
+    },
+    getFullData(id,index){ //全款购车
+      var that = this;
       this.$http({
           url:"order/full/inventory",
           method:"GET",
@@ -138,21 +209,47 @@ export default {
             autoId:id
           }
       }).then(function (response) {
+          var flag = this.serieData[index].flag
+          this.serieData[index].flag = !flag;
           this.fullData = response.body.data;
           this.showMoney = !this.showMoney;
           this.disabledFullIndex = this.fullData.stock.findIndex(function(value,index,arr){
               return value.sum <= 0
           });
-          this.ActiveIndex = (this.disabledFullIndex!=0)?0:this.disabledFullIndex+1;
+          this.ActiveIndex = this.fullData.stock.findIndex(function(value,index,arr){
+              return value.sum > 0
+          });
           this.fullCount = this.fullData.stock[this.ActiveIndex].sum;
-          console.log("请求成功了");
         },function(){
-           console.log("请求失败了");
+
+        })
+    },
+    getExhibData(id,index){ //申请展车
+      this.$http({
+          url:"order/show/inventory",
+          method:"GET",
+          params:{
+            token:sessionStorage.token,
+            autoId:id
+          }
+      }).then(function (response) {
+           var exhibFlag = this.serieData[index].exhibFlag
+           this.serieData[index].exhibFlag = !exhibFlag;
+           this.ExhibData = response.body.data;
+           this.showExhib = !this.showExhib;
+           this.disabledExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
+              return !value.sum;
+           });
+           this.ActiveExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
+              return value.sum
+           });
+          this.exhibCount = this.ExhibData.stock[this.ActiveExhibIndex].sum;
+        },function(){
+
         })
     },
     getData(){ //初始化拿数据
       var token = sessionStorage.token;
-      console.log(this.serieId);
       this.$http({
           url:"goods/detail",
           method:"GET",
@@ -161,14 +258,27 @@ export default {
             serieId:this.serieId
           }
       }).then(function (response) {
-        console.log(response.body.data.circular.length);
           this.serieTitle = response.body.data.series.title;
           this.serieData = response.body.data.series.list;
+          this.serieData.forEach(function(ele,index){
+            ele.flag = false;
+            ele.exhibFlag = false;
+          })
+
           this.circular = response.body.data.circular;
-          console.log("请求成功了");
-        }).catch(function (error) {
-          console.log("请求失败了");
+
+        },function (error) {
+
         });
+   },
+   fullBay(){ //提交全款购车
+      var activeData = this.fullData.stock[this.ActiveIndex];
+      var fullBayData = {};
+      fullBayData.autoId = activeData.autoId;
+      fullBayData.colorId = activeData.colorId;
+      fullBayData.inColorId = activeData.inColorId;
+      this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
+      console.log(fullBayData);
    }
   },
   mounted(){
@@ -180,18 +290,42 @@ export default {
     swiper
   },
   beforeRouteEnter (to, from, next) {
-    console.log("来首页看看吧");
-    console.log(to);
+
+
     next();
   },
   beforeRouteLeave (to, from, next) {
-    console.log("你要离开吗");
+
     next();
   }
 }
 </script>
 
 <style>
+.dialogBack{
+    animation: opacityback 0.8s;
+    animation-iteration-count:1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+.dialogShow {
+    animation: dialog 0.8s;
+    animation-iteration-count:1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes opacityback
+{
+  0% {opacity: 0}
+  100% {opacity: 1}
+}
+
+@keyframes dialog
+{
+  0% {transform:translateY(100%);opacity: 0}
+  100% {transform:translateY(0);opacity: 1}
+}
 
 
 /*首页-订车-商品详情页*/
@@ -223,7 +357,7 @@ export default {
 
 /*首页-订车-详情页-订车弹窗*/
 .book-car-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
-.book-order{position:fixed;bottom:0;z-index:6;width:10rem;background-color:#fff;}
+.book-order{position:fixed;bottom:0;z-index:6;width:10rem;background-color:#fff;transform:translateY(100%)}
 .book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#2c2c2c;}
 .book-order-title i{position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:100% 100%;border-bottom:1px solid #eee;}
 .book-order-info{margin-left:.4rem;margin-right:.4rem;padding:.5333rem 0;border-bottom:1px solid #2c2c2c;}

@@ -31,15 +31,15 @@
 	            params:data
 	        }).then(function (response) {
 	            sessionStorage.dataToken = response.body.data.dataToken;
-	            //this.$router.push('/login/code'); //路由跳转
-	            this.$router.push('/index'); //路由跳转
+	            this.$router.push('/login/account'); //路由跳转
+	            //this.$router.push('/index'); //路由跳转
 	          }).catch(function (error) {
 	          	console.log(error);
 	            console.log("登录失败了");
 	          });
 
 	    	setTimeout(()=>{
-	    		var token = "b943c46b5dbde5ccf1341a80da439509";
+	    		var token = "bbe214ab570d81dc8b1b6589d86e13d9";
 	    		sessionStorage.token = token;
 	            // if(token){
 	            // 	this.$router.push('/index'); 

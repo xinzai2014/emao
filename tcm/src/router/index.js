@@ -28,6 +28,8 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 //已售车申报组件
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
+const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'profile')
+
 Vue.use(Router)
 
 
@@ -80,11 +82,11 @@ export default new Router({
     //   name: 'configuration',
     //   component: configuration
     // },
-    // {
-    //   path: '/orderConfrim/:id',  //全款购车确认页面
-    //   name: 'orderConfrim',
-    //   component: orderConfrim
-    // },
+    {
+      path: '/orderConfrim/:id',  //全款购车确认页面
+      name: 'orderConfrim',
+      component: orderConfrim
+    },
     // {
     //   path: '/orderResult/:id',  //全款购车结果页
     //   name: 'orderResult',

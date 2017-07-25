@@ -9,9 +9,10 @@
 	</div>
 </template>
 <script>
-// import sha256 from 'crypto-js/sha256';
-// import hmacSHA512 from 'crypto-js/hmac-sha512';
-// import Base64 from 'crypto-js/enc-base64';
+import MD5 from 'crypto-js/md5';
+import hmac from 'crypto-js/hmac-md5';
+import Base64 from 'crypto-js/enc-base64';
+
 
 	export default {
 		name:'pass',
@@ -21,14 +22,29 @@
 		      errorPass:false
 		    }
 		},
+		mounted(){
+		    //组件初始完成需要做什么
+		    this.passwordToMD5("13012345602")
+
+		  },
 		methods:{
+			passwordToMD5(passwordWord){
+				var password = passwordWord;
+				console.log("原始密码：" + password);
+				var passwordMD5 = MD5(password); 
+				console.log("MD5后：" +passwordMD5);
+				var passwordHash = hmac(passwordMD5,"yyxyE1ygvJ8beuKx");
+				console.log("hmac后：" +passwordHash);
+				var passwordBase64 =  passwordHash.toString(Base64);
+				console.log("base64后：" +passwordBase64);
+				return passwordBase64;
+			},
 			checkTel(){
 		      var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
 		        if(telExp.test(this.$parent.telephone)){
 		           this.$parent.telError = false;
 		         }else{
 		           this.$parent.telError = true;
-		           console.log("手机号码错误了");
 		           return false;
 		         }
 		         return true;
@@ -39,7 +55,6 @@
 		    		this.errorPass = false;
 		    	}else{
 		    		this.errorPass = true;
-		    		console.log("密码错误了");
 		    		return false;
 		    	}
 		    	return true;
@@ -53,7 +68,7 @@
 		        var data = {
 		        	dataToken:sessionStorage.dataToken,
 		            phone:this.$parent.telephone,//获取父组件实例
-		            password:this.pass
+		            password:this.passwordToMD5(this.pass)
 		        };
 		        this.$http({
 		            url:"passport/login",
