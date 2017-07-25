@@ -193,7 +193,7 @@ export default new Router({
        component: order
     },
     {
-       path: '/order/:id',  //我的订单详情页
+       path: '/orderDetail/:id',  //我的订单详情页
        name: 'orderDetail',
        component: orderDetail
     },
@@ -228,7 +228,7 @@ export default new Router({
         component: purchase
       },
     {
-       path: '/display/:id',  //我的展车订单详情页
+       path: '/displayDetail/:id',  //我的展车订单详情页
        name: 'displayDetail',
        component: displayDetail
     },
