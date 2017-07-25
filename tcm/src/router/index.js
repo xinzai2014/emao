@@ -29,6 +29,7 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
 
+//确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'profile')
 
 //中转库组件

@@ -31,7 +31,7 @@
             <div class="order-car-count">X <span>1</span></div>
         </div>
         <div class="order-message">
-            买家留言：<span>一定是黑色内饰要快</span>
+            买家留言：<span contenteditable="true">{{remark}}</span>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -93,7 +93,7 @@
 
     <!--确认提交-->
     <section class="order-present-info">
-        <div class="order-present">确认提交</div>
+        <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">
             需支付：
             <strong>￥{{totalData}}</strong>
@@ -189,7 +189,11 @@ export default {
             checkRebate:false,     //返利复选框
             updateRebate:false,     //修改过返利值
             rebateData:null,        //初始化返利
-            updateRebateData:null   //获取修改过的返利值
+            updateRebateData:null,   //获取修改过的返利值
+            formData:{
+          
+            },
+            remark:null             //备注信息
  	    }
 	  },
 	  methods:{  
@@ -217,6 +221,10 @@ export default {
                    this.marketData = data.marketingSupport.usable;
                    this.rebateData = data.rebate.usable;
 		           this.rebate = data.rebate;
+
+                   //初始化提交表单信息
+                   this.formData.total_price = data.car.price;
+                   this.formData.address_id = data.address.id;
 		        },function(){
 
 		        })
@@ -279,6 +287,22 @@ export default {
                 this.updateRebate = false ;
                 this.updateRebateData = false;
             }
+        },
+        sumbitOrder(){ //提交表单
+            this.formData.deduction = this.totalData;
+            this.formData.remark = this.remark;
+
+            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
+            this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
+            this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
+            this.formData.rebate_price = this.updateRebateData>0?this.updateRebateData:0;
+            console.log(this.formData);
+            this.$http.post(
+                "order/full/create?token="+sessionStorage.token,
+                this.formData).then(function (response) {
+                  console.log(response);
+              },function(){
+            });
         }
 	  },
 	  mounted(){
@@ -298,6 +322,10 @@ export default {
 		    vm.initData = vm.$router.currentRoute.query;
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
+            //保存提交信息
+            vm.formData.auto_id =  vm.initData.autoId;         //车型ID
+            vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
+            vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
 		  })
 		}
 }
