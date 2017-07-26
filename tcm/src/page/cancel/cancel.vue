@@ -40,10 +40,10 @@
             },
             cancelTime(item){ //毫秒数转换成时间
 				var unixTimestamp = new Date(parseInt(item.time)*1000) ;
-				var commonTime = unixTimestamp.toLocaleString();
 				Date.prototype.toLocaleString = function() {
 			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
 			    };
+			    var commonTime = unixTimestamp.toLocaleString();
 			    return commonTime;
             },
             moreFn: function (itemIndex) {

@@ -228,7 +228,7 @@ export default new Router({
         component: purchase
       },
     {
-       path: '/display/:id',  //我的展车订单详情页
+       path: '/displayDetail/:id',  //我的展车订单详情页
        name: 'displayDetail',
        component: displayDetail
     },

@@ -5,23 +5,25 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>我的展车
 		</header>
 		<!--我的展车-->
-	    <section class="full-wrap">
+	    <section class="full-wrap" v-if="games.length">
 	        <div class="condition">
 	            <div class="condition-tit">
 	                <b>申请中</b>
 	            </div>
 	            <div class="full-item" v-for="(item,index) in games">
+	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 	                <h3>{{item.name}}</h3>
 	                <p class="interior">{{item.color}}</p>
 	                <p class="payment" v-if="item.status == 7 || item.status ==2">需付保证金：<span>{{item.price}}元</span></p>
-	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元{{item.status}}</span></p>
+	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p>
 	                <div class="full-state">
 	                    <div class="state-lt wait-active">
 	                        <p class="state-wait">{{item.waitActive}}</p>
-	                        <p class="state-time"  v-if="item.status == 7 || item.status ==27">剩余：{{remaining(item)}} {{item.times}}</p>
+	                        <p class="state-time"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}自动取消</p>
 	                    </div>
-	                    <div v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'">{{item.btnActive}}</div>
+	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'">{{item.btnActive}}</div>
 	                </div>
+                </router-link>
 	            </div>
 	        </div>
 	        <div class="branch">
@@ -29,6 +31,10 @@
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
 	    </section>
+	    <section class="no-auto server-no-response" v-if="!games.length">
+            <img src="../../assets/no-order.png" alt="">
+            <p>暂无此类订单</p>
+        </section>
     </div>
 </template>
 
@@ -42,7 +48,7 @@
                 page : 1, //第几页
         		games: [],
         		arr:[], //用于判断状态
-        		countNum:900
+        		countNum:0
                 
             }
         },
@@ -70,46 +76,52 @@
 		                	if(this.arr[i] == 27){
 		                		list[a].waitActive = '请重新提交';
 						  		list[a].btnActive = '提交汇款凭证';
+						  		this.countNum=list[a].remainingTime;
+				                list[a].remaining=this.remaining;
+				                this.remainingTime(list[a]);
 		                		continue;
 		                	}else if(this.arr[i] == 3){
 							  	list[a].waitActive = '出库中';
-							  	list[a].btnActive = '审核通过';
+							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 4){
 							  	list[a].waitActive = '在途';
-							  	list[a].btnActive = '等待收货';
+							  	list[a].btnActive = '确认收货';
 		                		continue;
 		                	} else if(this.arr[i] == 5){
-		                		list[a].waitActive = '在展';
-							  	list[a].btnActive = '收货成功';
+		                		list[a].waitActive = '展车在展';
+							  	list[a].btnActive = '补余款';
 		                		continue;
 		                	}else if(this.arr[i] == 6){
-							  	list[a].waitActive = '退订';
-							  	list[a].btnActive = '取消展车申请';
+							  	list[a].waitActive = '已取消';
+							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 7){
 							  	list[a].waitActive = '等待付款';
 							  	list[a].btnActive = '提交汇款凭证';
+							  	this.countNum=list[a].remainingTime;
+				                list[a].remaining=this.remaining;
+				                this.remainingTime(list[a]);
 		                		continue;
 		                	}else if(this.arr[i] == 8){
-							  	list[a].waitActive = '补款中';
-							  	list[a].btnActive = '补款中';
+							  	list[a].waitActive = '待付款审核中';
+							  	list[a].btnActive = '提交汇款凭证';
 		                		continue;
 		                	}else if(this.arr[i] == 9){
 							  	list[a].waitActive = '已购买';
-								list[a].btnActive = '补余款凭证通过';
+								list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 10){
-							  	list[a].waitActive = '退订展车';
-								list[a].btnActive = '在展车辆退订';
+							  	list[a].waitActive = '展车退订已受理，等待接车';
+								list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 11){
 							  	list[a].waitActive = '已完成退车';
-								list[a].btnActive = '退订展车完成';
+								list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 28){
 							  	list[a].waitActive = '补款中';
-							  	list[a].btnActive = '补款中';
+							  	list[a].btnActive = '补余款';
 		                		continue;
 		                	}
 		                }
@@ -120,53 +132,66 @@
 	            });
             },
             //计算时间
-            remainingTime(){
-                clearInterval(this.timer);
-                this.timer = setInterval(() => {
-                    this.countNum --;
-                    if (this.countNum == 0) {
-                        clearInterval(this.timer);                    
-                    }
-                }, 1000);
-            },
-            //转换时间成分秒
-            remaining: function (item){
-            	this.countNum = item.remainingTime;
-            	let days = parseInt(this.countNum / 60 / 60 / 24, 10); //天
-                let hours = parseInt(this.countNum / 60 / 60 % 24, 10); //时
-                let minute = parseInt(this.countNum / 60 % 60, 10); //分
-                if (hours < 10) {
-                    hours = '0' + hours;
-                }
-                if (minute < 10) {
-                    minute = '0' + minute;
-                }
-                return days + '天' + hours + '时' + minute + '分'
-            },
-            //订单返回时间秒分分别处理
-           /* numTime: function (){
-                if (this.time.toString().indexOf('分钟') !== -1) {
-                    return parseInt(this.time)*60;
-                }else{
-                    return parseInt(this.time);
-                }
-            }*/
+            remainingTime(item){
+                clearInterval(this.timers);
+                item.timer = setInterval(() => {
+		            if(item.remainingTime != 0) {
+			              	item.remainingTime = parseInt(item.remainingTime)-60;
+			              	if (item.remainingTime <=0) {
+			                  	clearInterval(item.timer);
+			                  	item.status=6;
+			                  	item.waitActive = '已取消';
+								item.btnActive = ''
+			              	}	
+			              this.countNum=item.remainingTime;
+			              item.remaining=this.remaining;  
+			            }
+			    }, 60000);
+
+            }
         },
         mounted(){
         //组件初始完成需要做什么
         	this.showData();
-        	//this.countNum -= this.numTime;
-            this.remainingTime();
-        	
-        }
+        	        	
+        },
+        computed: {
+	    //转换时间成小时,分
+	    	remaining: function (){
+	          	let hours = parseInt(this.countNum/60/60);
+	          	let minutes = parseInt((this.countNum-hours*3600)/60);
+	          	if (hours < 10) {
+	              	hours = '0' + hours;
+	          	}
+	          	if (minutes < 10) {
+	              	minutes = '0' + minutes;
+	          	}
+	          	return hours + '小时' + minutes + '分钟';
+	      	}        
+	  	},
+	  	watch:{ 
+		    $route(){
+		        this.showData();
+		    }
+		}
+
+
     }   
 </script>
 
 <style>
-/*返利资金*/
-body,html{
-	background:#fff;
-}
+.no-auto{background-color: #fff;
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 100%;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
+
 /*我的展车*/
 .full-item{
 	padding:0.533333rem 0.4rem;
