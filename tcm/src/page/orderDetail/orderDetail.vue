@@ -72,9 +72,9 @@
               <p class="cancel" @click="PopShow">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'">提交汇款凭证</div>
-          <div class="remits-fixed active" v-if="orderInfo.status=='8'">提交汇款凭证</div>
-          <div class="remits-fixed active" v-if="orderInfo.status=='4'">确认收货</div>
+          <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="confirmCar">提交汇款凭证</div>
+          <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
+          <div class="remits-fixed active" v-if="orderInfo.status=='4'" >确认收货</div>
       </section>
       <div class="mask" v-show="pop">
         <div class="cancel-car">
@@ -82,6 +82,21 @@
             <p class="prompt-btn"><span @click="hidePop">点错了</span><span class="confirm" @click="cancel">确认取消</span></p>
         </div>
      </div>
+     <!-- 确认收货 -->
+      <div class="mask-receipt" v-show="receiptShow">
+          <div class="receipt">
+              <div class="receipt-tit">
+                  <b>{{receiptData.name}}</b>
+                  <span>{{receiptData.color}}</span>
+              </div>
+              <p class="receipt-code">{{receiptData.vinNumber}}</p>
+              <div class="options" v-if="receiptData.attachment">
+                  <b>请确认随车附件：</b>
+                  <p>{{receiptData.attachment}}</p>
+              </div>
+              <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+          </div>
+      </div>
     </div>
 </template>
 
@@ -96,13 +111,49 @@ export default {
         countNum:'',
         countTime:'',
         sendText:'发送到手机',
-        pop:false
+        pop:false,
+        receiptShow:false,
+        Token:sessionStorage.getItem('token'),
+        receiptData:{},
+        receiptShow:false,
     }
   },
   methods:{
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    confirmCar(){ //确认收货弹框信息
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:this.Token,
+          orderNum:this.orderInfo.orderNum
+      }
+      this.$http({
+          url:"order/full/receiptDetail",
+          method:"GET",
+          params:data
+      }).then(function (response) {
+        console.log(response)
+        this.receiptData = response.body.data;
+          console.log(this.receiptData)
+      }).catch(function (error) {
+          console.log("请求失败了");
+      });
+    },
+    receiptStatus(){
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:this.Token,
+          goods_stock_id:this.receiptData.id
+      }
+      this.$http.post("order/full/receipt",data)
+      .then(function (response) {
+        this.orderInfo.status='5';
+        this.orderInfo.state='交易完成';
+      }).catch(function (error) {
+          console.log("请求失败了");
+      });
     },
     toAddress(){
         this.$router.push({name:'address'});
@@ -134,7 +185,7 @@ export default {
         this.$http.post("message/send",{
           token:sessionStorage.token,
           content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
-          phone:'17744523417'
+          phone:''
         }).then(function (response) {
             var num=60;
             let timer = setInterval(()=>{
@@ -538,4 +589,64 @@ export default {
   color:#fff;
 }
 
+
+.mask-receipt{
+  width:100%;
+  height:100%;
+  position:fixed;
+  left:0;
+  top:0;
+  background:rgba(0,0,0,0.8);
+}
+.receipt{
+  width:7.2rem;
+  position:fixed;
+  left:50%;
+  margin-left:-3.6rem;
+  top:25%;
+  background:#fff;
+  border-radius:0.133333rem;
+  overflow:hidden;
+}
+.receipt-tit{
+  width:5.026667rem;
+  height:2.053333rem;
+  border-bottom:1px solid #2c2c2c;
+  margin:0.533333rem auto;
+  text-align:center;
+}
+.receipt-tit b{
+  display:block;
+  font-size:0.453333rem;
+  color:#2c2c2c;
+}
+.receipt-tit span{
+  display:block;
+  font-size:0.32rem;
+  color:#999;
+  padding:0.133333rem 0;
+}
+.receipt-code{
+  font-size:0.453333rem;
+  color:#d6ab55;
+  text-align:center;
+  margin-bottom:0.533333rem;
+}
+.options{
+  padding:0 0.533333rem;
+  font-size:0.346667rem;
+  color:#2c2c2c;
+  padding-bottom:0.533333rem;
+}
+.options b{
+  display:block;
+  
+}
+.receipt-btn{
+  font-size:0.453333rem;
+  color:#fff;
+  text-align:center;
+  line-height:1.173333rem;
+  background:#d6ab55;
+}
 </style>

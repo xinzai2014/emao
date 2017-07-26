@@ -50,6 +50,8 @@ const cancel = r => require.ensure([], () => r(require('../page/cancel/cancel'))
 const purchase = r => require.ensure([], () => r(require('../page/purchase/purchase')), 'purchase')
 const displayDetail = r => require.ensure([], () => r(require('../page/displayDetail/displayDetail')), 'displayDetail')
 
+//消息
+const message = r => require.ensure([], () => r(require('../page/message/message')), 'message')
 
 
 Vue.use(Router)
@@ -249,42 +251,42 @@ export default new Router({
     //   name: 'storage',
     //   component: storage
     // },
-    // {
-    //   path: '/message',  //我的消息列表
-    //   name: 'message',
-    //   component: message,
-    //   children: [
-    //     {
-    //       path: 'order',   //订单提醒
-    //       name: 'messageOrder',
-    //       component: messageOrder 
-    //     },
-    //     {
-    //       path: 'coupon',   //优惠券提醒
-    //       name: 'messageCoupon',
-    //       component: messageCoupon
-    //     },
-    //     {
-    //       path: 'display',   //展车提醒
-    //       name: 'messageDisplay',
-    //       component: messageDisplay
-    //     },
-    //     {
-    //       path: 'rebate',   //资金变动提醒
-    //       name: 'messageRebate',
-    //       component: messageRebate
-    //     },
-    //     {
-    //       path: 'storage',   //中转库变动提醒
-    //       name: 'messageStorage',
-    //       component: messageStorage
-    //     },
-    //     {
-    //       path: 'inform',   //优惠券提醒
-    //       name: 'messageInform',
-    //       component: messageInform
-    //     }
-    //   ]
-    // }
+     {
+       path: '/message',  //我的消息列表
+       name: 'message',
+       component: message,
+       // children: [
+       //   {
+       //     path: 'order',   //订单提醒
+       //     name: 'messageOrder',
+       //     component: messageOrder 
+       //   },
+       //   {
+       //     path: 'coupon',   //优惠券提醒
+       //     name: 'messageCoupon',
+       //     component: messageCoupon
+       //   },
+       //   {
+       //     path: 'display',   //展车提醒
+       //     name: 'messageDisplay',
+       //     component: messageDisplay
+       //   },
+       //   {
+       //     path: 'rebate',   //资金变动提醒
+       //     name: 'messageRebate',
+       //     component: messageRebate
+       //   },
+       //   {
+       //     path: 'storage',   //中转库变动提醒
+       //     name: 'messageStorage',
+       //     component: messageStorage
+       //   },
+       //   {
+       //     path: 'inform',   //优惠券提醒
+       //     name: 'messageInform',
+       //     component: messageInform
+       //   }
+       // ]
+     }
   ]
 })
