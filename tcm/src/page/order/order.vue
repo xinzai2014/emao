@@ -8,7 +8,7 @@
         <section v-if="orderList.length">
           <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
               <div class="full-item" v-for="(item,index) in orderList">
-                <router-link :to="{name:'orderDetail',params:{id:item.id}}">
+                <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
                   <p class="payment">需付款：<span>{{item.price}}元</span></p>
@@ -95,15 +95,25 @@ export default {
           switch (arr[i].status){
             case '7' : 
                 arr[i].state='待付款';
-                this.countNum=arr[i].remainingTime;
-                arr[i].remaining=this.remaining;
-                this.remainingTime(arr[i]);
+                if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
+                    arr[i].status=6;
+                    arr[i].state='已取消';
+                }else{
+                    this.countNum=arr[i].remainingTime;
+                    arr[i].remaining=this.remaining;
+                    this.remainingTime(arr[i]);
+                }
             break;
             case '27' : 
                 arr[i].state='请重新提交';
-                this.countNum=arr[i].remainingTime;
-                arr[i].remaining=this.remaining;  
-                this.remainingTime(arr[i]);          
+                if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
+                    arr[i].status=6;
+                    arr[i].state='已取消';
+                }else{
+                    this.countNum=arr[i].remainingTime;
+                    arr[i].remaining=this.remaining;  
+                    this.remainingTime(arr[i]); 
+                }         
             break;
             case '8' : 
                 arr[i].state='审核中';
@@ -139,10 +149,10 @@ export default {
             }
         }, 60000);
     },   
-    /*返回顶部
+    // 返回顶部
     backTop(){
       animate(document.body, {scrollTop: '0'}, 400,'ease-out');
-    },*/
+    },
     hideLoading(){
       this.showLoading = false;
     },
@@ -167,7 +177,7 @@ export default {
   },
   computed: {
       //转换时间成小时,分
-      remaining: function (){
+      remaining: function (){          
           let hours = parseInt(this.countNum/60/60);
           let minutes = parseInt((this.countNum-hours*3600)/60);
           if (hours < 10) {
@@ -205,7 +215,6 @@ export default {
 
 /*全部订单*/
 .full-item{
-  height: 4.5rem;
   padding:0.533333rem 0.4rem;
   border-bottom:1px solid #2c2c2c;
   overflow:hidden;

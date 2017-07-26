@@ -1,65 +1,87 @@
 <template>
     <div>
+        <header class="user-tit">
+          <a href="javascript:;" class="white-lt" @click="resetIndex"></a>订单详情
+        </header>
         <section class="details-wrap">
           <div class="details-tit">
-              <h4><span>剩余：23小时21分钟自动取消</span>等待付款</h4>
-              <p>原因：谁知道为什么呢，反正提交的不合格，被驳回了，重新提交吧！</p>
+              <h4>
+                <span v-if="orderInfo.status=='7'||orderInfo.status=='27'">剩余：{{orderInfo.remaining}}自动取消</span>
+                <span v-if="orderInfo.status=='4'">{{orderInfo.remaining}}后，自动确认收货</span>
+                {{orderInfo.state}}
+              </h4>
+              <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
           </div>
-          <div class="details-addres">
+          <div class="details-addres" v-if="address.id" @click="toAddress">
               <i class="white-rt"></i>
               <div class="details-user">
-                  <span>13822334455</span>收货人：张二狗
+                  <span>{{address.phone}}</span>收货人：{{address.name}}
               </div>
-              <p>地址：内蒙古自治区呼和浩特北四环西路52号方正国际08号</p>
+              <p>地址：{{address.address}}</p>
+          </div>
+          <div class="details-addres" v-if="!address.id" @click="toAddress">
+              <i class="white-rt out"></i>
+              添加收货地址
           </div>
           <div class="order-ct">
               <p class="order-number">
-                  <span>2016-10-20 20:31</span>订单号：123456789099888
+                  <span>{{time}}</span>订单号：{{orderInfo.orderNum}}
               </p>
               <div class="order-full">
-                  <h3>奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</h3>
-                  <p class="interior">闪光黑/黑色内饰</p>
-                  <p class="payment"><em> ×1</em>全款购买：<span>29,000.00元</span></p>
+                  <h3>{{orderInfo.name}}</h3>
+                  <p class="interior">{{orderInfo.color}}</p>
+                  <p class="payment"><em> ×1</em>全款购买：<span>{{orderInfo.price}}元</span></p>
               </div>
               <p class="leave">
-                  <span>买家留言：</span>梅赛德斯-AMG销量最高的45系列AMG，售价由49.8万至63.4万，但准备开始在中国市场进行预售的43系列，虽然车万至63.4万，但准备开始在中国市场进行预售的43系列，虽然车
+                  <span>买家留言：</span>{{orderInfo.remark||'未留言'}}
               </p>
               <div class="settlement">
-                  <p><span>￥20,000.00</span>商品总价：</p>
-                  <p><span>-￥3,000.00</span>已付保证金：</p>
-                  <p><span>-￥3,000.00</span>优惠券抵扣：</p>
-                  <p><span>-￥5,000.00</span>营销支持费抵扣：</p>
-                  <p><span>-￥3,000.00</span>返利资金抵扣（不可开票）：</p>
-                  <p><span>￥20,000.00</span>需付款：</p>
+                  <p><span>￥{{capitalInfo.totalPrice}}</span>商品总价：</p>
+                  <!--<p><span>-￥{{capitalInfo.deposit||'0.00'}}</span>已付保证金：</p>-->
+                  <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
+                  <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
+                  <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>
+                  <p><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
               </div>
           </div>
-          <div class="request-ct">
+          <div class="request-ct" v-if="orderInfo.status!='6'">
               <p class="remit-tit">汇款信息</p>
               <div class="send-to">
                   <p>
                       <label>汇款银行：</label>
-                      <span>中国银行股份有限公司成都天府大道支行</span>
+                      <span>{{bankInfo.bankName}}</span>
                   </p>
                   <p>
                       <label>公司名称：</label>
-                      <span>成都一猫电子商务有限公司</span>
+                      <span>{{bankInfo.companyName}}</span>
                   </p>
                   <p>
                       <label>汇款银行：</label>
-                      <span>9558 1909 2938 10098</span>
+                      <span>{{bankInfo.account}}</span>
                   </p>
-                  <p class="send-phone">发送到手机</p>
+                  <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <router-link to="" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+                    <p class="send-phone">查看详细</p>
+                  </router-link>
               </div>
               <div class="nstructions">
                   <span>汇款说明：</span>
                   <em>1.汇款后请上传汇款凭证</em>
                   <em>2.未按时间付款的订单系统将自动取消</em>
               </div>
-              <p class="cancel">取消申请</p>
+              <p class="cancel" @click="PopShow">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed">提交汇款凭证</div>
+          <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'">提交汇款凭证</div>
+          <div class="remits-fixed active" v-if="orderInfo.status=='8'">提交汇款凭证</div>
+          <div class="remits-fixed active" v-if="orderInfo.status=='4'">确认收货</div>
       </section>
+      <div class="mask" v-show="pop">
+        <div class="cancel-car">
+            <p class="prompt-tit">确认取消该订单？</p>
+            <p class="prompt-btn"><span @click="hidePop">点错了</span><span class="confirm" @click="cancel">确认取消</span></p>
+        </div>
+     </div>
     </div>
 </template>
 
@@ -67,26 +89,182 @@
 export default {
   data () {
     return {
-        
+        orderInfo:{},
+        address:{},
+        bankInfo:{},
+        capitalInfo:{},
+        countNum:'',
+        countTime:'',
+        sendText:'发送到手机',
+        pop:false
     }
   },
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.push({name:''});
+        this.$router.go(-1);
     },
+    toAddress(){
+        //this.$router.push({name:'address'});
+    },
+    PopShow(){
+      this.pop=true;
+    },
+    hidePop(){
+      this.pop=false;
+    },
+    getQuery(){
+      return this.$route.query.address;
+    },
+    cancel(){
+      this.pop=false;
+      var data={
+        token:sessionStorage.token,
+        order_num:this.orderInfo.orderNum
+      }
+      this.$http.post("order/full/cancel",data).then(function (response) {
+        this.orderInfo.status=6;
+        this.orderInfo.state='已取消';
+      }).catch(function (error) {
+          console.log("请求失败了");
+      });
+      
+    },
+    sendMes(){
+        this.$http.post("message/send",{
+          token:sessionStorage.token,
+          content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
+          phone:'17744523417'
+        }).then(function (response) {
+            var num=60;
+            let timer = setInterval(()=>{
+              num--;
+              this.sendText = num+"s";
+              if(!num){
+                this.sendText = "发送到手机";
+                clearInterval(timer);
+                return false;
+              }
+            },1000);
+        }).catch(function (error) {
+            console.log("请求失败了");
+        });
+    },
+    remainingTime(item){
+        clearInterval(item.timer);        
+        item.timer = setInterval(() => {           
+            if(item.remainingTime != 0) {              
+              item.remainingTime = parseInt(item.remainingTime)-60;
+              if (item.remainingTime <=0) {
+                  clearInterval(item.timer);
+                  item.status=6;
+                  item.state='已取消';
+              }
+              this.countNum=item.remainingTime;
+              item.remaining=this.remaining;  
+            }
+        }, 60000);
+    } ,   
     fillData(){
+        var order_num=this.$route.params.id;
         var dataToken = sessionStorage.token;
         var data = {
             token:dataToken,
+            order_num:order_num
         }
         this.$http({
-            url:"dealer/coupon",
+            url:"order/full/detail",
             method:"GET",
             params:data
         }).then(function (response) {
-
+            if(this.getQuery()){
+              this.setAddress(this.getQuery()); 
+            }else{
+              this.address=response.body.data.address;
+            }
+            this.bankInfo=response.body.data.bankInfo;
+            this.capitalInfo=response.body.data.capitalInfo;
+            var orderInfo=response.body.data.orderInfo;
+            this.stateAdd(orderInfo);  
+            this.orderInfo=orderInfo;
+            this.countTime=this.orderInfo.orderTime;
             
+        }).catch(function (error) {
+            console.log("请求失败了");
+        }); 
+    },
+    stateAdd(obj){
+        switch (obj.status){
+          case '7' : 
+              obj.state='等待付款';
+              if (obj.remainingTime=='0' || obj.remainingTime==''){
+                  obj.status=6;
+                  obj.state='已取消';
+              }else{
+                  this.countNum=obj.remainingTime;
+                  obj.remaining=this.remaining;
+                  this.remainingTime(obj);
+              }
+          break;
+          case '27' : 
+              obj.state='请重新提交';
+              if (obj.remainingTime=='0' || obj.remainingTime==''){
+                  obj.status=6;
+                  obj.state='已取消';
+              }else{
+                  this.countNum=obj.remainingTime;
+                  obj.remaining=this.remaining;
+                  this.remainingTime(obj);
+              }        
+          break;
+          case '8' : 
+              obj.state='付款审核中,请耐心等待';
+          break; 
+          case '6' : 
+              obj.state='已取消';
+          break; 
+          case '5' : 
+              obj.state='交易完成';
+          break;
+          case '3' : 
+              obj.state='车辆出库中';
+          break;
+          case '4' : 
+              obj.state='车辆在途';
+              if (obj.remainingTime=='0' || obj.remainingTime==''){
+                  obj.status=6;
+                  obj.state='已取消';
+              }else{
+                  this.countNum=obj.remainingTime;
+                  obj.remaining=this.remaining;
+              }
+          break;
+        }
+          
+    },   
+    // 返回顶部
+    backTop(){
+      document.body.scrollTop=0;
+    },
+    setAddress(id){
+      var id=id;
+      var token=sessionStorage.getItem('token');
+          var data = {
+            token:token,
+            id:id
+        }
+        this.$http({
+            url:"dealer/detailById",
+            method:"GET",
+            params:data
+        }).then(function (response) {
+            var data={
+              id:response.body.data.id,
+              address:response.body.data.address,
+              name:response.body.data.name,
+              phone:response.body.data.phone,
+            }
+            this.address=data;
         }).catch(function (error) {
             console.log("请求失败了");
         });
@@ -95,19 +273,54 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.fillData();
+    this.backTop();  
     
   },
   watch:{ 
     $route(){
-        this.fillData();
+        this.fillData();   
     }
+  },
+  computed: {
+      //转换时间成小时,分
+      remaining: function (){
+          let days = parseInt(this.countNum/60/60/24);
+          let hours = parseInt((this.countNum-days*3600*24)/60/60);
+          let minutes = parseInt((this.countNum-hours*3600)/60);
+          if (hours < 10) {
+              days = '0' + days;
+          }
+          if (hours < 10) {
+              hours = '0' + hours;
+          }
+          if (minutes < 10) {
+              minutes = '0' + minutes;
+          }
+
+          if(days){
+            return days + '天' + hours + '小时';
+          }else{
+            return hours + '小时' + minutes + '分钟';
+          }
+          
+      },
+      time:function(){
+        Date.prototype.toLocaleString = function() {
+            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+        };
+        var time=new Date(parseInt(this.countTime)*1000).toLocaleString();
+        return  time;
+      }   
+
   }
 
 }
 </script>
 
 <style>
-/*è®¢å•è¯¦æƒ…*/
+.details-addres .out.white-rt{
+  top:0.62rem;
+}
 .details-wrap p{
   max-height: 99999px;
 }
