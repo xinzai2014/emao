@@ -7,7 +7,8 @@
         
         <section v-if="orderList.length">
           <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-              <div class="full-item" v-for="(item,index) in orderList">
+              <div class="full-item" v-for="(item,index) in orderList" v-if="item.status=='7'">
+                <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
                   <p class="payment">需付款：<span>{{item.price}}元</span></p>
@@ -20,6 +21,7 @@
                         <router-link to="">提交汇款凭证</router-link>
                       </div>
                   </div>
+                </router-link>
               </div>
           </div>
           <transition name="loading">
@@ -87,9 +89,13 @@ export default {
           switch (arr[i].status){
             case '7' : 
                 arr[i].state='待付款';
-                this.countNum=arr[i].remainingTime||0;
-                arr[i].remaining=this.remaining;
-                this.remainingTime(arr[i]);
+                if (arr[i].remainingTime=='0' || arr[i].remainingTime==''){
+                    arr[i].status=6;
+                }else{
+                    this.countNum=arr[i].remainingTime||0;
+                    arr[i].remaining=this.remaining;
+                    this.remainingTime(arr[i]);
+                }     
             break;                       
           }
           
