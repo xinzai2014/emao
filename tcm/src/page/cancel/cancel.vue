@@ -81,7 +81,6 @@
 			init: function () {
 				this.moreFn(this.nowPage);
 			}
-
         },
         mounted(){
         //组件初始完成需要做什么
