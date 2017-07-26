@@ -105,7 +105,7 @@ export default {
         this.$router.go(-1);
     },
     toAddress(){
-        //this.$router.push({name:'address'});
+        this.$router.push({name:'address'});
     },
     PopShow(){
       this.pop=true;
