@@ -19,7 +19,9 @@
               </router-link>
             </div>
         </section>
-        
+        <transition name="router-slid">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
@@ -91,6 +93,23 @@ export default {
 </script>
 
 <style>
+.rating_page{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f5f5f5;
+    width:10.0rem;
+    z-index: 203;
+    min-height:120%;
+}
+.router-slid-enter-active, .router-slid-leave-active {
+        transition: all .4s;
+    }
+.router-slid-enter, .router-slid-leave-active {
+    transform: translate3d(2rem, 0, 0);
+    opacity: 0;
+}
+
 /*消息*/
 .news-wrap{
   background:#fff;

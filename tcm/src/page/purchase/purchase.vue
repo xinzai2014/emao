@@ -7,12 +7,14 @@
 		<!--退订展车-->
 	    <section class="bought" v-scroll="getMore">
 	        <div class="bought-item" v-for="(item,index) in infoData">
-	            <div class="bought-ct">
-	                <p class="bought-tit">{{item.name}}</p>
-	                <p class="bought-color">{{item.color}}</p>
-	                <p class="bought-state">已补余款：<span>{{item.price}}</span></p>
-	            </div>
-	            <p class="bought-spend">已购买</p>
+	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
+		            <div class="bought-ct">
+		                <p class="bought-tit">{{item.name}}</p>
+		                <p class="bought-color">{{item.color}}</p>
+		                <p class="bought-state">已补余款：<span>{{item.price}}</span></p>
+		            </div>
+		            <p class="bought-spend">已购买</p>
+	            </router-link>
 	        </div>
 	    </section>
 	    <p class="loading" v-show="switchShow">数据已加载完</p>

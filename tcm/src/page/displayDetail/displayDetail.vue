@@ -55,7 +55,7 @@
 		                    <label>账号：</label>
 		                    <span>{{bankInfo.account}}</span>
 		                </p>
-		                <p class="send-phone">发送到手机</p>
+		                <p class="send-phone" @click="sendMes">{{sendText}}</p>
 		            </div>
 		            <div class="nstructions">
 		                <span>汇款说明：</span>
@@ -69,13 +69,15 @@
 	                    <span>{{bankInfo.bankName}}</span>
 	                </p>
 	                <p>
-	                    <label>银行：</label>
-	                    <span>{{bankInfo.companyName}}</span>
+	                    <label>付款账户：</label>
+	                    <span>{{bankInfo.account}}</span>
 	                </p>
 	                <p class="ayment-details">查看详情</p>
 	            </div>
 	        </div>
-	        <div class="replen" v-if="orderInfo.balanceOrderNumber"><i class="white-rt"></i>补款订单：{{orderInfo.balanceOrderNumber}}</div>
+	        <router-link :to="{name:'orderDetail',params:{id:orderInfo.balanceOrderNumber}}">
+	        	<div class="replen" v-if="orderInfo.balanceOrderNumber"><i class="white-rt"></i>补款订单：{{orderInfo.balanceOrderNumber}}</div>
+	        </router-link>
 	        <div class="record" v-if="record.length">
 	            <span>展车记录</span>
 	            <span class="record-time" v-for="(item,index) in record"><em>{{cancelTime(item)}}</em>{{item.des}}：</span>
@@ -129,13 +131,14 @@
 	            </div>
 	            <p class="unsub-btn">
 	                <span @click="vanMask = !vanMask">取消</span>
-	                <span class="active">拨打电话</span>
+	                <span class="active"><a :href="'tel:'+vanInfo.phone">拨打电话</a></span>
 	            </p>
 	        </div>
 	    </div>
 
     </div>
 </template>
+
 <script>
     export default {
         data () {
@@ -163,13 +166,14 @@
               	receiptData:{}, //确认收货弹框数据
               	vanShow:false, //是否有显示退订展车
               	vanMask:false, //是否显退订示弹框
-              	vanInfo:{} //展车退订弹框数据
+              	vanInfo:{}, //展车退订弹框数据
+              	sendText:'发送到手机',
             }
         },
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.push({name:'display'});
+                this.$router.go(-1);
             },
             fullData(){
             	var data = {
@@ -181,7 +185,6 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.address = response.body.data.address;
 	                this.bankInfo = response.body.data.bankInfo;
 	                this.capitalInfo = response.body.data.capitalInfo;
@@ -333,7 +336,7 @@
 	            this.$http.post(
 	                "order/full/receipt",data
 	            ).then(function (response) {
-	            	this.fullData()
+	            	//该状态
 	            }).catch(function (error) {
 	                console.log("请求失败了");
 	            });
@@ -354,7 +357,27 @@
 	            }).catch(function (error) {
 	                console.log("请求失败了");
 	            });
-            }
+            },
+            sendMes(){
+		        this.$http.post("message/send",{
+		          	token:sessionStorage.token,
+		          	content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
+		          	phone:''
+		        }).then(function (response) {
+		            var num=60;
+		            let timer = setInterval(()=>{
+		              	num--;
+		              	this.sendText = num+"s后重新获取";
+		              	if(!num){
+			                this.sendText = "发送到手机";
+			                clearInterval(timer);
+			                return false;
+		              	}
+		            },1000);
+		        }).catch(function (error) {
+		            console.log("请求失败了");
+		        });
+   			},
         },
         mounted(){
         //组件初始完成需要做什么
