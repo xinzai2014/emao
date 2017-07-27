@@ -59,6 +59,10 @@ const messageRebate = r => require.ensure([], () => r(require('../page/message/c
 const messageStorage = r => require.ensure([], () => r(require('../page/message/children/storage')), 'messageStorage')
 const messageInform = r => require.ensure([], () => r(require('../page/message/children/inform')), 'messageInform')
 
+//付款凭证
+const payment = r => require.ensure([], () => r(require('../page/payment/payment')), 'payment')
+const paymentSubmit = r => require.ensure([], () => r(require('../page/paymentSubmit/paymentSubmit')), 'paymentSubmit')
+
 Vue.use(Router)
 
 
@@ -292,6 +296,16 @@ export default new Router({
             component: messageInform
           }
         ]
+     },
+     {
+       path: '/payment/:id',  //汇款凭证
+       name: 'payment',
+       component: payment,
+     },
+     {
+       path: '/paymentSubmit',  //提交汇款凭证
+       name: 'paymentSubmit',
+       component: paymentSubmit,
      }
   ]
 })

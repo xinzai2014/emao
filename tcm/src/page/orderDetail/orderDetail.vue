@@ -46,7 +46,7 @@
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
               <p class="remit-tit">汇款信息</p>
-              <div class="send-to">
+              <div class="send-to" v-if="bankInfo.accountType==1">
                   <p>
                       <label>汇款银行：</label>
                       <span>{{bankInfo.bankName}}</span>
@@ -60,7 +60,21 @@
                       <span>{{bankInfo.account}}</span>
                   </p>
                   <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-                  <router-link to="" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+                  <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+                    <p class="send-phone">查看详细</p>
+                  </router-link>
+              </div>
+              <div class="send-to" v-if="bankInfo.accountType==2">
+                  <p>
+                      <label>付款人：</label>
+                      <span>{{bankInfo.bankName}}</span>
+                  </p>
+                  <p>
+                      <label>付款账户：</label>
+                      <span>{{bankInfo.account}}</span>
+                  </p>
+                  <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
                     <p class="send-phone">查看详细</p>
                   </router-link>
               </div>
@@ -69,7 +83,7 @@
                   <em>1.汇款后请上传汇款凭证</em>
                   <em>2.未按时间付款的订单系统将自动取消</em>
               </div>
-              <p class="cancel" @click="PopShow">取消申请</p>
+              <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
           </div>
           <p class="visib-98"></p>
           <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="confirmCar">提交汇款凭证</div>
