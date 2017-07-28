@@ -118,7 +118,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.push({name:'profile'});
+        this.$router.go(-1);
     },
     fillData(){
         var dataToken = sessionStorage.token;

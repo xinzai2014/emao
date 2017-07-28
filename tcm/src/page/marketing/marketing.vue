@@ -67,7 +67,7 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.push({name:'profile'});
+                this.$router.go(-1);
             },
 		    show(index) {
 			    if(this.showAll == false){　　

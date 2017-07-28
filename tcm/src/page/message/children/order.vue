@@ -7,21 +7,23 @@
 		<!--订单提醒-->
 	    <section class="remind" v-scroll="getMore">
 	        <div class="remind-item" v-for="(item,index) in infoData">
-	            <div class="remind-tit">{{item.created_at}}</div>
-	            <div :class="isActive(item)">
-	                <div class="remind-tp">{{item.content_header}}</div>
-	                <div class="remind-bt">
-	                    <p class="remind-auto">购买车辆：{{item.content_body}}</p>
-	                    <p class="remind-stat" v-if="item.type == 201">
-	                        <i class="white-rt"></i>
-	                        需支付：<span>{{item.content_footer}}</span>
-	                    </p>
-	                    <p class="remind-stat" v-else>
-	                        <i class="white-rt"></i>
-	                        {{item.content_footer}}
-	                    </p>
-	                </div>
-	            </div>
+		        <router-link  :to="'/orderDetail/'+item.order_num">
+		            <div class="remind-tit">{{item.created_at}}</div>
+		            <div :class="isActive(item)">
+		                <div class="remind-tp">{{item.content_header}}</div>
+		                <div class="remind-bt">
+		                    <p class="remind-auto">购买车辆：{{item.content_body}}</p>
+		                    <p class="remind-stat" v-if="item.type == 201">
+		                        <i class="white-rt"></i>
+		                        需支付：<span>{{item.content_footer}}</span>
+		                    </p>
+		                    <p class="remind-stat" v-else>
+		                        <i class="white-rt"></i>
+		                        {{item.content_footer}}
+		                    </p>
+		                </div>
+		            </div>
+		        </router-link>
 	        </div>
 	    </section>
 	    <p class="loading" v-show="switchShow">数据已加载完</p>
@@ -34,7 +36,7 @@
             return {
                 //初始数据结构
                 typeName:this.$route.name, //当前页面name
-                typeId:6, //用户信息分类
+                typeId:1, //用户信息分类
                 infoData:[],
                 token : sessionStorage.token,
 	           	perPage : 10, //每页条数，默认10
@@ -49,19 +51,6 @@
             //组件方法
             resetIndex(){
                 this.$router.push({name:'message'});
-            },
-            typeFc(){ //用户信息ID
-            	if(this.typeName == 'messageDisplay'){
-            		this.typeId = 2
-            	}else if(this.typeName == 'messageStorage'){
-            		this.typeId = 5
-            	}else if(this.typeName == 'messageOrder'){
-            		this.typeId = 1
-            	}else if(this.typeName == 'messageCoupon'){
-            		this.typeId = 3
-            	}else if(this.typeName == 'messageRebate'){
-            		this.typeId = 4
-            	}
             },
             moreFn(itemIndex){
 		        var data = {
@@ -113,7 +102,6 @@
             
         },
         mounted(){
-         	this.typeFc();
          	this.moreFn(this.nowPage);
         },
         directives: {// 自定义指令

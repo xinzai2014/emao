@@ -41,38 +41,46 @@
 	            <p class="bond"><span>-{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
 	            <p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>
 	            <p class="bond active"><span>{{capitalInfo.deduction}}</span>需付款：</p>
-	            <div v-if="bankInfo.accountType == 1">
-		            <div class="send-to">
+	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
+		            <div v-if="bankInfo.accountType == 1">
+			            <div class="send-to">
+			                <p>
+			                    <label>汇款银行：</label>
+			                    <span>{{bankInfo.bankName}}</span>
+			                </p>
+			                <p>
+			                    <label>公司名称：</label>
+			                    <span>{{bankInfo.companyName}}</span>
+			                </p>
+			                <p>
+			                    <label>账号：</label>
+			                    <span>{{bankInfo.account}}</span>
+			                </p>
+			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+	                    		<p class="ayment-details">查看详细</p>
+	                  		</router-link>
+			            </div>
+			            <div class="nstructions">
+			                <span>汇款说明：</span>
+			                <em>1.汇款后请上传汇款凭证</em>
+			                <em>2.未按时间付款的订单系统将自动取消</em>
+			            </div>
+		            </div>
+		            <div class="ayment-info" v-else>
 		                <p>
-		                    <label>汇款银行：</label>
+		                    <label>付款人：</label>
 		                    <span>{{bankInfo.bankName}}</span>
 		                </p>
 		                <p>
-		                    <label>公司名称：</label>
-		                    <span>{{bankInfo.companyName}}</span>
-		                </p>
-		                <p>
-		                    <label>账号：</label>
+		                    <label>付款账户：</label>
 		                    <span>{{bankInfo.account}}</span>
 		                </p>
-		                <p class="send-phone" @click="sendMes">{{sendText}}</p>
+		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+	                    	<p class="ayment-details">查看详细</p>
+	                  	</router-link>
 		            </div>
-		            <div class="nstructions">
-		                <span>汇款说明：</span>
-		                <em>1.汇款后请上传汇款凭证</em>
-		                <em>2.未按时间付款的订单系统将自动取消</em>
-		            </div>
-	            </div>
-	            <div class="ayment-info" v-else>
-	                <p>
-	                    <label>付款人：</label>
-	                    <span>{{bankInfo.bankName}}</span>
-	                </p>
-	                <p>
-	                    <label>付款账户：</label>
-	                    <span>{{bankInfo.account}}</span>
-	                </p>
-	                <p class="ayment-details">查看详情</p>
 	            </div>
 	        </div>
 	        <router-link :to="{name:'orderDetail',params:{id:orderInfo.balanceOrderNumber}}">
@@ -570,14 +578,6 @@
 .send-to span{
 	width:6.333333rem;
 }
-.send-to p.send-phone{
-	font-size:0.453333rem;
-	color:#fff;
-	text-align:center;
-	height:1.173333rem;
-	line-height:1.173333rem;
-	background:#d5aa5c;
-}
 .nstructions{
 	color:#999;
 	font-size:0.32rem;
@@ -685,12 +685,20 @@
 .ayment-info span {
     width: 6.33333rem;
 }
-.ayment-info p.ayment-details {
+.ayment-details {
     background: #f5f5f5;
     font-size: 0.453333rem;
     height: 1.17333rem;
     line-height: 1.17333rem;
     text-align: center;
+}
+.send-to p.send-phone ,.ayment-info p.send-phone{
+	font-size:0.453333rem;
+	color:#fff;
+	text-align:center;
+	height:1.173333rem;
+	line-height:1.173333rem;
+	background:#d5aa5c;
 }
 /*退订展车*/
 .website{

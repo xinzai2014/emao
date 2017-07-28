@@ -10,7 +10,7 @@
 	            <div class="notice-tit">{{item.created_at}}</div>
 	            <div class="notice-ct">
 	                <div class="notice-tp">{{item.content_header}}</div>
-	                <div class="notice-bt"><i class="white-rt"></i> {{item.content_body}}</div>
+	                <div class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 	            </div>
 	        </div>
 	    </section>
@@ -37,19 +37,6 @@
             //组件方法
             resetIndex(){
                 this.$router.push({name:'message'});
-            },
-            typeFc(){ //用户信息ID
-            	if(this.typeName == 'messageDisplay'){
-            		this.typeId = 2
-            	}else if(this.typeName == 'messageStorage'){
-            		this.typeId = 5
-            	}else if(this.typeName == 'messageOrder'){
-            		this.typeId = 1
-            	}else if(this.typeName == 'messageCoupon'){
-            		this.typeId = 3
-            	}else if(this.typeName == 'messageRebate'){
-            		this.typeId = 4
-            	}
             },
             moreFn(itemIndex){
 		        var data = {
@@ -89,7 +76,6 @@
             
         },
         mounted(){
-         	this.typeFc();
          	this.moreFn(this.nowPage);
         },
         directives: {// 自定义指令
