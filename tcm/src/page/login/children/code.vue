@@ -52,15 +52,16 @@
 		    	}
 		         var data = {
 		            phone:this.$parent.telephone,//获取父组件实例
-		            password:this.code
+		            password:this.code,
+		            dataToken:sessionStorage.dataToken
 		         };
 		        this.$http({
-		            url:"test/mockLogin",
+		            url:"passport/codeLogin",
 		            method:"GET",
 		            params:data
-		        }).then(function (response) {
+		        }).then(function (response){
 
-		           	this.$router.push('/index'); //路由跳转
+		           	//this.$router.push('/index'); //路由跳转
 		          }).catch(function (error) {
 		          	console.log(error);
 		            console.log("登录失败了");

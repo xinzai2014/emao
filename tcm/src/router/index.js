@@ -11,10 +11,15 @@ const loading = r => require.ensure([], () => r(require('../components/common/lo
 const login = r => require.ensure([], () => r(require('../page/login/login')), 'login')
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
+const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
+//const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
 
 
 //首页相关组件
 const index = r => require.ensure([], () => r(require('../page/index/index')), 'index')
+
+//品牌列表
+const brand = r => require.ensure([], () => r(require('../page/brand/brand')), 'brand')
 
 //车系详情页
 const serie = r => require.ensure([], () => r(require('../page/serie/serie')), 'serie')
@@ -29,15 +34,17 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
 
-//确认订单
-const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'profile')
+//全款购车确认订单
+const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
+
+//申请展车确认订单
+const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
 
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
 
 Vue.use(Router)
-
 
 export default new Router({
   routes: [
@@ -63,21 +70,21 @@ export default new Router({
         }
       ]
     },
-    // {
-    //   path: '/auth',  //登录注册个人认证
-    //   name: 'auth',
-    //   component: auth
-    // },
+    {
+      path: '/auth',  //登录注册个人认证
+      name: 'auth',
+      component: auth
+    },
     {
       path: '/index',  //首页
       name: 'index',
       component: index
     },
-    // {
-    //   path: '/brand/:id',  //品牌页面
-    //   name: 'brand',
-    //   component: brand
-    // },
+    {
+      path: '/brand/:id',  //品牌页面
+      name: 'brand',
+      component: brand
+    },
     {
       path: '/serie/:id',  //车系列表页面
       name: 'serie',
@@ -98,11 +105,11 @@ export default new Router({
     //   name: 'orderResult',
     //   component: orderResult
     // },
-    // {
-    //   path: '/displayConfrim/:id',  //申请展车确认页面
-    //   name: 'displayConfrim',
-    //   component: displayConfrim
-    // },
+    {
+      path: '/displayConfrim/:id',  //申请展车确认页面
+      name: 'displayConfrim',
+      component: displayConfrim
+    },
     // {
     //   path: '/displayResult/:id',  //申请展车结果页
     //   name: 'displayResult',

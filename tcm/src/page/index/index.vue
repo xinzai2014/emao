@@ -36,7 +36,6 @@ export default {
   name: 'index',
   data () {
     return {
-        brandId:null, //选中的品牌ID
         showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
         message:2,    //消息个数
@@ -49,7 +48,7 @@ export default {
         initData:{ //初始化接口数据
             token:null,
             ltime:0,
-            offset:1,
+            offset:0,
             len:10
         },
         circular:[    //轮播图数据
@@ -70,36 +69,36 @@ export default {
              }
         ],
         brands:[ //品牌数据
-            {
-                "id":"1", // 品牌id
-                "name":"宝马", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"2", // 品牌id
-                "name":"标致", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"3", // 品牌id
-                "name":"奥迪", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"1", // 品牌id
-                "name":"宝马", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"2", // 品牌id
-                "name":"标致", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            },
-            {
-                "id":"3", // 品牌id
-                "name":"奥迪", // 品牌名称
-                "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            }
+            // {
+            //     "id":"1", // 品牌id
+            //     "name":"宝马", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // },
+            // {
+            //     "id":"2", // 品牌id
+            //     "name":"标致", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // },
+            // {
+            //     "id":"3", // 品牌id
+            //     "name":"奥迪", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // },
+            // {
+            //     "id":"1", // 品牌id
+            //     "name":"宝马", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // },
+            // {
+            //     "id":"2", // 品牌id
+            //     "name":"标致", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // },
+            // {
+            //     "id":"3", // 品牌id
+            //     "name":"奥迪", // 品牌名称
+            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
+            // }
         ],
         serieList:[] //车系数据
     }
@@ -125,6 +124,7 @@ export default {
             params:this.initData
         }).then(function (response) {
             this.serieList = response.body.data.series;
+            this.brands = response.body.data.brands;
             this.message = response.body.data.msg;
             if(response.body.data.series.length>=this.initData.len){
               this.serieMore = !this.serieMore;

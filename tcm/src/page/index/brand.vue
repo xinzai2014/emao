@@ -3,7 +3,7 @@
 	<section class="index-brand">
         <div class="index-brand-in">
             <ul class="clearfix" :class='{"index-brand-info":look}'>
-                <li v-for="(item,index) in brandList" :brand=item.id @click="goBrand(item.id)">
+                <li v-for="(item,index) in brandList" :brand=item.id @click="goBrand(item.id,item.name)">
                     <img :src=item.logoUrl >
                     <span>{{item.name}}</span>
                 </li>
@@ -30,13 +30,17 @@ export default {
 	  	seeMore(){ //查看更多 一个变量怎么做呢
 	  		this.look = !this.look;
 	  		this.collect = !this.collect
+	  	},
+	  	goBrand(index,name){ //去品牌列表页
+	  		this.$router.push('/brand/'+index+"?brandName="+name); //车系路由跳转
 	  	}
 	  },
 	  mounted(){
-		this.look = this.brandList.length>this.brandLen?true:false;
 	  },
-	  watch:{
-	   
+	  watch:{ //父节点ajax后的数据在子组件里面进行监控
+	   	brandList(){
+	   		this.look = this.brandList.length>this.brandLen?true:false;
+	   	}
 	  }
 }
 </script>

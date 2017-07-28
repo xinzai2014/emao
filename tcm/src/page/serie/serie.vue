@@ -29,7 +29,7 @@
                    <span>配置参数</span>
                    <input class="book-car-buy" @click="showFullpay(item.id,index)" type="text" name="" value="全款购车" v-if="item.sale==1">
                    <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="text" name="" value="申请展车" v-if="item.show==1">
-                   <input class="book-car-remind" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
+                   <input class="book-car-remind" @click="showTipsDialog(item.id)" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
                </div>
            </li>
        </ul>
@@ -44,7 +44,7 @@
         <p>订车保障</p>
     </section>
     <!--首页-订车-详情页-到货提醒-弹窗-->
-    <section class="brand-list-popup" style="display:none">
+    <section class="brand-list-popup" v-if="showTips" @click="closeTipsDialog">
         <div class="brand-popup-in">
             <div class="brand-search-tips">
                 <p>车辆到货时将通知你</p>
@@ -114,7 +114,7 @@
               </div>
               <section class="book-buy-now">
                   <!--立即申请展车-->
-                  <input type="text" class="active" v-if="ExhibData.apply>=0" name="" value="立即申请展车">
+                  <input type="text" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请展车">
                   <!--您已申请此展车-->
                   <input type="text" class="unavailable" name="" v-else value="您已申请此展车">
               </section>
@@ -151,6 +151,7 @@ export default {
         circular:[    //轮播图数据
             
         ],
+        showTips:false,  //到货提醒
         showExhib:false //申请展车弹出层
     }
   },
@@ -279,6 +280,35 @@ export default {
       fullBayData.inColorId = activeData.inColorId;
       this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
       console.log(fullBayData);
+   },
+   applyExhib(){
+      var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
+      var applyBayData = {};
+      applyBayData.autoId = activeData.autoId;
+      applyBayData.colorId = activeData.colorId;
+      applyBayData.inColorId = activeData.inColorId;
+      this.$router.push({name:"displayConfrim",params:{id:applyBayData.autoId},query:applyBayData});
+      console.log(applyBayData);
+   },
+   getTipsData(id){
+      this.$http.post(
+            "goods/remind",
+            {
+              token:sessionStorage.token,
+              autoId:id
+            }
+        ).then(function (response) {
+          console.log(response);
+        },function (error) {
+          console.log(error);
+        });
+   },
+   showTipsDialog(id){   //到货提醒
+      this.getTipsData(id);
+      this.showTips = true;
+   },
+   closeTipsDialog(){
+      this.showTips = false;
    }
   },
   mounted(){
@@ -373,4 +403,8 @@ export default {
 .book-buy-now .active{background-color:#d5aa5c;color:#fff;}
 .book-buy-now .unavailable{background-color:#f5f5f5;color:#b7b7b7;}
 
+.brand-list-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
+.brand-popup-in{position:fixed;top:50%;left:50%;width:7.2rem;height:4.4rem;margin-left:-3.6rem;margin-top:-2.2rem;font-size:.4533rem;border-radius:.1333rem;overflow:hidden;}
+.brand-search-tips{height:2.1334rem;padding:1.0666rem 1.0rem 0 1.0rem;background-color:#fff;}
+.brand-popup-ok{height:1.2rem;line-height:1.2rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 </style>

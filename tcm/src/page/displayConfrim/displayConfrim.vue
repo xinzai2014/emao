@@ -4,7 +4,7 @@
     <!--首页-订单确认-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion"></i>
-        <strong class="brand-list-title">全款购车确认</strong>
+        <strong class="brand-list-title">展车确认</strong>
     </header>
     <!--购车确认-->
     <!--购车确认-地址-姓名-->
@@ -46,26 +46,6 @@
             <div v-if="coupon.length>0&&checkCoupun" class="order-coupon-con">-￥<strong>{{couponData.price}}</strong><i class="white-rt"></i></div>
         </div>
 
-        <div class="order-support-fee clearfix">
-            <div class="order-support-title">营销支持费：</div>
-            <div class="order-support-con" v-if="chooseMarket&&!checkMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
-            <div class="order-support-con" v-if="!chooseMarket">无可用</div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&!updateMarket">使用￥<strong>{{marketingSupport.usable}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseMarket">
-                <input type="checkbox"  v-model="checkMarket" @click="changeMarket">
-            </div>
-        </div>
-        <div class="order-support-fee clearfix">
-            <div class="order-support-title">返利：</div>
-            <div class="order-support-con" v-if="chooseRebate&&!checkRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
-            <div class="order-support-con" v-if="!chooseRebate">无可用</div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&!updateRebate">使用￥<strong>{{rebate.usable}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseRebate">
-                <input type="checkbox"  v-model="checkRebate" @click="changeRebate">
-            </div>
-        </div>
     </section>
     <!--购车确认-总额-->
     <section class="order-rental">
@@ -77,14 +57,7 @@
             <span>优惠券（不可开票）</span>
             <p><i>-</i><strong>￥{{couponData.price}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="updateMarketData">
-            <span>营销支持费</span>
-            <p><i>-</i><strong>￥{{updateMarketData}}</strong></p>
-        </div>
-        <div class="order-rental-info" v-if="updateRebateData">
-            <span>返利资金（不可开票）</span>
-            <p><i>-</i><strong>￥{{updateRebateData}}</strong></p>
-        </div>
+
         <div class="order-rental-info">
             <span>还需支付</span>
             <p><strong>￥{{totalData}}</strong></p>
@@ -122,43 +95,7 @@
             </ul>
         </div>
     </section>
-    <!-- 营销支持费 -->
-    <section class="use-coupon-popup" v-show="showMarket" >
-        <div class="use-coupon-out">
-            <div class="use-coupon-in">
-                <!--使用营销支持费-->
-                <p class="use-coupon--title">使用营销支持费</p>
-                <div class="use-coupon-quota">
-                    <input type="number" v-model="marketData"  :max=marketingSupport.usable  min=0>
-                    <span>元</span>
-                </div>
-                <p class="use-coupon-info">本次最多可用 <span>{{marketingSupport.usable}}</span>元，账户余额 <span>{{marketingSupport.total}}</span>元</p>
-            </div>
-            <p class="use-coupon-choose">
-                <span @click.stop="closeMarketDialog">取消</span>
-                <span class="active" @click.stop="marketConfrim">确定</span>
-            </p>
-        </div>
-    </section>
 
-    <!-- 营销支持费 -->
-    <section class="use-coupon-popup" v-show="showRebate" >
-        <div class="use-coupon-out">
-            <div class="use-coupon-in">
-                <!--使用营销支持费-->
-                <p class="use-coupon--title">使用营销支持费</p>
-                <div class="use-coupon-quota">
-                    <input type="number" v-model="rebateData"  :max=rebate.usable  min=0>
-                    <span>元</span>
-                </div>
-                <p class="use-coupon-info">本次最多可用 <span>{{rebate.usable}}</span>元，账户余额 <span>{{rebate.total}}</span>元</p>
-            </div>
-            <p class="use-coupon-choose">
-                <span @click.stop="closeRebateDialog">取消</span>
-                <span class="active" @click.stop="rebateConfrim">确定</span>
-            </p>
-        </div>
-    </section>
     
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
@@ -187,23 +124,9 @@ export default {
 	    	address:{}, //地址信息
 	    	car:{},     //购车信息
 	    	coupon:[],  //优惠券
-	    	marketingSupport:{}, //营销支持费
-	    	rebate:{},            //返利
             showCoupon:false,     //优惠券弹出窗
             couponData:{},        //选中的优惠券初始数据
             checkCoupun:false,    //判断是否选择了优惠券
-            checkMarket:false,    //营销支持费复选框
-            chooseMarket:false,   //未选择营销支持费 营销支持费不为空
-            showMarket:false,     //营销支持费弹窗
-            marketData:null,      //初始营销支持费值 
-            updateMarket:false,    //修改过营销支持费 
-            updateMarketData:null, //获取修改过的营销支持费值
-            showRebate:false,       //返利逻辑开始 
-            chooseRebate:false,    //判断返利是否为空
-            checkRebate:false,     //返利复选框
-            updateRebate:false,     //修改过返利值
-            rebateData:null,        //初始化返利
-            updateRebateData:null,   //获取修改过的返利值
             formData:{
           
             },
@@ -214,7 +137,7 @@ export default {
 	  methods:{  
 	  	getData(){
 			this.$http({
-		          url:"order/full/confirm",
+		          url:"order/show/confirm",
 		          method:"GET",
 		          params:this.initData
 		      }).then(function (response) {
@@ -226,17 +149,6 @@ export default {
                         ele.check = false;
                    })
 		           this.coupon = coupon;
-		           this.marketingSupport = data.marketingSupport;
-                   if(data.marketingSupport.usable){ //判断是否有可用营销支持费
-                        this.chooseMarket = true
-                   }
-                   if(data.marketingSupport.usable){ //判断是否有返利
-                        this.chooseRebate = true
-                   }
-                   this.marketData = data.marketingSupport.usable;
-                   this.rebateData = data.rebate.usable;
-		           this.rebate = data.rebate;
-
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
                    this.formData.address_id = data.address.id;
@@ -264,48 +176,11 @@ export default {
                 this.couponData = {};
                 this.checkCoupun = false;
             }
-        },  
-        changeMarket(){ //切换营销支持费checkbox
-            var check = this.checkMarket; //点击获取的时候是基础值
-            if(check){
-                this.checkMarket = false ;
-                this.updateMarket = false ;
-                this.updateMarketData = false 
-            }
-        },
-        showMarketDialog(){ //营销支持费弹出窗
-            this.showMarket = !this.showMarket;
-        },
-        closeMarketDialog(){ //关闭营销支持费弹出窗
-            this.showMarket = !this.showMarket;
-        },
-        marketConfrim(){   //营销支持费弹出窗确认按钮
-            this.showMarket = !this.showMarket;
-            this.updateMarket = true;
-            this.updateMarketData = this.marketData;
-        },
-        showRebateDialog(){ //返利弹出窗
-            this.showRebate = !this.showMarket;
-        },
-        closeRebateDialog(){ //关闭返利弹出窗
-            this.showRebate = false
-        },
-        rebateConfrim(){
-            this.showRebate = !this.showRebate;
-            this.updateRebate = true;
-            this.updateRebateData = this.rebateData;
-        },
-        changeRebate(){ //切换营销支持费checkbox
-            var check = this.checkRebate; //点击获取的时候是基础值
-            if(check){
-                this.checkRebate = false ;
-                this.updateRebate = false ;
-                this.updateRebateData = false;
-            }
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
-            this.getAgreementData();
+            //this.getAgreementData(); //协议暂时不管
+            this.sumbitOrder();
             return false;
         },
         closeAgreementDialog(){
@@ -314,7 +189,7 @@ export default {
         },
         getAgreementData(){
             this.$http.get(
-                "order/full/agreement?token="+sessionStorage.token).then(function (response) {
+                "order/show/agreement?token="+sessionStorage.token).then(function (response) {
                   console.log(response);
               },function(response){
                   console.log(response);
@@ -324,14 +199,10 @@ export default {
             this.closeAgreementDialog();
             this.formData.deduction = this.totalData;
             this.formData.remark = this.remark;
-
-            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
+            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;
             this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
-            this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
-            this.formData.rebate_price = this.updateRebateData>0?this.updateRebateData:0;
-            console.log(this.formData);
             this.$http.post(
-                "order/full/create?token="+sessionStorage.token,
+                "order/show/create?token="+sessionStorage.token,
                 this.formData).then(function (response) {
                   console.log(response);
               },function(){
@@ -344,9 +215,7 @@ export default {
       computed:{
         totalData:function(){
             var couponPrice = this.couponData.price?this.couponData.price:0;//优惠券减免
-            var marketPrice = this.updateMarketData>0?this.updateMarketData:0;
-            var rebatePrice = this.updateRebateData>0?this.updateRebateData:0;
-            return this.car.price - couponPrice - marketPrice - rebatePrice;
+            return this.car.price - couponPrice ;
         }
       },
 	  beforeRouteEnter (to, from, next) {
