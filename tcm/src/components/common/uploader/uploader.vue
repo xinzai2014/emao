@@ -246,7 +246,7 @@
         left:0;
         top:0;
         background:rgba(0,0,0,0.75);
-        font-size:60px;
+        font-size:0.8rem;
         color:#fff;
         text-align:center;
     }

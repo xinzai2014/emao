@@ -5,8 +5,8 @@
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title">{{brandName}}</strong>
         <span class="brand-switch" @click="showBrandDialog">切换品牌</span>
-        <div class="brand-list-open" v-if="showBrand">
-            <ul class="index-brand-info clearfix">
+        <div class="brand-list-open" v-if="showBrandSlide">
+            <ul class="index-brand-list clearfix">
                 <li v-for="(item,index) in brandData" @click="changeBrand(index)">
                     <img :src = item.logoUrl >
                     <span>{{item.name}}</span>
@@ -17,20 +17,26 @@
 
     <section class="index-car-source brand-list-source">
         <ul class="index-car-con">
-            <li>
-                <img src="../../assets/pic-1.jpg" alt="">
-                <p class="index-car-name">上海大众-途昂</p>
-                <p class="index-car-price"><span>9.99</span>万起</p>
-                <p class="index-car-count">共<i>1</i>个车型在售</p>
-                <p class="index-car-sale">最高下降 <strong>2.8万</strong></p>
+            <li v-for="(item,index) in serieData" @click="goSerie(item.id)">
+                <img  :src = item.imgUrl alt="">
+                <p class="index-car-name">{{item.name}}</p>
+                <p class="index-car-price"><span>{{item.minPrice}}</span>万起</p>
+                <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
+                <p class="index-car-sale">最高下 <strong>{{item.maxFall}}万</strong></p>
             </li>
         </ul>
     </section>
-
+        <!--查询表单--> 
+    <search @getCar="getCar" :carMess="carMess"></search>
+    
+    <!-- 车型数据 -->
+    <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
 
 </div>
 </template>
 <script>
+import search from '../index/search'
+import car from '../index/car'
     export default{
         name:'brand',
         data(){
@@ -42,11 +48,18 @@
                     offset:0,
                     len:10
                 },
-                showBrand:false, //是否显示下拉框
+                showBrandSlide:false, //是否显示下拉框
                 brandData:[ //品牌数据
                 
                 ],
-                serieData:[]
+                serieData:[],
+                carMess:{     //搜索车型的时的数据
+                  carName:"选择车型",
+                  brandId:null,
+                  serieId:null,
+                  carId:null
+                },
+                showbrand:false //车型弹层
             }
         },
         methods:{
@@ -72,6 +85,7 @@
                     params:this.initData
                 }).then(function (response) {
                     console.log(response);
+                    this.serieData = response.body.data;
                    
                   }).catch(function (error) {
                     console.log("请求失败了");
@@ -81,14 +95,31 @@
                 this.$router.go(-1);
             },
             showBrandDialog(){
-                this.showBrand = !this.showBrand;
+                this.showBrandSlide = !this.showBrandSlide;
             },
             changeBrand(index){
                 this.showBrandDialog();
                 this.initData.brandId = this.brandData[index].id;
                 this.brandName = this.brandData[index].name;;
                 this.getDataByBrandID();
-            }
+            },
+            getCar(carBoolean){ //自组件选车型控制显示隐藏
+              this.showbrand = carBoolean;
+              this.showCar = !this.showCar;
+            },
+            brandStatus(brandId,serieId,carId,carName){
+                if(arguments.length){
+                   this.carMess.carName = carName;
+                   this.carMess.brandId = brandId;
+                   this.carMess.serieId = serieId;
+                   this.carMess.carId = carId;
+                };
+                this.showbrand = false;
+            },
+            goSerie(index){ //点击车系跳转
+                console.log(index);
+                this.$router.push('/serie/'+index); //车系路由跳转
+            },
         },
         mounted(){
            this.brandName = this.$router.currentRoute.query.brandName;
@@ -97,8 +128,9 @@
            this.getDataByBrandID();     
         },
         components:{
-
-        }
+            search,
+            car
+          }
     }
 </script>
 <style>
@@ -120,10 +152,9 @@
 
 .index-brand{padding:.5333rem;}
 .index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-info{height:1.8266rem;}
-.index-brand-info li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;}
-.index-brand-info li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
-.index-brand-info li span{color:#2c2c2c;font-size:0.3733rem;}
+.index-brand-list li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;}
+.index-brand-list li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
+.index-brand-list li span{color:#2c2c2c;font-size:0.3733rem;}
 .index-more-brand{margin-top:.8rem;text-align:center;}
 .index-more-brand i{margin-left:.1333rem;}
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     
-  <div class="brand" v-show="showBrand" :class="{anmiteStatus:showBrand}">
+  <div class="brand"  :class="{anmiteStatus:showBrand}">
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="closebrand"></i>
@@ -96,10 +96,8 @@
         },
         //组件方法
         submitCar(carId,carName){ //回调
-           this.showBrand = false;
            this.showSerie = false;
            this.showCar = false;
-           this.showBrand = false;
            this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName);
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
@@ -154,7 +152,7 @@
             });
         },
         closebrand(){
-          this.showBrand = false;
+          this.$emit('getBrandChild');
         }
       },
       mounted(){
