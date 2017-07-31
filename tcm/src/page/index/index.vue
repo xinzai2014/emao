@@ -42,8 +42,10 @@ export default {
         serieMore:false,//车系查看更多
         showCar:false, //初始的时候不加载选车弹出层
         carMess:{     //搜索车型的时的数据
-          brandName:"选择车型",
-          brandID:null
+          carName:"选择车型",
+          brandId:null,
+          serieId:null,
+          carId:null
         },
         initData:{ //初始化接口数据
             token:null,
@@ -68,46 +70,19 @@ export default {
                  "url":"http://mall.emao.com/car/4584.html"
              }
         ],
-        brands:[ //品牌数据
-            // {
-            //     "id":"1", // 品牌id
-            //     "name":"宝马", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // },
-            // {
-            //     "id":"2", // 品牌id
-            //     "name":"标致", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // },
-            // {
-            //     "id":"3", // 品牌id
-            //     "name":"奥迪", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // },
-            // {
-            //     "id":"1", // 品牌id
-            //     "name":"宝马", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // },
-            // {
-            //     "id":"2", // 品牌id
-            //     "name":"标致", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // },
-            // {
-            //     "id":"3", // 品牌id
-            //     "name":"奥迪", // 品牌名称
-            //     "logoUrl":"http://img.emao.net/car/logo/nd/nd/dkni-100x100.png/177" // 品牌logo地址
-            // }
+        brands:[
+
         ],
         serieList:[] //车系数据
     }
   },
   methods:{ //选取车型后回传
-    brandStatus(index,brandName){
-        this.carMess.brandName = brandName;
-        this.carMess.brandID = index;
-        this.showbrand = !this.showbrand;
+    brandStatus(brandId,serieId,carId,carName){
+        this.carMess.carName = carName;
+        this.carMess.brandId = brandId;
+        this.carMess.serieId = serieId;
+        this.carMess.carId = carId;
+        //this.showbrand = !this.showbrand;
     },
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转

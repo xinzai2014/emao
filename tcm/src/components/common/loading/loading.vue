@@ -39,7 +39,7 @@
 	          });
 
 	    	setTimeout(()=>{
-	    		var token = "bbe214ab570d81dc8b1b6589d86e13d9";
+	    		var token = "02fb128629f0bdb87489a18be9fdd289";
 	    		sessionStorage.token = token;
 	            // if(token){
 	            // 	this.$router.push('/index'); 

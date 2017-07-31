@@ -88,7 +88,7 @@
                 this.initData.brandId = this.brandData[index].id;
                 this.brandName = this.brandData[index].name;;
                 this.getDataByBrandID();
-            },
+            }
         },
         mounted(){
            this.brandName = this.$router.currentRoute.query.brandName;
