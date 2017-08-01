@@ -86,7 +86,7 @@
             }).then(function (response) {
                 console.log(response);
                 this.brandList = response.body.data;
-                this.initIscroll("brandWrap",this.brandScroll);
+                this.initIscroll("brandWrap");
                 setTimeout(function(){
                     that.countHeight();
                 },1000)
@@ -101,8 +101,9 @@
            this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName);
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
+            var that = this;
             setTimeout(function(){
-                 scrollWrap = new BScroll(document.getElementById(id),{
+                 that.brandScroll = new BScroll(document.getElementById(id),{
                    probeType: 3,
                    click:true
                 });
@@ -145,7 +146,7 @@
                 }
             }).then(function (response) {
                 this.carData = response.body.data.list;
-                this.initIscroll("carWrap",this.carScroll);
+                this.initIscroll("carWrap",this.carScroll); 
                 this.globalSerieID = response.body.data.id;
               }).catch(function (error) {
                 console.log("请求失败了");
