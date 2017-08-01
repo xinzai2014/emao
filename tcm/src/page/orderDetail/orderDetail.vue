@@ -86,9 +86,12 @@
               <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="confirmCar">提交汇款凭证</div>
+          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
+              <router-link :to="{name:'paymentSubmit',query:{'price':orderInfo.price,
+          'remark':orderInfo.remark}}">提交汇款凭证</router-link>
+          </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
-          <div class="remits-fixed active" v-if="orderInfo.status=='4'" >确认收货</div>
+          <div class="remits-fixed active" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
       </section>
       <div class="mask" v-show="pop">
         <div class="cancel-car">
@@ -263,8 +266,8 @@ export default {
           case '7' : 
               obj.state='等待付款';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=6;
+                  //obj.state='已取消';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
@@ -377,6 +380,17 @@ export default {
         return  time;
       }   
 
+  },
+  beforeRouteLeave(to, from, next){
+    next(vm => {
+      /*if(to.name=='paymentSubmit'){
+        to.query={
+          'price':vm.orderInfo.price,
+          'remark':vm.orderInfo.remark
+         }
+         console.log(to);
+      }*/
+    });
   }
 
 }
@@ -662,5 +676,8 @@ export default {
   text-align:center;
   line-height:1.173333rem;
   background:#d6ab55;
+}
+.remits-fixed a{
+  color:white;
 }
 </style>
