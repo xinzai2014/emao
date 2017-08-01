@@ -2,7 +2,10 @@
     <div>
         <!--头部-->
         <header class="user-tit">
-            <a href="javascript:;" class="white-lt"></a>提交申报资料
+            <router-link to="/declare">
+                <a href="javascript:;" class="white-lt"></a>
+            </router-link>
+            提交申报资料
         </header>
         <!--提交申报资料-->
         <section class="submit-wrap">
@@ -132,7 +135,6 @@
                     order_num:this.orderId
                 }
             }).then(function(response){
-                //console.log(response);
                 this.orderInfo = response.body.data.orderInfo;
                 this.vinNum = this.orderInfo.vinNumber;
             })
@@ -140,22 +142,11 @@
 
         getUpload(data,flag){
             this.dataURL[flag] = data;
-            console.log(this.dataURL[flag])
-        },
-
-        getFileUrl(flag) {
-            if (flag in this.dataURL) {
-                if (this.dataURL[flag].length > 0) {
-                    return this.dataURL[flag];
-                }
-            } else {
-                return '';
-            }
         },
 
         getFileURL(flag) {
             if (flag in this.dataURL && this.dataURL[flag].length > 0 ) {
-                return this.dataURL[flag];
+                return this.dataURL[flag][0];
             } else {
                 return '';
             }
@@ -170,14 +161,16 @@
             this.formData.idcard = this.dealerIDNumberVal;
             this.formData.email = this.dealerEmailVal;
 
+
             this.formData.idcard_img_front = this.getFileURL('dealerName');
             this.formData.idcard_img_reverse = this.getFileURL('dealerPhone');
             this.formData.driving_license_img = this.getFileURL('dealerIDNumber');
-            this.formData.invoice_img = this.getFileUrl('dealerEmail');
+            this.formData.invoice_img = this.getFileURL('dealerEmail');
 
 
             this.$http.post("order/sale/info",this.formData).then(function(response){
                 console.log(response);
+                this.$router.push('/declare');//跳转到售车申报列表页
             }).catch(function(error){
                 console.log("请求失败");
                 console.log(error);
