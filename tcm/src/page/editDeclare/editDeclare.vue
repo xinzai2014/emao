@@ -104,8 +104,8 @@
             dataURL:{},
 
             formData:{
-                token:"02fb128629f0bdb87489a18be9fdd289",
-                //token:sessionStorage.token,
+                //token:"02fb128629f0bdb87489a18be9fdd289",
+                token:sessionStorage.token,
                 order_num:'',
                 goods_stock_id:'',
                 name:'',
@@ -125,8 +125,8 @@
         //初始化拿数据
         //初始化拿数据
         getData(){
-            //var token = sessionStorage.token;
-            var token = "02fb128629f0bdb87489a18be9fdd289";
+            var token = sessionStorage.token;
+            //var token = "02fb128629f0bdb87489a18be9fdd289";
             this.$http({
                 url:"order/full/detail",
                 method:"GET",

@@ -222,15 +222,13 @@
                 ],
                 inWarehouse:[],
                 itemIn:{
-                    token:"bbe214ab570d81dc8b1b6589d86e13d9",
-                    //token:"90e77c1e55f9e388d4234a21f1f45772",
-                    //token:sessionStorage.token,
+                    //token:"bbe214ab570d81dc8b1b6589d86e13d9",
+                    token:sessionStorage.token,
                     vin_num : '',
                 },
                 itemOut:{
-                    token:"bbe214ab570d81dc8b1b6589d86e13d9",
-                    //token:"90e77c1e55f9e388d4234a21f1f45772",
-                    //token:sessionStorage.token,
+                   // token:"bbe214ab570d81dc8b1b6589d86e13d9",
+                    token:sessionStorage.token,
                     vin_num : '',
                     code:''
                 },
@@ -300,10 +298,7 @@
 
         },
         mounted(){
-            // dataToken = "b0009324e411c37e6a717a6a7b89b452";
-             var dataToken = "bbe214ab570d81dc8b1b6589d86e13d9";
-             //var dataToken = "90e77c1e55f9e388d4234a21f1f45772";
-            //var dataToken = sessionStorage.token;
+            var dataToken = sessionStorage.token;
             var data = {
                 token:dataToken
             }

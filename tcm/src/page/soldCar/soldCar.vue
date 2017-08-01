@@ -34,8 +34,7 @@
     },
     mounted(){
         //组件初始化完成需要做点什么
-        var dataToken = "bbe214ab570d81dc8b1b6589d86e13d9";
-        //var dataToken = sessionStorage.token;
+        var dataToken = sessionStorage.token;
         var data = {
             token:dataToken,
             perPage:10,

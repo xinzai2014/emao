@@ -281,11 +281,6 @@ export default new Router({
     //     }
     //   ]
     // },
-    // {
-    //   path: '/storage',  //我的中转库列表
-    //   name: 'storage',
-    //   component: storage
-    // },
      {
        path: '/message',  //我的消息列表
        name: 'message',
@@ -349,6 +344,11 @@ export default new Router({
       path: '/soldCar',  //已售车辆申报列表
           name: 'soldCar',
         component: soldCar
+    },
+    {
+     path: '/storage',  //我的中转库列表
+     name: 'storage',
+     component: storage
     },
      {
        path: '/paymentSubmit',  //提交汇款凭证
