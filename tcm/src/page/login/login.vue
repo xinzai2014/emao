@@ -7,18 +7,12 @@
         </p>
           <div class="login-info">
               <div class="login-phone">
-                  <input type="text" name="telep" v-validate.initial="'required'" v-model="telephone" placeholder="手机号"  >
-                  <span class="login-errror" style="display:none;" v-show="errors.has('telep')">请输入手机号</span>
+                  <input type="text"  v-model="telephone" placeholder="手机号" >
+                  <span class="login-errror" v-show="telError">请输入正确的手机号码</span>
               </div>
               <transition name="fade">
                   <router-view></router-view>
               </transition>
-             <!--  <div class="login-code clearfix">
-                  <input type="text" >
-                  <i>获取验证码</i>
-              </div> -->
-              
-             
           </div>
     </section>
     <section class="login-popup">
@@ -46,29 +40,12 @@ export default {
   name: 'login',
   data () {
     return {
-      telephone:"13391529348"
+      telephone:"",
+      telError:false
     }
   },
   methods:{
-    login(){
-         let options = {};
-         var data = {
-            phone:this.telephone,
-            password:this.pass
-         };
-        this.$http({
-            url:"test/mockLogin",
-            method:"GET",
-            params:data
-        }).then(function (response) {
-            console.log("登录成功了");
-            console.log(response);
-            sessionStorage.dataToken = response.body.data.dataToken;
-            sessionStorage.phone = response.body.data.phone;
-          }).catch(function (error) {
-            console.log("登录失败了");
-          });
-    }
+
   },
   mounted(){
     //this.login();
@@ -91,9 +68,10 @@ export default {
 .login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:1px solid #fff;}
 .login-phone input{display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
 .login-errror{display:block;position:absolute;bottom:-.8rem;left:0;width:7.333rem;height:.8rem;line-height:.8rem;text-align:center;font-size:.373rem;color:#fff;background-color:#e94545;}
-.login-code{height:.933rem;margin:.797rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #fff;}
-.login-code input{display:block;float:left;width:4.8rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
+.login-code{position:relative;height:.933rem;margin:.797rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #fff;}
+.login-code input{display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
 .login-code i{display:block;float:right;font-size:.453rem;color:#ffdb7d;}
+.login-code .color-disabled{color:#999}
 .login-btn{display:block;width:5.867rem;height:1.1733rem;margin:.93rem auto 0;text-align:center;font-size:.453rem;color:#fff;line-height:1.17333rem;border:none;Border-radius:.667rem;background-color:#d5aa5c;}
 .login-another{margin-top:.667rem;text-align:center;}
 .login-another span{font-size:.4rem;color:#fff;border-bottom:1px solid #fff;}
