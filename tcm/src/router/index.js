@@ -74,6 +74,11 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 //已售车申报组件
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
+//售车申报资料组件
+//const editDeclare = r => require.ensure([],() => r(require('../page/declare/children/edit')),'editDeclare')
+
+//售车申报资料组件
+const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
@@ -323,6 +328,28 @@ export default new Router({
        name: 'payment',
        component: payment,
      },
+      {
+       path: '/declare',  //我的售车申报列表
+       name: 'declare',
+       component: declare
+       //children: [
+       //  {
+       //    path: 'edit/:id',   //提交申报资料
+       //    name: 'editDeclare',
+       //    component: editDeclare
+       //  }
+       //]
+     },
+    {
+      path: '/editDeclare/:id',   //提交申报资料
+      name: 'editDeclare',
+      component: editDeclare
+    },
+    {
+      path: '/soldCar',  //已售车辆申报列表
+          name: 'soldCar',
+        component: soldCar
+    },
      {
        path: '/paymentSubmit',  //提交汇款凭证
        name: 'paymentSubmit',

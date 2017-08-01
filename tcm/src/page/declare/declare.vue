@@ -13,12 +13,21 @@
                 <h3>{{item.serie_name}} {{item.auto_name}}</h3>
                 <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                 <p class="sales-number">VIN：{{item.vin_num}}</p>
-                <p class="sales-time"><span>售车申报</span>{{item.add_order_time}}入库</p>
+                <p class="sales-time">
+                    <span :vinNumValue = item.order_num @click="goEdit(item.order_num,item.goods_stock_id)">售车申报</span>
+                    {{item.add_order_time}}入库
+                </p>
             </div>
 
         </section>
         <p class="visib-109"></p>
+
+        <transition name="fade">
+            <router-view></router-view>
+        </transition>
+
     </div>
+
 </template>
 <script>
     export default{
@@ -31,10 +40,15 @@
     },
     methods:{
         //组件方法
+        goEdit(orderNum,goodsStockId){
+            this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
+
+            //this.$router.push('/declare/edit/'+ orderNum);//售车申报资料页跳转
+        }
     },
     mounted(){
         //组件初始化完成需要做点什么
-        var dataToken = "bbe214ab570d81dc8b1b6589d86e13d9";
+        var dataToken = "02fb128629f0bdb87489a18be9fdd289";
         //var dataToken = sessionStorage.token;
         var data = {
             token:dataToken,
