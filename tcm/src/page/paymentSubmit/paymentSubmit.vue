@@ -27,7 +27,7 @@
               </div>
             </router-link>
             <div class="voucher-item voucher-gray">
-                <p><span>汇款金额：<input type="text" name="" v-model="price" placeholder=""><i>元</i></span></p>
+                <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
                 <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
             </div>
 
@@ -160,7 +160,7 @@ export default {
         var data = {
             token:sessionStorage.getItem('token'),
             price:this.price,
-            order_id:this.returnData.id,
+            order_id:this.returnData.orderId,
             order_num:this.returnData.orderNum,
             message:this.remark,
             bank_id:this.editData.id,
