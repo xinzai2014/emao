@@ -95,7 +95,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
-		            //this.$router.push('/index'); //路由跳转
+		            this.passportCheck();
 		          },function(error){
 		          	console.log(error);
 		          	if(error.body.code == 4011){
@@ -110,6 +110,26 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		          }).catch(function (error) {
 
 		          });
+		    },
+		    passportCheck(){ //登录成功后判断是否已通过注册认证
+				this.$http({
+		            url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
+		            method:"GET"
+		        }).then(function (response) {
+		        	console.log(response);
+		        	var code = response.body["auth_status"];
+		        	if(code == 1){ //已通过认证
+		        		this.$router.push('/index');
+		        	}else if(code == 3){ //在审核
+		        		this.$router.push('/auth');
+		        	}else{
+		        		this.$router.push('/auth');
+		        	} 
+		        	
+		        	// //路由跳转
+		        },function(){
+
+		        });
 		    },
 		    checkNav(){
 		    	 this.$router.push('code'); //路由跳转

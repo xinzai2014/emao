@@ -18,7 +18,7 @@
         </div>
         <div class="submit-rt">
             <div class="submit-img" >
-                <img src="../../../assets/sample5.jpg">
+                <img :src = uploadData.image >
             </div>
         </div>
 
@@ -246,7 +246,7 @@
         left:0;
         top:0;
         background:rgba(0,0,0,0.75);
-        font-size:0.8rem;
+        font-size:0.4rem;
         color:#fff;
         text-align:center;
     }

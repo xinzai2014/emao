@@ -1,25 +1,31 @@
 <template>
 <!--注册认证-->
     <section class="authen">
-<!--         <div class="authen-tit">
+        <div class="authen-tit">
             <em>欢迎加入淘车猫</em>
             <span>公司认证后才可以进入商城购买哟</span>
             <span>我们将对您提交的信息严格保密</span>
         </div>
         <div class="authen-info">
             <p>
-                <label>姓名：</label>张全蛋
+                <label>姓名：</label>
+                <input type="text"  >
             </p>
             <p>
-                <label>公司名称：</label>北京中汽汽车有限公司
+                <label>公司名称：</label>
+                <input type="text"  >
             </p>
             <p>
-                <i class="yellow-rt"></i><label>所在区域：</label>北京北京市东城区
+                <i class="yellow-rt"></i><label>所在区域：</label>
+                <input type="text"  >
             </p>
             <p>
-                <label>主营类型：</label><span>自主</span><span>合资</span><span>豪华</span>
+                <label>主营类型：</label>
+                <span>自主</span>
+                <span>合资</span>
+                <span>豪华</span>
             </p>
-        </div> -->
+        </div>
         <div class="authen-img">
             <div class="user-info">
                 <p class="user-info-tit">展厅门头</p>
@@ -30,66 +36,116 @@
                 <p class="user-info-tit">展厅内部</p>
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
-            <!-- 
             <div class="user-info">
-                <p class="user-info-tit">手持身份证正面照片</p>
-                <div class="sample-ct">
-                    <div class="submit-lt">
-                        <div class="submit-img"><img src="../../assets/sample.jpg"></div>
-                        <p class="up-btn">上传</p>
-                    </div>
-                    <div class="submit-rt">
-                        <div class="submit-img"><img src="../../assets/sample7.jpg"></div>
-                    </div>
-                </div>
+                <p class="user-info-tit">手持身份证正面照</p>
+                <uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
+            </div>
+            <div class="user-info">
+                <p class="user-info-tit">手持身份证反面照</p>
+                <uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
             </div>
             <div class="user-info">
                 <p class="user-info-tit">营业执照</p>
-                <div class="sample-ct">
-                    <div class="submit-lt">
-                        <div class="submit-img"><img src="../../assets/sample.jpg"></div>
-                        <p class="up-btn">上传</p>
-                    </div>
-                    <div class="submit-rt">
-                        <div class="submit-img"><img src="../../assets/sample8.jpg"></div>
-                    </div>
-                </div>
-            </div> -->
+                <uploader :uploadData="uploadData5" @getUpload="getUpload"></uploader>
+            </div>
         </div>
         <p class="visib-98"></p>
-        <div class="remits-fixed">提交</div>
+        <div class="remits-fixed" @click="checkFormData">提交</div>
+        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     </section>
 </template>
 <script>
     import uploader from '../../components/common/uploader/uploader'
+    import alertTip from '../../components/common/alertTip/alertTip'
     export default{
         name:'auth',
         data(){
             return{
+                username:"",
+                companyName:"",
+                location:"",
+                types:[],
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
-                    flag:"door"
+                    flag:"signboard",
+                    image:"static/sample5.jpg"
                 },
                 uploadData2:{
                     url:"https://tcmapi.emao.com/upload",
-                    count:3,
-                    flag:"inside"
+                    count:1,
+                    flag:"inside",
+                    image:"static/sample6.jpg"
                 },
-                dataURL:{}
+                uploadData3:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,
+                    flag:"identity",
+                    image:"static/sample7.jpg"
+                },
+                uploadData4:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,
+                    flag:"identityPos",
+                    image:"static/sample7.jpg"
+                },
+                uploadData5:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,
+                    flag:"licenseRev",
+                    image:"static/sample8.jpg"
+                },
+                dataURL:{},
+                showAlert:false,  //错误弹出窗
+                alertText:null //错误提醒信息
             }
         },
         methods:{
             getUpload(data,flag){
                 this.dataURL[flag] = data;
+            },
+            checkFormData(){
+                if((this.username == "")||(this.username = null)){
+                    this.showError("请填写用户名");
+                    return false
+                }
+            },
+            showError(errorMsg){
+                this.showAlert = true;
+                this.alertText = errorMsg;
+            },
+            submitFormData(){
+                this.$http.post(
+                    "dealer/auth",
+                    {
+                        link_name:"", 
+                        name:"",
+                        province_id:"",
+                        city_id:"",
+                        district_id:"",
+                        address:"",
+                        activities:"",
+                        booth_out_img:"",
+                        booth_in_img:"",
+                        id_card_front:"",
+                        id_card_back:"",
+                        business:"",
+                    }
+                ).then(function(){
+
+                },function(){
+
+                })
             }
         },
         mounted(){
+            //提交注册认证
 
             
         },
         components:{
-            uploader
+            uploader,
+            alertTip
         }
     }
 </script>
@@ -118,31 +174,51 @@
     padding:0 0.4rem;
 }
 .authen-info p{
-    padding:0.533333rem 0;
+    padding:0.233333rem 0;
     font-size:0.4rem;
     color:#2c2c2c;
     border-bottom:1px solid #eee;
+    position:relative;
 }
 .authen-info p label,.authen-info p span{
     display:inline-block;
 }
 .authen-info p label{
     width:2.133333rem;
+    height:0.85rem;
+    line-height:0.85rem;
 }
+
+.authen-info p input{
+    width:5.8rem;
+    border:none;
+    outline:none;
+    height:0.85rem;
+    line-height:0.85rem;
+}
+
 .authen-info p i{
-    float:right;
+    position:absolute;
+    top:50%;
+    right:0;
+    transform:translateY(-50%);
 }
 .authen-info p span{
     width:1.786667rem;
     height:0.8rem;
-    color:#d6ab55;
+    color:#666;
     font-size:0.373333rem;
-    border:1px solid #d6ab55;
+    border:1px solid #999;
     margin-right:0.4rem;
     text-align:center;
     line-height:0.8rem;
     border-radius:0.133333rem;
 }
+.authen-info p span.active{
+    color:#d6ab55;
+    border:1px solid #d6ab55;
+}
+
 /*资料*/
 .authen-img{
     background:#fff;
