@@ -18,7 +18,7 @@
                           <p class="state-time">剩余：{{item.remaining}}自动取消</p>
                       </div>
                       <div class="state-rt" v-if="item.status=='7'||item.status=='27'">
-                        <router-link to="/paymentSubmit">提交汇款凭证</router-link>
+                        提交汇款凭证
                       </div>
                       <div class="state-rt active" v-if="item.status=='8'">
                         提交汇款凭证
