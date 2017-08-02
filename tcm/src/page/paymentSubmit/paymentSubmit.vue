@@ -37,11 +37,12 @@
             </div>
             <button class="close-bt" @click="submit">提交</button>
         </section>
- 
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 import uploader from '../../components/common/uploader/uploader'
 export default {
   data () {
@@ -59,11 +60,14 @@ export default {
       dataURL:{},//图片地址
       submitFlag:true,
       price:'',
-      remark:''
+      remark:'',
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
   components:{
-    uploader
+    uploader,
+    alertTip
   },
   created:function(){
       //初始化
@@ -144,15 +148,18 @@ export default {
       submit(){
          //提交
         if(!this.editData.id){
-            alert('请选择汇款账户！');
+            this.showAlert = true;
+            this.alertText = '请选择汇款账户！';
             return;
         }
         if(!this.price){
-          alert('请填写汇款金额！');
+          this.showAlert = true;
+          this.alertText = '请填写汇款金额！';
           return;
         }
         if(!this.dataURL.payment){
-          alert('请上传汇款凭证！');
+          this.showAlert = true;
+          this.alertText = '请上传汇款凭证！';
           return;
         }else{
           var length=this.dataURL.payment.length;
@@ -330,5 +337,8 @@ padding: 0.15rem 0;
     -webkit-transform:translateX(-50%) translateY(-50%);
      transform:translateX(-50%) translateY(-50%);
 
+}
+.close-bt{
+  cursor: pointer;
 }
 </style>
