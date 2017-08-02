@@ -86,7 +86,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
-		           // this.$router.push('/index'); //路由跳转
+		            this.$router.push('/index'); //路由跳转
 		          },function(error){
 		          	this.showAlert = true;
 		          	this.alertText = error.body.msg;
@@ -102,12 +102,14 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    		return false;
 		    	};
 		    	if(!this.checkTel()) return "";
-		    	this.$http.post(
-		            "message/verify?token="+sessionStorage.token,
-		            {
-		            	phone:this.$parent.telephone
-		            }
-		        ).then(function (response) {
+		    	this.$http({
+		            url:"message/login",
+		            type:"GET",
+		            params:{
+			            	dataToken:sessionStorage.dataToken,
+			            	phone:this.$parent.telephone
+			            	},
+		        }).then(function (response) {
 		        	console.log(response);
 		            //this.$router.push('/index'); //路由跳转
 		          },function(error){
