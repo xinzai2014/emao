@@ -100,9 +100,13 @@
 	        <p class="cancel" v-show="vanShow" @click="vanLayer">退订展车</p>
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
-		        <div class="remits-fixed active" v-if="orderInfo.status == 8">{{btnText}}</div>
-		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == 4">{{btnText}}</div>
-		        <div class="remits-fixed" v-else>{{btnText}}</div>
+		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
+		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
+		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
+	              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
+	          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证	</router-link>
+	          	</div>
+
 	        </div>
 	    </section>
 	    <!-- 取消展车 -->
@@ -210,15 +214,24 @@
            			this.vinActive = '审核中';
            			this.process = !this.process;
             	}else if(item.status == 7){
-            		this.statusText = '等待付款';
-            		this.countNum=item.remainingTime;
-	                item.remaining=this.remaining;
-	                this.remainingTime(item);
-	                this.payment = '未支付';
-	                this.paymentActive = !this.paymentActive;
-            		this.timeShow = !this.timeShow;
-            		this.btmBtn = !this.btmBtn;
-            		this.carCancel = !this.carCancel;
+            		if(item.remainingTime == '' || item.remainingTime == '0'){
+            			this.statusText = '已取消';
+	            		this.payment = '未支付';
+	            		this.paymentActive = !this.paymentActive;
+	            		this.timeShow = false;
+	            		this.btmBtn = false;
+	            		this.carCancel = false;
+            		}else{
+            			this.statusText = '等待付款';
+	            		this.countNum=item.remainingTime;
+		                item.remaining=this.remaining;
+		                this.remainingTime(item);
+		                this.payment = '未支付';
+		                this.paymentActive = !this.paymentActive;
+	            		this.timeShow = !this.timeShow;
+	            		this.btmBtn = !this.btmBtn;
+	            		this.carCancel = !this.carCancel;
+            		}
             	}else if(item.status == 27){
             		this.statusText = '请重新提交';
             		this.countNum=item.remainingTime;
@@ -852,5 +865,8 @@
 .unsub-btn span.active{
 	color:#fff;
 	background:#d6ab55;
+}
+.remits-fixed a{
+	color:#fff;
 }
 </style>

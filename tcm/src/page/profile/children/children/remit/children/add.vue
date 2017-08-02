@@ -49,10 +49,12 @@
                 </div>
             </div>
         </section>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+    import alertTip from '../../../../../../components/common/alertTip/alertTip'
     import uploader from '../../../../../../components/common/uploader/uploader'
     export default {
         name:'auth',
@@ -70,7 +72,7 @@
                     name:'',//个人名称
                     bank_name:'',//账户名称
                     account:'',//账号
-                    explan_path:'String' //待付款说明图片
+                    explan_path:'' //待付款说明图片
                 },
                 accountType:true, //切换显示
                 uploadData1:{
@@ -78,12 +80,9 @@
                     count:1,
                     flag:"door"
                 },
-                uploadData2:{
-                    url:"https://tcmapi.emao.com/upload",
-                    count:3,
-                    flag:"inside"
-                },
-                dataURL:{}
+                dataURL:{},
+                showAlert: false, //弹出框
+                alertText: null, //弹出信息
             }
         },
         methods:{
@@ -99,6 +98,27 @@
                 }
             },
             submitAcount(){//公司账户
+                var reg = /^[0-9]*$/;
+                if(!this.acountData.pay_company){
+                    this.showAlert = true;
+                    this.alertText = '汇款单位不能为空！';
+                    return;
+                }
+                if(!this.acountData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '开户行不能为空！';
+                    return;
+                }
+                if(!this.acountData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.acountData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
                 this.$http.post("dealerBank/createBank",this.acountData
                 ).then(function (response) {
                     this.$set(this.acountData,{});
@@ -112,9 +132,35 @@
                 this.personData.explan_path = data[0];
             },
             submitPerson(){//个人账户
+                var reg = /^[0-9]*$/;
+                if(!this.personData.name){
+                    this.showAlert = true;
+                    this.alertText = '姓名不能为空！';
+                    return;
+                }
+                if(!this.personData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '银行不能为空！';
+                    return;
+                }
+                if(!this.personData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.personData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
+                if(!this.personData.explan_path){
+                    this.showAlert = true;
+                    this.alertText = '请提交待付款说明！';
+                    return;
+                }
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
-                    this.$set(this.acountData,{});
+                    this.$set(this.personData,{});
                     this.resetIndex();
                 }).catch(function (error) {
                     console.log("请求失败了");
@@ -126,7 +172,8 @@
             
         },
         components:{
-            uploader
+            uploader,
+            alertTip
         }
 
     }   
@@ -175,5 +222,17 @@
 .submit-lt{
     margin-left:0.8rem !important;
 }
-
+.layer{
+    line-height:0.8rem;
+    height:0.8rem;
+    width:5.333333rem;
+    font-size:0.32rem;
+    color:#fff;
+    text-align:center;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    bottom:0.4rem;
+    left:50%;
+    margin-left:-2.666667rem;
+}
 </style>

@@ -19,7 +19,7 @@
 	                <div class="full-state">
 	                    <div class="state-lt wait-active">
 	                        <p class="state-wait">{{item.waitActive}}</p>
-	                        <p class="state-time"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}自动取消</p>
+	                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}自动取消</p>
 	                    </div>
 	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'">{{item.btnActive}}</div>
 	                </div>
@@ -96,11 +96,16 @@
 							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 7){
-							  	list[a].waitActive = '等待付款';
-							  	list[a].btnActive = '提交汇款凭证';
-							  	this.countNum=list[a].remainingTime;
-				                list[a].remaining=this.remaining;
-				                this.remainingTime(list[a]);
+		                		if(list[a].remainingTime == '' || list[a].remainingTime == '0'){
+		                			list[a].waitActive = '已取消';
+							  		list[a].btnActive = '';
+		                		}else{
+		                			list[a].waitActive = '等待付款';
+								  	list[a].btnActive = '提交汇款凭证';
+								  	this.countNum=list[a].remainingTime;
+					                list[a].remaining=this.remaining;
+					                this.remainingTime(list[a]);
+		                		}
 		                		continue;
 		                	}else if(this.arr[i] == 8){
 							  	list[a].waitActive = '待付款审核中';
