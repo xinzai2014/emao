@@ -97,7 +97,6 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response);
 	                this.infoData = response.body.data;
 	                this.dataLength();
 	            }).catch(function (error) {
