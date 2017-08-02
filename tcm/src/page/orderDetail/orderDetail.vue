@@ -88,7 +88,7 @@
           <p class="visib-98"></p>
           <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
               <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'id':orderInfo.id}}">提交汇款凭证</router-link>
+          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
           </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
           <div class="remits-fixed active" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
