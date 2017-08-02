@@ -36,9 +36,9 @@
 				<div class="remits-edit-item">
 					汇款账户：<input type="text" v-model="editData.account">
 				</div>
-				<div class="remits-edit-item">
+				<!-- <div class="remits-edit-item">
 					待付款说明：<input type="text" v-model="editData.explan_path">
-				</div>
+				</div> -->
 			</div>
 			<button class="close-bt" @click="personEdit">保存并使用</button>
 		</section>

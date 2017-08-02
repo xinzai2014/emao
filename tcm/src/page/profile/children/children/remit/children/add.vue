@@ -43,14 +43,7 @@
                     </div>
                     <div class="payment-up">
                         <p class="payment-up-tit">代付款说明</p>
-                        <div class="payment-lt">
-                            <div class="payment-img"><img src="../../../../../../assets/up-bg.jpg"></div>
-                            <p class="up-btn">上传</p>
-                            <input type="hidden" v-model="personData.account" >
-                        </div>
-                        <div class="payment-rt">
-                            <div class="payment-img"><img src="../../../../../../assets/up-bg1.jpg"></div>
-                        </div>
+                        <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>              
                     </div>
                     <button class="close-bt" @click="submitPerson">保存并使用</button>
                 </div>
@@ -60,7 +53,9 @@
 </template>
 
 <script>
+    import uploader from '../../../../../../components/common/uploader/uploader'
     export default {
+        name:'auth',
         data () {
             return {
                 //初始数据结构
@@ -68,7 +63,7 @@
                     token:sessionStorage.getItem('token'),
                     pay_company:'',//汇款单位
                     bank_name:'',//账户名称
-                    account:'',//账号
+                    account:''//账号
                 },
                 personData:{
                     token:sessionStorage.getItem('token'),
@@ -78,6 +73,17 @@
                     explan_path:'String' //待付款说明图片
                 },
                 accountType:true, //切换显示
+                uploadData1:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,
+                    flag:"door"
+                },
+                uploadData2:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:3,
+                    flag:"inside"
+                },
+                dataURL:{}
             }
         },
         methods:{
@@ -101,6 +107,10 @@
                     console.log("请求失败了");
                 });
             },
+            getUpload(data,flag){
+                this.dataURL[flag] = data;
+                this.personData.explan_path = data[0];
+            },
             submitPerson(){//个人账户
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
@@ -109,12 +119,16 @@
                 }).catch(function (error) {
                     console.log("请求失败了");
                 });
-            }
+            }        
         },
         mounted(){
         //组件初始完成需要做什么
             
+        },
+        components:{
+            uploader
         }
+
     }   
 </script>
 
@@ -157,36 +171,9 @@
     background:#fff;
     overflow:hidden;
 }
-.payment-lt{
-    height:4.8rem;
-    width:3.666667rem;
-    float:left;
-    margin:0 1.04rem 0 0.8rem;
-}
-.payment-img{
-    width:3.666667rem;
-    height:2.773333rem;
-    overflow:hidden;
-}
-.payment-img img{
-    width:100%;
-    height:100%;
-}
-.up-btn{
-    width:2.64rem;
-    height:1.053333rem;
-    line-height:1.053333rem;
-    border:1px solid #d6ab55;
-    border-radius:0.533333rem;
-    font-size:0.373333rem;
-    color:#bb8800;
-    margin:0.4rem 0;
-    text-align:center;
-}
-.payment-rt{
-    float:left;
-    width:3.666667rem;
-    height:2.773333rem;
+
+.submit-lt{
+    margin-left:0.8rem !important;
 }
 
 </style>
