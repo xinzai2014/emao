@@ -1,30 +1,45 @@
 <template>
 	<div>
 		<div class="login-code clearfix">
-            <input type="text" v-model="code"  name="code"  @input="checkCode">
+            <input type="text" v-model="code"  name="code"  @click="checkCode" ref="code">
             <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
-            <span class="login-errror" v-show="errorCode">请输入正确格式的验证码</span>
+            <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
         </div>
 	    <input class="login-btn" type="text" name="" value="登录" @click="login">
         <p class="login-another" @click="checkNav"><span>账号登录</span></p>
-        <div class="dialog" v-show="showAjaxError">{{ajaxErrorData}}</div>
+        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 	</div>
 </template>
 <script>
+import MD5 from 'crypto-js/md5';
+import hmac from 'crypto-js/hmac-md5';
+import Utf8 from 'crypto-js/enc-utf8';
+import Base64 from 'crypto-js/enc-base64';
+import alertTip from '../../../components/common/alertTip/alertTip'
 	export default {
 		name:'code',
 		data () {
 		    return {
 		      code:"",
 		      codeText:"获取验证码",
-		      num:10,
+		      num:60,
 		      errorCode:false,
 		      disabled:false,
-		      showAjaxError:null,
-		      ajaxErrorData:null
+		      showAlert:false,  //错误弹出窗
+		      alertText:null //错误提醒信息
 		    }
 		},
+		components:{
+	    	alertTip
+	    },
 		methods:{
+			codeToMD5(passwordWord){
+				var password = passwordWord;
+				var passwordMD5 = MD5(password);  //对象类型
+				var passwordHash = hmac(passwordMD5.toString(),sessionStorage.dataToken); //转换成字符串在加密
+				var passwordBase64 = Base64.stringify(Utf8.parse(passwordHash));  //先进行utf-8编码再进行base64
+				return passwordBase64;
+			},
 			checkTel(){
 		      var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
 		        if(telExp.test(this.$parent.telephone)){
@@ -32,6 +47,10 @@
 		         }else{
 		           this.$parent.telError = true;
 		           console.log("手机号码错误了");
+		           this.$parent.$refs.telephone.focus();
+		           setTimeout(()=>{
+		           		this.$parent.telError = false;
+		           },1500);
 		           return false;
 		         }
 		         return true;
@@ -42,20 +61,23 @@
 		    		this.errorCode = false;
 		    	}else{
 		    		this.errorCode = true;
-		    		console.log("密码错误了");
+		    		setTimeout(()=>{
+		           		this.errorCode = false;
+		           },1500);
+		    		this.$refs.code.focus();
 		    		return false;
 		    	}
 		    	return true;
 			},
 		    login(){
-		    	this.checkTel();
-		    	this.checkCode();
+		    	if(!this.checkTel()) return "";
+				if(!this.checkCode()) return "";
 		    	if(this.$parent.telError || this.errorCode){
 		    		return false;
 		    	}
 		         var data = {
 		            phone:this.$parent.telephone,//获取父组件实例
-		            password:this.code,
+		            code:this.codeToMD5(this.code),
 		            dataToken:sessionStorage.dataToken
 		         };
 		        this.$http({
@@ -63,19 +85,13 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		            sessionStorage.dataToken = response.body.data.dataToken;
-		            sessionStorage.phone = response.body.data.phone;
-		            sessionStorage.token = 'bbe214ab570d81dc8b1b6589d86e13d9';
-		            this.$router.push('/index'); //路由跳转
-		          },function(){
-		          	this.showAjaxError = true;
-		          	this.ajaxErrorData = error.body.msg;
-		          	setTimeout(()=>{
-		          		this.showAjaxError = false
-		          	},1500)
+		            sessionStorage.token = response.body.data.token;
+		           // this.$router.push('/index'); //路由跳转
+		          },function(error){
+		          	this.showAlert = true;
+		          	this.alertText = error.body.msg;
 		          }).catch(function (error) {
-		          	console.log(error);
-		            console.log("登录失败了");
+
 		          });
 		    },
 		    checkNav(){
@@ -85,6 +101,7 @@
 		    	if(this.disabled){
 		    		return false;
 		    	};
+		    	if(!this.checkTel()) return "";
 		    	this.$http.post(
 		            "message/verify?token="+sessionStorage.token,
 		            {
@@ -107,7 +124,7 @@
 		    		this.disabled = true;
 		    		if(!this.num){
 		    			this.codeText = "重新获取";
-		    			this.num = 10;
+		    			this.num = 60;
 		    			this.disabled = false;
 		    			window.clearInterval(window.timer);
 		    			return false;
@@ -116,7 +133,6 @@
 		    }
 	    },
 	    beforeRouteEnter (to, from, next) {
-	    	console.log(123);
 	    	next();
 	    },
 	    beforeRouteLeave (to, from, next) {

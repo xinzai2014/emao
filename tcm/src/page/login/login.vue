@@ -7,29 +7,13 @@
         </p>
           <div class="login-info">
               <div class="login-phone">
-                  <input type="text"  v-model="telephone" placeholder="手机号" >
-                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入正确的手机号码</span>
+                  <input type="text"  v-model="telephone" maxlength="11" placeholder="手机号" ref="telephone">
+                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入11位手机号码</span>
               </div>
               <transition name="fade">
                   <router-view></router-view>
               </transition>
           </div>
-    </section>
-    <section class="login-popup">
-        <!--登录成功-->
-        <div class="login-success" style="display:none;">登录成功</div>
-        <!--密码多次输入错误-->
-        <div class="login-failure">
-            <div class="login-failure-in">
-                <p class="login-tip">密码多次输入错误</p>
-                <p class="login-by-code">您可以先用验证码登录</p>
-                <p class="login-set-password">登录重新设置密码</p>
-            </div>
-            <p class="login-choose clearfix">
-                <span>我再试试</span>
-                <span class="active">验证码登录</span>
-            </p>
-        </div>
     </section>
 </div>
 </template>
@@ -75,7 +59,7 @@ export default {
 .login-btn{display:block;width:5.867rem;height:1.1733rem;margin:.93rem auto 0;text-align:center;font-size:.453rem;color:#fff;line-height:1.17333rem;border:none;Border-radius:.667rem;background-color:#d5aa5c;}
 .login-another{margin-top:.667rem;text-align:center;}
 .login-another span{font-size:.4rem;color:#fff;border-bottom:1px solid #fff;}
-.login-popup{display:none;position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.6);}
+.login-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.6);}
 /*登录成功*/
 .login-success{position:absolute;width:3.067rem;height:2.133rem;top:50%;left:50%;transform:translate(-50%,-50%);line-height:2.133rem;text-align:center;font-size:.453rem;color:#fff;background:rgba(0,0,0,0.8);}
 
