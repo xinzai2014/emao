@@ -16,7 +16,7 @@
 	                </li>
 	                <li class="clearfix">
 	                    <span>联系电话：</span>
-	                    <input type="text" name="" v-model="phone" placeholder="请填写手机号">
+	                    <input type="phone" name="" v-model="phone" placeholder="请填写手机号">
 	                    <i class="wrong_txt"></i>
 	                </li>
 	                <li class="clearfix">
@@ -28,11 +28,13 @@
 	        </div>
 	        <input class="address-save" type="button" name="" value="保存并使用" @click="saveEdit">
 	    </section>
+	    <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
 </template>
 
 <script>
+import alertTip from '../../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -41,14 +43,40 @@
             address:'',	//收货地址
             name:'',	//收货人姓名
             phone:'',	//收货人电话
+            showAlert: false, //弹出框
+      		alertText: null, //弹出信息
             }
         },
+		  components:{
+		    alertTip
+		  },
         methods:{
             //组件方法
             resetIndex(){
                 this.$router.push({ name: 'address'});
             },
             saveEdit(){
+            	if(!this.name){
+		            this.showAlert = true;
+		            this.alertText = '请填写收货人';
+		            return;
+		        }
+		        if(!this.phone){
+		          this.showAlert = true;
+		          this.alertText = '请填写联系电话';
+		          return;
+		        }
+		        var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
+		        if(!telExp.test(this.phone)){
+		            this.showAlert = true;
+		            this.alertText = '手机号码格式不正确';
+		            return;
+		        }
+		        if(!this.address){
+		          this.showAlert = true;
+		          this.alertText = '请填写收货地址';
+		          return;
+		        }
 	    		var token=sessionStorage.getItem('token');
             	var data = {
 		            name:this.name,
