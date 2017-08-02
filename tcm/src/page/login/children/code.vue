@@ -7,6 +7,7 @@
         </div>
 	    <input class="login-btn" type="text" name="" value="登录" @click="login">
         <p class="login-another" @click="checkNav"><span>账号登录</span></p>
+        <div class="dialog" v-show="showAjaxError">{{ajaxErrorData}}</div>
 	</div>
 </template>
 <script>
@@ -18,7 +19,9 @@
 		      codeText:"获取验证码",
 		      num:10,
 		      errorCode:false,
-		      disabled:false
+		      disabled:false,
+		      showAjaxError:null,
+		      ajaxErrorData:null
 		    }
 		},
 		methods:{
@@ -64,6 +67,12 @@
 		            sessionStorage.phone = response.body.data.phone;
 		            sessionStorage.token = 'bbe214ab570d81dc8b1b6589d86e13d9';
 		            this.$router.push('/index'); //路由跳转
+		          },function(){
+		          	this.showAjaxError = true;
+		          	this.ajaxErrorData = error.body.msg;
+		          	setTimeout(()=>{
+		          		this.showAjaxError = false
+		          	},1500)
 		          }).catch(function (error) {
 		          	console.log(error);
 		            console.log("登录失败了");
