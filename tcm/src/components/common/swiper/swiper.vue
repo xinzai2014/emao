@@ -30,13 +30,11 @@ export default {
 	  },
 	  mounted(){
 	  	console.log("数据取到了");
-			setTimeout(function(){
-			var mySwiper = new Swiper('.swiper-container', {
+		var mySwiper = new Swiper('.swiper-container', {
 			autoplay: 5000,//可选选项，自动滑动
 			pagination : '.index-icon',
 			paginationElement:"li"
-			});
-		},1000);
+		});
 	  },
 	  watch:{
 	   circular(){

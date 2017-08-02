@@ -5,7 +5,7 @@
         <i class="white-lt brand-left-cion"></i>
     </header>
     <!--首页-订车-详情页-图片滚动-->
-     <swiper :circular="circular"></swiper>
+     <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页-订车--详情页-车型信息-->
     <section class="book-car-count">
