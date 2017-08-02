@@ -8,7 +8,7 @@
           <div class="login-info">
               <div class="login-phone">
                   <input type="text"  v-model="telephone" placeholder="手机号" >
-                  <span class="login-errror" v-show="telError">请输入正确的手机号码</span>
+                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入正确的手机号码</span>
               </div>
               <transition name="fade">
                   <router-view></router-view>
