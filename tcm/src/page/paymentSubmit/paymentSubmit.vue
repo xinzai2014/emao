@@ -27,8 +27,8 @@
               </div>
             </router-link>
             <div class="voucher-item voucher-gray">
-                <p><span>{{returnData.price}}元</span>汇款金额：</p>
-                <p><span>{{returnData.remark}}</span>备注：</p>
+                <p><span>汇款金额：<input type="text" name="" v-model="price" placeholder=""><i>元</i></span></p>
+                <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
             </div>
 
             <div class="voucher-item">
@@ -56,7 +56,10 @@ export default {
           count:2,
           flag:"payment"
       },
-      dataURL:{}//图片地址
+      dataURL:{},//图片地址
+      submitFlag:true,
+      price:'',
+      remark:''
     }
   },
   components:{
@@ -65,6 +68,7 @@ export default {
   created:function(){
       //初始化
       this.mountedData();
+      //this.acountEdit();
   },
   methods:{
       //组件方法
@@ -77,7 +81,7 @@ export default {
       acountEdit(){ //保存并使用公司
         var data = {
             token:sessionStorage.getItem('token'),
-            id:this.$route.query.id||149,
+            id:this.$route.query.id||151,
         }
        this.$http({
             url:"dealerBank/detailById",
@@ -139,7 +143,7 @@ export default {
             alert('请选择汇款账户！');
             return;
         }
-        if(!this.returnData.price){
+        if(!this.price){
           alert('请填写汇款金额！');
           return;
         }
@@ -150,24 +154,36 @@ export default {
           var length=this.dataURL.payment.length;
         }
         var data = {
-            price:this.returnData.price,
-            bank_id:this.editData.id,
+            token:sessionStorage.getItem('token'),
+            price:this.price,
+            order_id:this.returnData.id,
             order_num:this.returnData.orderNum,
-            message:this.returnData.remark,
+            message:this.remark,
+            bank_id:this.editData.id,
+            anotherpay:this.editData.explan_path,
         }
         for(var i=0;i<length;i++){
             if(i==0){
                 data['payimg']=this.dataURL.payment[i];
             }else{
-              data['payimg'+(i+1)]=this.dataURL.payment[i]
+              data['payimg'+(i+1)]=this.dataURL.payment[i];
             }   
         }
-        this.$http.post("order/full/payment",data)
-        .then(function (response) {
-            alert('提交成功');
-        }).catch(function (error) {
-            console.log("请求失败了");
-        });
+        if(this.submitFlag){
+          this.$http.post("order/full/payment",data)
+            .then(function (response) {
+                alert('订单凭证提交成功');
+            }).catch(function (error) {
+                console.log("请求失败了");
+            });
+          }else{
+            this.$http.post("order/show/payment",data)
+            .then(function (response) {
+                alert('展车凭证提交成功');
+            }).catch(function (error) {
+                console.log("请求失败了");
+            });
+          }   
       }
   },
   watch:{
@@ -175,11 +191,32 @@ export default {
       this.mountedData();
     }
   },
+  beforeRouteEnter(to, from, next){
+    next(vm => {
+      if(from.name=='orderDetail'){
+          vm.submitFlag=true;
+        }
+      if(from.name=='displayDetail'){
+          vm.submitFlag=false;
+      }
+    });
+  }
 }
 </script>
 
 <style>
 /*æäº¤*/
+.voucher-item.voucher-gray span{
+  float: none;
+  font-size: 0.4rem;
+}
+.voucher-item.voucher-gray i{
+  float: right;
+}
+.voucher-item input{
+  width: 6rem;
+    border: 0;
+}
 .item-bor{
   padding:0.25rem 0;
 }
@@ -215,7 +252,7 @@ padding: 0.15rem 0;
   max-height:9999px;
   padding:0.533333rem 0;
   margin:0 0.4rem;
-  font-size:0.4rem;
+  font-size:0.32rem;
   color:#2c2c2c;
   overflow:hidden;
   line-height:0.466667rem;
