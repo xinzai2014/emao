@@ -8,16 +8,21 @@
 		<section class="remits-wrap">
 			<div class="adres-ct" v-if="showRemit">
 				<div class="remits-item" v-for="(item,index) in infoData">
-					<p class="remits-info" v-if="item.account_type == 1">{{item.pay_company}}</p>
-					<p class="remits-info" v-else>{{item.name}}</p>
-					<p class="remits-add">汇款账户：{{item.account}}</p>
-					<p class="remits-add">开户行：{{item.bank_name}}</p>
-					<p class="remits-btn">
-						<router-link :to="{name:'remitEdit',params:{id:item.id}}">
-							<i class="edit">编辑</i>
-						</router-link>
-						<i class="del" @click="remitDel(index,item.id)" >删除</i>
-					</p>
+					<div class="remite-lt" v-show="isCheck">
+						<i class="icon" @click="iconId(item)"></i>
+					</div>
+					<div :class="isCheck ? 'remits-rt':''">
+						<p class="remits-info" v-if="item.account_type == 1">{{item.pay_company}}</p>
+						<p class="remits-info" v-else>{{item.name}}</p>
+						<p class="remits-add">汇款账户：{{item.account}}</p>
+						<p class="remits-add">开户行：{{item.bank_name}}</p>
+						<p class="remits-btn">
+							<router-link :to="{name:'remitEdit',params:{id:item.id}}">
+								<i class="edit">编辑</i>
+							</router-link>
+							<i class="del" @click="remitDel(index,item.id)" >删除</i>
+						</p>
+					</div>
 				</div>
 			</div>
 			<section v-else class="no-auto server-no-response">
@@ -41,7 +46,10 @@
             return {
               //初始数据结构
               infoData:[],
-              showRemit:false //有没有数据
+              showRemit:false, //有没有数据
+              isCheck:false, //判断是否显示选择按钮
+              btnIcon:false,
+              url:''
             }
         },
         created : function(){
@@ -51,7 +59,15 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.push({name:'info'});
+                this.$router.go(-1);
+            },
+            iconId(item){
+            	this.$router.push({
+            		path:this.url,
+            		query:{
+            			'id':item.id
+            		}
+            	});
             },
             remitDel(index,remit_id){ //删除
             	if(window.confirm('你确定要删除汇款账户吗')){
@@ -102,7 +118,18 @@
         		this.mountedData();
         		this.dataLength();
         	}
-        }
+        },
+        beforeRouteEnter(to, from, next){
+        	next(vm => {
+			    if(from.name=='paymentSubmit'){
+	        		vm.isCheck=true; //true
+	        		vm.url=from.fullPath;
+	        		console.log(vm.url);
+	        	}else{
+	        		vm.isCheck=false;
+	        	}
+			  });
+        },
         
     }   
 </script>
@@ -167,4 +194,30 @@
 
 .server-no-response .reflash{color:#d6ab55;}
 .no-auto p span{color:#d6ab55;border-bottom:1px solid #d6ab55;}
+.remite-lt{
+	width:0.586667rem;
+	height:0.586667rem;
+	display:inline-block;
+	float:left;
+	margin-top:0.4rem;
+}
+.remite-lt i{
+	display: block;
+	width:0.586667rem;
+	height:0.586667rem;
+}
+.remite-lt i.icon{
+	background:url(../../../../../assets/check.png) no-repeat;
+	background-size:contain;
+}
+.remite-lt i.icon:hover{
+	background:url(../../../../../assets/check-active.png) no-repeat;
+	background-size:contain;
+}
+
+.remits-rt{
+	float:right;
+	overflow:hidden;
+	width:90%;
+}
 </style>
