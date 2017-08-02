@@ -126,9 +126,13 @@ export default {
         //是否添加账户，默认账户
         if(this.infoData.length > 0){ 
           this.showRemit = true;
-          this.editData=this.infoData[0];
-          this.type = this.editData.account_type;
-          this.showType();
+          if(this.$route.query.id){
+            this.acountEdit();
+          }else{
+            this.editData=this.infoData[0];
+            this.type = this.editData.account_type;
+            this.showType();
+          }
         }else{
           this.showRemit = false
         }
