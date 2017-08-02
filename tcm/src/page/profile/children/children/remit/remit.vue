@@ -122,7 +122,7 @@
         beforeRouteEnter(to, from, next){
         	next(vm => {
 			    if(from.name=='paymentSubmit'){
-	        		vm.isCheck=true; //true
+	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
 	        		console.log(vm.url);
 	        	}else{

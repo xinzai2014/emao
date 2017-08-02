@@ -95,7 +95,7 @@
             }
         },
         mounted(){
-        //组件初始完成需要做什么
+        //组件初始完成
             var data = {
                 token:this.Token,
                 id:this.id
