@@ -11,15 +11,15 @@
 	            <ul class="address-edit-in">
 	                <li class="clearfix">
 	                    <span>收货人：</span>
-	                    <input type="text" name="" v-model="name">
+	                    <input type="text" name="" v-model="name" ref="name">
 	                </li>
 	                <li class="clearfix">
 	                    <span>联系电话：</span>
-	                    <input type="text" name="" v-model="phone">
+	                    <input type="text" name="" v-model="phone" ref="phone">
 	                </li>
 	                <li class="clearfix">
 	                    <span>收货地址：</span>
-	                    <input type="text" name="" v-model="address">
+	                    <input type="text" name="" v-model="address" ref="address">
 	                </li>
 	            </ul>
 	        </div>
@@ -86,22 +86,26 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             	if(!this.name){
 		            this.showAlert = true;
 		            this.alertText = '请填写收货人';
+		            this.$refs['name'].focus();
 		            return;
 		        }
 		        if(!this.phone){
 		          this.showAlert = true;
 		          this.alertText = '请填写联系电话';
+		          this.$refs['phone'].focus();
 		          return;
 		        }
 		        var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
 		        if(!telExp.test(this.phone)){
 		            this.showAlert = true;
 		            this.alertText = '手机号码格式不正确';
+		            this.$refs['phone'].focus();
 		            return;
 		        }
 		        if(!this.address){
 		          this.showAlert = true;
 		          this.alertText = '请填写收货地址';
+		          this.$refs['address'].focus();
 		          return;
 		        }
 	    		var token=sessionStorage.getItem('token');

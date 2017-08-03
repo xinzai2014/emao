@@ -277,8 +277,8 @@ export default {
           case '27' : 
               obj.state='请重新提交';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=6;
+                  //obj.state='已取消';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
@@ -300,8 +300,8 @@ export default {
           case '4' : 
               obj.state='车辆在途';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=5;
+                  //obj.state='交易完成';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;

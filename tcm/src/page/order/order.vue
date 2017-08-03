@@ -107,8 +107,8 @@ export default {
             case '27' : 
                 arr[i].state='请重新提交';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
-                    arr[i].status=6;
-                    arr[i].state='已取消';
+                    //arr[i].status=6;
+                    //arr[i].state='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime;
                     arr[i].remaining=this.remaining;  

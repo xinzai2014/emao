@@ -91,6 +91,7 @@ export default {
                 arr[i].state='待付款';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime==''){
                     //arr[i].status=6;
+                    //arr[i].status='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime||0;
                     arr[i].remaining=this.remaining;
