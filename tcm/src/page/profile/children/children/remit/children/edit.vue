@@ -42,18 +42,22 @@
 			</div>
 			<button class="close-bt" @click="personEdit">保存并使用</button>
 		</section>
+		<alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+	import alertTip from '../../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
-              //初始数据结构
-              editData:{},
-              id:this.$route.params.id,//账户id
-              Token:sessionStorage.getItem('token'),
-              type:null //账户类型
+	            //初始数据结构
+	            editData:{},
+	            id:this.$route.params.id,//账户id
+	            Token:sessionStorage.getItem('token'),
+	            type:null, //账户类型
+	            showAlert: false, //弹出框
+	            alertText: null, //弹出信息
             }
         },
         methods:{
@@ -62,6 +66,27 @@
                 this.$router.push({name:'remit'});
             },
             acountEdit(){ //保存并使用公司
+            	var reg = /^[0-9]*$/;
+                if(!this.editData.pay_company){
+                    this.showAlert = true;
+                    this.alertText = '汇款单位不能为空！';
+                    return;
+                }
+                if(!this.editData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '开户行不能为空！';
+                    return;
+                }
+                if(!this.editData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.editData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
 	            var data = {
 	                token:this.Token,
 	                id:this.id,
@@ -77,6 +102,27 @@
 	            });
             },
             personEdit(){
+            	var reg = /^[0-9]*$/;
+                if(!this.editData.name){
+                    this.showAlert = true;
+                    this.alertText = '姓名不能为空！';
+                    return;
+                }
+                if(!this.editData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '开户行不能为空！';
+                    return;
+                }
+                if(!this.editData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.editData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
             	var data = {
 	                token:this.Token,
 	                id:this.id,
@@ -115,6 +161,10 @@
             }).catch(function (error) {
                 console.log("请求失败了");
             });
+        },
+        components:{
+            //uploader,
+            alertTip
         }
     }   
 </script>

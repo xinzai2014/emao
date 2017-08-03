@@ -91,3 +91,30 @@ html,body{
 .remits-fixed.active{
 	background:#cccccc;
 }
+
+
+@keyframes fadeIn
+{
+  0% {opacity:0}
+  100% {opacity: 1}
+}
+
+.fadeIn {
+    animation: fadeIn 0.8s;
+    animation-iteration-count:1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes fadeOut
+{
+  0% {opacity:1}
+  100% {opacity: 0}
+}
+
+.fadeOut {
+    animation: fadeOut 0.8s;
+    animation-iteration-count:1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
