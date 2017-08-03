@@ -116,8 +116,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
 		            method:"GET"
 		        }).then(function (response) {
-		        	console.log(response);
-		        	var code = response.body["auth_status"];
+		        	var code = response.body.data["auth_status"];
 		        	if(code == 1){ //已通过认证
 		        		this.$router.push('/index');
 		        	}else if(code == 3){ //在审核
