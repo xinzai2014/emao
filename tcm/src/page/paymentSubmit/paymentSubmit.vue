@@ -37,6 +37,12 @@
             </div>
             <button class="close-bt" @click="submit">提交</button>
         </section>
+        <transition name="slide">
+          <section class="no-auto submit-succeed" v-if="success">
+              <img src="../../assets/submit-succeed.png" alt="">
+              <p>提交成功,请等待审核</p>
+          </section>
+        </transition>
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
@@ -63,6 +69,7 @@ export default {
       remark:'',
       showAlert: false, //弹出框
       alertText: null, //弹出信息
+      success:''
     }
   },
   components:{
@@ -96,7 +103,7 @@ export default {
             this.type = response.body.data.account_type;
             this.showType();
         }).catch(function (error) {
-            console.log("请求失败了");
+           alert(error.body.msg);
         });
       },
       showType(){
@@ -122,7 +129,7 @@ export default {
             this.dataLength();
             this.returnDataF();
         }).catch(function (error) {
-            console.log("请求失败了");
+            alert(error.body.msg);
         });
      
       },
@@ -183,16 +190,16 @@ export default {
         if(this.submitFlag){
           this.$http.post("order/full/payment",data)
             .then(function (response) {
-                alert('订单凭证提交成功');
+                this.success=true;
             }).catch(function (error) {
-                console.log("请求失败了");
+                alert(error.body.msg);
             });
           }else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
-                alert('展车凭证提交成功');
+                this.success=true;
             }).catch(function (error) {
-                console.log("请求失败了");
+                alert(error.body.msg);
             });
           }   
       }
@@ -200,6 +207,9 @@ export default {
   watch:{
     $route(){
       this.mountedData();
+    },
+    success(){
+      //this.$router.push({name:''});
     }
   },
   beforeRouteEnter(to, from, next){
@@ -217,6 +227,9 @@ export default {
 
 <style>
 /*æäº¤*/
+.no-auto{
+  top: 1.5rem;
+}
 .voucher-item.voucher-gray span{
   float: none;
   font-size: 0.4rem;
