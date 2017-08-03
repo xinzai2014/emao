@@ -9,15 +9,15 @@
         <div class="authen-info">
             <p>
                 <label>姓名：</label>
-                <input type="text"  >
+                <input type="text"  v-model="username" ref="username">
             </p>
             <p>
                 <label>公司名称：</label>
-                <input type="text"  >
+                <input type="text"  v-model="companyName" ref="companyName">
             </p>
             <p>
                 <i class="yellow-rt"></i><label>所在区域：</label>
-                <input type="text"  >
+                <input type="text"  v-model="location" ref="location">
             </p>
             <p>
                 <label>主营类型：</label>
@@ -52,11 +52,13 @@
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">提交</div>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+        <city :cityData="cityData" v-if="cityData.length>0"></city>
     </section>
 </template>
 <script>
     import uploader from '../../components/common/uploader/uploader'
     import alertTip from '../../components/common/alertTip/alertTip'
+    import city from '../../components/common/city/city'
     export default{
         name:'auth',
         data(){
@@ -96,17 +98,40 @@
                     image:"static/sample8.jpg"
                 },
                 dataURL:{},
+                cityData:[],
                 showAlert:false,  //错误弹出窗
                 alertText:null //错误提醒信息
             }
         },
         methods:{
+            getCity(){
+                this.$http.get(
+                    "area?token=" + sessionStorage.token
+                    ).then(function(reponse){
+                        this.cityData = reponse.body.data;
+                        console.log(this.cityData);
+                        console.log(reponse);
+                    },function(error){
+
+                    })
+            },
             getUpload(data,flag){
                 this.dataURL[flag] = data;
             },
             checkFormData(){
                 if((this.username == "")||(this.username = null)){
                     this.showError("请填写用户名");
+                    this.$refs.username.focus();
+                    return false
+                }
+                if((this.companyName == "")||(this.companyName = null)){
+                    this.showError("请填写公司名称");
+                    this.$refs.companyName.focus();
+                    return false
+                }
+                if((this.location == "")||(this.location = null)){
+                    this.showError("请填写所在区域");
+                    this.$refs.location.focus();
                     return false
                 }
             },
@@ -131,7 +156,7 @@
                         id_card_back:"",
                         business:"",
                     }
-                ).then(function(){
+                ).then(function(reponse){
 
                 },function(){
 
@@ -140,12 +165,13 @@
         },
         mounted(){
             //提交注册认证
-
+            this.getCity();
             
         },
         components:{
             uploader,
-            alertTip
+            alertTip,
+            city
         }
     }
 </script>
@@ -242,3 +268,4 @@
 
 
 </style>
+
