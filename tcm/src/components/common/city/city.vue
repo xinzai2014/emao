@@ -1,26 +1,30 @@
  <template>
-    <div class="dialog-back">
+    <div class="dialog-back" @click="closeCityDialog">
 	    <div class="city-wrap">
             <div class="city-btn">
-                <span>取消</span>
-                <span>完成</span>
+                <span @click="closeCityDialog">取消</span>
+                <span @click="getChooseData">完成</span>
             </div>
             <div class="city-con">
                 <div class="city-list" id="provinceWrap">
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in cityData" @click="getCityData(item.id)">{{item.name}}</li>
+                        <li v-for="(item,index) in cityData" :class="{active:defaultData.defaultProcinveID == item.id}"  @click.stop="getCityData(item.id,item.name)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="cityWrap">
                     <ul>
-                        <li v-for="(item,index) in perCityData" @click="getAreaData(item.id)">{{item.name}}</li>
+                        <li></li>
+                        <li></li>
+                        <li v-for="(item,index) in perCityData" :class="{active:defaultData.defaultCityID == item.id}" @click.stop="getAreaData(item.id,item.name)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="areaWrap">
                     <ul>
-                        <li v-for="(item,index) in perAreaData" >{{item.name}}</li>
+                        <li></li>
+                        <li></li>
+                        <li v-for="(item,index) in perAreaData" :class="{active:defaultData.defaultAreaID == item.id}" @click.stop="updateAreaData(item.id,item.name)">{{item.name}}</li>
                     </ul>
                 </div>
             </div>
@@ -36,16 +40,28 @@
                 perCityData:null,
                 perAreaData:null,
                 defaultData:{
+                    defaultProcinveID:1,
                     defaultCityID:1,
                     defaultAreaID:1
                 },
                 provinceScroll:null,
                 cityScroll:null,
-                areaScroll:null
+                areaScroll:null,
+                postData:{
+                    provinceData:null,
+                    cityData:null,
+                    areaData:null
+                }
             }
         },
         props: ['cityData'], 
         methods:{
+            closeCityDialog(){  //取消城市弹出窗
+                this.$emit("closeCity");
+            },
+            getChooseData(){   //选取城市
+                this.$emit("closeCity",this.postData);
+            },
             initScroll(scroller,scrollWrap){
                 this[scroller] = new BScroll(document.getElementById(scrollWrap), {
                   startX: 0,
@@ -53,7 +69,7 @@
                   click:true
                 })
             },
-            getCityData(id){
+            getCityData(id,name){
                 var that = this;
                 this.defaultData.defaultCityID = id;
                 this.cityData.forEach(function(item,index){ 
@@ -66,10 +82,15 @@
                                  that.cityScroll.refresh();
                             },500)
                         }
+                        that.defaultData.defaultProcinveID = id;
                     } 
                 })
+                this.postData["provinceData"] = {
+                    id:id,
+                    name:name
+                };
             },
-            getAreaData(id){
+            getAreaData(id,name){
                 var that = this;
                 this.defaultData.defaultAreaID = id;
                 this.cityData.forEach(function(item,index){ 
@@ -84,15 +105,28 @@
                                          that.areaScroll.refresh();
                                     },500)
                                 }
+                                that.defaultData.defaultCityID = id;
                             }
                         })
                     } 
                 })
+                this.postData["cityData"] = {
+                    id:id,
+                    name:name
+                };
+            },
+            updateAreaData(id,name){
+                this.defaultData.defaultAreaID = id;
+                this.postData["areaData"] = {
+                    id:id,
+                    name:name
+                };
             }
         },
         mounted(){
           this.getCityData(this.defaultData.defaultCityID);
-          this.initScroll(this.provinceScroll,"provinceWrap");
+          this.getAreaData(this.defaultData.defaultCityID);
+          this.initScroll("provinceScroll","provinceWrap");
         }
     }
 </script>
@@ -156,8 +190,18 @@
     text-align:center;
     font-size:0.35rem;
     color:#b3b4b6;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.city-list li.active{
+    color:#333;
 }
 
 </style>
+
+
+
 
 

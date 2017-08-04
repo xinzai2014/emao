@@ -86,13 +86,33 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
-		            this.$router.push('/index'); //路由跳转
+		            this.passportCheck();
 		          },function(error){
 		          	this.showAlert = true;
 		          	this.alertText = error.body.msg;
 		          }).catch(function (error) {
 
-		          });
+		          }).finally(function(){
+		          	 this.getDataToken();
+		          });;
+		    },
+		    passportCheck(){ //登录成功后判断是否已通过注册认证
+				this.$http({
+		            url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
+		            method:"GET"
+		        }).then(function (response) {
+		        	var code = response.body.data["auth_status"];
+		        	if(code == 1){ //已通过认证
+		        		this.$router.push('/index');
+		        	}else if(code == 3){ //在审核
+		        		this.$router.push('/authResult');
+		        	}else{
+		        		this.$router.push('/auth');
+		        	} 
+		        	// //路由跳转
+		        },function(){
+
+		        });
 		    },
 		    checkNav(){
 		    	 this.$router.push('account'); //路由跳转
@@ -106,17 +126,22 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            url:"message/login",
 		            type:"GET",
 		            params:{
-			            	dataToken:sessionStorage.dataToken,
-			            	phone:this.$parent.telephone
-			            	},
+		            	dataToken:sessionStorage.dataToken,
+		            	phone:this.$parent.telephone
+		            	},
 		        }).then(function (response) {
-		        	console.log(response);
+		        	this.setCode();
 		            //this.$router.push('/index'); //路由跳转
 		          },function(error){
-		          	console.log(error);
+		          	this.showAlert = true;
+		          	this.alertText = error.body.msg;
 		          }).catch(function (error) {
 		          	console.log(error);
+		          }).finally(function(){
+		          	 this.getDataToken();
 		          });
+		    },
+		    setCode(){
 		    	this.codeText = this.num+"s后重新获取";
 		    	this.disabled = true;
 		    	var that = this;
@@ -132,6 +157,22 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    			return false;
 		    		}
 		    	},1000);
+		    },
+		    getDataToken(){ //获取dataToken
+				const data = {
+	            	phone:18611985439,
+	            	password:123456
+	            }
+		    	this.$http({
+		            url:"test/mockLogin",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            sessionStorage.dataToken = response.body.data.dataToken;
+		          }).catch(function (error) {
+		          	console.log(error);
+		            console.log("登录失败了");
+		          });
 		    }
 	    },
 	    beforeRouteEnter (to, from, next) {

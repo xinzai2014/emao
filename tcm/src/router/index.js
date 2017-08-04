@@ -12,6 +12,7 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
 const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
+const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'auth')
 //const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
 
 
@@ -115,6 +116,11 @@ export default new Router({
       path: '/auth',  //登录注册个人认证
       name: 'auth',
       component: auth
+    },
+    {
+      path: '/authResult',  //登录注册个人认证
+      name: 'authResult',
+      component: authResult
     },
     {
       path: '/index',  //首页

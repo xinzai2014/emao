@@ -109,7 +109,9 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		          	this.alertText = error.body.msg;
 		          }).catch(function (error) {
 
-		          });
+		          }).finally(function(){
+		          	 this.getDataToken();
+		          });;
 		    },
 		    passportCheck(){ //登录成功后判断是否已通过注册认证
 				this.$http({
@@ -135,6 +137,22 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    },
 		    closePasswordDialog(){
 		    	this.showPasswordDialog = false;
+		    },
+		    getDataToken(){ //获取dataToken
+				const data = {
+	            	phone:18611985439,
+	            	password:123456
+	            }
+		    	this.$http({
+		            url:"test/mockLogin",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            sessionStorage.dataToken = response.body.data.dataToken;
+		          }).catch(function (error) {
+		          	console.log(error);
+		            console.log("登录失败了");
+		          });
 		    }
 	    },
 	    components:{
