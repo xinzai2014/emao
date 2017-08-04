@@ -82,6 +82,13 @@
             </div>
         </section>
 
+        <div class="mask" v-if="showPopup">
+            <div class="cancel-car">
+                <p class="prompt-tit">申报已成功！可在已售车辆中查看。</p>
+                <p class="prompt-btn"><span class="confirm" @click="closePopup">确认</span></p>
+            </div>
+        </div>
+
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
@@ -108,6 +115,7 @@
             email:'',
             showAlert:false,
             alertText:null,
+            showPopup:false,
             declareList:[],
             orderInfo : {},
 
@@ -157,7 +165,6 @@
         //初始化拿数据
         getData(){
             var token = sessionStorage.token;
-            //var token = "02fb128629f0bdb87489a18be9fdd289";
             this.$http({
                 url:"order/full/detail",
                 method:"GET",
@@ -183,6 +190,10 @@
             }
         },
 
+        closePopup(){
+            this.showPopup = false;
+            this.$router.push('/declare');//跳转到售车申报列表页
+        },
 
         submitData(){
 
@@ -250,8 +261,8 @@
 
 
             this.$http.post("order/sale/info",this.formData).then(function(response){
-                console.log(response);
-                this.$router.push('/declare');//跳转到售车申报列表页
+                //console.log(response);
+                this.showPopup = true;
             }).catch(function(error){
                 console.log("请求失败");
                 console.log(error);
@@ -427,4 +438,47 @@
         width: 2.64rem;
     }
     .user-info .upfile{display:none;}
+
+    .mask{
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.8);
+        position:fixed;
+        left:0;
+        top:0;
+    }
+    .cancel-car{
+        position:fixed;
+        width:7.2rem;
+        background:#fff;
+        border-radius:0.133333rem;
+        overflow:hidden;
+        left:50%;
+        top:50%;
+        margin-top:-1.866667rem;
+        margin-left:-3.6rem;
+    }
+    .prompt-tit{
+        text-align:center;
+        font-size:0.453333rem;
+        color:#2c2c2c;
+        margin:0.986667rem 0;
+    }
+    .prompt-btn{
+        background:#f5f5f5;
+        overflow:hidden;
+        height:1.173333rem;
+        line-height:1.173333rem;
+    }
+    .prompt-btn span{
+        display:block;
+        width:100%;
+        float:left;
+        text-align:center;
+        font-size:0.453333rem;
+    }
+    .prompt-btn span.confirm{
+        background:#d6ab55;
+        color:#fff;
+    }
 </style>

@@ -4,17 +4,29 @@
         <header class="user-tit declare-head">
             <a href="javascript:;" class="white-lt" @click="resetIndex"></a>已售车辆
         </header>
-        <!--售车申报-->
-        <section class="sales-wrap">
-            <div class="sales-item" v-for="(item,index) in declareList">
-                <h3>{{item.serie_name}} {{item.auto_name}}</h3>
-                <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
-                <p class="sales-number">VIN：{{item.vin_num}}</p>
-                <p class="sales-time">{{item.created_at}}售出</p>
+        <!--已售车申报列表-->
+        <section v-if="declareList.length">
+            <div class="sales-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+                <div class="sales-item" v-for="(item,index) in declareList">
+                    <h3>{{item.serie_name}} {{item.auto_name}}</h3>
+                    <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
+                    <p class="sales-number">VIN：{{item.vin_num}}</p>
+                    <p class="sales-time">{{item.created_at}}售出</p>
+                </div>
             </div>
+            <p class="visib-109"></p>
 
+            <transition name="loading">
+                <div v-show="showLoading">正在加载中</div>
+            </transition>
+
+            <p v-if="touchend" class="empty_data">没有更多了</p>
         </section>
-        <p class="visib-109"></p>
+
+        <section class="no-auto server-no-response" v-if=showNoDataVal>
+            <img src="../../assets/no-vehicles-sold-news.png" alt="">
+            <p>暂无已售申报车辆信息</p>
+        </section>
     </div>
 </template>
 <script>
@@ -23,43 +35,89 @@
         data(){
         return{
             declareList:[],
-            add_order_time:''
+            touchend:false,
+            perPage:'10',
+            currentPage:'1',
+            lastPage:'0',
+            perPage:'10',
+            showLoading: true,
+            preventRepeatReuqest:false,
+            showNoDataVal:false
         }
     },
     methods:{
         //组件方法
         resetIndex(){
             this.$router.push({name:'declare'});
+        },
+        hideLoading(){
+            this.showLoading = false;
+        },
+
+        //加载更多
+        loaderMore(){
+            //到底了
+            if (this.touchend) {
+                return
+            }
+
+            //防止重复请求
+            if (this.preventRepeatReuqest) {
+                return
+            }
+            this.showLoading = true;
+            this.preventRepeatReuqest = true;
+            this.currentPage = parseInt(this.currentPage) + 1;
+            this.getSoldCarData();
+        },
+        getSoldCarData(){
+            var dataToken = sessionStorage.token;
+            var data = {
+                token:dataToken,
+                perPage:this.perPage,
+                page:this.currentPage
+            }
+            this.$http({
+                url:"order/sale/done",
+                method:"GET",
+                params:data
+            }).then(function(response){
+               var declareList = response.body.data.list;
+               this.declareList = this.declareList.concat(declareList);
+
+                if (!this.declareList.length) {
+                    this.showNoDataVal = true;
+                }else{
+                    this.showNoDataVal = false;
+                }
+
+                this.currentPage = response.body.data.page.currentPage;
+                this.lastPage = response.body.data.page.lastPage;
+                this.hideLoading();
+                this.preventRepeatReuqest = false;
+                if (this.currentPage == this.lastPage) {
+                    this.touchend = true;
+                    return;
+                }
+            }).catch(function(error){
+                console.log("请求失败");
+                console.log(error);
+            })
         }
+
+
     },
     mounted(){
         //组件初始化完成需要做点什么
-        var dataToken = sessionStorage.token;
-        var data = {
-            token:dataToken,
-            perPage:10,
-            page:1
+        this.getSoldCarData();
+    },
+
+    watch:{
+        $route(){
+            this.getSoldCarData();
         }
-
-        //把时间戳换成时间格式
-        function getLocalTime(timestamp) {
-            return new Date(parseInt(timestamp) * 1000).toLocaleString().substr(0,17)
-        }
-
-
-        //售车申报
-        this.$http({
-            url:"order/sale/done",
-            method:"GET",
-            params:data
-        }).then(function(response){
-            console.log(response);
-            this.declareList = response.body.data.list;
-        }).catch(function(error){
-            console.log("请求失败");
-            console.log(error);
-        })
     }
+
     }
 </script>
 <style>
@@ -120,4 +178,18 @@
     .visib-109{
         height:1.453333rem;
     }
+    .loading-enter-active, .loading-leave-active {
+        transition: opacity 1s
+    }
+    .loading-enter, .loading-leave-active {
+        opacity: 0
+    }
+    .empty_data{
+        color:#666;
+        text-align: center;
+        line-height: 2rem;
+    }
+    .no-auto{padding-top:3.867rem;background-color:#fff;}
+    .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+    .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>

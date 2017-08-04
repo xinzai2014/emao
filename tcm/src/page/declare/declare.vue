@@ -9,7 +9,7 @@
         </header>
         <!--售车申报-->
         <section class="sales-wrap" v-if="declareList.length">
-            <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore"  infinite-scroll-disabled="preventRepeatReuqest">
+            <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore"  infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
                 <div class="sales-item" v-for="(item,index) in declareList">
                     <h3>{{item.serie_name}} {{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
@@ -26,6 +26,10 @@
             <p v-if="touchend" class="empty_data">没有更多了</p>
         </section>
         <p class="visib-109"></p>
+
+        <section class="no-auto server-no-response" v-if="showNoDataVal">
+            <p>暂无待申报车辆信息</p>
+        </section>
 
         <transition name="fade">
             <router-view></router-view>
@@ -46,7 +50,8 @@
                 preventRepeatReuqest:false,
                 showLoading: true,
                 declareList:[],
-                add_order_time:''
+                add_order_time:'',
+                showNoDataVal:false
             }
         },
         methods:{
@@ -86,12 +91,17 @@
                         declareList[i].add_order_time = this.getLocalTime(declareList[i].add_time);
                     };
                     this.declareList = this.declareList.concat(declareList);
+                    if (!this.declareList.length) {
+                        this.showNoDataVal = true;
+                    }else{
+                        this.showNoDataVal = false;
+                    }
                     this.current_page = response.body.data.page.current_page;
                     this.last_page = response.body.data.page.last_page;
                     this.per_page = response.body.data.page.per_page;
                     this.hideLoading();
                     this.preventRepeatReuqest = false;
-                    if (this.current_page == this.last_page && this.last_page != 1 ) {
+                    if (this.current_page == this.last_page || this.last_page == 1 ) {
                         this.touchend = true;
                         return
                     }
@@ -199,4 +209,14 @@
         text-align: center;
         line-height: 2rem;
     }
+
+    .no-auto{background-color: #fff;
+        text-align: center;
+        font-size: 0.453333rem;
+        padding: 4.0rem 0;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        height: 100%;}
+    .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>
