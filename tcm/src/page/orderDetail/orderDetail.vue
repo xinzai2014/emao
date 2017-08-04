@@ -91,7 +91,7 @@
           'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
           </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
-          <div class="remits-fixed active" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
+          <div class="remits-fixed" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
       </section>
       <div class="mask" v-show="pop">
         <div class="cancel-car">
