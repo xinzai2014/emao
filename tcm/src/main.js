@@ -9,8 +9,18 @@ import InfiniteScroll from 'vue-infinite-scroll';
 Vue.use(InfiniteScroll);
 
 //表单验证元素
-import Validator  from 'vee-validate';
-Vue.use(Validator);
+import zh_CN from 'vee-validate/dist/locale/zh_CN';
+import VeeValidate, { Validator } from 'vee-validate';
+
+Validator.addLocale(zh_CN);
+Vue.use(VeeValidate, {
+	locale:'zh_CN'
+});
+
+
+
+
+
 
 //自定义电话号码验证规则
 // Validator.extend('mobile', {

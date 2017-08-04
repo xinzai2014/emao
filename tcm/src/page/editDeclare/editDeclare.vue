@@ -14,19 +14,43 @@
                 <p class="sales-color">{{orderInfo.color}}</p>
                 <p class="submit-number">VIN：{{orderInfo.vinNumber}}</p>
             </div>
+
+
             <div class="submit-info">
                 <div class="user-info">
-                    客户姓名：<input type="text" placeholder="请填写买车用户姓名" v-model="dealerNameVal">
+                    <div class="left">客户姓名：</div>
+                    <div class="right">
+                        <input type="text" v-validate="'name'" :class="{'input':true,'is-danger':errors.has('name')}" name="name" placeholder="请填写买车用户姓名" v-model="dealerNameVal">
+                        <span v-show="errors.has('name')" class="help is-danger">{{errors.first('name')}}</span>
+                    </div>
                 </div>
+
                 <div class="user-info">
-                    客户电话：<input type="text" placeholder="请输入手机号码" v-model="dealerPhoneVal">
+                    <div class="left">客户电话：</div>
+                    <div class="right">
+                        <input type="text" v-validate="'mobile'" :class="{'input':true,'is-danger':errors.has('mobile')}" name="mobile" placeholder="请输入手机号码" v-model="dealerPhoneVal">
+                        <span v-show="errors.has('mobile')" class="help is-danger">{{errors.first('mobile')}}</span>
+                    </div>
                 </div>
+
                 <div class="user-info">
-                    身份证号：<input type="text" placeholder="请输入有效的身份证号码" v-model="dealerIDNumberVal">
+                    <div class="left">身份证号：</div>
+                    <div class="right">
+                        <input type="text" v-validate="'IDNumber'" :class="{'input':true,'is-danger':errors.has('IDNumber')}" name="IDNumber" placeholder="请输入有效的身份证号码" v-model="dealerIDNumberVal">
+                        <span v-show="errors.has('IDNumber')" class="help is-danger">{{errors.first('IDNumber')}}</span>
+                    </div>
                 </div>
+
                 <div class="user-info">
-                    电子邮箱：<input type="text" placeholder="请输于邮箱地址" v-model="dealerEmailVal">
+                    <div class="left">电子邮箱：</div>
+                    <div class="right">
+                        <input type="text" v-validate="'email'" :class="{'input':true,'is-danger':errors.has('email')}" name="email" placeholder="请输于邮箱地址" v-model="dealerEmailVal">
+                        <span v-show="errors.has('email')" class="help is-danger">{{errors.first('email')}}</span>
+                    </div>
                 </div>
+
+
+
             </div>
             <div class="submit-info">
                 <div class="user-info">
@@ -54,18 +78,21 @@
 
                 </div>
                 <div class="close-bt-out">
-                    <button class="close-bt" @click="submitData">提交</button>
+                    <button class="close-bt" @click="submitData" type="submit">提交</button>
                     <p class="error-tips">{{errorTips}}</p>
                 </div>
 
             </div>
+
+
+
         </section>
 
     </div>
 </template>
 
 <script>
-    import uploader from '../../components/common/uploader/uploader'
+    import uploader from '../../components/common/uploader/uploader';
     export default{
         name:"editDeclare",
         data(){
@@ -78,6 +105,10 @@
             goodsStockId:'',
             vinNum:'',
             errorTips:'',
+            name:'',
+            mobile:'',
+            IDNumber:'',
+            email:'',
             declareList:[],
             orderInfo : {},
 
@@ -104,7 +135,6 @@
             dataURL:{},
 
             formData:{
-                //token:"02fb128629f0bdb87489a18be9fdd289",
                 token:sessionStorage.token,
                 order_num:'',
                 goods_stock_id:'',
@@ -167,6 +197,10 @@
             this.formData.driving_license_img = this.getFileURL('dealerIDNumber');
             this.formData.invoice_img = this.getFileURL('dealerEmail');
 
+            if ( this.errors.length == 0 && this.vinNum ) {
+                alert(1)
+            }
+
 
             this.$http.post("order/sale/info",this.formData).then(function(response){
                 console.log(response);
@@ -178,11 +212,76 @@
             })
         }
 
+
+
+
+
     },
     mounted(){
         this.orderId = this.$route.params.id;
         this.goodsStockId = this.$route.query.goods_stock_id;
         this.getData();
+
+        // 自定义内置规则的错误信息
+        const dictionary = {
+            'zh_CN': {
+                messages: {
+                    email: function (field, args) {
+                        return '电子邮箱不正确';
+                    }
+                }
+            }
+        };
+        this.$validator.updateDictionary(dictionary);
+
+
+        //自定义验证规则
+        //手机号定义
+        const isMobile = {
+            messages: {
+                'zh_CN': function (field, args) {
+                    return  '电话号不正确';
+                }
+            },
+            validate: function (value, args) {
+                return value.length == 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)
+            }
+        };
+        this.$validator.extend('mobile', isMobile);
+
+
+
+        //姓名定义
+        const isName = {
+            messages: {
+                'zh_CN': function (field, args) {
+                    return  '姓名不正确';
+                }
+            },
+            validate: function (value, args) {
+                return /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/.test(value)
+            }
+        };
+        this.$validator.extend('name', isName);
+
+
+        //身份证号码定义
+        const isIDNumber = {
+            messages: {
+                'zh_CN': function (field, args) {
+                    return  '身份证号不正确';
+                }
+            },
+            validate: function (value, args) {
+                return /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value)
+            }
+        };
+        this.$validator.extend('IDNumber', isIDNumber);
+
+
+
+
+
 
     },
     components:{
@@ -230,7 +329,11 @@
         border-bottom:1px solid #eee;
         font-size:0.4rem;
         color:#2c2c2c;
+        overflow:hidden;
     }
+    .user-info .left{float:left;width:2.1333rem;}
+    .user-info .right{float:left;width:7.0667rem;}
+    .user-info .right span{position:relative;bottom:-.1333rem;left: 0.266667rem;color:red;font-size:.2933rem;}
     .user-info input{
         display:inline-block;
         width:6.866667rem;
