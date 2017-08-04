@@ -18,7 +18,7 @@
                           <p class="state-time">剩余：{{item.remaining}}自动取消</p>
                       </div>
                       <div class="state-rt" v-if="item.status=='7'">
-                        <router-link to="">提交汇款凭证</router-link>
+                        <router-link to="/paymentSubmit">提交汇款凭证</router-link>
                       </div>
                   </div>
                 </router-link>
@@ -90,7 +90,8 @@ export default {
             case '7' : 
                 arr[i].state='待付款';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime==''){
-                    arr[i].status=6;
+                    //arr[i].status=6;
+                    //arr[i].status='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime||0;
                     arr[i].remaining=this.remaining;

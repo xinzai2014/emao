@@ -31,22 +31,12 @@
 	            params:data
 	        }).then(function (response) {
 	            sessionStorage.dataToken = response.body.data.dataToken;
-	            //this.$router.push('/login/account'); //路由跳转
+	            this.$router.push('/login/account'); //路由跳转
 	            //this.$router.push('/index'); //路由跳转
 	          }).catch(function (error) {
 	          	console.log(error);
 	            console.log("登录失败了");
 	          });
-
-	    	setTimeout(()=>{
-	    		var token = "02fb128629f0bdb87489a18be9fdd289";
-	    		sessionStorage.token = token;
-	            // if(token){
-	            // 	this.$router.push('/index'); 
-	            // }else{
-	            // 	this.$router.push('/login/account');
-	            // }
-	    	},0)
 	  	}
 	}
 

@@ -86,9 +86,12 @@
               <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" @click="" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="confirmCar">提交汇款凭证</div>
+          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
+              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
+          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
+          </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
-          <div class="remits-fixed active" v-if="orderInfo.status=='4'" >确认收货</div>
+          <div class="remits-fixed" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
       </section>
       <div class="mask" v-show="pop">
         <div class="cancel-car">
@@ -263,8 +266,8 @@ export default {
           case '7' : 
               obj.state='等待付款';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=6;
+                  //obj.state='已取消';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
@@ -274,8 +277,8 @@ export default {
           case '27' : 
               obj.state='请重新提交';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=6;
+                  //obj.state='已取消';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
@@ -297,8 +300,8 @@ export default {
           case '4' : 
               obj.state='车辆在途';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
-                  obj.status=6;
-                  obj.state='已取消';
+                  //obj.status=5;
+                  //obj.state='交易完成';
               }else{
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
@@ -377,6 +380,17 @@ export default {
         return  time;
       }   
 
+  },
+  beforeRouteLeave(to, from, next){
+    next(vm => {
+      /*if(to.name=='paymentSubmit'){
+        to.query={
+          'price':vm.orderInfo.price,
+          'remark':vm.orderInfo.remark
+         }
+         console.log(to);
+      }*/
+    });
   }
 
 }
@@ -530,6 +544,7 @@ export default {
 }
 .send-to span{
   width:6.333333rem;
+  line-height: 0.65rem;
 }
 .send-to p.send-phone{
   font-size:0.453333rem;
@@ -662,5 +677,8 @@ export default {
   text-align:center;
   line-height:1.173333rem;
   background:#d6ab55;
+}
+.remits-fixed a{
+  color:white;
 }
 </style>

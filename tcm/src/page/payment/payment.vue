@@ -4,7 +4,7 @@
         <header class="user-tit">
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>汇款凭证
         </header>
-        <section class="voucher-ct" v-if="editData.bank_info.account_type==1">
+        <section class="voucher-ct" v-if="type==1">
           <div class="voucher-item">
               <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
               <p><span>{{editData.bank_info.pay_company}}</span>汇款单位：</p>
@@ -21,10 +21,13 @@
                   <div class="voucher-lt">
                       <img :src="editData.payimg">
                   </div>
+                  <div class="voucher-lt" v-if="editData.payimg2">
+                      <img :src="editData.payimg2">
+                  </div>
               </div>
           </div>
       </section>
-      <section class="voucher-ct" v-if="editData.bank_info.account_type==2">
+      <section class="voucher-ct" v-if="type==2">
           <div class="voucher-item">
               <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
               <p><span>{{editData.bank_info.name}}</span>姓名：</p>
@@ -41,9 +44,13 @@
                   <div class="voucher-lt">
                       <img :src="editData.payimg">
                   </div>
-                  <div class="voucher-lt">
-                    <img src="../../assets/up-bg1.jpg">
+                   <div class="voucher-lt">
+                    <img :src="editData.bank_info.explan_path">
                 </div>
+                  <div class="voucher-lt">
+                      <img :src="editData.payimg2" v-if="editData.payimg2">
+                  </div>
+                 
               </div>
           </div>
       </section>
@@ -55,8 +62,8 @@
 export default {
   data () {
     return {
-      type:null,
       editData:{},
+      type:null
     }
   },
   methods:{
@@ -77,13 +84,15 @@ export default {
           params:data
         })
         .then(function (response) {
-            this.editData = response.body.data;
-            this.type = response.body.data.bank_info.account_type;
+            var editData=response.body.data;
+            var type = response.body.data.bank_info.account_type;
+            this.type=type;
             if(this.type == 1){
-              this.editData.account_type = '公司账户'
+              editData.account_type = '公司账户'
             }else{
-              this.editData.account_type = '个人账户'
+              editData.account_type = '个人账户'
             }
+            this.editData = editData; 
         }).catch(function (error) {
             console.log("请求失败了");
         });
@@ -130,11 +139,13 @@ export default {
   padding:0 0.4rem 0.533333rem 0.4rem;
 }
 .voucher-lt{
+
   width:3.666667rem;
   height:2.8rem;
   overflow:hidden;
   float:left;
   margin:0 0.466667rem;
+  margin-bottom: 0.4rem;
 }
 .voucher-lt img{
   width:100%;

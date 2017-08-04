@@ -13,17 +13,18 @@
 		                    <input type="radio" class="weui-check" :id="item.id" name="radio">
 		                    <i class="weui-icon-checked"></i>
 		                </div>
-						<div class="info-box">
-							<p class="addres-info">{{item.name}}<span>{{item.phone}}</span></p>
-							<p class="addres-add">地址：{{item.address}}</p>
-							<p class="addres-btn">
-								<router-link :to="{name:'addressEdit',params:{id:item.id}}">
-									<i class="edit">编辑</i>
-								</router-link>
-						        <i class="del" @click="remove(item,index)">删除</i>
-							</p>
-						</div>
-					</label>
+		            </label>
+					<div class="info-box">
+						<p class="addres-info">{{item.name}}<span>{{item.phone}}</span></p>
+						<p class="addres-add">地址：{{item.address}}</p>
+						<p class="addres-btn">
+							<router-link :to="{name:'addressEdit',params:{id:item.id}}">
+								<i class="edit">编辑</i>
+							</router-link>
+					        <i class="del" @click="remove(item,index)">删除</i>
+						</p>
+					</div>
+					
 				</div>
 			</div>	
 		</section>
@@ -169,7 +170,7 @@
 .weui-icon-checked:before {
     content: '\EA01';
     color: #C9C9C9;
-    font-size: 23px;
+    font-size: 0.54rem;
     display: block;
 }
 .weui-cell__hd {

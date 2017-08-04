@@ -18,13 +18,13 @@
                           <p class="state-time">剩余：{{item.remaining}}自动取消</p>
                       </div>
                       <div class="state-rt" v-if="item.status=='7'||item.status=='27'">
-                        <router-link to="">提交汇款凭证</router-link>
+                        提交汇款凭证
                       </div>
                       <div class="state-rt active" v-if="item.status=='8'">
                         提交汇款凭证
                       </div>
                       <div class="state-rt" v-if="item.status=='4'">
-                        <router-link to="">确认收货</router-link>
+                        确认收货<router-link to=""></router-link>
                       </div>
                   </div>
                 </router-link>
@@ -96,8 +96,8 @@ export default {
             case '7' : 
                 arr[i].state='待付款';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
-                    arr[i].status=6;
-                    arr[i].state='已取消';
+                    //arr[i].status=6;
+                    //arr[i].state='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime;
                     arr[i].remaining=this.remaining;
@@ -107,8 +107,8 @@ export default {
             case '27' : 
                 arr[i].state='请重新提交';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
-                    arr[i].status=6;
-                    arr[i].state='已取消';
+                    //arr[i].status=6;
+                    //arr[i].state='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime;
                     arr[i].remaining=this.remaining;  

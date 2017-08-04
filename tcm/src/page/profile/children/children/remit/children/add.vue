@@ -43,24 +43,21 @@
                     </div>
                     <div class="payment-up">
                         <p class="payment-up-tit">代付款说明</p>
-                        <div class="payment-lt">
-                            <div class="payment-img"><img src="../../../../../../assets/up-bg.jpg"></div>
-                            <p class="up-btn">上传</p>
-                            <input type="hidden" v-model="personData.account" >
-                        </div>
-                        <div class="payment-rt">
-                            <div class="payment-img"><img src="../../../../../../assets/up-bg1.jpg"></div>
-                        </div>
+                        <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>              
                     </div>
                     <button class="close-bt" @click="submitPerson">保存并使用</button>
                 </div>
             </div>
         </section>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+    import alertTip from '../../../../../../components/common/alertTip/alertTip'
+    import uploader from '../../../../../../components/common/uploader/uploader'
     export default {
+        name:'auth',
         data () {
             return {
                 //初始数据结构
@@ -68,16 +65,24 @@
                     token:sessionStorage.getItem('token'),
                     pay_company:'',//汇款单位
                     bank_name:'',//账户名称
-                    account:'',//账号
+                    account:''//账号
                 },
                 personData:{
                     token:sessionStorage.getItem('token'),
                     name:'',//个人名称
                     bank_name:'',//账户名称
                     account:'',//账号
-                    explan_path:'String' //待付款说明图片
+                    explan_path:'' //待付款说明图片
                 },
                 accountType:true, //切换显示
+                uploadData1:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,
+                    flag:"door"
+                },
+                dataURL:{},
+                showAlert: false, //弹出框
+                alertText: null, //弹出信息
             }
         },
         methods:{
@@ -93,6 +98,27 @@
                 }
             },
             submitAcount(){//公司账户
+                var reg = /^[0-9]*$/;
+                if(!this.acountData.pay_company){
+                    this.showAlert = true;
+                    this.alertText = '汇款单位不能为空！';
+                    return;
+                }
+                if(!this.acountData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '开户行不能为空！';
+                    return;
+                }
+                if(!this.acountData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.acountData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
                 this.$http.post("dealerBank/createBank",this.acountData
                 ).then(function (response) {
                     this.$set(this.acountData,{});
@@ -101,20 +127,55 @@
                     console.log("请求失败了");
                 });
             },
+            getUpload(data,flag){
+                this.dataURL[flag] = data;
+                this.personData.explan_path = data[0];
+            },
             submitPerson(){//个人账户
+                var reg = /^[0-9]*$/;
+                if(!this.personData.name){
+                    this.showAlert = true;
+                    this.alertText = '姓名不能为空！';
+                    return;
+                }
+                if(!this.personData.bank_name){
+                    this.showAlert = true;
+                    this.alertText = '银行不能为空！';
+                    return;
+                }
+                if(!this.personData.account){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户不能为空！';
+                    return;
+                }
+                if(!reg.test(this.personData.account)){
+                    this.showAlert = true;
+                    this.alertText = '汇款账户只能是数字！';
+                    return;
+                }
+                if(!this.personData.explan_path){
+                    this.showAlert = true;
+                    this.alertText = '请提交待付款说明！';
+                    return;
+                }
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
-                    this.$set(this.acountData,{});
+                    this.$set(this.personData,{});
                     this.resetIndex();
                 }).catch(function (error) {
                     console.log("请求失败了");
                 });
-            }
+            }        
         },
         mounted(){
-        //组件初始完成需要做什么
+        //组件初始完成
             
+        },
+        components:{
+            uploader,
+            alertTip
         }
+
     }   
 </script>
 
@@ -157,36 +218,21 @@
     background:#fff;
     overflow:hidden;
 }
-.payment-lt{
-    height:4.8rem;
-    width:3.666667rem;
-    float:left;
-    margin:0 1.04rem 0 0.8rem;
-}
-.payment-img{
-    width:3.666667rem;
-    height:2.773333rem;
-    overflow:hidden;
-}
-.payment-img img{
-    width:100%;
-    height:100%;
-}
-.up-btn{
-    width:2.64rem;
-    height:1.053333rem;
-    line-height:1.053333rem;
-    border:1px solid #d6ab55;
-    border-radius:0.533333rem;
-    font-size:0.373333rem;
-    color:#bb8800;
-    margin:0.4rem 0;
-    text-align:center;
-}
-.payment-rt{
-    float:left;
-    width:3.666667rem;
-    height:2.773333rem;
-}
 
+.submit-lt{
+    margin-left:0.8rem !important;
+}
+.layer{
+    line-height:0.8rem;
+    height:0.8rem;
+    width:5.333333rem;
+    font-size:0.32rem;
+    color:#fff;
+    text-align:center;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    bottom:0.4rem;
+    left:50%;
+    margin-left:-2.666667rem;
+}
 </style>
