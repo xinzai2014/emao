@@ -15,15 +15,17 @@
                 <label>公司名称：</label>
                 <input type="text"  v-model="companyName" ref="companyName">
             </p>
-            <p>
+            <p @click="getDialogCity">
                 <i class="yellow-rt"></i><label>所在区域：</label>
                 <input type="text"  v-model="location" ref="location">
             </p>
             <p>
+                <label>详细地址：</label>
+                <input type="text"  v-model="address" ref="address">
+            </p>
+            <p>
                 <label>主营类型：</label>
-                <span>自主</span>
-                <span>合资</span>
-                <span>豪华</span>
+                <span @click="setActive(index)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
             </p>
         </div>
         <div class="authen-img">
@@ -42,7 +44,7 @@
             </div>
             <div class="user-info">
                 <p class="user-info-tit">手持身份证反面照</p>
-                <uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
+                <uploader :uploadData="uploadData4" @getUpload="getUpload"></uploader>
             </div>
             <div class="user-info">
                 <p class="user-info-tit">营业执照</p>
@@ -52,7 +54,7 @@
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">提交</div>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
-        <city :cityData="cityData" v-if="cityData.length>0"></city>
+        <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
     </section>
 </template>
 <script>
@@ -66,7 +68,13 @@
                 username:"",
                 companyName:"",
                 location:"",
-                types:[],
+                address:"",
+                types:"",
+                booth_out_img:null, //展厅门头图片地址
+                booth_in_img:null, //展厅内部图片地址
+                id_card_front:null, //手持身份证正面
+                id_card_back:null, //手持身份证反面
+                business:null, //营业执照图片
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
@@ -99,41 +107,127 @@
                 },
                 dataURL:{},
                 cityData:[],
+                showCity:false,
                 showAlert:false,  //错误弹出窗
-                alertText:null //错误提醒信息
+                alertText:null, //错误提醒信息,
+                postCityData:null, //城市提交数据
+                manageType:[
+                    {
+                        flag:false,
+                        name:"国产"
+                    },
+                    {
+                        flag:false,
+                        name:"合资"
+                    },
+                    {
+                        flag:false,
+                        name:"豪华"
+                    }
+                ]
             }
         },
         methods:{
+            getDialogCity(){
+                this.showCity = true;
+            },
+            closeDialogCity(postData){
+                if(arguments.length == 0){ //无回传数据
+                    this.showCity = false;
+                }else{
+                    this.postCityData = postData;
+                    this.location = postData.provinceData["name"] + postData.cityData["name"]+postData.areaData["name"]
+                };
+            },
+            setActive(index){ //主营类型
+                var that = this;
+                this.manageType[index]["flag"] = !this.manageType[index]["flag"];
+                this.types = "";
+                this.manageType.forEach(function(item,index){
+                    if(item.flag == true){
+                        that.types += index.toString() + ","
+                    }
+                })
+            },
             getCity(){
                 this.$http.get(
                     "area?token=" + sessionStorage.token
                     ).then(function(reponse){
                         this.cityData = reponse.body.data;
-                        console.log(this.cityData);
-                        console.log(reponse);
                     },function(error){
 
                     })
             },
             getUpload(data,flag){
                 this.dataURL[flag] = data;
+                for(flag in this.dataURL){
+                    switch (flag)
+                    {
+                        case "signboard":
+                            this.booth_out_img = this.dataURL[flag][0];
+                            break;
+                        case "inside":
+                            this.booth_in_img = this.dataURL[flag][0]
+                            break; 
+                        case "identity":
+                            this.id_card_front = this.dataURL[flag][0] 
+                            break;
+                        case "identityPos":
+                            this.id_card_back = this.dataURL[flag][0] 
+                            break;
+                        case "licenseRev":
+                            this.business = this.dataURL[flag][0] 
+                            break;
+                    }
+                }
             },
             checkFormData(){
-                if((this.username == "")||(this.username = null)){
-                    this.showError("请填写用户名");
+                if((this.username == "")||(this.username == null)){
+                    this.showError("您有姓名信息没有填写");
                     this.$refs.username.focus();
                     return false
                 }
-                if((this.companyName == "")||(this.companyName = null)){
+                if((this.companyName == "")||(this.companyName == null)){
                     this.showError("请填写公司名称");
                     this.$refs.companyName.focus();
                     return false
                 }
-                if((this.location == "")||(this.location = null)){
+                if((this.location == "")||(this.location == null)){
                     this.showError("请填写所在区域");
                     this.$refs.location.focus();
                     return false
                 }
+                if((this.address == "")||(this.address == null)){
+                    this.showError("请填写详细地址");
+                    this.$refs.address.focus();
+                    return false
+                }
+                if((this.types == "")||(this.types == null)){
+                    this.showError("请填写主营类型");
+                    return false
+                }
+                if((this.booth_out_img == "")||(this.booth_out_img == null)){
+                    this.showError("展厅门头照片不能为空");
+                    return false
+                }
+                if((this.booth_in_img == "")||(this.booth_in_img == null)){
+                    this.showError("展厅内部图片不能为空");
+                    return false
+                }
+                if((this.id_card_front == "")||(this.id_card_front == null)){
+                    this.showError("持身份证正面不能为空");
+                    return false
+                }
+                if((this.id_card_back == "")||(this.id_card_back == null)){
+                    this.showError("手持身份证反面不能为空");
+                    return false
+                }
+                if((this.business == "")||(this.business == null)){
+                    this.showError("营业执照图片不能为空");
+                    return false
+                }
+                this.submitFormData();
+                console.log(this.dataURL);
             },
             showError(errorMsg){
                 this.showAlert = true;
@@ -141,25 +235,27 @@
             },
             submitFormData(){
                 this.$http.post(
-                    "dealer/auth",
+                    "dealer/auth?token=" + sessionStorage.token,
                     {
-                        link_name:"", 
-                        name:"",
-                        province_id:"",
-                        city_id:"",
-                        district_id:"",
-                        address:"",
-                        activities:"",
-                        booth_out_img:"",
-                        booth_in_img:"",
-                        id_card_front:"",
-                        id_card_back:"",
-                        business:"",
+                        link_name:this.username, 
+                        name:this.companyName,
+                        province_id:this.postCityData.provinceData.id,
+                        city_id:this.postCityData.cityData.id,
+                        district_id:this.postCityData.areaData.id,
+                        address:this.address,
+                        activities:this.types,
+                        booth_out_img:this.booth_out_img,
+                        booth_in_img:this.booth_in_img,
+                        id_card_front:this.id_card_front,
+                        id_card_back:this.id_card_back,
+                        business:this.business
                     }
                 ).then(function(reponse){
-
-                },function(){
-
+                    if(reponse.body.code == 200){
+                        console.log("正在认证");
+                    }
+                },function(err){
+                    console.log(err);
                 })
             }
         },
@@ -239,10 +335,13 @@
     text-align:center;
     line-height:0.8rem;
     border-radius:0.133333rem;
-}
-.authen-info p span.active{
     color:#d6ab55;
     border:1px solid #d6ab55;
+}
+.authen-info p span.active{
+    background:#d6ab55;
+    color:#fff;
+    
 }
 
 /*资料*/
@@ -263,9 +362,6 @@
 .submit-tit{
     font-size:0.506667rem;
 }
-
-
-
 
 </style>
 
