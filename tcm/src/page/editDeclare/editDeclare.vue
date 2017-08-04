@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height:100%;">
         <!--头部-->
         <header class="user-tit">
             <router-link to="/declare">
@@ -14,7 +14,6 @@
                 <p class="sales-color">{{orderInfo.color}}</p>
                 <p class="submit-number">VIN：{{orderInfo.vinNumber}}</p>
             </div>
-
 
             <div class="submit-info">
                 <div class="user-info">
@@ -44,7 +43,7 @@
                 <div class="user-info">
                     <div class="left">电子邮箱：</div>
                     <div class="right">
-                        <input type="text" v-validate="'email'" :class="{'input':true,'is-danger':errors.has('email')}" name="email" placeholder="请输于邮箱地址" v-model="dealerEmailVal">
+                        <input type="text" v-validate="'email'" :class="{'input':true,'is-danger':errors.has('email')}" name="email" placeholder="请输入邮箱地址" v-model="dealerEmailVal">
                         <span v-show="errors.has('email')" class="help is-danger">{{errors.first('email')}}</span>
                     </div>
                 </div>
@@ -59,8 +58,6 @@
                 <div class="user-info">
                     <p class="user-info-tit">身份证正面照片</p>
                     <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
-
-
                 </div>
                 <div class="user-info">
                     <p class="user-info-tit">身份证背面照片</p>
@@ -77,22 +74,22 @@
                     <uploader :uploadData="uploadData4" @getUpload="getUpload"></uploader>
 
                 </div>
-                <div class="close-bt-out">
-                    <button class="close-bt" @click="submitData" type="submit">提交</button>
-                    <p class="error-tips">{{errorTips}}</p>
-                </div>
-
             </div>
 
-
-
+            <div class="close-bt-out">
+                <button class="close-bt" @click="submitData" type="submit">提交</button>
+                <p class="error-tips">{{errorTips}}</p>
+            </div>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
 </template>
 
 <script>
     import uploader from '../../components/common/uploader/uploader';
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         name:"editDeclare",
         data(){
@@ -109,29 +106,33 @@
             mobile:'',
             IDNumber:'',
             email:'',
+            showAlert:false,
+            alertText:null,
             declareList:[],
             orderInfo : {},
 
             uploadData1:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"dealerName"
+                flag:"frontOfIDCard"
             },
             uploadData2:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"dealerPhone"
+                flag:"backOfIDCard"
             },
             uploadData3:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"dealerIDNumber"
+                flag:"invoiceForCarPurchase"
             },
             uploadData4:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"dealerEmail"
+                flag:"drivingLicense"
             },
+
+
             dataURL:{},
 
             formData:{
@@ -184,6 +185,56 @@
 
 
         submitData(){
+
+            if (!this.dealerNameVal) {
+                this.showAlert = true;
+                this.alertText = '请填写买车用户姓名';
+                return ;
+            }
+
+            if (!this.dealerPhoneVal) {
+                this.showAlert = true;
+                this.alertText = '请输入手机号';
+                return ;
+            }
+
+            if (!this.dealerIDNumberVal) {
+                this.showAlert = true;
+                this.alertText = '请输入有效的身份证号码';
+                return ;
+            }
+
+            if (!this.dealerEmailVal) {
+                this.showAlert = true;
+                this.alertText = '请输入邮箱地址';
+                return ;
+            }
+
+            if (!this.dataURL.frontOfIDCard) {
+                this.showAlert = true;
+                this.alertText = '请上传身份证正面照片';
+                return ;
+            }
+
+            if (!this.dataURL.backOfIDCard) {
+                this.showAlert = true;
+                this.alertText = '请上传身份证背面照片';
+                return ;
+            }
+
+            if (!this.dataURL.invoiceForCarPurchase) {
+                this.showAlert = true;
+                this.alertText = '请上传购车发票';
+                return ;
+            }
+
+            if (!this.dataURL.drivingLicense) {
+                this.showAlert = true;
+                this.alertText = '请上传行驶证照片';
+                return ;
+            }
+
+
             this.formData.order_num = this.vinNum;
             this.formData.goods_stock_id = this.goodsStockId;
             this.formData.name = this.dealerNameVal;
@@ -192,14 +243,10 @@
             this.formData.email = this.dealerEmailVal;
 
 
-            this.formData.idcard_img_front = this.getFileURL('dealerName');
-            this.formData.idcard_img_reverse = this.getFileURL('dealerPhone');
-            this.formData.driving_license_img = this.getFileURL('dealerIDNumber');
-            this.formData.invoice_img = this.getFileURL('dealerEmail');
-
-            if ( this.errors.length == 0 && this.vinNum ) {
-                alert(1)
-            }
+            this.formData.idcard_img_front = this.getFileURL('frontOfIDCard');
+            this.formData.idcard_img_reverse = this.getFileURL('backOfIDCard');
+            this.formData.driving_license_img = this.getFileURL('invoiceForCarPurchase');
+            this.formData.invoice_img = this.getFileURL('drivingLicense');
 
 
             this.$http.post("order/sale/info",this.formData).then(function(response){
@@ -285,7 +332,8 @@
 
     },
     components:{
-        uploader
+        uploader,
+        alertTip
     }
 
 
