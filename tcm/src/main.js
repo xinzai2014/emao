@@ -129,11 +129,28 @@ Vue.directive('load-more',{
 
 })
 
+Vue.http.interceptors.push(function(request,next){
+	obj.showLoading = true;
+    next(function (response) {
+        obj.showLoading = false; 
+        return response;
+    })
+})
+
 /* eslint-disable no-new */
-new Vue({
+var obj = new Vue({
   el: '#app',          //vue实例挂载点
+  data:{
+  	showLoading : false
+  },
   router,              //路由配置对象
   render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
 // template: '<App/>',
   components: { App }  //全局组件
+
+  /*watch:{
+    showLoading(){
+      alert('ok');
+    }
+  }*/
 })

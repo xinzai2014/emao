@@ -57,6 +57,7 @@ html,body{
 	border-radius:0.586667rem;
 	border:none;
 	display:block;
+	cursor:pointer;
 }
 
 /*头部*/

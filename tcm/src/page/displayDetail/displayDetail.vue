@@ -101,6 +101,7 @@
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
+		        <div class="remits-fixed" v-if="orderInfo.status == '5'">{{btnText}}</div>
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
 		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
 	              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
@@ -257,6 +258,7 @@
 	                this.payment = '未支付';
 	                this.paymentActive = !this.paymentActive;
             		this.timeShow = !this.timeShow;
+            		this.btmBtn = !this.btmBtn;
             		this.btnText = '确认收货'
             	}else if(item.status == 5){
             		this.statusText = '展车在展';
@@ -340,16 +342,13 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	            	this.receiptData = response.body.data;
-	                console.log(this.receiptData)
 	            }).catch(function (error) {
 	                console.log("请求失败了");
 	            });
             },
             receiptStatus(){
             	this.receiptShow = !this.receiptShow;
-            	console.log(this.receiptData.id);
             	var data = {
 	                token:this.Token,
 	                goods_stock_id:this.receiptData.id
@@ -358,6 +357,7 @@
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
+	            	this.fullData();
 	            }).catch(function (error) {
 	                console.log("请求失败了");
 	            });
@@ -417,13 +417,13 @@
 	          	}
 	          	return hours + '小时' + minutes + '分钟';
 	      	}        
-	  	}/*,
+	  	},
 	  	watch:{ 
 		    $route(){
 		        this.showData();
 		    }
 		}
-*/
+
 
     }   
 </script>

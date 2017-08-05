@@ -3,12 +3,28 @@
   	<transition name="fade">
     	<router-view></router-view>
     </transition>
+    <loader v-show="this.$root.showLoading"></loader>
   </div>
 </template>
 
 <script>
+import loader from './components/common/loader/loader'
+
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return{
+     // showLoad:this.$root.showLoading
+    }
+  },
+  mounted(){
+    //console.log();
+  },
+
+  components:{
+      loader
+  }
+
 }
 </script>
 
