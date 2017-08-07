@@ -20,12 +20,13 @@
                     </p>
                 </div>
             </div>
+            <p class="visib-109"></p>
             <transition name="loading">
                 <div v-show="showLoading">正在加载中</div>
             </transition>
             <p v-if="touchend" class="empty_data">没有更多了</p>
         </section>
-        <p class="visib-109"></p>
+
 
         <section class="no-auto server-no-response" v-if="showNoDataVal">
             <p>暂无待申报车辆信息</p>
@@ -76,6 +77,7 @@
             //获取售车申报数据
             getDeclaerData(){
                 var dataToken = sessionStorage.token;
+                //var dataToken = 'bbe214ab570d81dc8b1b6589d86e13d9';
                 var data = {
                     token:dataToken,
                     perPage:this.per_page,
