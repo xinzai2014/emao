@@ -39,7 +39,6 @@ Vue.http.headers.common = {
 };
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
-
 //页面公用元素
 import '../plugins/flexible.js'
 import '../style/reset.css';

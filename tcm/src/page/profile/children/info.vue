@@ -20,7 +20,7 @@
             </router-link>
             <div><i class="yellow-rt"></i>设置密码</div>
             <div><i class="yellow-rt"></i>设置</div>
-            <button class="close-bt">退出登录</button>
+            <button class="close-bt" @click="logOut">退出登录</button>
         </section>
         <transition name="router-slid">
             <router-view></router-view>
@@ -40,6 +40,19 @@
             //组件方法
             resetIndex(){
                 this.$router.push({name:'profile'});
+            },
+            logOut(){
+                if(confirm('确认要退出登录吗?')){
+                   /* this.$http.delete(
+                        "passport/login?token="+sessionStorage.token
+                    ).then(function (response) {
+                        console.log(response);
+                        alert('ko');
+                    }).catch(function (error) {
+                        console.log("请求失败了");
+                    });*/
+                    this.$router.push({name:'login/account'});
+                }
             }
         },
         mounted(){
