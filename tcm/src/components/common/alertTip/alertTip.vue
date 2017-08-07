@@ -30,6 +30,11 @@
 </script>
 
 <style>
+.alet_container{
+    position:fixed;
+    z-index:25;
+}
+
 .tip_text{
     background: #666;
     color: white;

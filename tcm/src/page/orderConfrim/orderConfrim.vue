@@ -41,7 +41,7 @@
         <div class="order-coupon" @click="showCouponDialog">
             <div class="order-coupon-title">优惠券</div>
             <div v-if="coupon.length>0&&!checkCoupun"  class="order-coupon-con"><strong>使用</strong><i class="white-rt"></i></div>
-            <div v-if="coupon.length<0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
+            <div v-if="coupon.length==0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
 
             <div v-if="coupon.length>0&&checkCoupun" class="order-coupon-con">-￥<strong>{{couponData.price}}</strong><i class="white-rt"></i></div>
         </div>
@@ -167,7 +167,9 @@
         <div class="buy-agreement-in">
             <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
-                <p class="buy-agreement-con">司法鉴定打扫房间懂了设计费来的时间姐分离的设计费看来都是减肥考虑的设计费看来都是简单看了风景打开了试驾分类都开始</p>
+                <p class="buy-agreement-con">
+                    <iframe src="//tcmapi.emao.com/app_html/agreement/full" class="agreemenIframe"></iframe>
+                </p>
             </div>
             <ul class="buy-agreement-choose clearfix">
                 <li class="" @click="closeAgreementDialog">不同意</li>
@@ -206,12 +208,15 @@
             <div class="order-to-check">查看详情</div>
         </section>
     </div>
+
+    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 </div>
 
 </template>
 
 <script>
 import BScroll from 'better-scroll';
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
 	  name: 'orderConfrim',
 	  data () {
@@ -244,7 +249,9 @@ export default {
             remark:null,             //备注信息
             showAgreement:false,
             showSuccessResult:false,
-            successData:null
+            successData:null,
+            showAlert:false,
+            alertText:""
  	    }
 	  },
 	  methods:{  
@@ -269,8 +276,8 @@ export default {
                    if(data.marketingSupport.usable){ //判断是否有返利
                         this.chooseRebate = true
                    }
-                   this.marketData = data.marketingSupport.usable;
-                   this.rebateData = data.rebate.usable;
+                   //this.marketData = data.marketingSupport.usable;
+                   //this.rebateData = data.rebate.usable;
 		           this.rebate = data.rebate;
 
                    //初始化提交表单信息
@@ -317,6 +324,11 @@ export default {
             this.showMarket = !this.showMarket;
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
+            if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
+                this.showAlert = true;
+                this.alertText="营销支持费不能大于" + this.marketingSupport.usable;
+                return false;
+            }
             this.showMarket = !this.showMarket;
             this.updateMarket = true;
             this.updateMarketData = this.marketData;
@@ -328,6 +340,11 @@ export default {
             this.showRebate = false
         },
         rebateConfrim(){
+             if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
+                this.showAlert = true;
+                this.alertText="返利不能大于" + this.rebate.usable;
+                return false;
+            }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
             this.updateRebateData = this.rebateData;
@@ -342,7 +359,7 @@ export default {
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
-            this.getAgreementData();
+            //this.getAgreementData();
             return false;
         },
         closeAgreementDialog(){
@@ -384,6 +401,9 @@ export default {
 	  mounted(){
 
 	  },
+      components:{
+        alertTip
+      },
       computed:{
         totalData:function(){
             var couponPrice = this.couponData.price?this.couponData.price:0;//优惠券减免
@@ -481,7 +501,7 @@ export default {
 .use-coupon-in{padding:0 .533rem 0 .533rem;}
 .use-coupon--title{margin-bottom:.267rem;font-size:.4rem;color:#2c2c2c;}
 .use-coupon-quota{width:7.6rem;height:1.067rem;border:1px solid #e0e0e0;border-radius:.133rem;}
-.use-coupon-quota input{width:6.6667rem;height:1.067rem;font-size:.48rem;color:#333;border:none;}
+.use-coupon-quota input{width:6.6667rem;height:1.067rem;font-size:.48rem;color:#333;border:none;text-indent:0.25rem;}
 .use-coupon-quota span{color:#999;}
 .use-coupon-info{margin-top:.2667rem;margin-bottom:.467rem;font-size:.32rem;color:#2c2c2c;}
 .use-coupon-info span{color:#fc3036;}
@@ -575,5 +595,11 @@ export default {
     animation-timing-function: ease-in-out;
 }
 
+
+.agreemenIframe{
+    width:100%;
+    height:10rem;
+    border:none;
+}
 </style>
 
