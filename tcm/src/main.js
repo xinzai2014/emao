@@ -20,8 +20,6 @@ Vue.use(VeeValidate, {
 
 
 
-
-
 //自定义电话号码验证规则
 // Validator.extend('mobile', {
 //     messages: {

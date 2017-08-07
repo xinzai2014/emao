@@ -119,10 +119,11 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            method:"GET"
 		        }).then(function (response) {
 		        	var code = response.body.data["auth_status"];
+		        	//return false;
 		        	if(code == 1){ //已通过认证
 		        		this.$router.push('/index');
 		        	}else if(code == 3){ //在审核
-		        		this.$router.push('/auth');
+		        		this.$router.push('/authResult');
 		        	}else{
 		        		this.$router.push('/auth');
 		        	} 

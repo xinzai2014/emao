@@ -31,7 +31,8 @@
             <div class="order-car-count">X <span>1</span></div>
         </div>
         <div class="order-message">
-            买家留言：<span contenteditable="true">{{remark}}</span>
+            <span>买家留言：</span>
+            <input type="text" v-model="remark"></input>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -77,13 +78,13 @@
             <span>优惠券（不可开票）</span>
             <p><i>-</i><strong>￥{{couponData.price}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="updateMarketData">
+        <div class="order-rental-info" >
             <span>营销支持费</span>
-            <p><i>-</i><strong>￥{{updateMarketData}}</strong></p>
+            <p><i>-</i><strong>￥{{parseInt(updateMarketData).toFixed(2)}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="updateRebateData">
+        <div class="order-rental-info">
             <span>返利资金（不可开票）</span>
-            <p><i>-</i><strong>￥{{updateRebateData}}</strong></p>
+            <p><i>-</i><strong>￥{{parseInt(updateRebateData).toFixed(2)}}</strong></p>
         </div>
         <div class="order-rental-info">
             <span>还需支付</span>
@@ -204,8 +205,8 @@
             <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
         </section>
         <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply">返回订车页</div>
-            <div class="order-to-check">查看详情</div>
+            <div class="order-to-apply" @click="goIndex">返回订车页</div>
+            <div class="order-to-check" @click="goDetail(successData.orderNum)">查看详情</div>
         </section>
     </div>
 
@@ -236,13 +237,13 @@ export default {
             showMarket:false,     //营销支持费弹窗
             marketData:null,      //初始营销支持费值 
             updateMarket:false,    //修改过营销支持费 
-            updateMarketData:null, //获取修改过的营销支持费值
+            updateMarketData:0.00, //获取修改过的营销支持费值
             showRebate:false,       //返利逻辑开始 
             chooseRebate:false,    //判断返利是否为空
             checkRebate:false,     //返利复选框
             updateRebate:false,     //修改过返利值
             rebateData:null,        //初始化返利
-            updateRebateData:null,   //获取修改过的返利值
+            updateRebateData:0.00,   //获取修改过的返利值
             formData:{
           
             },
@@ -254,7 +255,13 @@ export default {
             alertText:""
  	    }
 	  },
-	  methods:{  
+	  methods:{
+        goIndex(){
+            this.$router.push("/index");
+        },
+        goDetail(id){
+            this.$router.push("/orderDetail/" + id);
+        },
 	  	getData(){
 			this.$http({
 		          url:"order/full/confirm",
@@ -314,7 +321,10 @@ export default {
             if(check){
                 this.checkMarket = false ;
                 this.updateMarket = false ;
-                this.updateMarketData = false 
+                this.updateMarketData = 0;
+            }else{
+                this.checkMarket = true; 
+                this.updateMarketData = parseInt(this.marketingSupport.usable);
             }
         },
         showMarketDialog(){ //营销支持费弹出窗
@@ -354,7 +364,10 @@ export default {
             if(check){
                 this.checkRebate = false ;
                 this.updateRebate = false ;
-                this.updateRebateData = false;
+                this.updateRebateData = 0;
+            }else{
+                this.checkRebate = true; 
+                this.updateRebateData = parseInt(this.rebate.usable);
             }
         },
         showAgreementDialog(){ //协议弹出窗
