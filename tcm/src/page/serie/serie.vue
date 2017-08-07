@@ -2,7 +2,7 @@
   <div class="book-car-out">
     <!--首页-订车-详情页-头部-->
     <header class="book-car-header">
-        <i class="white-lt brand-left-cion"></i>
+        <i class="white-lt brand-left-cion" @click="goBack"></i>
     </header>
     <!--首页-订车-详情页-图片滚动-->
      <swiper :circular="circular" v-if="circular.length"></swiper>
@@ -156,6 +156,9 @@ export default {
     }
   },
   methods:{
+    goBack(){
+      this.$router.go(-1);
+    },
     showFullpay(id,index){
       this.serieData.forEach(function(ele,ind){
         if(index != ind){

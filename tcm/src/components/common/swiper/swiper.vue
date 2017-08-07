@@ -1,51 +1,67 @@
 <template>
         
 	<section class="index-slider">
-		<div class="swiper-container">
+		<div class="swiper-container swiperWrap1">
 			<div class="swiper-wrapper">
-				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="refresh(item.url)">
+				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="lookFull()">
 					<img  :src=item.imgUrl  >
 				</a>
 			</div>
 			<ul class="index-icon">
             </ul>
 		</div>
-		<div class="frameCon translateY" v-show="showFrame">
-			<div class="user-tit">
-				<i class="white-lt" @click="closeFrame"></i>
+
+		<div class="swiper-fullpage"  @click="closeFull" :class="{translateY:showFull}">
+			<div class="swiper-container swiperWrap2">
+				<div class="swiper-wrapper">
+					<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide">
+						<img  :src=item.imgUrl  >
+					</a>
+				</div>
+				<ul class="index-icon">
+	            </ul>
 			</div>
-		 	<iframe :src = "frameURL"  class="frame"></iframe> 
-		</div> 
+		</div>
+
 	 </section>
 </template>
 
 <script>
-
 
 export default {
 	  name: 'brand',
 	  props:["circular"],
 	  data () {
 	    return {
-	      showFrame:false,
-	      frameURL:""
+	     	showFull:false,
+	     	mySwiper1:null,
+	     	mySwiper2:null
 	    }
 	  },
 	  methods:{
-	  	refresh(url){
-	  		this.showFrame = true;
-	  		this.frameURL = url;
+	  	lookFull(){ //打开全屏模式
+	  		var activeIndex = this.mySwiper1.activeIndex;
+	  		this.mySwiper2.slideTo(activeIndex);
+	  		this.showFull = true;
 	  	},
-	  	closeFrame(){
-	  		this.showFrame = false;
+	  	closeFull(index){
+	  		this.showFull = false;
 	  	}
 	  },
 	  mounted(){
 	  	console.log("数据取到了");
-		var mySwiper = new Swiper('.swiper-container', {
-			autoplay: 5000,//可选选项，自动滑动
+		this.mySwiper1 = new Swiper('.swiperWrap1', {
+			autoplay: 3000,//可选选项，自动滑动
 			pagination : '.index-icon',
-			paginationElement:"li"
+			paginationElement:"li",
+			loop:true
+		});
+
+		this.mySwiper2 = new Swiper('.swiperWrap2', {
+			autoplay: 3000,//可选选项，自动滑动
+			pagination : '.index-icon',
+			paginationElement:"li",
+			loop:true
 		});
 	  },
 	  watch:{
@@ -67,21 +83,30 @@ export default {
 .news_title h3{
 	font-size:0.5rem;
 }
-.frameCon{
-	position:fixed;
+
+.swiper-fullpage{
+	position: fixed;
 	top:0;
 	left:0;
 	width:100%;
 	height:100%;
-	background:#FFF;
 	z-index:20;
+	background:#000;
 	transform:translateX(100%);
 }
 
-.frame{
-	height:100%;
-	width:100%;
-	border:none;
+.swiper-fullpage .swiper-container{
+	top:50%;
+	transform:translateY(-50%);
 }
+
+.swiper-fullpage .swiper-container .index-icon{
+	position:fixed;
+}
+
+.swiper-fullpage .swiper-container .swiper-slide img{
+	height:auto;
+}
+
 
 </style>

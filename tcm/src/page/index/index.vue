@@ -26,7 +26,7 @@
 
 <script>
 import headerMess from '../../components/header/header'
-import swiper from '../../components/common/swiper/swiper'
+import swiper from '../../components/common/swiper/swiperIndex'
 import brand from './brand'
 import serie from './serie'
 import search from './search'
