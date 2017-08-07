@@ -173,7 +173,7 @@ export default {
       });
     },
     toAddress(){
-        this.$router.push({name:'address'});
+        //this.$router.push({name:'address'});
     },
     PopShow(){
       this.pop=true;
