@@ -122,22 +122,26 @@
             uploadData1:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"frontOfIDCard"
+                flag:"frontOfIDCard",
+                image:"static/sample1.jpg"
             },
             uploadData2:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"backOfIDCard"
+                flag:"backOfIDCard",
+                image:"static/sample2.jpg"
             },
             uploadData3:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"invoiceForCarPurchase"
+                flag:"invoiceForCarPurchase",
+                image:"static/sample3.jpg"
             },
             uploadData4:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
-                flag:"drivingLicense"
+                flag:"drivingLicense",
+                image:"static/sample4.jpg"
             },
 
 
