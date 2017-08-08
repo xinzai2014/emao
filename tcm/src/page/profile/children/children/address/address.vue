@@ -174,15 +174,16 @@
     display: block;
 }
 .weui-cell__hd {
-    padding-right: 0.35em;
+    padding-right: 2em;
     float: left;
+    display: inline-block;
     position: relative;
-    top:0.85rem;
+    top: 0.85rem;
+    height: 2rem;
 }
 
 .info-box{
-	width:90%;
-	float: right;
+	
 }
 .no-auto{position: absolute;
     width: 10rem;
