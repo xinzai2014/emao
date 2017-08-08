@@ -27,6 +27,8 @@ const serie = r => require.ensure([], () => r(require('../page/serie/serie')), '
 
 //配置页面
 const configuration = r => require.ensure([], () => r(require('../page/configuration/configuration')), 'configuration')
+//对比页面
+const contrast = r => require.ensure([], () => r(require('../page/contrast/contrast')), 'contrast')
 
 //个人中心组件
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
@@ -153,11 +155,11 @@ export default new Router({
       name: 'orderConfrim',
       component: orderConfrim
     },
-    // {
-    //   path: '/orderResult/:id',  //全款购车结果页
-    //   name: 'orderResult',
-    //   component: orderResult
-    // },
+    {
+      path: '/contrast',  //全款购车结果页
+      name: 'contrast',
+      component: contrast
+    },
     {
       path: '/displayConfrim/:id',  //申请展车确认页面
       name: 'displayConfrim',

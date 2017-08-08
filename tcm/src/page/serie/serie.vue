@@ -35,8 +35,8 @@
        </ul>
    </section>
     <!--首页-订车-详情页-车型对比-->
-    <section class="book-car-contrast">
-        <div><span>3</span>款车对比</div>
+    <section class="book-car-contrast" v-if="serieData.length>1">
+        <div @click="goContrast"><span>{{serieData.length}}</span>款车对比</div>
         <i class="white-rt"></i>
     </section>
     <!--首页-订车-详情页-订车保障-->
@@ -156,6 +156,13 @@ export default {
     }
   },
   methods:{
+    goContrast(){ //去对比页面
+      var arrayID = [];
+      this.serieData.forEach(function(item,index){
+        arrayID.push(item.id)
+      })
+      this.$router.push("/contrast?id=" + arrayID.join(","));
+    },
     goConfiguration(id){  //去参数配置页
       this.$router.push("/configuration?id=" + id);
     },
