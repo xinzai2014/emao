@@ -88,7 +88,7 @@ const storage = r => require.ensure([], () => r(require('../page/storage/storage
 
 Vue.use(Router)
 
-export default new Router({
+var router=new Router({
   routes: [
     {
       path: '/', 
@@ -336,3 +336,13 @@ export default new Router({
      }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  var token=sessionStorage.getItem('token');
+  if(token||to.name=="loading"||to.name=='account'||to.name=='code'){
+      next();  
+  }else{
+     next('/');
+  }
+}) 
+export default router;
