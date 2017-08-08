@@ -26,7 +26,7 @@
                     </div>
                </div>
                <div class="book-car-action clearfix">
-                   <span>配置参数</span>
+                   <span @click="goConfiguration(item.id)">配置参数</span>
                    <input class="book-car-buy" @click="showFullpay(item.id,index)" type="text" name="" value="全款购车" v-if="item.sale==1">
                    <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="text" name="" value="申请展车" v-if="item.show==1">
                    <input class="book-car-remind" @click="showTipsDialog(item.id)" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
@@ -156,6 +156,9 @@ export default {
     }
   },
   methods:{
+    goConfiguration(id){  //去参数配置页
+      this.$router.push("/configuration?id=" + id);
+    },
     goBack(){
       this.$router.go(-1);
     },
