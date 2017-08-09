@@ -4,7 +4,7 @@
         <header class="user-tit">
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>消息
         </header>
-        <section class="news-wrap">
+        <section class="news-wrap" v-if="showRemit">
             <div class="news-item" v-for="(item,index) in mesList">
               <router-link :to="'/message/'+item.url">
                 <div class="news-lt">
@@ -19,6 +19,10 @@
               </router-link>
             </div>
         </section>
+        <section v-else class="no-auto server-no-response">
+            <img src="../../assets/no-news.png" alt="">
+            <p>暂无消息</p>
+        </section>
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
@@ -29,7 +33,8 @@
 export default {
   data () {
     return {
-      mesList:{}
+      mesList:{},
+      showRemit:false, //有没有数据
     }
   },
   methods:{
@@ -50,9 +55,17 @@ export default {
             var mesList=response.body.data;
             this.addUrl(mesList);
             this.mesList=mesList;
+            this.dataLength();
         }).catch(function (error) {
              console.log("请求失败了");
         });
+    },
+    dataLength(){
+      if(this.mesList.length > 0){
+        this.showRemit = true
+      }else{
+        this.showRemit = false
+      }
     },
     addUrl(arr){
         for(var i=0;i<arr.length;i++){
@@ -120,6 +133,9 @@ export default {
   padding:0.533333rem 0;
   border-bottom:1px solid #2c2c2c;
 }
+.news-item:last-child{
+  border-bottom:none;
+}
 .news-lt{
   float:left;
   width:2.0rem;
@@ -159,4 +175,12 @@ export default {
   color:#999;
   font-size:0.346667rem;
 }
+.no-auto{padding-top:3.867rem;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
+
+.server-no-response .reflash{color:#d6ab55;}
+.no-auto p span{color:#d6ab55;border-bottom:1px solid #d6ab55;}
+
 </style>

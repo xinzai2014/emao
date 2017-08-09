@@ -26,8 +26,8 @@
 				</div>
 			</div>
 			<section v-else class="no-auto server-no-response">
-		        <img src="../../../../../assets/no-order.png" alt="">
-		        <p>暂无已售车辆信息</p>
+		        <img src="../../../../../assets/no-remit.png" alt="">
+		        <p>尚未添加汇款账户</p>
 		    </section>
 			<p class="visib-98"></p>
 			<router-link :to="{name:'remitAdd'}">
@@ -46,7 +46,7 @@
             return {
               //初始数据结构
               infoData:[],
-              showRemit:false, //有没有数据
+              showRemit:true, //有没有数据
               isCheck:false, //判断是否显示选择按钮
               btnIcon:false,
               url:''
