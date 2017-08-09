@@ -118,16 +118,17 @@
                 <div class="error-tips">{{outErrorTips}}</div>
                 <p class="stock-removal-popup-choose">
                     <span @click="closeOutPopup">取消</span>
-                    <span class="active" @click="confirmOut()">确认出库</span>
+                    <span class="active" @click="confirmOut()">验证</span>
                 </p>
             </div>
         </section>
 
-
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
 </template>
 <script>
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         name:"storage",
         data(){
@@ -143,6 +144,9 @@
                 outErrorTips:'',
                 showInPopupStatus:false,
                 showOutPopupStatus:false,
+                showAlert:false,
+                alertText:null,
+                timer:null,
                 //waitIn:[],
                 waitIn : [
                     {
@@ -285,13 +289,15 @@
             //提交入库的相关信息
             confirmInData(){
                 this.itemIn.vin_num = this.inPopupData.vin_num;
-                console.log(1)
                 this.$http.post("dealer/warehouse/confirmIn",this.itemIn).then(function(response){
                     this.showInPopupStatus = !this.showInPopupStatus;
-                    this.flushCom();
+                    this.showAlert = true;
+                    this.alertText = '车辆已入库';
+                    setInterval(this.flushCom,5000);
                 }).catch(function(error){
                     this.inErrorTips = error.body.msg;
                 })
+
             }
 
 
@@ -340,6 +346,9 @@
                 console.log("请求失败");
                 console.log(error);
             })
+        },
+        components:{
+            alertTip
         }
     }
 </script>
