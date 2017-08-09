@@ -3,8 +3,10 @@
         <!--首页-品牌列表-头部-->
         <div class="brand-header-out">
             <header class="brand-list-header">
-                <i class="white-lt brand-left-cion"></i>
-                <strong class="brand-list-title">中转库管理</strong>
+                <div @click="resetIndex">
+                    <i class="white-lt brand-left-cion"></i>
+                    <strong class="brand-list-title">中转库管理</strong>
+                </div>
             </header>
         </div>
 
@@ -239,6 +241,10 @@
             }
         },
         methods:{
+            //回到上一级
+            resetIndex(){
+                this.$router.go(-1);
+            },
             //显示入库弹窗
             showInPopup(vinNum,index){
                 this.showInPopupStatus = !this.showInPopupStatus;
