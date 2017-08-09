@@ -1,15 +1,25 @@
 <template>
-	<div class="loader-box">
-		<div class="loader-circle">
-			<p class="circle-box"></p>
-		</div>
-		<div class="loader">
-			<div class="element-animation"></div>
-		</div>
-	</div>
+    <div class="mask-loader">
+    	<div class="loader-box">
+    		<div class="loader-circle">
+    			<p class="circle-box"></p>
+    		</div>
+    		<div class="loader">
+    			<div class="element-animation"></div>
+    		</div>
+    	</div>
+    </div>
 </template>
 <style>
 /*Loading*/
+.mask-loader{
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+}
 .loader-box{
     position: fixed;
     left:50%;
