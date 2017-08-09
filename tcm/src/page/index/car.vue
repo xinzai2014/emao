@@ -146,7 +146,7 @@
                 }
             }).then(function (response) {
                 this.carData = response.body.data.list;
-                this.initIscroll("carWrap",this.carScroll);
+                this.initIscroll("carWrap",this.carScroll); 
                 this.globalSerieID = response.body.data.id;
               }).catch(function (error) {
                 console.log("请求失败了");

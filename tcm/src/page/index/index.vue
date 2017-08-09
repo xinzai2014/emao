@@ -2,9 +2,9 @@
   <div>
 
     <!--首页头部-->
-    <header-mess :myMessage="message"></header-mess>
+    <header-mess ></header-mess>
     <!--首页图片滚动-->
-    <swiper :circular="circular"></swiper>
+    <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页品牌-->
     <brand :brandList="brands"></brand>
@@ -26,7 +26,7 @@
 
 <script>
 import headerMess from '../../components/header/header'
-import swiper from '../../components/common/swiper/swiper'
+import swiper from '../../components/common/swiper/swiperIndex'
 import brand from './brand'
 import serie from './serie'
 import search from './search'
@@ -40,7 +40,6 @@ export default {
     return {
         showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
-        message:2,    //消息个数
         serieMore:false,//车系查看更多
         carMess:{     //搜索车型的时的数据
           carName:"选择车型",
@@ -55,21 +54,7 @@ export default {
             len:10
         },
         circular:[    //轮播图数据
-             {
-                "id":"1",
-                "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
-                "url":"http://mall.emao.com/car/4584.html"
-             },
-             {
-                 "id":"2", 
-                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
-                 "url":"http://mall.emao.com/car/4584.html"
-             },
-             {
-                 "id":"3", 
-                 "imgUrl":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg/176",
-                 "url":"http://mall.emao.com/car/4584.html"
-             }
+
         ],
         brands:[
 
@@ -100,9 +85,9 @@ export default {
             method:"GET",
             params:this.initData
         }).then(function (response) {
+            this.circular = response.body.data.circular;
             this.serieList = response.body.data.series;
             this.brands = response.body.data.brands;
-            this.message = response.body.data.msg;
             if(response.body.data.series.length>=this.initData.len){
               this.serieMore = !this.serieMore;
             }

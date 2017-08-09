@@ -1,6 +1,7 @@
- <template>
+<template>
     <div class="alet_container fadeIn">
-	    <section class="tip_text_container">
+        <section class="tip_text_container">
+
             <p class="tip_text">{{alertText}}</p>
         </section>
     </div>
@@ -8,7 +9,7 @@
 
 <script>
     export default {
-    	data(){
+        data(){
             return{
 
             }
@@ -29,6 +30,11 @@
 </script>
 
 <style>
+.alet_container{
+    position:fixed;
+    z-index:25;
+}
+
 .tip_text{
     background: #666;
     color: white;

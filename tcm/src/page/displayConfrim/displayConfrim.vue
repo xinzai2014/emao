@@ -31,7 +31,8 @@
             <div class="order-car-count">X <span>1</span></div>
         </div>
         <div class="order-message">
-            买家留言：<span contenteditable="true">{{remark}}</span>
+            <span>买家留言：</span>
+            <input type="text" v-model="remark"></input>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -41,7 +42,7 @@
         <div class="order-coupon" @click="showCouponDialog">
             <div class="order-coupon-title">优惠券</div>
             <div v-if="coupon.length>0&&!checkCoupun"  class="order-coupon-con"><strong>使用</strong><i class="white-rt"></i></div>
-            <div v-if="coupon.length<0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
+            <div v-if="coupon.length == 0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
 
             <div v-if="coupon.length>0&&checkCoupun" class="order-coupon-con">-￥<strong>{{couponData.price}}</strong><i class="white-rt"></i></div>
         </div>
@@ -139,8 +140,8 @@
             <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
         </section>
         <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply">返回订车页</div>
-            <div class="order-to-check">查看详情</div>
+            <div class="order-to-apply" @click="goIndex">返回订车页</div>
+            <div class="order-to-check" @click="goDeatail">查看详情</div>
         </section>
     </div>
 
@@ -170,7 +171,10 @@ export default {
             successData:null
  	    }
 	  },
-	  methods:{  
+	  methods:{
+        goIndex(){
+            this.$router.go("index");
+        },
 	  	getData(){
 			this.$http({
 		          url:"order/show/confirm",
@@ -299,6 +303,7 @@ export default {
 .order-car-count{float:right;color:#999;}
 .order-car-count span{}
 .order-message{padding:.4rem 0;color:#2c2c2c;font-size:.3733rem;border-top:1px solid #e0e0e0;}
+.order-message input{line-height:0.75rem;height:0.75rem;display:inline-block;width:7rem;border:none;}
 .order-coupon-info{padding:0 .4rem;margin-bottom:.4rem;background-color:#fff;}
 .order-coupon-title{float:left;color:#2c2c2c;font-size:.4rem;}
 .order-coupon-con{float:right;color:#999;font-size:.3733rem;}
@@ -424,7 +429,7 @@ export default {
 .order-succeed-info{margin:.5333rem .8rem .4rem .8rem;border:1px solid #d5aa5c;}
 .order-succeed-info p{margin-bottom:.4rem;font-size:.4rem;}
 .order-succeed-info p span{display:block;float:left;width:2rem;padding-left:.2667rem;text-align:right;color:#999;}
-.order-succeed-info p strong{display:block;margin-left:2rem;padding-right:.133rem;color:#2c2c2c;}
+.order-succeed-info p strong{display:block;margin-left:2.3rem;padding-right:.133rem;color:#2c2c2c;}
 .order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 .order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
 .order-secceed-explain li{margin-bottom:.1333rem;font-size:.32rem;color:#999;}

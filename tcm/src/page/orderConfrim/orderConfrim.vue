@@ -31,7 +31,8 @@
             <div class="order-car-count">X <span>1</span></div>
         </div>
         <div class="order-message">
-            买家留言：<span contenteditable="true">{{remark}}</span>
+            <span>买家留言：</span>
+            <input type="text" v-model="remark"></input>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -41,7 +42,7 @@
         <div class="order-coupon" @click="showCouponDialog">
             <div class="order-coupon-title">优惠券</div>
             <div v-if="coupon.length>0&&!checkCoupun"  class="order-coupon-con"><strong>使用</strong><i class="white-rt"></i></div>
-            <div v-if="coupon.length<0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
+            <div v-if="coupon.length==0" class="order-coupon-con"><strong>无可用</strong><i class="white-rt"></i></div>
 
             <div v-if="coupon.length>0&&checkCoupun" class="order-coupon-con">-￥<strong>{{couponData.price}}</strong><i class="white-rt"></i></div>
         </div>
@@ -77,13 +78,13 @@
             <span>优惠券（不可开票）</span>
             <p><i>-</i><strong>￥{{couponData.price}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="updateMarketData">
+        <div class="order-rental-info" >
             <span>营销支持费</span>
-            <p><i>-</i><strong>￥{{updateMarketData}}</strong></p>
+            <p><i>-</i><strong>￥{{parseInt(updateMarketData).toFixed(2)}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="updateRebateData">
+        <div class="order-rental-info">
             <span>返利资金（不可开票）</span>
-            <p><i>-</i><strong>￥{{updateRebateData}}</strong></p>
+            <p><i>-</i><strong>￥{{parseInt(updateRebateData).toFixed(2)}}</strong></p>
         </div>
         <div class="order-rental-info">
             <span>还需支付</span>
@@ -167,7 +168,9 @@
         <div class="buy-agreement-in">
             <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
-                <p class="buy-agreement-con">司法鉴定打扫房间懂了设计费来的时间姐分离的设计费看来都是减肥考虑的设计费看来都是简单看了风景打开了试驾分类都开始</p>
+                <p class="buy-agreement-con">
+                    <iframe src="//tcmapi.emao.com/app_html/agreement/full" class="agreemenIframe"></iframe>
+                </p>
             </div>
             <ul class="buy-agreement-choose clearfix">
                 <li class="" @click="closeAgreementDialog">不同意</li>
@@ -202,16 +205,19 @@
             <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
         </section>
         <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply">返回订车页</div>
-            <div class="order-to-check">查看详情</div>
+            <div class="order-to-apply" @click="goIndex">返回订车页</div>
+            <div class="order-to-check" @click="goDetail(successData.orderNum)">查看详情</div>
         </section>
     </div>
+
+    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 </div>
 
 </template>
 
 <script>
 import BScroll from 'better-scroll';
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
 	  name: 'orderConfrim',
 	  data () {
@@ -231,23 +237,31 @@ export default {
             showMarket:false,     //营销支持费弹窗
             marketData:null,      //初始营销支持费值 
             updateMarket:false,    //修改过营销支持费 
-            updateMarketData:null, //获取修改过的营销支持费值
+            updateMarketData:0.00, //获取修改过的营销支持费值
             showRebate:false,       //返利逻辑开始 
             chooseRebate:false,    //判断返利是否为空
             checkRebate:false,     //返利复选框
             updateRebate:false,     //修改过返利值
             rebateData:null,        //初始化返利
-            updateRebateData:null,   //获取修改过的返利值
+            updateRebateData:0.00,   //获取修改过的返利值
             formData:{
           
             },
             remark:null,             //备注信息
             showAgreement:false,
             showSuccessResult:false,
-            successData:null
+            successData:null,
+            showAlert:false,
+            alertText:""
  	    }
 	  },
-	  methods:{  
+	  methods:{
+        goIndex(){
+            this.$router.push("/index");
+        },
+        goDetail(id){
+            this.$router.push("/orderDetail/" + id);
+        },
 	  	getData(){
 			this.$http({
 		          url:"order/full/confirm",
@@ -269,8 +283,8 @@ export default {
                    if(data.marketingSupport.usable){ //判断是否有返利
                         this.chooseRebate = true
                    }
-                   this.marketData = data.marketingSupport.usable;
-                   this.rebateData = data.rebate.usable;
+                   //this.marketData = data.marketingSupport.usable;
+                   //this.rebateData = data.rebate.usable;
 		           this.rebate = data.rebate;
 
                    //初始化提交表单信息
@@ -307,7 +321,10 @@ export default {
             if(check){
                 this.checkMarket = false ;
                 this.updateMarket = false ;
-                this.updateMarketData = false 
+                this.updateMarketData = 0;
+            }else{
+                this.checkMarket = true; 
+                this.updateMarketData = parseInt(this.marketingSupport.usable);
             }
         },
         showMarketDialog(){ //营销支持费弹出窗
@@ -317,6 +334,11 @@ export default {
             this.showMarket = !this.showMarket;
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
+            if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
+                this.showAlert = true;
+                this.alertText="营销支持费不能大于" + this.marketingSupport.usable;
+                return false;
+            }
             this.showMarket = !this.showMarket;
             this.updateMarket = true;
             this.updateMarketData = this.marketData;
@@ -328,6 +350,11 @@ export default {
             this.showRebate = false
         },
         rebateConfrim(){
+             if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
+                this.showAlert = true;
+                this.alertText="返利不能大于" + this.rebate.usable;
+                return false;
+            }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
             this.updateRebateData = this.rebateData;
@@ -337,12 +364,15 @@ export default {
             if(check){
                 this.checkRebate = false ;
                 this.updateRebate = false ;
-                this.updateRebateData = false;
+                this.updateRebateData = 0;
+            }else{
+                this.checkRebate = true; 
+                this.updateRebateData = parseInt(this.rebate.usable);
             }
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
-            this.getAgreementData();
+            //this.getAgreementData();
             return false;
         },
         closeAgreementDialog(){
@@ -384,6 +414,9 @@ export default {
 	  mounted(){
 
 	  },
+      components:{
+        alertTip
+      },
       computed:{
         totalData:function(){
             var couponPrice = this.couponData.price?this.couponData.price:0;//优惠券减免
@@ -481,7 +514,7 @@ export default {
 .use-coupon-in{padding:0 .533rem 0 .533rem;}
 .use-coupon--title{margin-bottom:.267rem;font-size:.4rem;color:#2c2c2c;}
 .use-coupon-quota{width:7.6rem;height:1.067rem;border:1px solid #e0e0e0;border-radius:.133rem;}
-.use-coupon-quota input{width:6.6667rem;height:1.067rem;font-size:.48rem;color:#333;border:none;}
+.use-coupon-quota input{width:6.6667rem;height:1.067rem;font-size:.48rem;color:#333;border:none;text-indent:0.25rem;}
 .use-coupon-quota span{color:#999;}
 .use-coupon-info{margin-top:.2667rem;margin-bottom:.467rem;font-size:.32rem;color:#2c2c2c;}
 .use-coupon-info span{color:#fc3036;}
@@ -575,5 +608,11 @@ export default {
     animation-timing-function: ease-in-out;
 }
 
+
+.agreemenIframe{
+    width:100%;
+    height:10rem;
+    border:none;
+}
 </style>
 

@@ -9,7 +9,7 @@
             </li>
             <li class="index-my">
                 <i></i>
-                <span>我的</span>
+                <span @click="goHome">我的</span>
             </li>
         </ul>
     </footer>
@@ -25,7 +25,9 @@ export default {
 	    }
 	  },
 	  methods:{
-
+	  	goHome(){
+	  		this.$router.push("/profile");
+	  	}
 	  },
 	  mounted(){
 		

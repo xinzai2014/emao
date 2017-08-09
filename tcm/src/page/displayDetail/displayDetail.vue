@@ -102,6 +102,7 @@
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
 		        <div class="remits-fixed" v-if="orderInfo.status == '5'">{{btnText}}</div>
+
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
 		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
 	              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,

@@ -25,6 +25,11 @@ const brand = r => require.ensure([], () => r(require('../page/brand/brand')), '
 //车系详情页
 const serie = r => require.ensure([], () => r(require('../page/serie/serie')), 'serie')
 
+//配置页面
+const configuration = r => require.ensure([], () => r(require('../page/configuration/configuration')), 'configuration')
+//对比页面
+const contrast = r => require.ensure([], () => r(require('../page/contrast/contrast')), 'contrast')
+
 //个人中心组件
 const profile = r => require.ensure([], () => r(require('../page/profile/profile')), 'profile')
 const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
@@ -74,6 +79,9 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 
 //已售车申报组件
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
+
+//售车申报资料提交组件
+const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
 
 //全款购车确认订单
@@ -137,21 +145,21 @@ var router=new Router({
       name: 'serie',
       component: serie
     },
-    // {
-    //   path: '/configuration',  //参数配置页
-    //   name: 'configuration',
-    //   component: configuration
-    // },
+    {
+      path: '/configuration',  //参数配置页
+      name: 'configuration',
+      component: configuration
+    },
     {
       path: '/orderConfrim/:id',  //全款购车确认页面
       name: 'orderConfrim',
       component: orderConfrim
     },
-    // {
-    //   path: '/orderResult/:id',  //全款购车结果页
-    //   name: 'orderResult',
-    //   component: orderResult
-    // },
+    {
+      path: '/contrast',  //全款购车结果页
+      name: 'contrast',
+      component: contrast
+    },
     {
       path: '/displayConfrim/:id',  //申请展车确认页面
       name: 'displayConfrim',
@@ -282,11 +290,6 @@ var router=new Router({
     //     }
     //   ]
     // },
-    // {
-    //   path: '/storage',  //我的中转库列表
-    //   name: 'storage',
-    //   component: storage
-    // },
      {
        path: '/message',  //我的消息列表
        name: 'message',
@@ -329,6 +332,33 @@ var router=new Router({
        name: 'payment',
        component: payment,
      },
+      {
+       path: '/declare',  //我的售车申报列表
+       name: 'declare',
+       component: declare
+       //children: [
+       //  {
+       //    path: 'edit/:id',   //提交申报资料
+       //    name: 'editDeclare',
+       //    component: editDeclare
+       //  }
+       //]
+     },
+    {
+      path: '/editDeclare/:id',   //提交申报资料
+      name: 'editDeclare',
+      component: editDeclare
+    },
+    {
+      path: '/soldCar',  //已售车辆申报列表
+          name: 'soldCar',
+        component: soldCar
+    },
+    {
+     path: '/storage',  //我的中转库列表
+     name: 'storage',
+     component: storage
+    },
      {
        path: '/paymentSubmit',  //提交汇款凭证
        name: 'paymentSubmit',

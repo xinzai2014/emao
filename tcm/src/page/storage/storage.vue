@@ -222,15 +222,11 @@
                 ],
                 inWarehouse:[],
                 itemIn:{
-                    token:"bbe214ab570d81dc8b1b6589d86e13d9",
-                    //token:"90e77c1e55f9e388d4234a21f1f45772",
-                    //token:sessionStorage.token,
+                    token:sessionStorage.token,
                     vin_num : '',
                 },
                 itemOut:{
-                    token:"bbe214ab570d81dc8b1b6589d86e13d9",
-                    //token:"90e77c1e55f9e388d4234a21f1f45772",
-                    //token:sessionStorage.token,
+                    token:sessionStorage.token,
                     vin_num : '',
                     code:''
                 },
@@ -261,6 +257,10 @@
                 this.outErrorTips = "";
             },
 
+            //刷新当前页面
+            flushCom(){
+                this.$router.go(0);
+            },
 
             //点击出库弹窗确认按钮
             confirmOut(){
@@ -271,10 +271,9 @@
                 this.itemOut.code = code;
                 this.itemOut.vin_num = this.outPopupData.vin_num;
                 this.$http.post("dealer/warehouse/confirmOut",this.itemOut).then(function(response){
-                    console.log(response);
+                    this.showOutPopupStatus = !this.showOutPopupStatus;
+                    this.flushCom();
                 }).catch(function(error){
-                    console.log("请求失败");
-                    console.log(error);
                     this.outErrorTips = error.body.msg;
                 })
             },
@@ -288,11 +287,9 @@
                 this.itemIn.vin_num = this.inPopupData.vin_num;
                 console.log(1)
                 this.$http.post("dealer/warehouse/confirmIn",this.itemIn).then(function(response){
-                    console.log(response);
-                    console.log(2)
+                    this.showInPopupStatus = !this.showInPopupStatus;
+                    this.flushCom();
                 }).catch(function(error){
-                    console.log("请求失败");
-                    console.log(error);
                     this.inErrorTips = error.body.msg;
                 })
             }
@@ -300,18 +297,27 @@
 
         },
         mounted(){
-            // dataToken = "b0009324e411c37e6a717a6a7b89b452";
-             var dataToken = "bbe214ab570d81dc8b1b6589d86e13d9";
-             //var dataToken = "90e77c1e55f9e388d4234a21f1f45772";
-            //var dataToken = sessionStorage.token;
+            var dataToken = sessionStorage.token;
             var data = {
                 token:dataToken
-            }
+            };
 
             //把时间戳换成时间格式
             function getLocalTime(timestamp) {
-                return new Date(parseInt(timestamp) * 1000).toLocaleString().substr(0,17)
-            }
+                var date = new Date(parseInt(timestamp) * 1000);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hour = date.getHours();
+                var minute = date.getMinutes();
+                var second = date.getSeconds();
+                month = month < 10 ? ('0' + month) : month;
+                day = day < 10 ? ('0' + day) : day;
+                hour = hour < 10 ? ('0' + hour) : hour;
+                minute = minute < 10 ? ('0' + minute) : minute;
+                return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+            };
+
 
             //中转库接口
             this.$http({
@@ -328,7 +334,7 @@
                 this.waitOut = response.body.data.waitOut;
                 this.inWarehouse = response.body.data.inWarehouse;
                 for (var i = 0; i < this.inWarehouse.length;i++) {
-                    this.inWarehouse[i].add_warehouse_time =  getLocalTime(this.inWarehouse[i].add_time)
+                    this.inWarehouse[i].add_warehouse_time =  getLocalTime(this.inWarehouse[i].add_time);
                 }
             }).catch(function(error){
                 console.log("请求失败");

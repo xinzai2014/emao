@@ -2,7 +2,7 @@
   <div class="book-car-out">
     <!--首页-订车-详情页-头部-->
     <header class="book-car-header">
-        <i class="white-lt brand-left-cion"></i>
+        <i class="white-lt brand-left-cion" @click="goBack"></i>
     </header>
     <!--首页-订车-详情页-图片滚动-->
      <swiper :circular="circular" v-if="circular.length"></swiper>
@@ -26,7 +26,7 @@
                     </div>
                </div>
                <div class="book-car-action clearfix">
-                   <span>配置参数</span>
+                   <span @click="goConfiguration(item.id)">配置参数</span>
                    <input class="book-car-buy" @click="showFullpay(item.id,index)" type="text" name="" value="全款购车" v-if="item.sale==1">
                    <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="text" name="" value="申请展车" v-if="item.show==1">
                    <input class="book-car-remind" @click="showTipsDialog(item.id)" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
@@ -35,8 +35,8 @@
        </ul>
    </section>
     <!--首页-订车-详情页-车型对比-->
-    <section class="book-car-contrast">
-        <div><span>3</span>款车对比</div>
+    <section class="book-car-contrast" v-if="serieData.length>1">
+        <div @click="goContrast"><span>{{serieData.length}}</span>款车对比</div>
         <i class="white-rt"></i>
     </section>
     <!--首页-订车-详情页-订车保障-->
@@ -156,6 +156,19 @@ export default {
     }
   },
   methods:{
+    goContrast(){ //去对比页面
+      var arrayID = [];
+      this.serieData.forEach(function(item,index){
+        arrayID.push(item.id)
+      })
+      this.$router.push("/contrast?id=" + arrayID.join(","));
+    },
+    goConfiguration(id){  //去参数配置页
+      this.$router.push("/configuration?id=" + id);
+    },
+    goBack(){
+      this.$router.go(-1);
+    },
     showFullpay(id,index){
       this.serieData.forEach(function(ele,ind){
         if(index != ind){
