@@ -35,7 +35,6 @@
                             <div class="cell">
 
                                 <span class="cell-text" >{{e.name}}</span>
-
                             </div>
                         </div>
                     </div>
@@ -134,6 +133,7 @@
                     console.log(this.$refs.carText);
                     //this.$refs.carText.style.width = this.styleWidth*data.length + "rem";
                     this.serieName = reponse.body.data.name;
+
                     this.getALl(data);
                     //this.getDifferent();
                     setTimeout(()=>{
@@ -310,6 +310,7 @@
 .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;z-index: 25;}
 .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
+
 .marb{padding-top:1.1733rem;}
 .config{display: table; width: 100%;}
 .config-left{display: table-cell;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
@@ -346,6 +347,7 @@
 }
 
 .config-list{width:3.2rem;float:left;}
+
 .config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
