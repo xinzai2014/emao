@@ -195,6 +195,10 @@
                     })
                 });
 
+<<<<<<< dcd55e252da966e8ae8346705edcd1c7e1f5a709
+=======
+
+>>>>>>> duibi
                 this.dataList.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){

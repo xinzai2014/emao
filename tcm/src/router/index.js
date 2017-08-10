@@ -376,6 +376,8 @@ var router=new Router({
 })
 
 
+
+
 router.beforeEach((to, from, next) => {
     var token=sessionStorage.getItem('token');
     if(token||to.name=="loading"||to.name=='account'||to.name=='code'){
