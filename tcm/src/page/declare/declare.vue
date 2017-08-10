@@ -2,7 +2,10 @@
     <div>
         <!--头部-->
         <header class="user-tit declare-head">
-            <a href="javascript:;" class="white-lt"></a>售车申报
+            <router-link to="/profile">
+                <a href="javascript:;" class="white-lt"></a>
+            </router-link>
+            售车申报
             <router-link to="/soldCar">
                 <span>已售车辆</span>
             </router-link>
@@ -77,7 +80,6 @@
             //获取售车申报数据
             getDeclaerData(){
                 var dataToken = sessionStorage.token;
-                //var dataToken = 'bbe214ab570d81dc8b1b6589d86e13d9';
                 var data = {
                     token:dataToken,
                     perPage:this.per_page,

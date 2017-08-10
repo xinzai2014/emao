@@ -41,7 +41,8 @@
     </section>
     <!--首页-订车-详情页-订车保障-->
     <section class="book-car-guarantee">
-        <p>订车保障</p>
+        <p>下单流程</p>
+        <div class="book-car-pic"></div>
     </section>
     <!--首页-订车-详情页-到货提醒-弹窗-->
     <section class="brand-list-popup" v-if="showTips" @click="closeTipsDialog">
@@ -396,6 +397,7 @@ export default {
 .book-car-contrast i{position:absolute;top:.533rem;right:.4666rem;}
 .book-car-guarantee{padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
 .book-car-guarantee p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
+.book-car-guarantee .book-car-pic{width:9.2rem;height:11.7467rem;background:url("../../assets/book-car.jpg") no-repeat;background-size:100% 100%;}
 
 
 /*首页-订车-详情页-订车弹窗*/
