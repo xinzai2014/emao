@@ -4,7 +4,7 @@
 	      <input type="password" placeholder="密码" v-model="pass" maxlength="20" ref="password"> 
 	      <span class="login-errror" :class="{fadeIn:errorPass}" v-show="errorPass">请输入密码</span>
 	    </div>
-	    <input class="login-btn" type="text" name="" value="登录" @click="login">
+	    <input class="login-btn" type="button" name="" value="登录" @click="login">
         <p class="login-another" @click="checkNav"><span>验证码登录</span></p>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
         <section class="login-popup" v-show="showPasswordDialog">

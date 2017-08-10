@@ -17,7 +17,7 @@
                         </div>
                         <div class="row" v-for="(e,i) in item.list">
                             <div class="cell">
-                                <span class="cell-text">{{e.name}}</span>
+                                <span class="cell-text" v-if = !e.diff >{{e.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -30,22 +30,26 @@
                             <li class="config-list" v-for = "(itemWrap,indexWrap) in dataList">
                                 <p class="config-list-t1">{{itemWrap.name}}</P>
                                 <template v-for = "(item,index) in itemWrap.param">
-                                    <div class="config-list-t2"><span>●标配</span><span>○选配</span><span>-无</span></div>
+                                    <div class="config-list-t2">
+                                        <template v-if="indexWrap == 0">
+                                            <span>●标配</span><span>○选配</span><span>-无</span>
+                                        </template>
+                                    </div>
                                     <em class="config-list-t3" v-for="(e,i) in item.list">{{e.value}}</em>
                                 </template>
                             </li>
                         </ul>
                     </div>
-                            <!-- <div class="row_head">
-                                <p >
-                                    <span>●标配</span><span>○选配</span><span>-无</span>
-                                </p>
-                            </div>
-                            <div class="row" v-for="(e,i) in item.list">
-                                <div class="cell">
-                                    <div class="cell-text">{{e.value}}</div>
-                                </div>
-                            </div> -->
+                    <!-- <div class="row_head">
+                        <p >
+                            <span>●标配</span><span>○选配</span><span>-无</span>
+                        </p>
+                    </div>
+                    <div class="row" v-for="(e,i) in item.list">
+                        <div class="cell">
+                            <div class="cell-text">{{e.value}}</div>
+                        </div>
+                    </div> -->
                 </div> 
             </div>
         </div>
@@ -82,6 +86,7 @@
                     this.dataList = reponse.body.data.list;
                     console.log(this.dataList);
                     this.serieName = reponse.body.data.name;
+                    this.getDifferent();
                     setTimeout(()=>{
                         this.countHeight();
                     },100)
@@ -105,6 +110,45 @@
                     })
                 })
             }, //滚动到指定位置
+            getDifferent(){
+                var dataArray = [];
+                var that = this;
+                this.dataList.forEach(function(item,index){
+                    var num = 0;
+                    item.param.forEach(function(e,i){
+                        e.list.forEach(function(it,ind){
+                            if (typeof(dataArray[num]) == 'undefined') {
+                                dataArray[num] = [];
+                            }
+                            //dataArray[index][i][ind] = it.name + "---" + it.value;
+                            // console.log(dataArray);
+                            // console.log(dataArray.length);
+                            var flag = dataArray[num].find(function(value, index, arr) {
+                              return value == it.value;
+                            })
+                            if (!flag) {
+                                dataArray[num].push(it.value);
+                            }
+                            num++;
+                        })
+                    })
+                });
+
+                console.log(dataArray);
+
+                this.dataList.forEach(function(item,index){
+                    var num = 0;
+                    item.param.forEach(function(e,i){
+                        e.list.forEach(function(it,ind){
+                            var diff = (dataArray[num].length == 1) ? true : false;
+                            that.dataList[index]['param'][i]['list'][ind]['diff'] = diff;
+                            num++;
+                        })
+                    })
+                });
+                console.log(this.dataList);
+                
+            },
         },
         mounted(){
             var autoId = this.$router.currentRoute.query.id;
@@ -127,14 +171,14 @@
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
 .config{overflow-x:auto;padding-top:1.1733rem;}
-.config-left{float: left;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
-.config-right{display:inline-block;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
+.config-left{float:left;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
+.config-right{padding-left:2.133rem;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
 .config-nothing{width:2.133rem;height:1.7333rem;background-color:#fff;}
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
 
 .config-param-names .row-head{height:1.4267rem;white-space:nowrap;}
-.config-param-names .row-head .cell-text{display:block;height:1.4267rem;padding-right:.1867rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
+.config-param-names .row-head .cell-text{display:block;height:1.4267rem;padding-right:.1867rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;background:#f5f5f5}
 .config-param-names .row{height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;}
 
 .config-param-names .row .cell-text{display:block;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
@@ -159,8 +203,9 @@
 
 .config-list{width:3.2rem;float:left;}
 
+.config-wrap ul{width:12.8rem;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
-.config-list-t2{line-height:1.4267rem;}
-.config-list-t3{line-height:1.36rem;display:block;text-align:center;background:#FFF;border-top:1px solid #CCC;}
+.config-list-t2{line-height:1.4267rem;height:1.4267rem;text-align:right;}
+.config-list-t3{line-height:1.36rem;display:block;text-align:center;background:#FFF;border-top:1px solid #CCC;border-right:1px solid #CCC;}
 </style>
 
