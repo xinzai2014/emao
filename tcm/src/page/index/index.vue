@@ -14,7 +14,6 @@
 
 
     <!--查询表单--> 
-
     <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search>
 
     
