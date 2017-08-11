@@ -42,13 +42,13 @@ export default {
         },
         submitForm(){
           if(!this.carMess.carId){
-            console.log("请选择车型");
+            this.$emit('subAlert',"请选择一款车型");
             return false;
           }
-          if(!this.carPrice){
-            console.log("请填写期望价格");
-            return false;
-          }
+          // if(!this.carPrice){
+          //   this.$emit('subAlert',"请输入期望价格");
+          //   return false;
+          // }
           this.$http.post(
                 "car/choose",
                  {

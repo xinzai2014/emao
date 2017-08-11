@@ -13,11 +13,13 @@
     <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
 
     <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess"></search>
+    <search @getCar="getCar" :carMess="carMess" @subAlert = "getAlert"></search>
     
     <!-- 车型数据 -->
     <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
-  
+
+    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+
     <!--首页底部-->
     <footerTo></footerTo>
   </div>
@@ -27,6 +29,7 @@
 <script>
 import headerMess from '../../components/header/header'
 import swiper from '../../components/common/swiper/swiperIndex'
+import alertTip from '../../components/common/alertTip/alertTip'
 import brand from './brand'
 import serie from './serie'
 import search from './search'
@@ -59,7 +62,9 @@ export default {
         brands:[
 
         ],
-        serieList:[] //车系数据
+        serieList:[], //车系数据
+        showAlert:false,
+        alertText:null
     }
   },
   methods:{ //选取车型后回传
@@ -74,6 +79,10 @@ export default {
     },
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
+    },
+    getAlert(msg){
+      this.showAlert = true;
+      this.alertText = msg;
     },
     getCar(carBoolean){ //自组件选车型控制显示隐藏
       this.showbrand = carBoolean;
@@ -107,6 +116,7 @@ export default {
     serie,
     search,
     car,
+    alertTip,
     footerTo:footer
   },
   beforeRouteEnter (to, from, next) {
