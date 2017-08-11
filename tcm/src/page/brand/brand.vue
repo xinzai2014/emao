@@ -136,13 +136,13 @@ import car from '../index/car'
 <style>
 /*品牌列表页-头部*/
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
+.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:static;}
 .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 
 /*品牌列表页-车源*/
-.brand-list-source{padding-top:0;}
+.brand-list-source{padding-top:0 !important;}
 
 /*品牌列表页-车源-弹窗*/
 .brand-list-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}

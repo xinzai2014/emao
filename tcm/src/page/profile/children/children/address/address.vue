@@ -30,7 +30,7 @@
 		</section>
 
 		<section class="no-auto server-no-response" v-if="show">
-	        <img src="../../../../../assets/no-order.png" alt="">
+	        <img src="../../../../../assets/no-addres.png" alt="">
 	        <p>未添加收货地址</p>
 	    </section>
 
