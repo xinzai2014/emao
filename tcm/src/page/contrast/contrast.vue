@@ -126,6 +126,7 @@
                     autoId:this.autoId
                 }
                 }).then(function(reponse){
+
                     var data = reponse.body.data.list;
                     this.$refs.dragContent.style.width = this.styleWidth*data.length + "rem";
                     this.$refs.dragCompare.style.width = this.styleWidth*data.length + "rem";
@@ -348,6 +349,7 @@
 
 .config-list{width:3.2rem;float:left;}
 
+
 .config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
@@ -360,7 +362,6 @@
     background: #FFF;
     border-top: 1px solid #CCC;
     border-right: 1px solid #CCC;}
-
 
 .marb{position:fixed;left:0;z-index:10;}
 .marCon{padding-top:2.906rem;}
