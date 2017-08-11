@@ -75,6 +75,7 @@ Vue.directive('load-more',{
 		    return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
 		} 
 		const loadMore = (element, callback) => {
+			
 			let windowHeight = window.screen.height;
 			let height;
 			let setTop;
