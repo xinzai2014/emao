@@ -140,7 +140,7 @@ export default {
             this.use=this.bActive(use);
             this.useNum = this.use.length; 
 
-            let disable = response.body.data.use;
+            let disable = response.body.data.disable;
             this.disable=this.bActive(disable); 
             this.disableNum= this.disable.length;  
 

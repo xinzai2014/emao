@@ -139,11 +139,8 @@ Vue.directive('load-more',{
 Vue.http.interceptors.push(function(request,next){
 	obj.showLoading = true;
     next(function (response) {
-    	console.log();
     	if(this.$root.showLoading == true){
-    		setTimeout(function(){
-    			obj.showLoading = false; 
-    		},500)
+    		obj.showLoading = false; 
     	}
         return response;
     })

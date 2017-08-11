@@ -25,7 +25,7 @@
 							<div class="category-info">
 								<div class="category-time">
 									<p class="detailed-tit">{{item.updated_at}}</p>
-									<div class="detailed active">
+									<div class="detailed active" v-if="item.detail.length">
 										<p class="detailed-p" @click="show(index)" v-show="index == i">
 											<a href="javascript:;">收起</a>
 											<i class='yellow-bt active'></i>
@@ -37,6 +37,11 @@
 										<div class="detailed-info" v-show="index == i" v-for="(val,key) in item.detail">
 											<p><span>{{val.des}}</span>{{val.title}}</p>
 										</div>
+									</div>
+									<div class="detailed active" v-else>
+										<p class="detailed-p">
+											<a href="javascript:;"> </a>
+										</p>
 									</div>
 								</div>
 							</div>
