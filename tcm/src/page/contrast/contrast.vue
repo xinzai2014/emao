@@ -33,7 +33,9 @@
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
+
                                 <span class="cell-text" >{{e.name}}</span>
+
                             </div>
                         </div>
                     </div>
@@ -195,10 +197,6 @@
                     })
                 });
 
-<<<<<<< dcd55e252da966e8ae8346705edcd1c7e1f5a709
-=======
-
->>>>>>> duibi
                 this.dataList.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
@@ -352,12 +350,14 @@
 
 .config-list{width:3.2rem;float:left;}
 
+
 .config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
 .config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
 .config-list-t2 span{margin-left:0.15rem;}
 .config-list-t3{height: 1.36rem;
+
     display: table-cell;
     vertical-align: middle;
     text-align: center;
@@ -365,8 +365,10 @@
     border-top: 1px solid #CCC;
     border-right: 1px solid #CCC;}
 
+
 .marb{position:fixed;left:0;z-index:10;}
 .marCon{padding-top:2.906rem;}
+
 
 </style>
 
