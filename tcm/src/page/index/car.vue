@@ -15,7 +15,7 @@
                 <li v-for="(item,index) in brandList">
                     <p>{{item.name}}</p>
                     <div class="brand-wrap" @click="getSerieById(e.id)" v-for="(e,i) in item.list">
-                            <div class="brand-content-img active">
+                            <div class="brand-content-img">
                                  <img v-bind:src=e.logoUrl >
                             </div>
                             <span>{{e.name}}</span>

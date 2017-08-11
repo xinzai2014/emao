@@ -395,8 +395,8 @@
         overflow:hidden;
     }
     .user-info .left{float:left;width:2.1333rem;}
-    .user-info .right{float:left;width:7.0667rem;}
-    .user-info .right span{position:relative;bottom:-.1333rem;left: 0.266667rem;color:red;font-size:.2933rem;}
+    .user-info .right{position:relative;float:left;width:7.0667rem;}
+    .user-info .right span{position:absolute;bottom:-.5333rem;left: 0.266667rem;color:red;font-size:.2933rem;}
     .user-info input{
         display:inline-block;
         width:6.866667rem;

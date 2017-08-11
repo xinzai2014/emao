@@ -381,7 +381,7 @@ export default {
 .book-car-count p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
 .book-car-info{background-color:#fff;margin-bottom:.4rem;}
 .book-car-info ul li{padding:.5333rem .4rem;border-top:1px solid #2c2c2c;}
-.book-car-name{margin-bottom:.4rem;font-size:.42667rem;color:#2c2c2c;}
+.book-car-name{margin-bottom:.4rem;font-size:.42667rem;font-weight:600;color:#333;}
 .book-car-price{float:left;width:2.4rem;margin-right:.4rem;font-size:.4533rem;font-weight:bold;color:#fc3d36;}
 .book-guide-price{float:left;margin-top:.0667rem;font-size:.3467rem;color:#999;}
 .book-guide-price span{display:block;float:left;}
@@ -403,7 +403,7 @@ export default {
 /*首页-订车-详情页-订车弹窗*/
 .book-car-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
 .book-order{position:fixed;bottom:0;z-index:6;width:10rem;background-color:#fff;transform:translateY(100%)}
-.book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#2c2c2c;}
+.book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#000;}
 .book-order-title i{position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:100% 100%;border-bottom:1px solid #eee;}
 .book-order-info{margin-left:.4rem;margin-right:.4rem;padding:.5333rem 0;border-bottom:1px solid #2c2c2c;}
 .book-car-repertory{margin-top:.4rem;color:#999;font-size:.4rem;}

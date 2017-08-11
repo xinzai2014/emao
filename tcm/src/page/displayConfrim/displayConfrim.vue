@@ -32,7 +32,7 @@
         </div>
         <div class="order-message">
             <span>买家留言：</span>
-            <input type="text" v-model="remark"></input>
+            <input type="text" v-model="remark" placeholder="选填（对此展车的相关说明）"/>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -295,7 +295,7 @@ export default {
 .order-address{position:relative;margin-top:.4rem;padding-right:.4rem;}
 .order-address i{position:absolute;top:0;right:.1333rem;}
 .order-car-info{background-color:#fff;padding:.5333rem .4rem;margin-bottom:.4rem;}
-.order-car-name{font-size: .42667rem;color: #2c2c2c;}
+.order-car-name{font-size: .42667rem;color: #333;font-weight:600;}
 .order-car-color{display:block;margin-top:.1333rem;font-size: .3467rem;color: #999;}
 .order-price-count{margin-top:.4667rem;margin-bottom:.4rem;font-size:.3733rem;}
 .order-car-price{float:left;color:#2c2c2c;}
@@ -303,7 +303,7 @@ export default {
 .order-car-count{float:right;color:#999;}
 .order-car-count span{}
 .order-message{padding:.4rem 0;color:#2c2c2c;font-size:.3733rem;border-top:1px solid #e0e0e0;}
-.order-message input{line-height:0.75rem;height:0.75rem;display:inline-block;width:7rem;border:none;}
+.order-message input{display:inline-block;height:0.75rem;width:7rem;line-height:0.75rem;border:none;}
 .order-coupon-info{padding:0 .4rem;margin-bottom:.4rem;background-color:#fff;}
 .order-coupon-title{float:left;color:#2c2c2c;font-size:.4rem;}
 .order-coupon-con{float:right;color:#999;font-size:.3733rem;}
@@ -326,7 +326,7 @@ export default {
 .order-suport-switch input:checked:after{transform: translateX(.2667rem);}
 /*checkbox按钮结束*/
 .order-rental{margin-bottom:1.667rem;padding:.533rem .4rem;font-size:.3467rem;background-color:#fff;}
-.order-rental-info{height:1.467rem;line-height:1.467rem;}
+.order-rental-info{height:.8667rem;line-height:.8667rem;}
 .order-rental-info span{display:block;float:left;color:#999;}
 .order-rental-info p{float:right;}
 .order-rental-info strong{color:#2c2c2c;}

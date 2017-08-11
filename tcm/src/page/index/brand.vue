@@ -51,7 +51,7 @@ export default {
 .index-brand-in li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;overflow:hidden;}
 .index-brand-in li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
 .index-brand-in li span{color:#2c2c2c;font-size:0.3733rem;white-space:nowrap;}
-.index-more-brand{margin-top:.8rem;text-align:center;}
+.index-more-brand{margin-top:.8rem;text-align:center;color:#d5aa5c;}
 .index-more-brand i{margin-left:.1333rem;}
 .brand-collect i{transform:rotateX(180deg)}
 /*首页本地车源*/
