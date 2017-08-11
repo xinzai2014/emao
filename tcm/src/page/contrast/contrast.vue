@@ -346,15 +346,12 @@
 }
 
 .config-list{width:3.2rem;float:left;}
-
-
 .config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
 .config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
 .config-list-t2 span{margin-left:0.15rem;}
 .config-list-t3{height: 1.36rem;
-
     display: table-cell;
     vertical-align: middle;
     text-align: center;
