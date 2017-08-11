@@ -33,7 +33,6 @@
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
-
                                 <span class="cell-text" >{{e.name}}</span>
                             </div>
                         </div>
@@ -349,7 +348,6 @@
 
 .config-list{width:3.2rem;float:left;}
 
-
 .config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
@@ -365,7 +363,6 @@
 
 .marb{position:fixed;left:0;z-index:10;}
 .marCon{padding-top:2.906rem;}
-
 
 </style>
 
