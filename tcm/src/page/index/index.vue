@@ -12,6 +12,7 @@
     <!--本地车源-->
     <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
 
+
     <!--查询表单--> 
 
     <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search>
