@@ -187,7 +187,7 @@
         </header>
         <!--订购成功-->
         <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>在线订购成功 <i class="order-succeed-logo"></i></p>
+            <p class="order-succeed-first"><i class="order-first-logo"></i>订购成功 <i class="order-succeed-logo"></i></p>
             <div class="order-second-out">
                 <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
                 <div class="order-succeed-info">
