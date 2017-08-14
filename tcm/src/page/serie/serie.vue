@@ -292,6 +292,7 @@ export default {
       fullBayData.autoId = activeData.autoId;
       fullBayData.colorId = activeData.colorId;
       fullBayData.inColorId = activeData.inColorId;
+      fullBayData.serieId = this.serieId;
       this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
       console.log(fullBayData);
    },
@@ -301,6 +302,7 @@ export default {
       applyBayData.autoId = activeData.autoId;
       applyBayData.colorId = activeData.colorId;
       applyBayData.inColorId = activeData.inColorId;
+      applyBayData.serieId = this.serieId;
       this.$router.push({name:"displayConfrim",params:{id:applyBayData.autoId},query:applyBayData});
       console.log(applyBayData);
    },

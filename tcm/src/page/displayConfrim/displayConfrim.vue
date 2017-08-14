@@ -3,7 +3,7 @@
 	<div>
     <!--首页-订单确认-头部-->
     <header class="brand-list-header">
-        <i class="white-lt brand-left-cion"></i>
+        <i class="white-lt brand-left-cion"  @click="goback"></i>
         <strong class="brand-list-title">展车确认</strong>
     </header>
     <!--购车确认-->
@@ -26,7 +26,7 @@
         <span class="order-car-color">{{car.color}}/{{car.inColor}}</span>
         <div class="order-price-count clearfix">
             <div class="order-car-price">
-                总价：<span>{{car.price}}元</span>
+                保证金：<span>{{car.price|getMoney}}元</span>
             </div>
             <div class="order-car-count">X <span>1</span></div>
         </div>
@@ -51,17 +51,17 @@
     <!--购车确认-总额-->
     <section class="order-rental">
         <div class="order-rental-info">
-            <span>应付金额</span>
-            <p><strong>￥{{car.price}}</strong></p>
+            <span>保证金</span>
+            <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
-        <div class="order-rental-info" v-if="checkCoupun">
+        <div class="order-rental-info">
             <span>优惠券（不可开票）</span>
-            <p><i>-</i><strong>￥{{couponData.price}}</strong></p>
+            <p><i>-</i><strong>￥{{couponData.price|getMoney}}</strong></p>
         </div>
 
         <div class="order-rental-info">
-            <span>还需支付</span>
-            <p><strong>￥{{totalData}}</strong></p>
+            <span>应付金额</span>
+            <p><strong>￥{{totalData|getMoney}}</strong></p>
         </div>
     </section>
 
@@ -83,7 +83,7 @@
             </div>
              <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(index,item.id)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(item,index)">
                         <dl class="clearfix">
                             <dt>¥ {{item.price}}</dt>
                             <dd>
@@ -105,7 +105,8 @@
         <div class="buy-agreement-in">
             <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
-                <p class="buy-agreement-con">司法鉴定打扫房间懂了设计费来的时间姐分离的设计费看来都是减肥考虑的设计费看来都是简单看了风景打开了试驾分类都开始</p>
+                <p class="buy-agreement-con">
+                    <iframe src="//tcmapi.emao.com/app_html/agreement/show" class="agreemenIframe"></iframe></p>
             </div>
             <ul class="buy-agreement-choose clearfix">
                 <li class="" @click="closeAgreementDialog">不同意</li>
@@ -117,19 +118,19 @@
     <div class="dialog-content" v-if="showSuccessResult" :class="{dialogAnimateStyle:showSuccessResult}">
         <!--首页-订单确认-头部-->
         <header class="brand-list-header">
-            <i class="white-lt brand-left-cion"></i>
+            <i class="white-lt brand-left-cion" @click="goback"></i>
             <strong class="brand-list-title">订购成功</strong>
         </header>
         <!--订购成功-->
         <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>在线订购成功 <i class="order-succeed-logo"></i></p>
+            <p class="order-succeed-first"><i class="order-first-logo"></i>申请展车成功 <i class="order-succeed-logo"></i></p>
             <div class="order-second-out">
                 <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
                 <div class="order-succeed-info">
                     <p class="clearfix"><span>汇款银行：</span><strong>{{successData.bankName}}</strong></p>
                     <p class="clearfix"><span>公司名称：</span><strong>{{successData.companyName}}</strong></p>
                     <p class="clearfix"><span>账号：</span><strong>{{successData.account}}</strong></p>
-                    <p class="order-send">发送到手机</p>
+                    <p class="order-send" @click="sendMessage" :class='{"color-disabled":disabled}'>{{codeText}}</p>
                 </div>
                 <ul class="order-secceed-explain">
                     <li>汇款说明：</li>
@@ -141,7 +142,7 @@
         </section>
         <section class="order-succeed-bottom clearfix">
             <div class="order-to-apply" @click="goIndex">返回订车页</div>
-            <div class="order-to-check" @click="goDeatail">查看详情</div>
+            <div class="order-to-check" @click="goDeatail(successData.orderNum)">查看详情</div>
         </section>
     </div>
 
@@ -168,12 +169,58 @@ export default {
             remark:null,             //备注信息
             showAgreement:false,
             showSuccessResult:false,
-            successData:null
+            successData:null,
+            messageData:{},
+            codeText:"发送到手机", //下单成功后发送短信到手机
+            num:60, //下单成功后倒计时
+            disabled:false
  	    }
 	  },
 	  methods:{
+        goback(){
+            this.$router.push("/serie/" + this.serieId);
+        },
         goIndex(){
             this.$router.go("index");
+        },
+        goDeatail(id){
+             this.$router.push("/displayDetail/" + id);
+        },
+        sendMessage(){  //发送成功短信
+            if(this.disabled){
+                return false;
+            }
+            this.messageData["token"] = sessionStorage.token;
+            this.messageData["phone"] = this.address.phone;
+            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
+                this.successData.bankName+ ",账号：" + 
+                this.successData.account + ",公司名称：" + 
+                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
+            this.$http.post(
+                  "message/send",
+                  this.messageData,
+              ).then(function (response) {
+                this.setCode();
+            },function(){
+
+            })
+        },
+        setCode(){
+            this.codeText = this.num+"s";
+            this.disabled = true;
+            var that = this;
+            window.timer = window.setInterval(()=>{
+                that.num--;
+                that.codeText = this.num+"s";
+                this.disabled = true;
+                if(!this.num){
+                    this.codeText = "发送到手机";
+                    this.num = 60;
+                    this.disabled = false;
+                    window.clearInterval(window.timer);
+                    return false;
+                }
+            },1000);
         },
 	  	getData(){
 			this.$http({
@@ -203,25 +250,23 @@ export default {
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
         },
-        chooseCoupon(index,id){  //选择优惠券
+        chooseCoupon(item,index){  //选择优惠券
+            console.log(item.check)
+            console.log(item);
+            console.log(index);
             this.coupon.forEach(function(ele,ind){
+                console.log(ind);
                 if(index!=ind){
                   ele.check = false;   
                 }
-            })
-            this.coupon[index].check = !this.coupon[index].check;
-            if(this.coupon[index].check){
-                this.couponData = this.coupon[index];
-                this.checkCoupun = true;
-            }else{
-                this.couponData = {};
-                this.checkCoupun = false;
-            }
+            });
+            item.check = !item.check;
+            this.couponData = (item.check?item:{});
+            this.checkCoupun = (item.check?true:false);
+
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
-            //this.getAgreementData(); //协议暂时不管
-            this.sumbitOrder();
             return false;
         },
         closeAgreementDialog(){
@@ -257,8 +302,16 @@ export default {
             },1000) 
         },
 	  },
+      filters:{
+        getMoney:function(num){
+            if(isNaN(num)){
+                num = 0;
+            }
+            return parseInt(num).toFixed(2);
+        }
+      },
 	  mounted(){
-
+        this.serieId = this.$router.currentRoute.query.serieId;
 	  },
       computed:{
         totalData:function(){
@@ -277,7 +330,11 @@ export default {
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
 		  })
-		}
+		},
+      beforeRouteLeave (to, from, next) {
+            window.clearInterval(window.timer);
+            next();
+      }
 }
 </script>
 
@@ -426,11 +483,12 @@ export default {
 .order-succeed-second i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;vertical-align: bottom;background:url("../../assets/second-icon.png");background-size:100% 100%;}
 .order-succeed-second span{color:#fc3D36;}
 .order-succeed-second {font-size:.4rem;color:#2c2c2c;}
-.order-succeed-info{margin:.5333rem .8rem .4rem .8rem;border:1px solid #d5aa5c;}
+.order-succeed-info{margin:.5333rem .8rem .4rem .8rem;padding-top:0.533rem;border:1px solid #d5aa5c;}
 .order-succeed-info p{margin-bottom:.4rem;font-size:.4rem;}
 .order-succeed-info p span{display:block;float:left;width:2rem;padding-left:.2667rem;text-align:right;color:#999;}
 .order-succeed-info p strong{display:block;margin-left:2.3rem;padding-right:.133rem;color:#2c2c2c;}
 .order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
+.order-succeed-info .color-disabled{background:#999}
 .order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
 .order-secceed-explain li{margin-bottom:.1333rem;font-size:.32rem;color:#999;}
 .order-succeed-second{font-size:.4rem;color:#2c2c2c;}
@@ -450,5 +508,10 @@ export default {
 .order-failure-message{font-size:.4rem;color:#2c2c2c;text-align:center;}
 .order-failure-back{width:1.9333rem;height:1.0667rem;margin:.8rem auto 0;line-height:1.0667rem;text-align:center;border:1px solid #d5aa5c;border-radius:2.66rem;}
 
+.agreemenIframe{
+    width:100%;
+    height:10rem;
+    border:none;
+}
 </style>
 

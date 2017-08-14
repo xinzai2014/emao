@@ -21,14 +21,9 @@
 		    
 	    },
 	    mounted(){
-	    	const data = {
-	            	phone:18611985439,
-	            	password:123456
-	            }
 	    	this.$http({
-	            url:"test/mockLogin",
-	            method:"GET",
-	            params:data
+	            url:"passport/key/notApp",
+	            method:"GET"
 	        }).then(function (response) {
 	            sessionStorage.dataToken = response.body.data.dataToken;
 	            this.$router.push('/login/account'); //路由跳转

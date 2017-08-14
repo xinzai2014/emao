@@ -121,11 +121,11 @@ export default {
     footerTo:footer
   },
   beforeRouteEnter (to, from, next) {
-        console.log("来首页看看吧");
+       
         next();
     },
     beforeRouteLeave (to, from, next) {
-        console.log("你要离开吗");
+        
         next();
   }
 }
