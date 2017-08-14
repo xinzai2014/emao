@@ -175,6 +175,7 @@ export default {
             num:60, //下单成功后倒计时
             disabled:false,
             routerAddress:false
+            
  	    }
 	  },
 	  methods:{
