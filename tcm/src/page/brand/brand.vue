@@ -27,7 +27,7 @@
         </ul>
     </section>
         <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess"></search>
+    <search @getCar="getCar" :carMess="carMess" :title="title"></search>
     
     <!-- 车型数据 -->
     <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
@@ -59,6 +59,7 @@ import car from '../index/car'
                   serieId:null,
                   carId:null
                 },
+                title:'没有您想要的？告诉我们',
                 showbrand:false //车型弹层
             }
         },

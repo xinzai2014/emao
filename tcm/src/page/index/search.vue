@@ -1,7 +1,7 @@
 <template>
     <section class="index-search">
         <div class="index-search-in">
-            <p class="index-search-title">急需要什么车型？告诉我</p>
+            <p class="index-search-title">{{title}}</p>
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
                     <label for="" :brandID=carMess.carId>{{carMess.carName}}</label>
@@ -29,7 +29,7 @@
 <script>
 export default {
       name: 'search',
-      props:["carMess"],
+      props:["carMess","title"],
       data () {
         return {
           carPrice:null,

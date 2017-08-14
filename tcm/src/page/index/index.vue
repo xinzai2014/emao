@@ -13,7 +13,7 @@
     <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
 
     <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess" @subAlert = "getAlert"></search>
+    <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search>
     
     <!-- 车型数据 -->
     <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
@@ -50,6 +50,7 @@ export default {
           serieId:null,
           carId:null
         },
+        title:"急需要什么车型？告诉我",
         initData:{ //初始化接口数据
             token:null,
             ltime:0,

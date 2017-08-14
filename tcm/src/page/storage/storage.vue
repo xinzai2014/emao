@@ -31,7 +31,7 @@
             <ul>
                 <li>
                     <p class="transit-depot-status">等待入库</p>
-                    <div class="transit-depot-in">
+                    <div class="transit-depot-in" v-if="waitIn.length">
                         <ul class="transit-depot-list">
                             <li v-for="(item,index) in waitIn">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -45,10 +45,13 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="no-data" v-if="!waitIn.length">
+                        <p>暂无等待入库车辆</p>
+                    </div>
                 </li>
                 <li>
                     <p class="transit-depot-status">等待出库</p>
-                    <div class="transit-depot-in">
+                    <div class="transit-depot-in" v-if="waitOut.length">
                         <ul class="transit-depot-list">
                             <li v-for="(item,index) in waitOut">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -62,10 +65,13 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="no-data" v-if="!waitOut.length">
+                        <p>暂无等待出库车辆</p>
+                    </div>
                 </li>
                 <li>
                     <p class="transit-depot-status">在库</p>
-                    <div class="transit-depot-in">
+                    <div class="transit-depot-in" v-if="inWarehouse.length">
                         <ul class="transit-depot-list">
                             <li v-for="item in inWarehouse">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -79,6 +85,9 @@
                                 </div>
                             </li>
                         </ul>
+                    </div>
+                    <div class="no-data" v-if="!inWarehouse.length">
+                        <p>暂无在库车辆</p>
                     </div>
                 </li>
             </ul>
@@ -408,6 +417,7 @@
     .transit-depot-stock-removal{color:#6aa3e4;border:1px solid #6aa3e4;}
     .transit-depot-state p{display:block;padding-right:.4rem;text-align:right;color:#999;font-size:.3467rem;}
     .transit-depot-txt{margin-top:.1333rem;}
+    .transit-depot-con .no-data{width:100%;height:100%;padding:4.0rem 0;font-size:.3733rem;text-align:center;background-color:#fff;}
 
     /*中转库遮罩*/
     .transit-depot-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
