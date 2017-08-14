@@ -222,7 +222,7 @@ export default {
 	  name: 'orderConfrim',
 	  data () {
 	    return {
-            serieId:null, //车系ID值，返回用
+            orderId:null, //订单号
 	    	initData:null, //初始化路由带过来的数据
 	    	address:{}, //地址信息
 	    	car:{},     //购车信息
@@ -459,7 +459,8 @@ export default {
         },
 	  },
 	  mounted(){
-        this.serieId = this.$router.currentRoute.query.serieId;
+        console.log("dsad");
+        console.log(this.$route);
 	  },
       filters:{
         getMoney:function(num){
@@ -479,19 +480,7 @@ export default {
             var rebatePrice = this.updateRebateData>0?this.updateRebateData:0;
             return this.car.price - couponPrice - marketPrice - rebatePrice;
         }
-      },
-	  beforeRouteEnter (to, from, next) {
-		  next(vm => {
-		    // 通过 `vm` 访问组件实例
-		    vm.initData = vm.$router.currentRoute.query;
-		    vm.initData.token = sessionStorage.token;
-		    vm.getData();
-            //保存提交信息
-            vm.formData.auto_id =  vm.initData.autoId;         //车型ID
-            vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
-            vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
-		  })
-		}
+      }
 }
 </script>
 

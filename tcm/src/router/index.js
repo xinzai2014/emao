@@ -90,6 +90,9 @@ const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfr
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
 
+//补余款确认订单
+const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceConfrim/balanceConfrim')), 'balanceConfrim')
+
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
@@ -154,6 +157,11 @@ var router=new Router({
       path: '/orderConfrim/:id',  //全款购车确认页面
       name: 'orderConfrim',
       component: orderConfrim
+    },
+    {
+      path: '/balanceConfrim/:id',  //补余款下单页面
+      name: 'balanceConfrim',
+      component: balanceConfrim
     },
     {
       path: '/contrast',  //全款购车结果页
