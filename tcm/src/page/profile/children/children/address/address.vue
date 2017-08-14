@@ -64,10 +64,14 @@
             orderAddress(item){
             	this.$router.push({
             		path:this.url,
-            		query:{
+            		/*query:{
             			'address':item.id
-            		}
+            		}*/
             	});
+            	sessionStorage.addressId=item.id;
+            	sessionStorage.addresstxt=item.address;
+            	sessionStorage.addressPhone=item.phone;
+            	sessionStorage.addressName=item.name;
             },
             remove(item,index){
             	if(confirm('确认要删除么?')){
