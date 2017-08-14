@@ -418,7 +418,6 @@ export default {
             this.formData.order_num = this.orderId;
             this.formData.deduction = this.totalData;
             //this.formData.remark = this.remark;
-
             this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
             this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
             this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
@@ -429,7 +428,6 @@ export default {
                     this.showSuccessResult = true;
                     this.successData = response.body.data;
               },function(){
-
             });
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
@@ -478,6 +476,7 @@ export default {
         },
 	  },
 	  mounted(){
+
          this.orderId = this.$route.params.id;
          this.deposit = this.$route.query.deposit;
          this.initData["token"] = sessionStorage.token;
