@@ -1,9 +1,9 @@
 #!/bin/bash
 #-------------------------------------------------------------------------
-# Filename: build.sh
+# Filename: after-build.sh
 # Author: 马新才
 # Date: 2017-08-15
-# Description: 本脚本的作用是在build代码
+# Description: 本脚本的作用是在build完成后执行一下勾子
 #  -------------------------------------------------------------------------
 
 app_path='/data/www/project-taochemao-wap'
