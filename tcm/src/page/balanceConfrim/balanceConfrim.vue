@@ -75,6 +75,10 @@
             <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
+            <span>保证金</span>
+            <p><i>-</i><strong>￥{{deposit|getMoney}}</strong></p>
+        </div>
+        <div class="order-rental-info">
             <span>优惠券（不可开票）</span>
             <p><i>-</i><strong>￥{{couponData.price|getMoney}}</strong></p>
         </div>
@@ -223,7 +227,8 @@ export default {
 	  data () {
 	    return {
             orderId:null, //订单号
-	    	initData:null, //初始化路由带过来的数据
+            deposit:null, //保证金
+	    	initData:{}, //初始化路由带过来的数据
 	    	address:{}, //地址信息
 	    	car:{},     //购车信息
 	    	coupon:[],  //优惠券
@@ -257,7 +262,8 @@ export default {
             messageData:{},
             codeText:"发送到手机", //下单成功后发送短信到手机
             num:60, //下单成功后倒计时
-            disabled:false
+            disabled:false,
+            routerAddress:false
  	    }
 	  },
 	  methods:{
@@ -280,7 +286,16 @@ export default {
 		          params:this.initData
 		      }).then(function (response) {
 		      	   var data = response.body.data;
-		           this.address = data.address;
+                   if(this.routerAddress){
+                        this.address = {
+                            "address":sessionStorage.addresstxt,
+                            "id":sessionStorage.addressId,
+                            "name":sessionStorage.addressName,
+                            "phone":sessionStorage.addressPhone
+                        }
+                   }else{
+                        this.address = data.address;
+                   }
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -299,8 +314,10 @@ export default {
 		           this.rebate = data.rebate;
 
                    //初始化提交表单信息
-                   this.formData.total_price = data.car.price;
-                   this.formData.address_id = data.address.id;
+                   this.formData.total_price  = data.car.price;
+                   this.formData.int_color_id = data.car.inColorId;
+                   this.formData.ext_color_id = data.car.colorId;
+
 		        },function(){
 
 		        })
@@ -398,19 +415,21 @@ export default {
         },
         sumbitOrder(){ //提交表单
             this.closeAgreementDialog();
+            this.formData.order_num = this.orderId;
             this.formData.deduction = this.totalData;
-            this.formData.remark = this.remark;
+            //this.formData.remark = this.remark;
 
             this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
             this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
             this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
             this.formData.rebate_price = this.updateRebateData>0?this.updateRebateData:0;
             this.$http.post(
-                "order/full/create?token="+sessionStorage.token,
+                "order/show/balance?token="+sessionStorage.token,
                 this.formData).then(function (response) {
                     this.showSuccessResult = true;
                     this.successData = response.body.data;
               },function(){
+
             });
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
@@ -459,8 +478,11 @@ export default {
         },
 	  },
 	  mounted(){
-        console.log("dsad");
-        console.log(this.$route);
+         this.orderId = this.$route.params.id;
+         this.deposit = this.$route.query.deposit;
+         this.initData["token"] = sessionStorage.token;
+         this.initData["orderNum"] = this.orderId;
+         this.getData();
 	  },
       filters:{
         getMoney:function(num){
@@ -478,9 +500,18 @@ export default {
             var couponPrice = this.couponData.price?this.couponData.price:0;//优惠券减免
             var marketPrice = this.updateMarketData>0?this.updateMarketData:0;
             var rebatePrice = this.updateRebateData>0?this.updateRebateData:0;
-            return this.car.price - couponPrice - marketPrice - rebatePrice;
+            return this.car.price - couponPrice - marketPrice - rebatePrice - this.deposit;
         }
-      }
+      },
+      beforeRouteEnter(to, from, next){
+            next(vm => {
+                if(from.name=='address'){
+                    vm.routerAddress = true;
+                }else{
+                    vm.routerAddress = false;
+                }
+              });
+        },
 }
 </script>
 

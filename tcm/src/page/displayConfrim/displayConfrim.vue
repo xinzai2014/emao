@@ -8,7 +8,7 @@
     </header>
     <!--购车确认-->
     <!--购车确认-地址-姓名-->
-    <section class="order-confirmation-address">
+    <section class="order-confirmation-address" @click="goAdressList">
         <div class="order-name-phone clearfix">
             <div class="order-name">
                 收货人：<span>{{address.name}}</span>
@@ -173,7 +173,8 @@ export default {
             messageData:{},
             codeText:"发送到手机", //下单成功后发送短信到手机
             num:60, //下单成功后倒计时
-            disabled:false
+            disabled:false,
+            routerAddress:false
  	    }
 	  },
 	  methods:{
@@ -185,6 +186,9 @@ export default {
         },
         goDeatail(id){
              this.$router.push("/displayDetail/" + id);
+        },
+        goAdressList(){
+            this.$router.push("/profile/info/address");
         },
         sendMessage(){  //发送成功短信
             if(this.disabled){
@@ -229,7 +233,16 @@ export default {
 		          params:this.initData
 		      }).then(function (response) {
 		      	   var data = response.body.data;
-		           this.address = data.address;
+		           if(this.routerAddress){
+                        this.address = {
+                            "address":sessionStorage.addresstxt,
+                            "id":sessionStorage.addressId,
+                            "name":sessionStorage.addressName,
+                            "phone":sessionStorage.addressPhone
+                        }
+                   }else{
+                        this.address = data.address;
+                   }
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -329,6 +342,13 @@ export default {
             vm.formData.auto_id =  vm.initData.autoId;         //车型ID
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
+
+            if(from.name=='address'){
+                vm.routerAddress = true;
+            }else{
+                vm.routerAddress = false;
+            }
+
 		  })
 		},
       beforeRouteLeave (to, from, next) {

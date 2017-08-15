@@ -257,7 +257,8 @@ export default {
             messageData:{},
             codeText:"发送到手机", //下单成功后发送短信到手机
             num:60, //下单成功后倒计时
-            disabled:false
+            disabled:false,
+            routerAddress:false
  	    }
 	  },
 	  methods:{
@@ -280,7 +281,16 @@ export default {
 		          params:this.initData
 		      }).then(function (response) {
 		      	   var data = response.body.data;
-		           this.address = data.address;
+		           if(this.routerAddress){
+                        this.address = {
+                            "address":sessionStorage.addresstxt,
+                            "id":sessionStorage.addressId,
+                            "name":sessionStorage.addressName,
+                            "phone":sessionStorage.addressPhone
+                        }
+                   }else{
+                        this.address = data.address;
+                   }
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -490,6 +500,12 @@ export default {
             vm.formData.auto_id =  vm.initData.autoId;         //车型ID
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
+
+            if(from.name=='address'){
+                    vm.routerAddress = true;
+                }else{
+                    vm.routerAddress = false;
+                }
 		  })
 		}
 }

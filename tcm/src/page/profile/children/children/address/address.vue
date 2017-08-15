@@ -128,7 +128,7 @@
         },
         beforeRouteEnter(to, from, next){
         	next(vm => {
-			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'){
+			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
 	        		vm.radio=true;
 	        		vm.url=from.fullPath;
 	        	}else{
