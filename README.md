@@ -1,22 +1,21 @@
-ommand line instructions
+# tcm
 
-Git global setup
+> A Vue.js project
 
-git config --global user.name "web"
-git config --global user.email "huzaixing479@emao.com"
+## Build Setup
 
-Create a new repository
+``` bash
+# install dependencies
+npm install
 
-git clone git@git.emao.net:huzaixing/project-vue.git
-cd project-vue
-touch README.md
-git add README.md
-git commit -m "add README"
-git push -u origin master
+# serve with hot reload at localhost:8080
+npm run dev
 
-Existing folder or Git repository
+# build for production with minification
+npm run build
 
-cd existing_folder
-git init
-git remote add origin git@git.emao.net:huzaixing/project-vue.git
-git push -u origin master
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
