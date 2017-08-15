@@ -1,21 +1,39 @@
-# tcm
+# 淘车猫项目wap版
+### 项目域名
+[https://tcm.m.emao.com](https://tcm.m.emao.com)
 
-> A Vue.js project
+### 项目描述
+淘车猫项目wap版
 
-## Build Setup
+### 初始化
+* cd /data/www/
+* git clone git@git.emao.net:tob/project-taochemao-wap.git
+* ln -s /data/www/project-taochemao-wap/serverconfig/nginx/online/conf.d /etc/nginx/conf.d/project-taochemao-wap
+* chmod -R 755 /data/www/project-taochemao-wap
+* chown -R nginx.nginx /data/www/project-taochemao-wap
+* sh script/build.sh
 
-``` bash
-# install dependencies
-npm install
+### 项目环境
+* vuejs
 
-# serve with hot reload at localhost:8080
-npm run dev
+### 项目仓库
+http://git.emao.net/tob/project-taochemao-wap.git
 
-# build for production with minification
-npm run build
+### 项目依赖
+* https://tcmapi.emao.com 淘车猫接口
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+### 期望上线方式
+需要通过node编译
+* node版本: >= 4.0.0
+* npm版本: >= 3.0.0
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 项目结构
+php代码文件位置
+
+`/data/www/project-taochemao-wap`
+
+nginx配置文件
+
+`ln -s /data/www/project-taochemao-wap/serverconfig/nginx/online/conf.d /etc/nginx/conf.d/project-taochemao-wap`
+
+
