@@ -33,7 +33,9 @@
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
+
                                 <span class="cell-text" >{{e.name}}</span>
+
                             </div>
                         </div>
                     </div>
@@ -193,8 +195,6 @@
                     })
                 });
 
-                //console.log(dataArray);
-
                 this.dataList.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
@@ -214,9 +214,6 @@
                         }
                     })
                 });
-
-                console.log(this.dataList);
-              
             },
         },
         mounted(){
@@ -362,7 +359,10 @@
     border-top: 1px solid #CCC;
     border-right: 1px solid #CCC;}
 
+
 .marb{position:fixed;left:0;z-index:10;}
 .marCon{padding-top:2.906rem;}
+
+
 </style>
 
