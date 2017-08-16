@@ -49,6 +49,7 @@
 </template>
 
 <script>
+	import alertTip from '../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -61,6 +62,9 @@
           alertText: null, //弹出信息
             }
         },
+        components:{
+		    alertTip
+		  },
         methods:{
             //组件方法
             resetIndex(){

@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -69,7 +70,9 @@ export default {
       showAlert: false, //弹出框
       alertText: null, //弹出信息
     }
-  },
+  },components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
