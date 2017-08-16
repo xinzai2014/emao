@@ -38,11 +38,12 @@
         <transition name="fade">
             <router-view></router-view>
         </transition>
-
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 
 </template>
 <script>
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         data(){
             return{
@@ -55,8 +56,13 @@
                 showLoading: true,
                 declareList:[],
                 add_order_time:'',
-                showNoDataVal:false
+                showNoDataVal:false,
+                showAlert:false,
+                alertText:null
             }
+        },
+        components:{
+            alertTip
         },
         methods:{
             //组件方法
@@ -110,8 +116,8 @@
                         return
                     }
                 }).catch(function(error){
-                    console.log("请求失败");
-                    console.log(error);
+                    this.showAlert = true;
+                    this.alertText = error.body.msg;
                 })
             },
             hideLoading(){
