@@ -43,7 +43,7 @@
             <!--我的订单-->
             <section class="order">
                 <router-link to="/order">
-                    <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
+                    <div class="tit"><h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>我的订单</h3></div>
                 </router-link>
                  <router-link to="/obliga">
                     <div class="item">

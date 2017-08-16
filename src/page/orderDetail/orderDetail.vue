@@ -13,7 +13,6 @@
               <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
           </div>
           <div class="details-addres" v-if="address.id" @click="toAddress">
-              <i class="white-rt"></i>
               <div class="details-user">
                   <span>{{address.phone}}</span>收货人：{{address.name}}
               </div>
@@ -32,7 +31,7 @@
                   <p class="interior">{{orderInfo.color}}</p>
                   <p class="payment"><em> ×1</em>全款购买：<span>{{orderInfo.price}}元</span></p>
               </div>
-              <p class="leave">
+              <p class="leave" v-if="orderInfo.remark">
                   <span>买家留言：</span>{{orderInfo.remark||'未留言'}}
               </p>
               <div class="settlement">
@@ -481,6 +480,7 @@ export default {
 }
 .order-full h3 {
     font-size: 0.426667rem;
+    line-height: 1.5rem;
 }
 .order-full .interior {
     color: #999;

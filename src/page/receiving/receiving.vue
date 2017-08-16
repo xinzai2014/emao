@@ -151,7 +151,6 @@ export default {
 
 /*全部订单*/
 .full-item{
-  height: 4.5rem;
   padding:0.533333rem 0.4rem;
   border-bottom:1px solid #2c2c2c;
   overflow:hidden;

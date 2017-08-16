@@ -282,7 +282,7 @@ export default {
   color:#fff;
 }
 .state-wait{
-  line-height:1.066667rem;
+  line-height:0.6rem;
 }
 .state-rt.active{
   background:#cccccc;

@@ -116,7 +116,7 @@
 		            this.addressList = response.body.data;
 		        }).catch(function (error) {
 		            this.showAlert = true;
-           this.alertText = error.body.msg||"请求失败了";
+           			this.alertText = error.body.msg||"请求失败了";
 		        });
             }
         },
