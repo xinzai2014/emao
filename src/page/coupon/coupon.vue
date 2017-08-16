@@ -100,6 +100,9 @@
                     </div>
                     
                 </transition>
+                
+                <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
             </div>
         </section>
     </div>
@@ -115,7 +118,9 @@ export default {
         disableNum:0,
         used:[],
         usedNum:0,
-        categoryType:'use'
+        categoryType:'use',
+        showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
   methods:{
@@ -149,7 +154,8 @@ export default {
             this.usedNum = this.used.length;   
 
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     bActive(arr){

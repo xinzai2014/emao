@@ -114,6 +114,9 @@
               <div class="receipt-btn" @click="receiptStatus">确认收货</div>
           </div>
       </div>
+
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 
@@ -133,6 +136,8 @@ export default {
         Token:sessionStorage.getItem('token'),
         receiptData:{},
         receiptShow:false,
+         showAlert: false, //弹出框
+          alertText: null, //弹出信息
     }
   },
   methods:{
@@ -155,7 +160,8 @@ export default {
         this.receiptData = response.body.data;
           console.log(this.receiptData)
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
       });
     },
     receiptStatus(){
@@ -169,7 +175,8 @@ export default {
         this.orderInfo.status='5';
         this.orderInfo.state='交易完成';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
     },
     toAddress(){
@@ -194,7 +201,8 @@ export default {
         this.orderInfo.status=6;
         this.orderInfo.state='已取消';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
       
     },
@@ -215,7 +223,8 @@ export default {
               }
             },1000);
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         });
     },
     remainingTime(item){
@@ -258,7 +267,8 @@ export default {
             this.countTime=this.orderInfo.orderTime;
             
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         }); 
     },
     stateAdd(obj){
@@ -334,7 +344,8 @@ export default {
             }
             this.address=data;
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         });
     }
   },

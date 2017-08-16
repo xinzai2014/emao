@@ -79,7 +79,8 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 		            this.deleted_at = response.body.data.deleted_at;
 		            this.updated_at = response.body.data.updated_at;
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		            this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
 		        });
             },
             saveEdit(){
@@ -120,10 +121,12 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             		"dealer/updateById?token="+token,
             		data
 		        ).then(function (response) {
-		        	alert('保存成功！');
+		        	this.showAlert = true;
+          			this.alertText = "保存成功";
 		        	this.$router.push({ name: 'address'});
 		        }).catch(function (error) {
-		            console.log("请求失败了");		            
+		            this.showAlert = true;
+          			 this.alertText = error.body.msg||"请求失败了";	            
 		        });
             }
         },

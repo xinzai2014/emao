@@ -33,6 +33,8 @@
             <img src="../../assets/no-order.png" alt="">
             <p>暂无此类订单</p>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
@@ -48,6 +50,8 @@ export default {
         preventRepeatReuqest: false,
         showLoading: true,
         countNum:0,
+        showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
   methods:{
@@ -80,7 +84,8 @@ export default {
               return
             }
         }).catch(function (error) {
-             console.log("请求失败了");
+             this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     stateAdd(arr){

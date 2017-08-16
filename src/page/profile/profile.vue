@@ -6,7 +6,7 @@
                 <router-link to="/message">
                     <div class="news">
                         <i class="news-icon"></i>
-                        <span class="process-in">{{messageNum}}</span>
+                        <span class="process-in" v-if="messageNum">{{messageNum}}</span>
                     </div>
                 </router-link>
                 <div class="company-ct">
@@ -47,19 +47,19 @@
                 </router-link>
                  <router-link to="/obliga">
                     <div class="item">
-                        <i class="payment-icon"><span class="process-in">{{payment_num}}</span></i>
+                        <i class="payment-icon"><span class="process-in" v-if="payment_num!='0'">{{payment_num}}</span></i>
                         <span>待付款</span>
                     </div>
                 </router-link>
                 <router-link to="/sending">
                     <div class="item">
-                        <i class="send-icon"><span class="process-in">{{delivered_num}}</span></i>
+                        <i class="send-icon"><span class="process-in" v-if="delivered_num!='0'">{{delivered_num}}</span></i>
                         <span>待发货</span>
                     </div>
                 </router-link>
                 <router-link to="/receiving">
                     <div class="item">
-                        <i class="receipt-icon"><span class="process-in">{{received_num}}</span></i>
+                        <i class="receipt-icon"><span class="process-in" v-if="received_num!='0'">{{received_num}}</span></i>
                         <span>待收货</span>
                     </div>
                 </router-link>
@@ -107,6 +107,8 @@
             </ul>
         </footer>
 
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
@@ -128,7 +130,9 @@ export default {
       payment_num:'',    //待付款
       delivered_num:'',  //待发货
       received_num:'',   //待收货
-      is_transtor:''    //是否是中转库管理员
+      is_transtor:'',  //是否是中转库管理员
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
   methods:{
@@ -157,7 +161,8 @@ export default {
         this.received_num = response.body.data.received_num;    //待收货
         this.is_transtor = response.body.data.is_transtor;   //是否是中转库管理员
       }).catch(function (error) {
-        console.log("请求失败了");
+        this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
     //消息数
       this.$http({
@@ -167,7 +172,8 @@ export default {
      }).then(function (response) {
         this.messageNum = response.body.data.length;    
       }).catch(function (error) {
-        console.log("请求失败了");
+        this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
   }
 }

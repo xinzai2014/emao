@@ -42,6 +42,9 @@
 		<transition name="router-slid">
             <router-view></router-view>
         </transition>
+		
+		 <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 
@@ -53,7 +56,9 @@
               addressList:[],
               show:true,
               radio:false,
-              url:''
+              url:'',
+              showAlert: false, //弹出框
+          alertText: null, //弹出信息
             }
         },
         methods:{
@@ -87,7 +92,8 @@
 			        ).then(function (response) {
 			            this.addressList.splice(index, 1);
 			        }).catch(function (error) {
-			            console.log("请求失败了");
+			            this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
 			        });
 		    	}
             },
@@ -105,7 +111,8 @@
 		        }).then(function (response) {
 		            this.addressList = response.body.data;
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		            this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
 		        });
             }
         },

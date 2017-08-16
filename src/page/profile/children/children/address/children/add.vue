@@ -92,14 +92,16 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             		"dealer/createAddress?token="+token,
             		data
             	).then(function (response) {
-            		alert('添加成功！');
+            		this.showAlert = true;
+          			this.alertText = "添加成功！";
 		        	this.$router.push({ name: 'address'});
 		        	sessionStorage.addressId=response.body.data.id;
 	            	sessionStorage.addresstxt=data.address;
 	            	sessionStorage.addressPhone=data.phone;
 	            	sessionStorage.addressName=data.name;
 		        }).catch(function (error) {
-		            console.log("请求失败了");		            
+		            this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";	            
 		        });
             }
         },
