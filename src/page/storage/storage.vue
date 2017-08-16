@@ -29,9 +29,9 @@
         <!--中转库的不同状态-->
         <section class="transit-depot-con">
             <ul>
-                <li>
+                <li v-if="waitIn.length">
                     <p class="transit-depot-status">等待入库</p>
-                    <div class="transit-depot-in" v-if="waitIn.length">
+                    <div class="transit-depot-in">
                         <ul class="transit-depot-list">
                             <li v-for="(item,index) in waitIn">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -45,13 +45,13 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="no-data" v-if="!waitIn.length">
-                        <p>暂无等待入库车辆</p>
-                    </div>
+                    <!--<div class="no-data" v-if="!waitIn.length">-->
+                        <!--<p>暂无等待入库车辆</p>-->
+                    <!--</div>-->
                 </li>
-                <li>
+                <li v-if="waitOut.length">
                     <p class="transit-depot-status">等待出库</p>
-                    <div class="transit-depot-in" v-if="waitOut.length">
+                    <div class="transit-depot-in">
                         <ul class="transit-depot-list">
                             <li v-for="(item,index) in waitOut">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -65,13 +65,13 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="no-data" v-if="!waitOut.length">
-                        <p>暂无等待出库车辆</p>
-                    </div>
+                    <!--<div class="no-data" v-if="!waitOut.length">-->
+                        <!--<p>暂无等待出库车辆</p>-->
+                    <!--</div>-->
                 </li>
-                <li>
+                <li v-if="inWarehouse.length">
                     <p class="transit-depot-status">在库</p>
-                    <div class="transit-depot-in" v-if="inWarehouse.length">
+                    <div class="transit-depot-in">
                         <ul class="transit-depot-list">
                             <li v-for="item in inWarehouse">
                                 <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
@@ -86,9 +86,9 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="no-data" v-if="!inWarehouse.length">
-                        <p>暂无在库车辆</p>
-                    </div>
+                    <!--<div class="no-data" v-if="!inWarehouse.length">-->
+                        <!--<p>暂无在库车辆</p>-->
+                    <!--</div>-->
                 </li>
             </ul>
         </section>
@@ -158,83 +158,8 @@
                 showAlert:false,
                 alertText:null,
                 timer:null,
-                //waitIn:[],
-                waitIn : [
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    }
-                ],
-               // waitOut:[],
-                waitOut:[
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },
-                    {
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    },{
-                        "vin_num" : "Z20170705097",
-                        "brand_name" : "起亚",
-                        "serie_name" : "起亚K5",
-                        "year" : "2015",
-                        "auto_name" : "2.0T 自动Turbo",
-                        "ext_color" : "玛瑙红",
-                        "int_color" : "浅色内饰"
-                    }
-                ],
+                waitIn:[],
+                waitOut:[],
                 inWarehouse:[],
                 itemIn:{
                     token:sessionStorage.token,
@@ -358,8 +283,8 @@
                     this.inWarehouse[i].add_warehouse_time =  getLocalTime(this.inWarehouse[i].add_time);
                 }
             }).catch(function(error){
-                console.log("请求失败");
-                console.log(error);
+                this.showAlert = true;
+                this.errorTips = error.body.msg;
             })
         },
         components:{
