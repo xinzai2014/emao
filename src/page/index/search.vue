@@ -29,7 +29,8 @@
 <script>
 export default {
       name: 'search',
-      props:["carMess","title"],
+      //props:["carMess","title"], //必须从父元素继承
+      props:["title"],
       data () {
         return {
           carPrice:null,
@@ -38,7 +39,10 @@ export default {
       },
       methods:{
         chooseCar(){
-            this.$emit('getCar',true);
+            //this.$emit('getCar',true); //父子传值
+            this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+              true
+            );
         },
         submitForm(){
           if(!this.carMess.carId){
@@ -53,8 +57,8 @@ export default {
                 "car/choose",
                  {
                   token:sessionStorage.token,
-                  brandId:this.carMess.brandId,
-                  serieId:this.carMess.serieId,
+                  brandId:this.carMess.globalBrandID,
+                  serieId:this.carMess.globalSerieID,
                   autoId:this.carMess.carId,
                   price:this.carPrice
                  }
@@ -70,6 +74,12 @@ export default {
       },
       mounted(){
         
+      },
+      computed:{
+        carMess:function(){
+          return this.$store.state.carData; //直接获取
+          //return this.$store.getters.getCar; //通过getters获取
+        }
       },
       watch:{
       }

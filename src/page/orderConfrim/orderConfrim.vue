@@ -282,12 +282,7 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = {
-                            "address":sessionStorage.addresstxt,
-                            "id":sessionStorage.addressId,
-                            "name":sessionStorage.addressName,
-                            "phone":sessionStorage.addressPhone
-                        }
+                        this.address = this.$store.state.defaultAdress;
                    }else{
                         this.address = data.address;
                    }
@@ -469,6 +464,9 @@ export default {
         },
 	  },
 	  mounted(){
+        console.log(this.$store.state.defaultAdress);
+        console.log(this.$store.state.fullPaymentData);
+        console.log(this.$router.currentRoute.query);
         this.serieId = this.$router.currentRoute.query.serieId;
 	  },
       filters:{
@@ -493,7 +491,10 @@ export default {
 	  beforeRouteEnter (to, from, next) {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
-		    vm.initData = vm.$router.currentRoute.query;
+
+            vm.initData = vm.$store.state.fullPaymentData; //从vuex中获取
+            vm.address = vm.$store.state.defaultAdress; //从vuex中获取
+		    //vm.initData = vm.$router.currentRoute.query; //从路由中获取
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
             //保存提交信息

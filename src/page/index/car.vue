@@ -1,7 +1,7 @@
 <template>
   <div>
     
-  <div class="brand"  :class="{anmiteStatus:showBrand}">
+  <div class="brand"  :class="{anmiteStatus:this.$store.state.chooseCar}">
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="closebrand"></i>
@@ -98,7 +98,18 @@
         submitCar(carId,carName){ //回调
            this.showSerie = false;
            this.showCar = false;
-           this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName);
+           this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+            false
+           );
+           //this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName); //通过组件传值
+           this.$store.dispatch("CAR_DATA", // 通过store传值
+              {
+                globalBrandID:this.globalBrandID,
+                globalSerieID:this.globalSerieID,
+                carId:carId,
+                carName:carName
+              }
+            );
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             var that = this;
@@ -153,7 +164,10 @@
             });
         },
         closebrand(){
-          this.$emit('getBrandChild');
+          //this.$emit('getBrandChild'); //父子传值
+          this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+            false
+          );
         }
       },
       mounted(){

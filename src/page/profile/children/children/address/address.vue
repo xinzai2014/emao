@@ -77,10 +77,18 @@
             			'address':item.id
             		}*/
             	});
-            	sessionStorage.addressId=item.id;
-            	sessionStorage.addresstxt=item.address;
-            	sessionStorage.addressPhone=item.phone;
-            	sessionStorage.addressName=item.name;
+            	// sessionStorage.addressId=item.id;
+            	// sessionStorage.addresstxt=item.address;
+            	// sessionStorage.addressPhone=item.phone;
+            	// sessionStorage.addressName=item.name;
+            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+			        {
+			          id:item.id,
+			          address:item.address,
+			          phone:item.phone,
+			          name:item.name
+			        }
+			    );
             },
             remove(item,index){
             	if(confirm('确认要删除么?')){

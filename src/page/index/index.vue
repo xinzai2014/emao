@@ -13,12 +13,17 @@
     <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
 
 
-    <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search>
+    <!--查询表单--> <!-- 父子传值 -->
+    <!-- <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search> -->
 
-    
-    <!-- 车型数据 -->
-    <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
+    <!-- store传值 -->
+    <search  :title="title" @subAlert = "getAlert"></search>
+
+    <!-- 车型数据 --> <!-- 父子传值 -->
+    <!--   <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>  -->
+
+    <!-- store传值 -->
+    <car v-if="showbrandTag"></car> 
 
     <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 
@@ -78,7 +83,7 @@ export default {
            this.carMess.serieId = serieId;
            this.carMess.carId = carId;
         };
-        this.showbrand = false;
+        this.showbrand = false;  //父子传值
     },
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
@@ -87,9 +92,9 @@ export default {
       this.showAlert = true;
       this.alertText = msg;
     },
-    getCar(carBoolean){ //自组件选车型控制显示隐藏
-      this.showbrand = carBoolean;
-    },
+    // getCar(carBoolean){ //自组件选车型控制显示隐藏
+    //   this.showbrand = carBoolean;
+    // },
     getSerie(){ //获取车系数据
        this.initData.token = sessionStorage.token
         this.$http({
@@ -111,6 +116,11 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.getSerie();
+  },
+  computed:{
+    showbrandTag(){
+      return this.$store.state.chooseCar;
+    }
   },
   components:{
     headerMess,

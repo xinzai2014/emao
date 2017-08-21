@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/'
 
 //无限滚动加载
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -151,6 +152,7 @@ Vue.http.interceptors.push(function(request,next){
 /* eslint-disable no-new */
 var obj = new Vue({
   el: '#app',          //vue实例挂载点
+  store,
   data:{
   	showLoading : false
   },

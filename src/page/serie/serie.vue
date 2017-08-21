@@ -125,7 +125,8 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex' //计算属性映射
+import { mapMutations } from 'vuex' //方法映射
 import swiper from '../../components/common/swiper/swiper'
 
 export default {
@@ -288,13 +289,26 @@ export default {
    },
    fullBay(){ //提交全款购车
       var activeData = this.fullData.stock[this.ActiveIndex];
-      var fullBayData = {};
-      fullBayData.autoId = activeData.autoId;
-      fullBayData.colorId = activeData.colorId;
-      fullBayData.inColorId = activeData.inColorId;
-      fullBayData.serieId = this.serieId;
-      this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
-      console.log(fullBayData);
+      // var fullBayData = {}; // 通过URL传值
+      // fullBayData.autoId = activeData.autoId;
+      // fullBayData.colorId = activeData.colorId;
+      // fullBayData.inColorId = activeData.inColorId;
+      // fullBayData.serieId = this.serieId;
+      // this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
+      // console.log(fullBayData);
+      this.$store.dispatch("FULL_PAYMENT", // 通过store传值
+        {
+          autoId:activeData.autoId,
+          colorId:activeData.colorId,
+          inColorId:activeData.inColorId,
+          serieId:this.serieId
+        }
+      );
+      this.$router.push({name:"orderConfrim",params:{id:activeData.autoId}});
+      // this.$store.dispatch({ //这种提交稍微注意一下
+      //   type:"FULL_PAYMENT",
+      //   name:"hzx"
+      // });
    },
    applyExhib(){
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
@@ -325,25 +339,66 @@ export default {
    },
    closeTipsDialog(){
       this.showTips = false;
-   }
+   },
+   // ...mapMutations([ //不传参数时可以使用 , 不常用
+   //    'FULL_PAYMENT' // 映射 this.FULL_PAYMENT() 为 this.$store.commit('FULL_PAYMENT'),
+   //  ])
   },
   mounted(){
     //组件初始完成需要做什么
     this.serieId = this.$route.params.id;
     this.getData();
+    // console.log(this.fullPayment); //通过计算属性直接获取状态
+    // console.log(this.displayPayment);
+    //this.FULL_PAYMENT();
+    //console.log(this.autoId); //数组法
+    //this.$store.commit('FULL_PAYMENT',"直接触发store");   //推荐使用
+    // this.$store.commit('FULL_PAYMENT',{  //更多情况下，参数为对象
+    //   name:"胡再兴", 
+    //   password:"123456789"
+    // })
+    // this.$store.commit({ //对象提交法
+    //   type:"FULL_PAYMENT",
+    //   name:"胡再兴", 
+    //   password:"1234567890"
+    // })
+    // this.$store.dispatch('FULL_PAYMENT',{
+    //   name:"hzx"
+    // });
+    // this.$store.dispatch({ //这种提交稍微注意一下,type会被当成普通属性传过去
+    //   type:"FULL_PAYMENT",
+    //   name:"hzx"
+    // });
   },
   components:{
     swiper
   },
   beforeRouteEnter (to, from, next) {
-
-
     next();
   },
   beforeRouteLeave (to, from, next) {
 
     next();
-  }
+  },
+  // computed:{   //直接计算属性获取
+  //   // 箭头函数可使代码更简练
+  //   fullPayment: function(state){
+  //     return this.$store.state.fullPayment;
+  //   }
+  // }
+  // computed:mapState({   //通过mapState映射,函数可直接获取state状态 , 常用
+  //   // 箭头函数可使代码更简练
+  //   fullPayment: function(state){
+  //     console.log(this.serieId); //这里的
+  //     return state.fullPayment;
+  //   },
+  //   displayPayment: function(state){
+  //     return state.displayPayment;
+  //   }
+  // }),
+  // computed:mapState([  //计算属性名称跟store节点相同的时候可以传字符串数组
+  //   "autoId"
+  // ])
 }
 </script>
 
