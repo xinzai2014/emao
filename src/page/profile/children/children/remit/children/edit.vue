@@ -98,7 +98,8 @@
 	            ).then(function (response) {
 	                this.resetIndex();
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+                    this.alertText = error.body.msg
 	            });
             },
             personEdit(){
@@ -136,7 +137,8 @@
 	            ).then(function (response) {
 	                this.resetIndex();
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+                    this.alertText = error.body.msg
 	            });
             }
         },
@@ -159,7 +161,8 @@
                 	this.editData.account_type = '个人账户'
                 }
             }).catch(function (error) {
-                console.log("请求失败了");
+                this.showAlert = true;
+                this.alertText = error.body.msg
             });
         },
         components:{
