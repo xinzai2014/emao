@@ -104,6 +104,10 @@
                     </div>
                     <p class="storage-popup-vin">{{inPopupData.vin_num}}</p>
                 </div>
+                <div class="storage-popup-vehicle-accessories">
+                    <p>请确认随车附件：</p>
+                    <div>{{inPopupData.part_text}}</div>
+                </div>
                 <div class="error-tips">{{inErrorTips}}</div>
                 <p class="storage-popup-choose">
                     <span @click="closeInPopup">取消</span>
@@ -121,11 +125,18 @@
                     <p>输入接车员提供的提车码</p>
                 </div>
                 <div class="stock-removal-popup-info">
-                    <p class="stock-removal-popup-vin">{{outPopupData.vin_num}}</p>
-                    <p>{{outPopupData.brand_name}}{{outPopupData.serie_name}}</p>
-                    <p>{{outPopupData.ext_color}}/{{outPopupData.int_color}}</p>
+                    <div class="stock-removal-con">
+                        <p class="stock-removal-popup-vin">{{outPopupData.vin_num}}</p>
+                        <p>{{outPopupData.brand_name}}{{outPopupData.serie_name}}</p>
+                        <p>{{outPopupData.ext_color}}/{{outPopupData.int_color}}</p>
+                    </div>
+                    <div class="vehicle-accessories-popup-info">
+                        <p>请确认随车附件：</p>
+                        <div>{{outPopupData.part_text}}</div>
+                    </div>
                     <input type="text" placeholder="请输入提车码" v-model="outCode">
                 </div>
+
                 <div class="error-tips">{{outErrorTips}}</div>
                 <p class="stock-removal-popup-choose">
                     <span @click="closeOutPopup">取消</span>
@@ -355,6 +366,9 @@
     .storage-popup-name{font-size:.4267rem;color:#2c2c2c;text-align:center;}
     .storage-popup-color{margin-top:.267rem;font-size:.32rem;color:#999;text-align:center;}
     .storage-popup-vin{margin-top:.4rem;font-size:.3467rem;color:#d6ab55;text-align:center;}
+    .storage-popup-vehicle-accessories{margin-top:.533rem;margin-bottom:.1067rem;padding-left: .533rem;}
+    .storage-popup-vehicle-accessories p:first-child{font-size:.3467rem;font-weight:600;color:#2c2c2c;}
+    .storage-popup-vehicle-accessories div{font-size:.3467rem;color:#2c2c2c;}
     .storage-popup-choose{width: 100%;  height: 1.173rem;}
     .storage-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .storage-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
@@ -362,16 +376,21 @@
 
     /*出库弹窗*/
     .stock-removal-popup-out{position:absolute;top:50%;left:50%;overflow:hidden;width:7.2rem;padding-top: .533rem;border-radius: .2666rem;transform: translate(-50%,-50%);background-color:#fff;}
-    .stock-removal-popup-title{padding-left:.533rem;padding-bottom:.533rem;border-bottom:#e6e6e6;}
+    .stock-removal-popup-title{padding-left:.533rem;padding-bottom:.533rem;border-bottom:1px solid #e6e6e6;}
     .stock-removal-popup-title p:first-child{font-size:.4533rem;color:#2c2c2c;}
     .stock-removal-popup-title p:nth-child(2){margin-top:.2rem;font-size:.3467rem;color:#2c2c2c;}
-    .stock-removal-popup-info{text-align:center;padding-top:1.067rem;}
+    .stock-removal-popup-info{padding-top:1.067rem;}
+    .stock-removal-con p{text-align:center;}
     .stock-removal-popup-info p:first-child{font-size:.4533rem;color:#d5aa5c;}
     .stock-removal-popup-info p:nth-child(2){margin-top:.4rem;font-size:.4267rem;color:#2c2c2c;}
     .stock-removal-popup-info p:nth-child(3){margin-top:.2rem;font-size:.32rem;color:#999;}
-    .stock-removal-popup-info input{display:block;width:5.867rem;height:1.067rem;padding-left:.2667rem;margin:1.0667rem auto 0;background-color:none;border:1px solid #e6e6e6;}
+    .vehicle-accessories-popup-info{margin-top:1.0667rem;padding-left: .533rem;}
+    .vehicle-accessories-popup-info p:first-child{font-size:.3467rem;font-weight:600;color:#2c2c2c;}
+    .vehicle-accessories-popup-info div{font-size:.3467rem;color:#2c2c2c;}
+    .stock-removal-popup-info input{display:block;width:5.867rem;height:1.067rem;padding-left:.2667rem;margin:.4rem auto 0;background-color:none;border:1px solid #e6e6e6;}
     .stock-removal-popup-choose{margin-top:.4rem;width: 100%;  height: 1.173rem;}
     .stock-removal-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .stock-removal-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
     .storage-popup-out .error-tips{margin-bottom:.4rem;text-align:center;font-size:.32rem;color:red;}
+
 </style>
