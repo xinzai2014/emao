@@ -49,7 +49,7 @@ export default {
 	  	}
 	  },
 	  mounted(){
-	  	console.log("数据取到了");
+
 
 		this.mySwiper1 = new Swiper('.swiperWrap1', {
 			autoplay: 3000,//可选选项，自动滑动

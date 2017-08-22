@@ -2,26 +2,31 @@ import {
 	FULL_PAYMENT,
 	DEFAULT_ADDRESS,
 	CHOOSE_CAR,
-	CAR_DATA
+	CAR_DATA,
+	AJAX_LOADING
 } from './mutations-types.js'
 
 
 export default {
 
-	[FULL_PAYMENT](context,obj){ //action 提交mutations
+	[FULL_PAYMENT](context,obj){ //action 提交mutations 全款购车
 		context.commit(FULL_PAYMENT,obj);
 	},
 
-	[DEFAULT_ADDRESS](context,obj){ //action 提交mutations
+	[DEFAULT_ADDRESS](context,obj){ //action 提交mutations  选中地址
 		context.commit(DEFAULT_ADDRESS,obj);
 	},
 
-	[CHOOSE_CAR](context,obj){ //action 提交mutations
+	[CHOOSE_CAR](context,obj){ //action 提交mutations  选车显示隐藏
 		context.commit(CHOOSE_CAR,obj);
 	},
 
-	[CAR_DATA](context,obj){ //action 提交mutations
+	[CAR_DATA](context,obj){ //action 提交mutations  选中车型
 		context.commit(CAR_DATA,obj);
+	},
+
+	[AJAX_LOADING](context,flag){ //action 提交mutations  全局loading
+		context.commit(AJAX_LOADING,flag);
 	}
 
 }

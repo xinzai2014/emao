@@ -68,7 +68,7 @@ export default {
             ).then(function (response) {
               this.subDialog();
             }).catch(function (error) {
-              console.log("请求失败了");
+
             });
         },
         subDialog(){

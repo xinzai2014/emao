@@ -3,7 +3,7 @@
   	<transition name="fade">
     	<router-view></router-view>
     </transition>
-    <loader v-show="this.$root.showLoading"></loader>
+    <loader v-if="this.$store.state.ajaxLoading"></loader>
   </div>
 </template>
 

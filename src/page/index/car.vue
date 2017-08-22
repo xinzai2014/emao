@@ -84,14 +84,13 @@
                 url:"car/choose/brand?token=" + token,
                 method:"GET"
             }).then(function (response) {
-                console.log(response);
                 this.brandList = response.body.data;
                 this.initIscroll("brandWrap");
                 setTimeout(function(){
                     that.countHeight();
                 },1000)
               }).catch(function (error) {
-                console.log("请求失败了");
+
               });
         },
         //组件方法
@@ -143,7 +142,7 @@
                 this.initIscroll("serieWrap",this.serieScroll);
                 this.globalBrandID = response.body.data.id;
               }).catch(function (error) {
-                console.log("请求失败了");
+
             });
         },
         getCarById(id){ //根据车系获取
@@ -160,7 +159,7 @@
                 this.initIscroll("carWrap",this.carScroll); 
                 this.globalSerieID = response.body.data.id;
               }).catch(function (error) {
-                console.log("请求失败了");
+
             });
         },
         closebrand(){

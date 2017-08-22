@@ -22,7 +22,8 @@ const state = {
 	chooseCar:false,
 	carData:{
 		carName:"选择车型"
-	}
+	},
+	ajaxLoading:false
 }
 
 export default new Vuex.Store({

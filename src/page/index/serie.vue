@@ -42,11 +42,11 @@ export default {
 	            	this.serieMore = !this.serieMore;
 	            }
 	          }).catch(function (error) {
-	            console.log("请求失败了");
+
 	          });
 	    },
 	   	goSerie(index){ //点击车系跳转
-	        console.log(index);
+
 	        this.$router.push('/serie/'+index); //车系路由跳转
 	    },
 	  },

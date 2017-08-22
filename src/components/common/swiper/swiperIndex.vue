@@ -41,17 +41,12 @@ export default {
 	  	}
 	  },
 	  mounted(){
-	  	console.log("数据取到了");
+
 		var mySwiper = new Swiper('.swiper-container', {
 			autoplay: 5000,//可选选项，自动滑动
 			pagination : '.index-icon',
 			paginationElement:"li"
 		});
-	  },
-	  watch:{
-	   circular(){
-	   		
-	   }
 	  }
 }
 </script>

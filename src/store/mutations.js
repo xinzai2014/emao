@@ -2,7 +2,8 @@ import {
 	FULL_PAYMENT,
 	DEFAULT_ADDRESS,
 	CHOOSE_CAR,
-	CAR_DATA
+	CAR_DATA,
+	AJAX_LOADING
 } from './mutations-types.js'
 
 
@@ -14,16 +15,20 @@ export default {
 		state.fullPaymentData = obj;
 	},
 
-	[DEFAULT_ADDRESS](state,obj){ //保存全款购车地址
+	[DEFAULT_ADDRESS](state,obj){ //获取选中地址
 		state.defaultAdress = obj;
 	},
 
-	[CHOOSE_CAR](state,flag){ //保存全款购车地址
+	[CHOOSE_CAR](state,flag){ //控制选车显示隐藏
 		state.chooseCar = flag;
 	},
 
-	[CAR_DATA](state,obj){ //保存全款购车地址
+	[CAR_DATA](state,obj){ //获取选中车型
 		state.carData = obj;
+	},
+
+	[AJAX_LOADING](state,flag){ //获取选中车型
+		state.ajaxLoading = flag;
 	}
 
 }

@@ -7,17 +7,17 @@
     <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页品牌-->
-    <brand :brandList="brands"></brand>
+    <brand :brandList="brands" v-if="brands.length"></brand>
 
     <!--本地车源-->
-    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
+    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" v-if="serieList.length"></serie>
 
 
     <!--查询表单--> <!-- 父子传值 -->
     <!-- <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search> -->
 
     <!-- store传值 -->
-    <search  :title="title" @subAlert = "getAlert"></search>
+    <search  :title="title" @subAlert = "getAlert" v-if="ajaxLoading"></search>
 
     <!-- 车型数据 --> <!-- 父子传值 -->
     <!--   <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>  -->
@@ -72,7 +72,8 @@ export default {
         ],
         serieList:[], //车系数据
         showAlert:false,
-        alertText:null
+        alertText:null,
+        ajaxLoading:false
     }
   },
   methods:{ //选取车型后回传
@@ -108,8 +109,9 @@ export default {
             if(response.body.data.series.length>=this.initData.len){
               this.serieMore = !this.serieMore;
             }
+            this.ajaxLoading = true;
           }).catch(function (error) {
-            console.log("请求失败了");
+
           });
     }
   },
