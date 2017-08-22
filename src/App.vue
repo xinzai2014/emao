@@ -4,17 +4,19 @@
     	<router-view></router-view>
     </transition>
     <loader v-if="this.$store.state.ajaxLoading"></loader>
+    <alert v-if="this.$store.state.alert.flag"></alert>
   </div>
 </template>
 
 <script>
 import loader from './components/common/loader/loader'
+import alert from './components/common/alertTip/alertTip'
 
 export default {
   name: 'app',
   data () {
     return{
-     // showLoad:this.$root.showLoading
+
     }
   },
   mounted(){
@@ -22,9 +24,9 @@ export default {
   },
 
   components:{
-      loader
+      loader,
+      alert
   }
-
 }
 </script>
 

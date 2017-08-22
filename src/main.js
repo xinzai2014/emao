@@ -139,11 +139,24 @@ Vue.directive('load-more',{
 })
 
 Vue.http.interceptors.push(function(request,next){
-	this.$store.state.ajaxLoading = true;
+	this.$store.dispatch("AJAX_LOADING", // 通过store传值
+      true
+    );
     next(function (response) {
+    	var code = response.body.code;
+    	if(code != 200){
+    		this.$store.dispatch("ALERT", // 通过store传值
+		      {
+		      	flag:true,
+		      	text:response.body.msg
+		      }
+		    );
+    	}
     	//console.log(response.status);
     	if(this.$store.state.ajaxLoading == true){
-    		this.$store.state.ajaxLoading = false; 
+    		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+		      false
+		    ); 
     	}
         return response;
     })
@@ -153,9 +166,6 @@ Vue.http.interceptors.push(function(request,next){
 var obj = new Vue({
   el: '#app',          //vue实例挂载点
   store,
-  data:{
-  	showLoading : false
-  },
   router,              //路由配置对象
   render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
 // template: '<App/>',

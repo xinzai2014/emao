@@ -25,6 +25,9 @@ const state = {
 	},
 	ajaxLoading:false, //ajax加载Loading
 	returnData:{} //汇款凭证
+	ajaxLoading:false,
+	alert:{
+	}
 }
 
 export default new Vuex.Store({

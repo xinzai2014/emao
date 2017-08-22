@@ -4,7 +4,8 @@ import {
 	CHOOSE_CAR,
 	CAR_DATA,
 	AJAX_LOADING,
-	RETURN_DATA
+	RETURN_DATA,
+	ALERT
 } from './mutations-types.js'
 
 
@@ -34,6 +35,10 @@ export default {
 
 	[RETURN_DATA](state,obj){ //获取选中车型
 		state.returnData = obj;
+	},
+
+	[ALERT](state,obj){ //获取选中车型
+		state.alert = obj;
 	}
 
 }

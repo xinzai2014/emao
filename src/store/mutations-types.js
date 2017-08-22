@@ -9,3 +9,5 @@ export const CAR_DATA = 'CAR_DATA' //选中车型数据
 export const AJAX_LOADING = "AJAX_LOADING" //全局ajax加载状态
 
 export const RETURN_DATA = "RETURN_DATA" //汇款凭证
+
+export const ALERT = "ALERT" //全局弹出窗

@@ -4,7 +4,8 @@ import {
 	CHOOSE_CAR,
 	CAR_DATA,
 	AJAX_LOADING,
-	RETURN_DATA
+	RETURN_DATA,
+	ALERT
 } from './mutations-types.js'
 
 
@@ -30,8 +31,13 @@ export default {
 		context.commit(AJAX_LOADING,flag);
 	},
 
+
 	[RETURN_DATA](context,obj){ //action 提交mutations  选中车型
 		context.commit(RETURN_DATA,obj);
+	},
+
+	[ALERT](context,obj){ //action 提交mutations  全局弹出窗
+		context.commit(ALERT,obj);
 	}
 
 }
