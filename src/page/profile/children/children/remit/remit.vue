@@ -66,7 +66,11 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+            	if(this.isCheck){
+            		this.$router.go(-1);
+            	}else{
+            		this.$router.push({name:'info'});
+            	} 
             },
             iconId(item){
             	this.$router.push({
@@ -132,7 +136,6 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 			    if(from.name=='paymentSubmit'){
 	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
-	        		console.log(vm.url);
 	        	}else{
 	        		vm.isCheck=false;
 	        	}
