@@ -23,7 +23,8 @@ const state = {
 	carData:{
 		carName:"选择车型"
 	},
-	ajaxLoading:false
+	ajaxLoading:false, //ajax加载Loading
+	returnData:{} //汇款凭证
 }
 
 export default new Vuex.Store({

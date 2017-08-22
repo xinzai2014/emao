@@ -85,9 +85,8 @@
               <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
-              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
+          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
+             提交汇款凭证
           </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
           <div class="remits-fixed" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
@@ -146,6 +145,15 @@ export default {
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    paymentSubmit(){
+      this.$router.push({name:'paymentSubmit'});
+      this.$store.dispatch("RETURN_DATA", // 通过store传值
+        {
+            orderNum:this.orderInfo.orderNum,
+            orderId:this.orderInfo.id
+        }
+      );
     },
     confirmCar(){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;

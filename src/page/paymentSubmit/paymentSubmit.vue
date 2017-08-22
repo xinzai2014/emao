@@ -152,7 +152,7 @@ export default {
       },
       returnDataF(){
         //订单页数据
-        this.returnData=this.$route.query;
+        this.returnData=this.$store.state.returnData;
       },
       submit(){
          //提交

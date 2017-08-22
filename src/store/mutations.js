@@ -3,7 +3,8 @@ import {
 	DEFAULT_ADDRESS,
 	CHOOSE_CAR,
 	CAR_DATA,
-	AJAX_LOADING
+	AJAX_LOADING,
+	RETURN_DATA
 } from './mutations-types.js'
 
 
@@ -29,6 +30,10 @@ export default {
 
 	[AJAX_LOADING](state,flag){ //获取选中车型
 		state.ajaxLoading = flag;
+	},
+
+	[RETURN_DATA](state,obj){ //获取选中车型
+		state.returnData = obj;
 	}
 
 }
