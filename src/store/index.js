@@ -24,7 +24,7 @@ const state = {
 		carName:"选择车型"
 	},
 	ajaxLoading:false, //ajax加载Loading
-	returnData:{} //汇款凭证
+	returnData:{}, //汇款凭证
 	ajaxLoading:false,
 	alert:{
 	}
