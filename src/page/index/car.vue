@@ -88,7 +88,7 @@
                 this.initIscroll("brandWrap");
                 setTimeout(function(){
                     that.countHeight();
-                },1000)
+                },100)
               }).catch(function (error) {
 
               });
@@ -117,7 +117,7 @@
                    probeType: 3,
                    click:true
                 });
-            },1000) 
+            },100) 
         },
         countHeight(){ //记录初始楼层高度
             const brandContainer = this.$refs.brandWrapper;

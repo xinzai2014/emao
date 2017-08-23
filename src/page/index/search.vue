@@ -1,7 +1,7 @@
 <template>
     <section class="index-search">
         <div class="index-search-in">
-            <p class="index-search-title">{{title}}</p>
+            <p class="index-search-title">急需要什么车型？告诉我</p>
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
                     <label for="" :brandID=carMess.carId>{{carMess.carName}}</label>
@@ -32,8 +32,6 @@ import { mapGetters } from 'vuex'
 
 export default {
       name: 'search',
-      //props:["carMess","title"], //必须从父元素继承
-      props:["title"],
       data () {
         return {
           carPrice:null,
@@ -49,7 +47,12 @@ export default {
         },
         submitForm(){
           if(!this.carMess.carId){
-            this.$emit('subAlert',"请选择一款车型");
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:"请选择一款车型"
+              }
+            );
             return false;
           }
           // if(!this.carPrice){
@@ -89,8 +92,6 @@ export default {
         //   return this.$store.getters.getCar; //通过getters获取
         // }
       },
-      watch:{
-      }
 }
 </script>
 <style>

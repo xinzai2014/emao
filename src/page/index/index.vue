@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="ajaxLoading">
 
     <!--首页头部-->
     <header-mess ></header-mess>
@@ -12,20 +12,11 @@
     <!--本地车源-->
     <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" v-if="serieList.length"></serie>
 
-
-    <!--查询表单--> <!-- 父子传值 -->
-    <!-- <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search> -->
-
     <!-- store传值 -->
-    <search  :title="title" @subAlert = "getAlert" v-if="ajaxLoading"></search>
-
-    <!-- 车型数据 --> <!-- 父子传值 -->
-    <!--   <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>  -->
+    <search></search>
 
     <!-- store传值 -->
     <car v-if="showbrandTag"></car> 
-
-    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 
     <!--首页底部-->
     <footerTo></footerTo>
@@ -36,7 +27,6 @@
 <script>
 import headerMess from '../../components/header/header'
 import swiper from '../../components/common/swiper/swiperIndex'
-import alertTip from '../../components/common/alertTip/alertTip'
 import brand from './brand'
 import serie from './serie'
 import search from './search'
@@ -48,16 +38,8 @@ export default {
   name: 'index',
   data () {
     return {
-        showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
         serieMore:false,//车系查看更多
-        carMess:{     //搜索车型的时的数据
-          carName:"选择车型",
-          brandId:null,
-          serieId:null,
-          carId:null
-        },
-        title:"急需要什么车型？告诉我",
         initData:{ //初始化接口数据
             token:null,
             ltime:0,
@@ -71,31 +53,13 @@ export default {
 
         ],
         serieList:[], //车系数据
-        showAlert:false,
-        alertText:null,
         ajaxLoading:false
     }
   },
-  methods:{ //选取车型后回传
-    brandStatus(brandId,serieId,carId,carName){
-        if(arguments.length){
-           this.carMess.carName = carName;
-           this.carMess.brandId = brandId;
-           this.carMess.serieId = serieId;
-           this.carMess.carId = carId;
-        };
-        this.showbrand = false;  //父子传值
-    },
+  methods:{
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
     },
-    getAlert(msg){
-      this.showAlert = true;
-      this.alertText = msg;
-    },
-    // getCar(carBoolean){ //自组件选车型控制显示隐藏
-    //   this.showbrand = carBoolean;
-    // },
     getSerie(){ //获取车系数据
        this.initData.token = sessionStorage.token
         this.$http({
@@ -131,16 +95,22 @@ export default {
     serie,
     search,
     car,
-    alertTip,
     footerTo:footer
   },
   beforeRouteEnter (to, from, next) {
        
         next();
-    },
-    beforeRouteLeave (to, from, next) {
-        
-        next();
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch("CAR_DATA", // 通过store传值
+        {
+          globalBrandID:"",
+          globalSerieID:"",
+          carId:"",
+          carName:"选择车型"
+        }
+      );
+    next();
   }
 }
 </script>

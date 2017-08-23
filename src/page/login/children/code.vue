@@ -109,7 +109,7 @@ import Base64 from 'crypto-js/enc-base64';
 		    checkNav(){
 		    	 this.$router.push('account'); //路由跳转
 		    },
-		    getCode(){
+		    getCode(){  //获取验证码
 		    	if(this.disabled){
 		    		return false;
 		    	};
@@ -127,7 +127,7 @@ import Base64 from 'crypto-js/enc-base64';
 		          },function(error){
 
 		          }).catch(function (error) {
-		          	console.log(error);
+
 		          }).finally(function(){
 		          	 this.getDataToken();
 		          });
