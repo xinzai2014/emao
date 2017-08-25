@@ -52,6 +52,8 @@
                   </div>
                  
               </div>
+
+              <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
           </div>
       </section>
         
@@ -59,13 +61,18 @@
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
       editData:{},
-      type:null
+      type:null,
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
-  },
+  },components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
@@ -94,7 +101,8 @@ export default {
             }
             this.editData = editData; 
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+            this.alertText = error.body.msg||"请求失败了";     
         });
     }
   },

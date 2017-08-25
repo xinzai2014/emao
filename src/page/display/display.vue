@@ -35,9 +35,11 @@
             <img src="../../assets/no-order.png" alt="">
             <p>暂无此类订单</p>
         </section>
+        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -47,10 +49,14 @@
                 page : 1, //第几页
         		games: [],
         		arr:[], //用于判断状态
-        		countNum:0
-                
+        		countNum:0,
+                showAlert:false,  //错误弹出窗
+		      	alertText:null //错误提醒信息
             }
         },
+        components:{
+	    	alertTip
+	    },
         methods:{
             //组件方法
             resetIndex(){
@@ -132,7 +138,8 @@
 					}
 					this.games = list
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg;
 	            });
             },
             //计算时间

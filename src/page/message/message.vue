@@ -26,17 +26,24 @@
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
       mesList:{},
       showRemit:false, //有没有数据
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
+        components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
@@ -57,7 +64,8 @@ export default {
             this.mesList=mesList;
             this.dataLength();
         }).catch(function (error) {
-             console.log("请求失败了");
+             this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     dataLength(){

@@ -15,15 +15,21 @@
             }
         },
         mounted(){
-            var that=this;
+            var that = this;
             setTimeout(function(){
-                that.closeTip();
+                that.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:false,
+                    text:"dsd"
+                  }
+                );
             },2000);
         },
-        props: ['alertText'],
         methods: {
-            closeTip(){
-                this.$emit('closeTip');
+        },
+        computed:{
+            alertText(){
+                return this.$store.state.alert.text;
             }
         }
     }

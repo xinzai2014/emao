@@ -37,21 +37,28 @@
 		<transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
               //初始数据结构
-              infoData:[],
-              showRemit:true, //有没有数据
-              isCheck:false, //判断是否显示选择按钮
-              btnIcon:false,
-              url:''
+	            infoData:[],
+	            showRemit:true, //有没有数据
+	            isCheck:false, //判断是否显示选择按钮
+	            btnIcon:false,
+	            url:'',
+	            showAlert: false, //弹出框
+	            alertText: null, //弹出信息
             }
         },
+        components:{
+	    	alertTip
+	    },
         created : function(){
             //初始化
             this.mountedData();
@@ -59,7 +66,11 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+            	if(this.isCheck){
+            		this.$router.go(-1);
+            	}else{
+            		this.$router.push({name:'info'});
+            	} 
             },
             iconId(item){
             	this.$router.push({
@@ -81,7 +92,8 @@
 		            	this.infoData.splice(index,1)
 		            	this.dataLength();
 		            }).catch(function (error) {
-		                console.log("请求失败了");
+		                this.showAlert = true;
+                    	this.alertText = error.body.msg
 		            });
 	           	}else{
 	                 return false;
@@ -100,7 +112,8 @@
 	                this.infoData = response.body.data;
 	                this.dataLength();
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+                    this.alertText = error.body.msg
 	            });
            
             },
@@ -123,7 +136,6 @@
 			    if(from.name=='paymentSubmit'){
 	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
-	        		console.log(vm.url);
 	        	}else{
 	        		vm.isCheck=false;
 	        	}

@@ -27,10 +27,10 @@
         </ul>
     </section>
         <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess" :title="title"></search>
+    <search></search>
     
     <!-- 车型数据 -->
-    <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
+    <car v-if="showbrandTag"></car>
 
 </div>
 </template>
@@ -53,13 +53,6 @@ import car from '../index/car'
                 
                 ],
                 serieData:[],
-                carMess:{     //搜索车型的时的数据
-                  carName:"选择车型",
-                  brandId:null,
-                  serieId:null,
-                  carId:null
-                },
-                title:'没有您想要的？告诉我们',
                 showbrand:false //车型弹层
             }
         },
@@ -131,7 +124,23 @@ import car from '../index/car'
         components:{
             search,
             car
-          }
+        },
+        computed:{
+            showbrandTag(){
+              return this.$store.state.chooseCar;
+            }
+        },
+        beforeRouteLeave (to, from, next) {
+            this.$store.dispatch("CAR_DATA", // 通过store传值
+                {
+                  globalBrandID:"",
+                  globalSerieID:"",
+                  carId:"",
+                  carName:"选择车型"
+                }
+              );
+            next();
+        }
     }
 </script>
 <style>

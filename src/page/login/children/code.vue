@@ -7,7 +7,6 @@
         </div>
 	    <input class="login-btn" type="text" name="" value="登录" @click="login">
         <p class="login-another" @click="checkNav"><span>账号登录</span></p>
-        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 	</div>
 </template>
 <script>
@@ -15,7 +14,6 @@ import MD5 from 'crypto-js/md5';
 import hmac from 'crypto-js/hmac-md5';
 import Utf8 from 'crypto-js/enc-utf8';
 import Base64 from 'crypto-js/enc-base64';
-import alertTip from '../../../components/common/alertTip/alertTip'
 	export default {
 		name:'code',
 		data () {
@@ -24,14 +22,9 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		      codeText:"获取验证码",
 		      num:60,
 		      errorCode:false,
-		      disabled:false,
-		      showAlert:false,  //错误弹出窗
-		      alertText:null //错误提醒信息
+		      disabled:false
 		    }
 		},
-		components:{
-	    	alertTip
-	    },
 		methods:{
 			codeToMD5(passwordWord){
 				var password = passwordWord;
@@ -88,8 +81,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            sessionStorage.token = response.body.data.token;
 		            this.passportCheck();
 		          },function(error){
-		          	this.showAlert = true;
-		          	this.alertText = error.body.msg;
+
 		          }).catch(function (error) {
 
 		          }).finally(function(){
@@ -117,7 +109,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    checkNav(){
 		    	 this.$router.push('account'); //路由跳转
 		    },
-		    getCode(){
+		    getCode(){  //获取验证码
 		    	if(this.disabled){
 		    		return false;
 		    	};
@@ -133,10 +125,9 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        	this.setCode();
 		            //this.$router.push('/index'); //路由跳转
 		          },function(error){
-		          	this.showAlert = true;
-		          	this.alertText = error.body.msg;
+
 		          }).catch(function (error) {
-		          	console.log(error);
+
 		          }).finally(function(){
 		          	 this.getDataToken();
 		          });

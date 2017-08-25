@@ -77,7 +77,7 @@
 		                    <span>{{bankInfo.account}}</span>
 		                </p>
 		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
 	                    	<p class="ayment-details">查看详细</p>
 	                  	</router-link>
 		            </div>
@@ -101,12 +101,13 @@
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status == '5'">{{btnText}}</div>
-
+		        <div class="remits-fixed" v-if="orderInfo.status == '5'">
+		        	<router-link :to="{name:'balanceConfrim',params:{'orderNum':orderInfo.orderNum,'deposit':capitalInfo.deposit}}">{{btnText}}
+		        	</router-link>
+		        </div>
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
-	              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-	          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证	</router-link>
+		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
+	              	提交汇款凭证
 	          	</div>
 
 	        </div>
@@ -149,11 +150,12 @@
 	            </p>
 	        </div>
 	    </div>
-
+		<alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -182,12 +184,26 @@
               	vanMask:false, //是否显退订示弹框
               	vanInfo:{}, //展车退订弹框数据
               	sendText:'发送到手机',
+              	showAlert:false,  //错误弹出窗
+		      	alertText:null //错误提醒信息
             }
         },
+        components:{
+	    	alertTip
+	    },
         methods:{
             //组件方法
             resetIndex(){
                 this.$router.go(-1);
+            },
+            paymentSubmit(){
+            	this.$router.push({name:'paymentSubmit'});
+            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+		            {
+		                orderNum:this.orderInfo.orderNum,
+		                orderId:this.orderInfo.id
+		            }
+	            );
             },
             fullData(){
             	var data = {
@@ -207,7 +223,8 @@
 	                this.statusAdd(this.statusAactive);
 	                this.orderInfo=response.body.data.orderInfo;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
 	            });
             },
             statusAdd(item){
@@ -329,7 +346,8 @@
 	            ).then(function (response) {
 	            	this.fullData()
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
 	            });
             },
             confirmCar(){ //确认收货弹框信息
@@ -345,7 +363,8 @@
 	            }).then(function (response) {
 	            	this.receiptData = response.body.data;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
 	            });
             },
             receiptStatus(){
@@ -360,7 +379,8 @@
 	            	//该状态
 	            	this.fullData();
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
 	            });
             },
             vanLayer(){ //展车退订 
@@ -377,7 +397,8 @@
 	            	console.log(response)
 	                this.vanInfo = response.body.data;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
 	            });
             },
             sendMes(){
@@ -397,7 +418,8 @@
 		              	}
 		            },1000);
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		            this.showAlert = true;
+		          	this.alertText = error.body.msg
 		        });
    			},
         },

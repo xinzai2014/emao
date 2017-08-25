@@ -27,9 +27,13 @@
             <img src="../../assets/no-vehicles-sold-news.png" alt="">
             <p>暂无已售申报车辆信息</p>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 <script>
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         name:'soldCar',
         data(){
@@ -42,7 +46,9 @@
             perPage:'10',
             showLoading: true,
             preventRepeatReuqest:false,
-            showNoDataVal:false
+            showNoDataVal:false,
+            showAlert:false,
+            alertText:null
         }
     },
     methods:{
@@ -76,7 +82,7 @@
                 token:dataToken,
                 perPage:this.perPage,
                 page:this.currentPage
-            }
+            };
             this.$http({
                 url:"order/sale/done",
                 method:"GET",
@@ -102,6 +108,8 @@
             }).catch(function(error){
                 console.log("请求失败");
                 console.log(error);
+                this.showAlert = true;
+                this.alertText = error.body.msg;
             })
         }
 
@@ -116,6 +124,9 @@
         $route(){
             this.getSoldCarData();
         }
+    },
+    components:{
+        alertTip
     }
 
     }

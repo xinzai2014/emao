@@ -1,5 +1,5 @@
 <template>
-  <div class="book-car-out">
+  <div class="book-car-out" v-if="ajaxLoading">
     <!--首页-订车-详情页-头部-->
     <header class="book-car-header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
@@ -125,7 +125,8 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex' //计算属性映射
+import { mapMutations } from 'vuex' //方法映射
 import swiper from '../../components/common/swiper/swiper'
 
 export default {
@@ -153,7 +154,8 @@ export default {
             
         ],
         showTips:false,  //到货提醒
-        showExhib:false //申请展车弹出层
+        showExhib:false, //申请展车弹出层
+        ajaxLoading:false,
     }
   },
   methods:{
@@ -281,20 +283,26 @@ export default {
           })
 
           this.circular = response.body.data.circular;
-
+          this.ajaxLoading = true;
         },function (error) {
 
         });
    },
    fullBay(){ //提交全款购车
       var activeData = this.fullData.stock[this.ActiveIndex];
-      var fullBayData = {};
-      fullBayData.autoId = activeData.autoId;
-      fullBayData.colorId = activeData.colorId;
-      fullBayData.inColorId = activeData.inColorId;
-      fullBayData.serieId = this.serieId;
-      this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
-      console.log(fullBayData);
+      this.$store.dispatch("FULL_PAYMENT", // 通过store传值
+        {
+          autoId:activeData.autoId,
+          colorId:activeData.colorId,
+          inColorId:activeData.inColorId,
+          serieId:this.serieId
+        }
+      );
+      this.$router.push({name:"orderConfrim",params:{id:activeData.autoId}});
+      // this.$store.dispatch({ //这种提交稍微注意一下
+      //   type:"FULL_PAYMENT",
+      //   name:"hzx"
+      // });
    },
    applyExhib(){
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
@@ -325,7 +333,10 @@ export default {
    },
    closeTipsDialog(){
       this.showTips = false;
-   }
+   },
+   // ...mapMutations([ //不传参数时可以使用 , 不常用
+   //    'FULL_PAYMENT' // 映射 this.FULL_PAYMENT() 为 this.$store.commit('FULL_PAYMENT'),
+   //  ])
   },
   mounted(){
     //组件初始完成需要做什么
@@ -336,14 +347,31 @@ export default {
     swiper
   },
   beforeRouteEnter (to, from, next) {
-
-
     next();
   },
   beforeRouteLeave (to, from, next) {
 
     next();
-  }
+  },
+  // computed:{   //直接计算属性获取
+  //   // 箭头函数可使代码更简练
+  //   fullPayment: function(state){
+  //     return this.$store.state.fullPayment;
+  //   }
+  // }
+  // computed:mapState({   //通过mapState映射,函数可直接获取state状态 , 常用
+  //   // 箭头函数可使代码更简练
+  //   fullPayment: function(state){
+  //     console.log(this.serieId); //这里的
+  //     return state.fullPayment;
+  //   },
+  //   displayPayment: function(state){
+  //     return state.displayPayment;
+  //   }
+  // }),
+  // computed:mapState([  //计算属性名称跟store节点相同的时候可以传字符串数组
+  //   "autoId"
+  // ])
 }
 </script>
 
@@ -376,7 +404,7 @@ export default {
 
 /*首页-订车-商品详情页*/
 .book-car-out{position:relative;}
-.book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;}
+.book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0.25rem;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
 .book-car-count{height:1.0667rem;padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}

@@ -13,7 +13,6 @@
               <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
           </div>
           <div class="details-addres" v-if="address.id" @click="toAddress">
-              <i class="white-rt"></i>
               <div class="details-user">
                   <span>{{address.phone}}</span>收货人：{{address.name}}
               </div>
@@ -32,7 +31,7 @@
                   <p class="interior">{{orderInfo.color}}</p>
                   <p class="payment"><em> ×1</em>全款购买：<span>{{orderInfo.price}}元</span></p>
               </div>
-              <p class="leave">
+              <p class="leave" v-if="orderInfo.remark">
                   <span>买家留言：</span>{{orderInfo.remark||'未留言'}}
               </p>
               <div class="settlement">
@@ -86,9 +85,8 @@
               <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
-              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
+          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
+             提交汇款凭证
           </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
           <div class="remits-fixed" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
@@ -114,10 +112,14 @@
               <div class="receipt-btn" @click="receiptStatus">确认收货</div>
           </div>
       </div>
+
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -133,12 +135,25 @@ export default {
         Token:sessionStorage.getItem('token'),
         receiptData:{},
         receiptShow:false,
+         showAlert: false, //弹出框
+          alertText: null, //弹出信息
     }
-  },
+  },     components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    paymentSubmit(){
+      this.$router.push({name:'paymentSubmit'});
+      this.$store.dispatch("RETURN_DATA", // 通过store传值
+        {
+            orderNum:this.orderInfo.orderNum,
+            orderId:this.orderInfo.id
+        }
+      );
     },
     confirmCar(){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;
@@ -155,7 +170,8 @@ export default {
         this.receiptData = response.body.data;
           console.log(this.receiptData)
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
       });
     },
     receiptStatus(){
@@ -169,7 +185,8 @@ export default {
         this.orderInfo.status='5';
         this.orderInfo.state='交易完成';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
     },
     toAddress(){
@@ -194,7 +211,8 @@ export default {
         this.orderInfo.status=6;
         this.orderInfo.state='已取消';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
       
     },
@@ -215,7 +233,8 @@ export default {
               }
             },1000);
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         });
     },
     remainingTime(item){
@@ -258,7 +277,8 @@ export default {
             this.countTime=this.orderInfo.orderTime;
             
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         }); 
     },
     stateAdd(obj){
@@ -334,7 +354,8 @@ export default {
             }
             this.address=data;
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         });
     }
   },
@@ -467,6 +488,7 @@ export default {
 }
 .order-full h3 {
     font-size: 0.426667rem;
+    line-height: 1.5rem;
 }
 .order-full .interior {
     color: #999;

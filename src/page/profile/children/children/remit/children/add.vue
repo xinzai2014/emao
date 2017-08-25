@@ -101,17 +101,17 @@
                 var reg = /^[0-9]*$/;
                 if(!this.acountData.pay_company){
                     this.showAlert = true;
-                    this.alertText = '汇款单位不能为空！';
+                    this.alertText = '请填写汇款单位信息';
                     return;
                 }
                 if(!this.acountData.bank_name){
                     this.showAlert = true;
-                    this.alertText = '开户行不能为空！';
+                    this.alertText = '请填写开户行信息';
                     return;
                 }
                 if(!this.acountData.account){
                     this.showAlert = true;
-                    this.alertText = '汇款账户不能为空！';
+                    this.alertText = '请填写汇款账户信息';
                     return;
                 }
                 if(!reg.test(this.acountData.account)){
@@ -124,7 +124,8 @@
                     this.$set(this.acountData,{});
                     this.resetIndex();
                 }).catch(function (error) {
-                    console.log("请求失败了");
+                    this.showAlert = true;
+                    this.alertText = error.body.msg
                 });
             },
             getUpload(data,flag){
@@ -135,27 +136,27 @@
                 var reg = /^[0-9]*$/;
                 if(!this.personData.name){
                     this.showAlert = true;
-                    this.alertText = '姓名不能为空！';
+                    this.alertText = '请填写姓名信息';
                     return;
                 }
                 if(!this.personData.bank_name){
                     this.showAlert = true;
-                    this.alertText = '银行不能为空！';
+                    this.alertText = '请填写银行信息';
                     return;
                 }
                 if(!this.personData.account){
                     this.showAlert = true;
-                    this.alertText = '汇款账户不能为空！';
+                    this.alertText = '请填写汇款账户信息';
                     return;
                 }
                 if(!reg.test(this.personData.account)){
                     this.showAlert = true;
-                    this.alertText = '汇款账户只能是数字！';
+                    this.alertText = '汇款账户只能是数字';
                     return;
                 }
                 if(!this.personData.explan_path){
                     this.showAlert = true;
-                    this.alertText = '请提交待付款说明！';
+                    this.alertText = '请先上传代付款说明照片';
                     return;
                 }
                 this.$http.post("dealerBank/createPersonBank",this.personData
@@ -163,7 +164,8 @@
                     this.$set(this.personData,{});
                     this.resetIndex();
                 }).catch(function (error) {
-                    console.log("请求失败了");
+                    this.showAlert = true;
+                    this.alertText = error.body.msg
                 });
             }        
         },

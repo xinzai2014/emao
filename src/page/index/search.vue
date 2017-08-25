@@ -1,7 +1,7 @@
 <template>
     <section class="index-search">
         <div class="index-search-in">
-            <p class="index-search-title">{{title}}</p>
+            <p class="index-search-title">急需要什么车型？告诉我</p>
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
                     <label for="" :brandID=carMess.carId>{{carMess.carName}}</label>
@@ -27,9 +27,11 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
       name: 'search',
-      props:["carMess","title"],
       data () {
         return {
           carPrice:null,
@@ -38,11 +40,19 @@ export default {
       },
       methods:{
         chooseCar(){
-            this.$emit('getCar',true);
+            //this.$emit('getCar',true); //父子传值
+            this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+              true
+            );
         },
         submitForm(){
           if(!this.carMess.carId){
-            this.$emit('subAlert',"请选择一款车型");
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:"请选择一款车型"
+              }
+            );
             return false;
           }
           // if(!this.carPrice){
@@ -53,15 +63,15 @@ export default {
                 "car/choose",
                  {
                   token:sessionStorage.token,
-                  brandId:this.carMess.brandId,
-                  serieId:this.carMess.serieId,
+                  brandId:this.carMess.globalBrandID,
+                  serieId:this.carMess.globalSerieID,
                   autoId:this.carMess.carId,
                   price:this.carPrice
                  }
             ).then(function (response) {
               this.subDialog();
             }).catch(function (error) {
-              console.log("请求失败了");
+
             });
         },
         subDialog(){
@@ -71,8 +81,17 @@ export default {
       mounted(){
         
       },
-      watch:{
-      }
+      computed:{
+
+        ...mapGetters({ //多个对象进行合并，建立映射关系
+          // 映射 this.carMess 为 store.getters.getCar
+          carMess: 'getCar'
+        })
+        // carMess:function(){
+        //   //return this.$store.state.carData; //直接获取
+        //   return this.$store.getters.getCar; //通过getters获取
+        // }
+      },
 }
 </script>
 <style>

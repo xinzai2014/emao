@@ -103,7 +103,8 @@ export default {
             this.type = response.body.data.account_type;
             this.showType();
         }).catch(function (error) {
-           alert(error.body.msg);
+           this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了";    
         });
       },
       showType(){
@@ -129,7 +130,8 @@ export default {
             this.dataLength();
             this.returnDataF();
         }).catch(function (error) {
-            alert(error.body.msg);
+            this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
      
       },
@@ -150,7 +152,7 @@ export default {
       },
       returnDataF(){
         //订单页数据
-        this.returnData=this.$route.query;
+        this.returnData=this.$store.state.returnData;
       },
       submit(){
          //提交
@@ -192,14 +194,16 @@ export default {
             .then(function (response) {
                 this.success=true;
             }).catch(function (error) {
-                alert(error.body.msg);
+                this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
             });
           }else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
                 this.success=true;
             }).catch(function (error) {
-                alert(error.body.msg);
+                this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
             });
           }   
       }

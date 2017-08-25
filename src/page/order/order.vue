@@ -40,10 +40,14 @@
             <img src="../../assets/no-order.png" alt="">
             <p>暂无此类订单</p>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -55,8 +59,12 @@ export default {
         preventRepeatReuqest: false,
         showLoading: true,
         countNum:0,
+        showAlert: false, //弹出框
+          alertText: null, //弹出信息
     }
-  },
+  },     components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
@@ -87,7 +95,8 @@ export default {
               return
             }
         }).catch(function (error) {
-             console.log("请求失败了");
+             this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
         });
     },
     stateAdd(arr){
@@ -273,7 +282,7 @@ export default {
   color:#fff;
 }
 .state-wait{
-  line-height:1.066667rem;
+  line-height:0.6rem;
 }
 .state-rt.active{
   background:#cccccc;

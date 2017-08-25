@@ -203,19 +203,19 @@
 
             if (!this.dealerNameVal) {
                 this.showAlert = true;
-                this.alertText = '请填写买车用户姓名';
+                this.alertText = '请填写姓名';
                 return ;
             }
 
             if (!this.dealerPhoneVal) {
                 this.showAlert = true;
-                this.alertText = '请输入手机号';
+                this.alertText = '请填写正确的手机号';
                 return ;
             }
 
             if (!this.dealerIDNumberVal) {
                 this.showAlert = true;
-                this.alertText = '请输入有效的身份证号码';
+                this.alertText = '请填写有效的身份证号码';
                 return ;
             }
 
@@ -265,11 +265,9 @@
 
 
             this.$http.post("order/sale/info",this.formData).then(function(response){
-                //console.log(response);
                 this.showPopup = true;
             }).catch(function(error){
-                console.log("请求失败");
-                console.log(error);
+                this.showAlert = true;
                 this.errorTips = error.body.msg;
             })
         }

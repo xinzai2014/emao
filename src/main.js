@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/'
 
 //无限滚动加载
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -16,6 +17,7 @@ Validator.addLocale(zh_CN);
 Vue.use(VeeValidate, {
 	locale:'zh_CN'
 });
+
 
 
 
@@ -138,10 +140,24 @@ Vue.directive('load-more',{
 })
 
 Vue.http.interceptors.push(function(request,next){
-	obj.showLoading = true;
+	this.$store.dispatch("AJAX_LOADING", // 通过store传值
+      true
+    );
     next(function (response) {
-    	if(this.$root.showLoading == true){
-    		obj.showLoading = false; 
+    	var code = response.body.code;
+    	if(code != 200){
+    		this.$store.dispatch("ALERT", // 通过store传值
+		      {
+		      	flag:true,
+		      	text:response.body.msg
+		      }
+		    );
+    	}
+    	//console.log(response.status);
+    	if(this.$store.state.ajaxLoading == true){
+    		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+		      false
+		    ); 
     	}
         return response;
     })
@@ -150,9 +166,7 @@ Vue.http.interceptors.push(function(request,next){
 /* eslint-disable no-new */
 var obj = new Vue({
   el: '#app',          //vue实例挂载点
-  data:{
-  	showLoading : false
-  },
+  store,
   router,              //路由配置对象
   render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
 // template: '<App/>',
