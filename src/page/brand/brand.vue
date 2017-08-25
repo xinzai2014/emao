@@ -129,6 +129,17 @@ import car from '../index/car'
             showbrandTag(){
               return this.$store.state.chooseCar;
             }
+        },
+        beforeRouteLeave (to, from, next) {
+            this.$store.dispatch("CAR_DATA", // 通过store传值
+                {
+                  globalBrandID:"",
+                  globalSerieID:"",
+                  carId:"",
+                  carName:"选择车型"
+                }
+              );
+            next();
         }
     }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="book-car-out">
+  <div class="book-car-out" v-if="ajaxLoading">
     <!--首页-订车-详情页-头部-->
     <header class="book-car-header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
@@ -154,7 +154,8 @@ export default {
             
         ],
         showTips:false,  //到货提醒
-        showExhib:false //申请展车弹出层
+        showExhib:false, //申请展车弹出层
+        ajaxLoading:false,
     }
   },
   methods:{
@@ -282,20 +283,13 @@ export default {
           })
 
           this.circular = response.body.data.circular;
-
+          this.ajaxLoading = true;
         },function (error) {
 
         });
    },
    fullBay(){ //提交全款购车
       var activeData = this.fullData.stock[this.ActiveIndex];
-      // var fullBayData = {}; // 通过URL传值
-      // fullBayData.autoId = activeData.autoId;
-      // fullBayData.colorId = activeData.colorId;
-      // fullBayData.inColorId = activeData.inColorId;
-      // fullBayData.serieId = this.serieId;
-      // this.$router.push({name:"orderConfrim",params:{id:fullBayData.autoId},query:fullBayData});
-      // console.log(fullBayData);
       this.$store.dispatch("FULL_PAYMENT", // 通过store传值
         {
           autoId:activeData.autoId,
@@ -348,27 +342,6 @@ export default {
     //组件初始完成需要做什么
     this.serieId = this.$route.params.id;
     this.getData();
-    // console.log(this.fullPayment); //通过计算属性直接获取状态
-    // console.log(this.displayPayment);
-    //this.FULL_PAYMENT();
-    //console.log(this.autoId); //数组法
-    //this.$store.commit('FULL_PAYMENT',"直接触发store");   //推荐使用
-    // this.$store.commit('FULL_PAYMENT',{  //更多情况下，参数为对象
-    //   name:"胡再兴", 
-    //   password:"123456789"
-    // })
-    // this.$store.commit({ //对象提交法
-    //   type:"FULL_PAYMENT",
-    //   name:"胡再兴", 
-    //   password:"1234567890"
-    // })
-    // this.$store.dispatch('FULL_PAYMENT',{
-    //   name:"hzx"
-    // });
-    // this.$store.dispatch({ //这种提交稍微注意一下,type会被当成普通属性传过去
-    //   type:"FULL_PAYMENT",
-    //   name:"hzx"
-    // });
   },
   components:{
     swiper
@@ -431,7 +404,7 @@ export default {
 
 /*首页-订车-商品详情页*/
 .book-car-out{position:relative;}
-.book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;}
+.book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0.25rem;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
 .book-car-count{height:1.0667rem;padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
