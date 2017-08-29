@@ -64,7 +64,7 @@
                     </div>
                 </router-link>
             </section>
-            <section class="order mar-pd" v-show="is_transtor=='1'">
+            <section class="order mar-pd">
                 <router-link to="/display">
                     <div class="item">
                         <i class="show-icon"></i>
@@ -77,7 +77,7 @@
                     <span>售车申报</span>
                 </div>
                 </router-link>
-                <router-link to="/storage">
+                <router-link to="/storage" v-show="is_transtor=='1'">
                 <div class="item">
                     <i class="transfer-icon"></i>
                     <span>中转库管理</span>
