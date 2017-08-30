@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			<ul class="fullpage-icon">
-	        	<li v-for="(item,index) in circular"
+	        	<li v-for="(item,index) in circular" :class='{active:activeIndex == index}'></li>
 	        </ul>
 		</div>
 
@@ -36,13 +36,14 @@ export default {
 	    return {
 	     	showFull:false,
 	     	mySwiper1:null,
-	     	mySwiper2:null
+	     	mySwiper2:null,
+	     	activeIndex:0
 	    }
 	  },
 	  methods:{
 	  	lookFull(){ //打开全屏模式
 	  		var activeIndex = this.mySwiper1.activeIndex;
-	  		this.mySwiper2.slideTo(activeIndex);
+	  		this.mySwiper2.slideTo(activeIndex-1);
 	  		this.showFull = true;
 	  	},
 	  	closeFull(index){
@@ -51,6 +52,7 @@ export default {
 	  },
 	  mounted(){
 
+	  	var that = this;
 
 		this.mySwiper1 = new Swiper('.swiperWrap1', {
 			autoplay: 3000,//可选选项，自动滑动
@@ -61,15 +63,11 @@ export default {
 
 		this.mySwiper2 = new Swiper('.swiperWrap2', {
 			autoplay: 3000,//可选选项，自动滑动
-			pagination : '.look-icon',
-			paginationElement:"li", 
-			loop:true
+			paginationElement:"li",
+			onSlideChangeEnd:function(swiper){
+				that.activeIndex = swiper.activeIndex;
+			}
 		});
-	  },
-	  watch:{
-	   circular(){
-	   		
-	   }
 	  }
 }
 </script>
@@ -85,7 +83,9 @@ export default {
 .news_title h3{
 	font-size:0.5rem;
 }
-
+.fullpage-icon{position:fixed;left:0;bottom:0.75rem;text-align:center;width:100%;}
+.fullpage-icon li{display:inline-block;width:0.133rem;height:0.133rem;background:#FFF;border-radius:0.0666rem;margin:0 0.133rem;}
+.fullpage-icon .active{background:#d6ab55;width:0.266rem;}
 .swiper-fullpage{
 	position: fixed;
 	top:0;
