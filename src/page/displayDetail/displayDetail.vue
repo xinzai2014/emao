@@ -13,7 +13,7 @@
 		        </div>
 		        <div class="details-tit" v-show="!timeShow">
 		            <h4>{{statusText}}</h4>
-		            <p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>
+		            <!--<p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>-->
 		        </div>
 		        <div class="order-ct">
 		            <div class="order-full">
@@ -37,10 +37,10 @@
 	        <div class="request-ct">
 	            <p class="remit-tit">保证金</p>
 	            <p :class="paymentActive ? 'bond active':'bond'"><span>{{payment}}</span>支付状态：</p>
-	            <p class="bond"><span>{{capitalInfo.totalPrice}}</span>金额：</p>
-	            <p class="bond"><span>-{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
-	            <p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>
-	            <p class="bond active"><span>{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
+	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
+	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
+	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div v-if="bankInfo.accountType == 1">
 			            <div class="send-to">
@@ -61,11 +61,12 @@
 	                    		<p class="ayment-details">查看详细</p>
 	                  		</router-link>
 			            </div>
+			            <!--
 			            <div class="nstructions">
 			                <span>汇款说明：</span>
 			                <em>1.汇款后请上传汇款凭证</em>
 			                <em>2.未按时间付款的订单系统将自动取消</em>
-			            </div>
+			            </div>-->
 		            </div>
 		            <div class="ayment-info" v-else>
 		                <p>
@@ -173,7 +174,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
               	countNum:0,
               	payment:'已支付', //支付状态
               	paymentActive:false,
-              	vinActive:'代发货',//车辆VIN编码状态
+              	vinActive:'待发货',//车辆VIN编码状态
               	btmBtn:false, //底部按钮
               	btnText:'提交汇款凭证', //按钮文字
               	process:false, //退订流程
@@ -217,7 +218,10 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            }).then(function (response) {
 	                this.address = response.body.data.address;
 	                this.bankInfo = response.body.data.bankInfo;
-	                this.capitalInfo = response.body.data.capitalInfo;
+	                for(var i in response.body.data.capitalInfo){
+	                	response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+	                }	                
+	                this.capitalInfo =response.body.data.capitalInfo ;
 	                this.record = response.body.data.record;
 	                this.statusAactive = response.body.data.orderInfo;
 	                this.statusAdd(this.statusAactive);
@@ -326,14 +330,22 @@ import alertTip from '../../components/common/alertTip/alertTip'
 
             },
             cancelTime(item){ //毫秒数转换成时间
+            	var that=this;
 				var unixTimestamp = new Date(parseInt(item.time)*1000) ;
 				
 				Date.prototype.toLocaleString = function() {
-			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + that.toDouble(this.getHours() )+ ":" + that.toDouble(this.getMinutes());
 			    };
 			    var commonTime = unixTimestamp.toLocaleString();
 			    return commonTime;
             },
+            toDouble(num){
+		        if(num>9){
+		          return num;
+		        }else{
+		          return '0'+num;
+		        }
+		      },  
             cancelOrder(){//取消申请展车
             	this.orderInfo.status = 6;
             	this.maskShow = !this.maskShow;

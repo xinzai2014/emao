@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>收货地址管理
+			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>{{title}}
 		</header>
 		<!--收货地址管理-->
 		<section class="adders-wrap" v-if="!show">
@@ -60,6 +60,7 @@
               url:'',
               showAlert: false, //弹出框
           alertText: null, //弹出信息
+          title:'收货地址管理',
             }
         },
         components:{
@@ -149,9 +150,11 @@
         	next(vm => {
 			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
 	        		vm.radio=true;
+	        		vm.title='选择收货地址';
 	        		vm.url=from.fullPath;
 	        	}else{
 	        		vm.radio=false;
+	        		vm.title='收货地址管理';
 	        	}
 			  });
         },

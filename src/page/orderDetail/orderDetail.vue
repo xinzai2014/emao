@@ -357,7 +357,14 @@ export default {
             this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
         });
-    }
+    },
+      toDouble(num){
+        if(num>9){
+          return num;
+        }else{
+          return '0'+num;
+        }
+      }
   },
   mounted(){
     //组件初始完成需要做什么
@@ -394,12 +401,13 @@ export default {
           
       },
       time:function(){
+        var that=this;
         Date.prototype.toLocaleString = function() {
-            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "" +that.toDouble( this.getHours()) + ":" +that.toDouble( this.getMinutes());
         };
         var time=new Date(parseInt(this.countTime)*1000).toLocaleString();
         return  time;
-      }   
+      }
 
   },
   beforeRouteLeave(to, from, next){
