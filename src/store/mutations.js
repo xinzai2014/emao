@@ -5,7 +5,8 @@ import {
 	CAR_DATA,
 	AJAX_LOADING,
 	RETURN_DATA,
-	ALERT
+	ALERT,
+	ADDRESS_FLAG
 } from './mutations-types.js'
 
 
@@ -39,6 +40,10 @@ export default {
 
 	[ALERT](state,obj){ //获取选中车型
 		state.alert = obj;
+	},
+
+	[ADDRESS_FLAG](state,flag){ //获取选中车型
+		addressFlag = flag;
 	}
 
 }
