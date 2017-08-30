@@ -26,7 +26,7 @@
         <span class="order-car-color">{{car.color}}/{{car.inColor}}</span>
         <div class="order-price-count clearfix">
             <div class="order-car-price">
-                总价：<span>{{car.price|getMoney}}元</span>
+                订单总价：<span>{{car.price|getMoney}}元</span>
             </div>
             <div class="order-car-count">X <span>1</span></div>
         </div>
@@ -53,7 +53,7 @@
             <div class="order-support-con" v-if="!chooseMarket">无可用</div>
             <div class="order-support-con" v-if="chooseMarket&&checkMarket&&!updateMarket">使用￥<strong>{{marketingSupport.usable}}</strong><span @click="showMarketDialog">调整</span></div>
             <div class="order-support-con" v-if="chooseMarket&&checkMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseMarket">
+            <div class="order-suport-switch">
                 <input type="checkbox"  v-model="checkMarket" @click="changeMarket">
             </div>
         </div>
@@ -63,7 +63,7 @@
             <div class="order-support-con" v-if="!chooseRebate">无可用</div>
             <div class="order-support-con" v-if="chooseRebate&&checkRebate&&!updateRebate">使用￥<strong>{{rebate.usable}}</strong><span @click="showRebateDialog">调整</span></div>
             <div class="order-support-con" v-if="chooseRebate&&checkRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseRebate">
+            <div class="order-suport-switch">
                 <input type="checkbox"  v-model="checkRebate" @click="changeRebate">
             </div>
         </div>
@@ -71,7 +71,7 @@
     <!--购车确认-总额-->
     <section class="order-rental">
         <div class="order-rental-info">
-            <span>应付金额</span>
+            <span>订单总价</span>
             <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
@@ -91,7 +91,7 @@
             <p><i>-</i><strong>￥{{updateRebateData|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
-            <span>还需支付</span>
+            <span>应付金额</span>
             <p><strong>￥{{totalData|getMoney}}</strong></p>
         </div>
     </section>
@@ -100,7 +100,7 @@
     <section class="order-present-info">
         <div class="order-present" @click="showAgreementDialog">确认提交</div>
         <div class="order-price">
-            需支付：
+            应付金额：
             <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
@@ -170,7 +170,6 @@
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
-            <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
                 <p class="buy-agreement-con">
                     <iframe src="//tcmapi.emao.com/app_html/agreement/full" class="agreemenIframe"></iframe>
@@ -268,7 +267,7 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.serieId);
+            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
         },
         goIndex(){
             this.$router.push("/index");
@@ -287,14 +286,12 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
                    if(this.routerAddress){
-                        this.address = {
-                            "address":sessionStorage.addresstxt,
-                            "id":sessionStorage.addressId,
-                            "name":sessionStorage.addressName,
-                            "phone":sessionStorage.addressPhone
-                        }
+                        this.address =this.$store.state.defaultAdress;
                    }else{
                         this.address = data.address;
+                        this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                            data.address
+                        ); 
                    }
 		           this.car = data.car;
                    var coupon = data.coupon;
@@ -346,13 +343,19 @@ export default {
         },  
         changeMarket(){ //切换营销支持费checkbox
             var check = this.checkMarket; //点击获取的时候是基础值
-            if(check){
-                this.checkMarket = false ;
-                this.updateMarket = false ;
-                this.updateMarketData = 0;
+            if(!this.chooseMarket){
+                setTimeout(()=>{
+                    this.checkMarket = false;
+                })
             }else{
-                this.checkMarket = true; 
-                this.updateMarketData = parseInt(this.marketingSupport.usable);
+                if(check){
+                    this.checkMarket = false ;
+                    this.updateMarket = false ;
+                    this.updateMarketData = 0;
+                }else{
+                    this.checkMarket = true; 
+                    this.updateMarketData = parseInt(this.marketingSupport.usable);
+                }
             }
         },
         showMarketDialog(){ //营销支持费弹出窗
@@ -388,14 +391,20 @@ export default {
             this.updateRebateData = this.rebateData;
         },
         changeRebate(){ //切换营销支持费checkbox
-            var check = this.checkRebate; //点击获取的时候是基础值
-            if(check){
-                this.checkRebate = false ;
-                this.updateRebate = false ;
-                this.updateRebateData = 0;
+             var check = this.checkRebate; //点击获取的时候是基础值
+            if(!this.checkRebate){
+                setTimeout(()=>{
+                    this.checkRebate = false;
+                })
             }else{
-                this.checkRebate = true; 
-                this.updateRebateData = parseInt(this.rebate.usable);
+                if(check){
+                    this.checkRebate = false ;
+                    this.updateRebate = false ;
+                    this.updateRebateData = 0;
+                }else{
+                    this.checkRebate = true; 
+                    this.updateRebateData = parseInt(this.rebate.usable);
+                }
             }
         },
         showAgreementDialog(){ //协议弹出窗
@@ -489,7 +498,7 @@ export default {
             if(isNaN(num)){
                 num = 0;
             }
-            return parseInt(num).toFixed(2);
+            return parseInt(num).toLocaleString() +".00";
         }
       },
       components:{

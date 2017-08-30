@@ -8,10 +8,10 @@
      <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页-订车--详情页-车型信息-->
-    <section class="book-car-count">
+    <section class="book-car-count" v-if="serieData.length>0">
         <p>{{serieTitle}}</p>
     </section>
-   <section class="book-car-info">
+   <section class="book-car-info" v-if="serieData.length>0">
        <ul>
            <li v-for="(item,index) in serieData">
                <p class="book-car-name">{{item.name}}</p>
@@ -22,7 +22,7 @@
                     <div class="book-guide-price clearfix" v-if="item.fallPrice>0">
                         <span>指导价：</span>
                         <em>{{item.guidePrice}}万</em>
-                        <strong>(下) <i>{{item.fallPrice}}万</i> </strong>
+                        <strong>( 下 <i>{{item.fallPrice}}万</i> )</strong>
                     </div>
                </div>
                <div class="book-car-action clearfix">
@@ -69,13 +69,13 @@
                     <div class="book-guide-price clearfix" v-if="fullData.fallPrice>0">
                         <span>指导价：</span>
                         <em>{{fullData.guidePrice}}万</em>
-                        <strong>(下) <i>{{fullData.fallPrice}}万</i> </strong>
+                        <strong>( 下 <i>{{fullData.fallPrice}}万</i> )</strong>
                     </div>
                 </div>
                 <p class="book-car-repertory" v-if="fullCount>10">库存充足</p>
-                <p class="book-car-repertory" v-else="fullCount>0">库存{{fullCount}}台</p>
+                <p class="book-car-repertory" v-if="fullCount>0&&fullCount<10">库存{{fullCount}}台</p>
             </div>
-            <div class="book-order-colors" v-if="fullData.stock.length>0">
+            <div class="book-order-colors">
                 <p>可选颜色</p>
                 <ul class="clearfix">
                     <li class="choosable" @click.stop="updateFullIndex(index,item.sum)" :class="{unavailable:disabledFullIndex == index,active:ActiveIndex == index}" v-for="(item,index) in fullData.stock">{{item.color}}/{{item.inColor}}</li>
@@ -170,7 +170,7 @@ export default {
       this.$router.push("/configuration?id=" + id);
     },
     goBack(){
-      this.$router.go(-1);
+      this.$router.push("/index");
     },
     showFullpay(id,index){
       this.serieData.forEach(function(ele,ind){
@@ -230,13 +230,15 @@ export default {
           this.serieData[index].flag = !flag;
           this.fullData = response.body.data;
           this.showMoney = !this.showMoney;
-          this.disabledFullIndex = this.fullData.stock.findIndex(function(value,index,arr){
+          var disabledFullIndex = this.fullData.stock.findIndex(function(value,index,arr){
               return value.sum <= 0
           });
-          this.ActiveIndex = this.fullData.stock.findIndex(function(value,index,arr){
+          this.disabledFullIndex = (disabledFullIndex == -1)? null:disabledFullIndex
+          var ActiveIndex = this.fullData.stock.findIndex(function(value,index,arr){
               return value.sum > 0
           });
-          this.fullCount = this.fullData.stock[this.ActiveIndex].sum;
+          this.ActiveIndex = (ActiveIndex == -1)? null:ActiveIndex
+          this.fullCount = (ActiveIndex == -1)?null:this.fullData.stock[this.ActiveIndex].sum;
         },function(){
 
         })
@@ -254,13 +256,15 @@ export default {
            this.serieData[index].exhibFlag = !exhibFlag;
            this.ExhibData = response.body.data;
            this.showExhib = !this.showExhib;
-           this.disabledExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
+           var disabledExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
               return !value.sum;
            });
-           this.ActiveExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
+           this.disabledExhibIndex = (disabledExhibIndex == -1)? null:disabledExhibIndex
+           var ActiveExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
               return value.sum
            });
-          this.exhibCount = this.ExhibData.stock[this.ActiveExhibIndex].sum;
+           this.ActiveExhibIndex = (ActiveExhibIndex == -1)? null:ActiveExhibIndex
+           this.exhibCount = (ActiveExhibIndex == -1)?null:this.ExhibData.stock[this.ActiveExhibIndex].sum
         },function(){
 
         })
@@ -299,10 +303,6 @@ export default {
         }
       );
       this.$router.push({name:"orderConfrim",params:{id:activeData.autoId}});
-      // this.$store.dispatch({ //这种提交稍微注意一下
-      //   type:"FULL_PAYMENT",
-      //   name:"hzx"
-      // });
    },
    applyExhib(){
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
@@ -407,18 +407,18 @@ export default {
 .book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0.25rem;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
-.book-car-count{height:1.0667rem;padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
+.book-car-count{padding:.3rem 0;padding-left:.4rem;background-color:#fff;}
 .book-car-count p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
 .book-car-info{background-color:#fff;margin-bottom:.4rem;}
 .book-car-info ul li{padding:.5333rem .4rem;border-top:1px solid #2c2c2c;}
 .book-car-name{margin-bottom:.4rem;font-size:.42667rem;font-weight:600;color:#333;}
-.book-car-price{float:left;width:2.4rem;margin-right:.4rem;font-size:.4533rem;font-weight:bold;color:#fc3d36;}
+.book-car-price{float:left;margin-right:.5rem;font-size:.4533rem;font-weight:bold;color:#fc3d36;}
 .book-guide-price{float:left;margin-top:.0667rem;font-size:.3467rem;color:#999;}
 .book-guide-price span{display:block;float:left;}
-.book-guide-price strong{display:block;float:left;margin-left:.2667rem;font-weight:normal;}
-.book-guide-price em{display:block;float:left;width:1.6667rem;}
+.book-guide-price strong{display:block;float:left;margin-left:.1rem;font-weight:normal;}
+.book-guide-price em{display:block;float:left;}
 .book-car-action{margin-top:.5333rem;font-size:.3733rem;}
-.book-car-action span{display:block;float:left;padding-bottom:1px;margin-top:0.333rem;text-decoration:underline;}
+.book-car-action span{display:block;float:left;margin-top:0.333rem;border-bottom:1px solid #000;}
 .book-car-action input{width:2.6666rem;height:1.0667rem;float:right;text-align:center;line-height:1.0667rem;border-radius:.5333rem;}
 .book-car-apply{margin-right:.4rem;border:1px solid #666;}
 .book-car-buy{border:1px solid #d5aa5c;}
@@ -433,7 +433,7 @@ export default {
 /*首页-订车-详情页-订车弹窗*/
 .book-car-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
 .book-order{position:fixed;bottom:0;z-index:6;width:10rem;background-color:#fff;transform:translateY(100%)}
-.book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#000;}
+.book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#000;border-bottom:1px solid #ccc;}
 .book-order-title i{position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:100% 100%;border-bottom:1px solid #eee;}
 .book-order-info{margin-left:.4rem;margin-right:.4rem;padding:.5333rem 0;border-bottom:1px solid #2c2c2c;}
 .book-car-repertory{margin-top:.4rem;color:#999;font-size:.4rem;}

@@ -5,7 +5,8 @@ import {
 	CAR_DATA,
 	AJAX_LOADING,
 	RETURN_DATA,
-	ALERT
+	ALERT,
+	ADDRESS_FLAG
 } from './mutations-types.js'
 
 
@@ -38,6 +39,10 @@ export default {
 
 	[ALERT](context,obj){ //action 提交mutations  全局弹出窗
 		context.commit(ALERT,obj);
+	},
+
+	[ADDRESS_FLAG](context,flag){ //action 提交mutations  全局弹出窗
+		context.commit(ALERT,flag);
 	}
 
 }
