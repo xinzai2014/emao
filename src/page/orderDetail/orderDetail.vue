@@ -34,29 +34,26 @@
               <p class="leave" v-if="orderInfo.remark">
                   <span>买家留言：</span>{{orderInfo.remark||'未留言'}}
               </p>
+              <p class="car-vin" v-if="orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
               <div class="settlement">
-                  <p><span>￥{{capitalInfo.totalPrice}}</span>商品总价：</p>
+                  <p><span>￥{{capitalInfo.totalPrice}}</span>订单总价：</p>
                   <!--<p><span>-￥{{capitalInfo.deposit||'0.00'}}</span>已付保证金：</p>-->
-                  <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
+                  <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣（不可开票）：</p>
                   <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
                   <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>
-                  <p><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+                  <p><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
               </div>
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
-              <p class="remit-tit">汇款信息</p>
-              <div class="send-to" v-if="bankInfo.accountType==1">
+              <p class="remit-tit">付款信息</p>
+              <div class="send-to" v-if="bankInfo.accountType!=2">
                   <p>
-                      <label>汇款银行：</label>
-                      <span>{{bankInfo.bankName}}</span>
-                  </p>
-                  <p>
-                      <label>公司名称：</label>
+                      <label>汇款单位：</label>
                       <span>{{bankInfo.companyName}}</span>
                   </p>
                   <p>
-                      <label>汇款银行：</label>
-                      <span>{{bankInfo.account}}</span>
+                      <label>开户银行：</label>
+                      <span>{{bankInfo.bankName}}</span>
                   </p>
                   <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
@@ -66,23 +63,23 @@
               <div class="send-to" v-if="bankInfo.accountType==2">
                   <p>
                       <label>付款人：</label>
-                      <span>{{bankInfo.bankName}}</span>
+                      <span>{{bankInfo.name}}</span>
                   </p>
                   <p>
-                      <label>付款账户：</label>
-                      <span>{{bankInfo.account}}</span>
+                      <label>银行：</label>
+                      <span>{{bankInfo.bankName}}</span>
                   </p>
                   <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-                    <p class="send-phone">查看详细</p>
+                    <p class="send-phone">查看详情</p>
                   </router-link>
               </div>
-              <div class="nstructions">
+              <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'">
                   <span>汇款说明：</span>
                   <em>1.汇款后请上传汇款凭证</em>
                   <em>2.未按时间付款的订单系统将自动取消</em>
               </div>
-              <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
+              <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消订单</p>
           </div>
           <p class="visib-98"></p>
           <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
@@ -137,6 +134,7 @@ export default {
         receiptShow:false,
          showAlert: false, //弹出框
           alertText: null, //弹出信息
+          vinActive:''
     }
   },     components:{
         alertTip
@@ -270,6 +268,9 @@ export default {
               this.address=response.body.data.address;
             }
             this.bankInfo=response.body.data.bankInfo;
+            for(var i in response.body.data.capitalInfo){
+              response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+            } 
             this.capitalInfo=response.body.data.capitalInfo;
             var orderInfo=response.body.data.orderInfo;
             this.stateAdd(orderInfo);  
@@ -313,12 +314,15 @@ export default {
           break; 
           case '5' : 
               obj.state='交易完成';
+              this.vinActive="已收货";
           break;
           case '3' : 
               obj.state='车辆出库中';
+              this.vinActive="出库中";
           break;
           case '4' : 
               obj.state='车辆在途';
+              this.vinActive="已发货";
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=5;
                   //obj.state='交易完成';
@@ -403,7 +407,7 @@ export default {
       time:function(){
         var that=this;
         Date.prototype.toLocaleString = function() {
-            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "" +that.toDouble( this.getHours()) + ":" +that.toDouble( this.getMinutes());
+            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " +that.toDouble( this.getHours()) + ":" +that.toDouble( this.getMinutes());
         };
         var time=new Date(parseInt(this.countTime)*1000).toLocaleString();
         return  time;
@@ -710,5 +714,16 @@ export default {
 }
 .remits-fixed a{
   color:white;
+}
+.car-vin{
+    border-bottom: 1px solid #e0e0e0;
+    color: #2c2c2c;
+    overflow:hidden;
+    font-size:0.373333rem;
+    padding: 0.533333rem 0;
+}
+.car-vin span{
+  color:#999;
+  float:right;
 }
 </style>

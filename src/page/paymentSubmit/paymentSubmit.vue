@@ -17,6 +17,7 @@
               <div class="voucher-item item-bor" v-if="type == 1">
                   <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
                   <p><span>{{editData.pay_company}}<i class="white-rt"></i></span>汇款单位：</p>
+                  <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
                   <p><span>{{editData.account}}</span>汇款账户：</p>
               </div>
               <div class="voucher-item item-bor" v-else>
