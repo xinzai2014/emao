@@ -118,10 +118,14 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
         mounted(){
         //组件初始完成需要做什么
 
-        },/*
-        beforeRouteEnter (to, from, next) {
-	    	next();
-	    }*/
+        },
+        beforeRouteEnter(to, from, next){
+        	next(vm => {
+			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
+	        		
+	        	}
+			  });
+        }
     }   
 </script>
 

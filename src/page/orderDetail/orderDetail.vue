@@ -48,12 +48,16 @@
               <p class="remit-tit">付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
                   <p>
-                      <label>汇款单位：</label>
+                      <label>汇款银行：</label>
+                      <span>{{bankInfo.bankName}}</span>
+                  </p>
+                  <p>
+                      <label>公司名称：</label>
                       <span>{{bankInfo.companyName}}</span>
                   </p>
                   <p>
-                      <label>开户银行：</label>
-                      <span>{{bankInfo.bankName}}</span>
+                      <label>账号：</label>
+                      <span>{{bankInfo.account}}</span>
                   </p>
                   <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
@@ -270,6 +274,19 @@ export default {
             this.bankInfo=response.body.data.bankInfo;
             for(var i in response.body.data.capitalInfo){
               response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+              var arr=response.body.data.capitalInfo[i].split('.');
+              if(arr[1]){
+                if(arr[1].length==2){
+                  arr[1]=arr[1];
+                }else if(arr[1].length==1){
+                  arr[1]=arr[1]+'0';
+                }else{
+                  arr[1]=arr[1].substring(0,2);
+                }
+              }else{
+                arr[1]='00';
+              }
+              response.body.data.capitalInfo[i]=arr.join('.');
             } 
             this.capitalInfo=response.body.data.capitalInfo;
             var orderInfo=response.body.data.orderInfo;

@@ -218,8 +218,21 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                this.address = response.body.data.address;
 	                this.bankInfo = response.body.data.bankInfo;
 	                for(var i in response.body.data.capitalInfo){
-	                	response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
-	                }	                
+		              response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+		              var arr=response.body.data.capitalInfo[i].split('.');
+		              if(arr[1]){
+		                if(arr[1].length==2){
+		                  arr[1]=arr[1];
+		                }else if(arr[1].length==1){
+		                  arr[1]=arr[1]+'0';
+		                }else{
+		                  arr[1]=arr[1].substring(0,2);
+		                }
+		              }else{
+		                arr[1]='00';
+		              }
+		              response.body.data.capitalInfo[i]=arr.join('.');
+		            } 	                
 	                this.capitalInfo =response.body.data.capitalInfo ;
 	                this.record = response.body.data.record;
 	                this.statusAactive = response.body.data.orderInfo;
