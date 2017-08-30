@@ -3,8 +3,9 @@
     <section class="authen">
         <div class="authen-tit">
             <em>欢迎加入淘车猫</em>
-            <span>公司认证后才可以进入商城购买哟</span>
+            <span>公司认证后才可以进入商城购买</span>
             <span>我们将对您提交的信息严格保密</span>
+            <i></i>
         </div>
         <div class="authen-info">
             <p>
@@ -53,13 +54,11 @@
         </div>
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">提交</div>
-        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
         <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
     </section>
 </template>
 <script>
     import uploader from '../../components/common/uploader/uploader'
-    import alertTip from '../../components/common/alertTip/alertTip'
     import city from '../../components/common/city/city'
     export default{
         name:'auth',
@@ -183,55 +182,100 @@
             },
             checkFormData(){
                 if((this.username == "")||(this.username == null)){
-                    this.showError("您有姓名信息没有填写");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有姓名信息没有填写"
+                      }
+                    );
                     this.$refs.username.focus();
                     return false
                 }
                 if((this.companyName == "")||(this.companyName == null)){
-                    this.showError("请填写公司名称");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有公司公司名称没有填写"
+                      }
+                    );
                     this.$refs.companyName.focus();
                     return false
                 }
                 if((this.location == "")||(this.location == null)){
-                    this.showError("请填写所在区域");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您还没有选择所在区域"
+                      }
+                    );
                     this.$refs.location.focus();
                     return false
                 }
                 if((this.address == "")||(this.address == null)){
-                    this.showError("请填写详细地址");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有详细地址信息没有填写"
+                      }
+                    );
                     this.$refs.address.focus();
                     return false
                 }
                 if((this.types == "")||(this.types == null)){
-                    this.showError("请填写主营类型");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请选择经营类型"
+                      }
+                    );
                     return false
                 }
                 if((this.booth_out_img == "")||(this.booth_out_img == null)){
-                    this.showError("展厅门头照片不能为空");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传展厅门头"
+                      }
+                    );
                     return false
                 }
                 if((this.booth_in_img == "")||(this.booth_in_img == null)){
-                    this.showError("展厅内部图片不能为空");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传展厅内部"
+                      }
+                    );
                     return false
                 }
                 if((this.id_card_front == "")||(this.id_card_front == null)){
-                    this.showError("持身份证正面不能为空");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传手持身份证正面照"
+                      }
+                    );
                     return false
                 }
                 if((this.id_card_back == "")||(this.id_card_back == null)){
-                    this.showError("手持身份证反面不能为空");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传手持身份证反面照"
+                      }
+                    );
                     return false
                 }
                 if((this.business == "")||(this.business == null)){
-                    this.showError("营业执照图片不能为空");
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传营业执照"
+                      }
+                    );
                     return false
                 }
                 this.submitFormData();
-                console.log(this.dataURL);
-            },
-            showError(errorMsg){
-                this.showAlert = true;
-                this.alertText = errorMsg;
             },
             submitFormData(){
                 this.$http.post(
@@ -252,7 +296,7 @@
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
-                        console.log("正在认证");
+                        this.$router.push('/authResult');
                     }
                 },function(err){
                     console.log(err);
@@ -266,7 +310,6 @@
         },
         components:{
             uploader,
-            alertTip,
             city
         }
     }
@@ -276,13 +319,15 @@
 /*注册认证*/
 .authen-tit{
     height:3.466667rem;
-    background:#6f4c00;
-    text-align:center;
+    background:url("../../assets/back-m1.jpg") no-repeat;
+    background-size:100%;
+    padding-left:0.4rem;
+    position:relative;
 }
 .authen-tit em{
     display:block;
     font-size:0.453333rem;
-    padding:0.8rem 0 0.066667rem 0;
+    padding:0.7rem 0 0.25rem 0;
     color:#fff;
 }
 .authen-tit span{
@@ -291,6 +336,21 @@
     color:#fff;
     padding-top:0.133333rem;
 }
+
+.authen-tit i{
+    display:block;
+    width:1.87rem;
+    height:1.47rem;
+    background:url("../../assets/icon-s1.png") no-repeat;
+    background-size:100%;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:auto;
+    right:0.8rem;
+    margin:auto;
+}
+
 .authen-info{
     background:#fff;
     padding:0 0.4rem;
