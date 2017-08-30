@@ -192,7 +192,9 @@ export default {
         if(this.submitFlag){
           this.$http.post("order/full/payment",data)
             .then(function (response) {
-                this.success=true;
+                //this.success=true;
+                this.showAlert = true;
+                this.alertText = "提交成功,请等待审核"; 
             }).catch(function (error) {
                 this.showAlert = true;
           this.alertText = error.body.msg||"请求失败了"; 
@@ -200,7 +202,9 @@ export default {
           }else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
-                this.success=true;
+                //this.success=true;
+                this.showAlert = true;
+                this.alertText = "提交成功,请等待审核";    
             }).catch(function (error) {
                 this.showAlert = true;
           this.alertText = error.body.msg||"请求失败了"; 

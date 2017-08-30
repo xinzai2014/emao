@@ -2,7 +2,7 @@
     <div>
         <!--头部-->
         <header class="user-tit">
-          <a href="javascript:;" class="white-lt" @click="resetIndex"></a>全部订单
+          <a href="javascript:;" class="white-lt" @click="resetIndex"></a>待发货
         </header>
         <!--全部订单-->
         <section v-if="orderList.length">
