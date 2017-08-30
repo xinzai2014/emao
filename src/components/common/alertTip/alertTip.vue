@@ -50,6 +50,7 @@
     transform:translateX(-50%);
     bottom: 3rem;
     font-size: 0.35rem;
-    background:rgba(0,0,0,0.75)
+    background:rgba(0,0,0,0.75);
+    white-space:nowrap;
 }
 </style>

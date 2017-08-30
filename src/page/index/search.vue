@@ -55,10 +55,6 @@ export default {
             );
             return false;
           }
-          // if(!this.carPrice){
-          //   this.$emit('subAlert',"请输入期望价格");
-          //   return false;
-          // }
           this.$http.post(
                 "car/choose",
                  {
@@ -70,6 +66,14 @@ export default {
                  }
             ).then(function (response) {
               this.subDialog();
+              this.$store.dispatch("CAR_DATA", // 通过store传值
+                {
+                  globalBrandID:"",
+                  globalSerieID:"",
+                  carId:"",
+                  carName:"选择车型"
+                }
+              );
             }).catch(function (error) {
 
             });
