@@ -489,5 +489,5 @@ export default {
   overflow:hidden;
   height:1.173333rem;
   line-height:1.173333rem;
-}
+} 
 </style>
