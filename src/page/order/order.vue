@@ -11,6 +11,7 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
                   <p class="payment" v-if="item.status=='7'||item.status=='27'">
                    需付款：
                     <span>{{priceG(item.price)}}元</span>
@@ -19,6 +20,9 @@
                     已付款：
                     <span>{{priceG(item.price)}}元</span>
                   </p>                 
+=======
+                  <p class="payment">需付款：<span>{{priceG(item.price)}}元</span></p>                  
+>>>>>>> bug修改
                 </router-link>
                 <div class="full-state">
                       <div class="state-lt" :class="{'wait-active':item.status=='7'||item.status=='27'}">
@@ -29,11 +33,17 @@
                       <div class="state-rt" v-if="item.status=='7'||item.status=='27'" @click="paymentSubmit(item)">
                         提交汇款凭证
                       </div>
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
                       <!--
                       <div class="state-rt active" v-if="item.status=='8'" @click="paymentSubmit">
                         提交汇款凭证
                       </div>
                       -->
+=======
+                      <div class="state-rt active" v-if="item.status=='8'" @click="paymentSubmit">
+                        提交汇款凭证
+                      </div>
+>>>>>>> bug修改
                       <div class="state-rt" v-if="item.status=='4'" @click="confirmCar(item)">
                         确认收货
                       </div>
@@ -97,6 +107,7 @@ export default {
     resetIndex(){
         this.$router.push({name:'profile'});
     },
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
     hidePop(){
       this.receiptShow=false;
     },
@@ -109,6 +120,8 @@ export default {
         }
       );
     },
+=======
+>>>>>>> bug修改
     priceG(price){
         price=Number(price).toLocaleString();
         var arr=price.split('.');
@@ -138,7 +151,11 @@ export default {
     confirmCar(item){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;
       var data = {
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
           token:sessionStorage.token,
+=======
+          token:this.Token,
+>>>>>>> bug修改
           orderNum:item.orderNum
       }
       this.$http({
@@ -157,13 +174,20 @@ export default {
     receiptStatus(){
       this.receiptShow = !this.receiptShow;
       var data = {
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
           token:sessionStorage.token,
+=======
+          token:this.Token,
+>>>>>>> bug修改
           goods_stock_id:this.receiptData.id
       }
       this.$http.post("order/full/receipt",data)
       .then(function (response) {
+<<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
          this.showAlert = true;
         this.alertText = '确认收货成功！';
+=======
+>>>>>>> bug修改
         this.orderInfo.status='5';
         this.orderInfo.state='交易完成';
       }).catch(function (error) {
@@ -491,9 +515,5 @@ export default {
   overflow:hidden;
   height:1.173333rem;
   line-height:1.173333rem;
-<<<<<<< b2116bc9f02d40af3f2c73511f52affdc2b23256
 } 
-=======
-}
->>>>>>> 订单列表bug
 </style>
