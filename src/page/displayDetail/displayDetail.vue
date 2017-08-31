@@ -9,7 +9,7 @@
 		    <div>
 		        <div class="details-tit" v-show="timeShow">
 		            <h4><span>剩余：{{orderInfo.remaining}}自动取消</span>{{statusText}}</h4>
-		            <p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>
+		            <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
 		        </div>
 		        <div class="details-tit" v-show="!timeShow">
 		            <h4>{{statusText}}</h4>
@@ -43,22 +43,18 @@
 	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div v-if="bankInfo.accountType == 1">
-			            <div class="send-to">
+			            <div class="send-to">		               
 			                <p>
-			                    <label>汇款银行：</label>
-			                    <span>{{bankInfo.bankName}}</span>
-			                </p>
-			                <p>
-			                    <label>公司名称：</label>
+			                    <label>汇款单位：</label>
 			                    <span>{{bankInfo.companyName}}</span>
 			                </p>
-			                <p>
-			                    <label>账号：</label>
-			                    <span>{{bankInfo.account}}</span>
+			                 <p>
+			                    <label>开户银行：</label>
+			                    <span>{{bankInfo.bankName}}</span>
 			                </p>
 			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
 	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-	                    		<p class="ayment-details">查看详细</p>
+	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
 			            </div>
 			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&derInfo.status!='5'">
@@ -73,12 +69,12 @@
 		                    <span>{{bankInfo.bankName}}</span>
 		                </p>
 		                <p>
-		                    <label>付款账户：</label>
-		                    <span>{{bankInfo.account}}</span>
+		                    <label>银行：</label>
+		                    <span>{{bankInfo.bankName}}</span>
 		                </p>
 		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
 	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
-	                    	<p class="ayment-details">查看详细</p>
+	                    	<p class="ayment-details">查看详情</p>
 	                  	</router-link>
 		            </div>
 	            </div>
@@ -289,7 +285,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                item.remaining=this.remaining;
 	                this.remainingTime(item);
 	                this.vinActive = '已发货';
-	                this.payment = '未支付';
+	                this.payment = '已支付';
 	                this.paymentActive = !this.paymentActive;
             		this.timeShow = !this.timeShow;
             		this.btmBtn = !this.btmBtn;
@@ -454,15 +450,24 @@ import alertTip from '../../components/common/alertTip/alertTip'
         computed: {
 	    //转换时间成小时,分
 	    	remaining: function (){
-	          	let hours = parseInt(this.countNum/60/60);
-	          	let minutes = parseInt((this.countNum-hours*3600)/60);
-	          	if (hours < 10) {
-	              	hours = '0' + hours;
-	          	}
-	          	if (minutes < 10) {
-	              	minutes = '0' + minutes;
-	          	}
-	          	return hours + '小时' + minutes + '分钟';
+	          	let days = parseInt(this.countNum/60/60/24);
+	          let hours = parseInt((this.countNum-days*3600*24)/60/60);
+	          let minutes = parseInt((this.countNum-hours*3600)/60);
+	          if (hours < 10) {
+	              days = '0' + days;
+	          }
+	          if (hours < 10) {
+	              hours = '0' + hours;
+	          }
+	          if (minutes < 10) {
+	              minutes = '0' + minutes;
+	          }
+
+	          if(days){
+	            return days + '天' + hours + '小时';
+	          }else{
+	            return hours + '小时' + minutes + '分钟';
+	          }
 	      	}        
 	  	},
 	  	watch:{ 

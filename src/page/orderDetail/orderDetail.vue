@@ -47,21 +47,17 @@
           <div class="request-ct" v-if="orderInfo.status!='6'">
               <p class="remit-tit">付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
-                  <p>
-                      <label>汇款银行：</label>
-                      <span>{{bankInfo.bankName}}</span>
-                  </p>
-                  <p>
-                      <label>公司名称：</label>
-                      <span>{{bankInfo.companyName}}</span>
-                  </p>
-                  <p>
-                      <label>账号：</label>
-                      <span>{{bankInfo.account}}</span>
-                  </p>
+                       <p>
+                          <label>汇款单位：</label>
+                          <span>{{bankInfo.companyName}}</span>
+                      </p>
+                       <p>
+                          <label>开户银行：</label>
+                          <span>{{bankInfo.bankName}}</span>
+                      </p>
                   <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-                    <p class="send-phone">查看详细</p>
+                    <p class="send-phone">查看详情</p>
                   </router-link>
               </div>
               <div class="send-to" v-if="bankInfo.accountType==2">

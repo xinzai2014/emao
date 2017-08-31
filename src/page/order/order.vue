@@ -11,8 +11,9 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
-                  <p class="payment">需付款：<span>{{item.price}}元</span></p>
-                  <div class="full-state">
+                  <p class="payment">需付款：<span>{{priceG(item.price)}}元</span></p>                  
+                </router-link>
+                <div class="full-state">
                       <div class="state-lt" :class="{'wait-active':item.status=='7'||item.status=='27'}">
                           <p class="state-wait">{{item.state}}</p>
                           <p class="state-time">剩余：{{item.remaining}}自动取消</p>
@@ -20,14 +21,13 @@
                       <div class="state-rt" v-if="item.status=='7'||item.status=='27'">
                         提交汇款凭证
                       </div>
-                      <div class="state-rt active" v-if="item.status=='8'">
+                      <div class="state-rt active" v-if="item.status=='8'" @click="paymentSubmit">
                         提交汇款凭证
                       </div>
-                      <div class="state-rt" v-if="item.status=='4'">
-                        确认收货<router-link to=""></router-link>
+                      <div class="state-rt" v-if="item.status=='4'" @click="confirmCar(item)">
+                        确认收货
                       </div>
                   </div>
-                </router-link>
               </div>
           </div>
           <transition name="loading">
@@ -61,6 +61,8 @@ export default {
         countNum:0,
         showAlert: false, //弹出框
           alertText: null, //弹出信息
+          receiptData:{},
+        receiptShow:false,
     }
   },     components:{
         alertTip
@@ -69,6 +71,66 @@ export default {
     //组件方法
     resetIndex(){
         this.$router.push({name:'profile'});
+    },
+    priceG(price){
+        price=Number(price).toLocaleString();
+        var arr=price.split('.');
+        if(arr[1]){
+          if(arr[1].length==2){
+            arr[1]=arr[1];
+          }else if(arr[1].length==1){
+            arr[1]=arr[1]+'0';
+          }else{
+            arr[1]=arr[1].substring(0,2);
+          }
+        }else{
+          arr[1]='00';
+        }
+        price=arr.join('.');
+        return price;
+    },
+    paymentSubmit(){
+      this.$router.push({name:'paymentSubmit'});
+      this.$store.dispatch("RETURN_DATA", // 通过store传值
+        {
+            orderNum:this.orderInfo.orderNum,
+            orderId:this.orderInfo.id
+        }
+      );
+    },
+    confirmCar(item){ //确认收货弹框信息
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:this.Token,
+          orderNum:item.orderNum
+      }
+      this.$http({
+          url:"order/full/receiptDetail",
+          method:"GET",
+          params:data
+      }).then(function (response) {
+        console.log(response)
+        this.receiptData = response.body.data;
+          console.log(this.receiptData)
+      }).catch(function (error) {
+          this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
+      });
+    },
+    receiptStatus(){
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:this.Token,
+          goods_stock_id:this.receiptData.id
+      }
+      this.$http.post("order/full/receipt",data)
+      .then(function (response) {
+        this.orderInfo.status='5';
+        this.orderInfo.state='交易完成';
+      }).catch(function (error) {
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
+      });
     },
     fillData(){
         var dataToken =sessionStorage.token;
