@@ -491,5 +491,9 @@ export default {
   overflow:hidden;
   height:1.173333rem;
   line-height:1.173333rem;
+<<<<<<< b2116bc9f02d40af3f2c73511f52affdc2b23256
 } 
+=======
+}
+>>>>>>> 订单列表bug
 </style>
