@@ -11,7 +11,10 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 <<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
+=======
+>>>>>>> 订单列表bug
                   <p class="payment" v-if="item.status=='7'||item.status=='27'">
                    需付款：
                     <span>{{priceG(item.price)}}元</span>
@@ -20,9 +23,12 @@
                     已付款：
                     <span>{{priceG(item.price)}}元</span>
                   </p>                 
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 =======
                   <p class="payment">需付款：<span>{{priceG(item.price)}}元</span></p>                  
 >>>>>>> bug修改
+=======
+>>>>>>> 订单列表bug
                 </router-link>
                 <div class="full-state">
                       <div class="state-lt" :class="{'wait-active':item.status=='7'||item.status=='27'}">
@@ -33,17 +39,23 @@
                       <div class="state-rt" v-if="item.status=='7'||item.status=='27'" @click="paymentSubmit(item)">
                         提交汇款凭证
                       </div>
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 <<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
+=======
+>>>>>>> 订单列表bug
                       <!--
                       <div class="state-rt active" v-if="item.status=='8'" @click="paymentSubmit">
                         提交汇款凭证
                       </div>
                       -->
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 =======
                       <div class="state-rt active" v-if="item.status=='8'" @click="paymentSubmit">
                         提交汇款凭证
                       </div>
 >>>>>>> bug修改
+=======
+>>>>>>> 订单列表bug
                       <div class="state-rt" v-if="item.status=='4'" @click="confirmCar(item)">
                         确认收货
                       </div>
@@ -107,7 +119,10 @@ export default {
     resetIndex(){
         this.$router.push({name:'profile'});
     },
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 <<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
+=======
+>>>>>>> 订单列表bug
     hidePop(){
       this.receiptShow=false;
     },
@@ -120,8 +135,11 @@ export default {
         }
       );
     },
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 =======
 >>>>>>> bug修改
+=======
+>>>>>>> 订单列表bug
     priceG(price){
         price=Number(price).toLocaleString();
         var arr=price.split('.');
@@ -151,11 +169,15 @@ export default {
     confirmCar(item){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;
       var data = {
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 <<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
           token:sessionStorage.token,
 =======
           token:this.Token,
 >>>>>>> bug修改
+=======
+          token:sessionStorage.token,
+>>>>>>> 订单列表bug
           orderNum:item.orderNum
       }
       this.$http({
@@ -174,11 +196,15 @@ export default {
     receiptStatus(){
       this.receiptShow = !this.receiptShow;
       var data = {
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 <<<<<<< a57c8ed0577ab7fdfc14c8be6db914bd0e0880b2
           token:sessionStorage.token,
 =======
           token:this.Token,
 >>>>>>> bug修改
+=======
+          token:sessionStorage.token,
+>>>>>>> 订单列表bug
           goods_stock_id:this.receiptData.id
       }
       this.$http.post("order/full/receipt",data)
@@ -515,5 +541,9 @@ export default {
   overflow:hidden;
   height:1.173333rem;
   line-height:1.173333rem;
+<<<<<<< b08ebaaeafabe0dc716a3bc76bdc2e063e998592
 } 
+=======
+}
+>>>>>>> 订单列表bug
 </style>
