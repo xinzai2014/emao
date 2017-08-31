@@ -1,5 +1,5 @@
 <template>
-<!--注册认证-->
+<!--注册认证--> 
     <section class="authen">
         <div class="authen-tit">
             <em>欢迎加入淘车猫</em>
