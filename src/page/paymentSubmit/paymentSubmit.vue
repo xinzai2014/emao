@@ -15,13 +15,13 @@
             </div>
             <router-link to="/profile/info/remit" v-else>  
               <div class="voucher-item item-bor" v-if="type == 1">
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                  <!--<p><span>{{editData.account_type}}</span>汇款账户类型：</p>-->
                   <p><span>{{editData.pay_company}}<i class="white-rt"></i></span>汇款单位：</p>
                   <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
                   <p><span>{{editData.account}}</span>汇款账户：</p>
               </div>
               <div class="voucher-item item-bor" v-else>
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                  <!--<p><span>{{editData.account_type}}</span>汇款账户类型：</p>-->
                   <p><span>{{editData.name}}</span>姓名：</p>
                   <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
                   <p><span>{{editData.account}}</span>汇款账户：</p>
@@ -219,6 +219,12 @@ export default {
     },
     success(){
       //this.$router.push({name:''});
+    },
+    price(){
+      sessionStorage.paymentPrice=this.price;
+    },
+    remark(){
+      sessionStorage.remark=this.remark;
     }
   },
   beforeRouteEnter(to, from, next){
@@ -228,6 +234,10 @@ export default {
         }
       if(from.name=='displayDetail'){
           vm.submitFlag=false;
+      }
+      if(from.name=='remit'){
+          vm.price=sessionStorage.paymentPrice;
+          vm.remark=sessionStorage.remark;
       }
     });
   }
@@ -290,6 +300,7 @@ padding: 0.15rem 0;
   overflow:hidden;
   line-height:0.466667rem;
   border-bottom:1px solid #eee;
+  padding-right:0.3rem;
 }
 .voucher-item p span{
   float:right;
@@ -362,5 +373,8 @@ padding: 0.15rem 0;
 }
 .close-bt{
   cursor: pointer;
+}
+.white-rt{
+  position: absolute;
 }
 </style>
