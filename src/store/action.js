@@ -6,7 +6,8 @@ import {
 	AJAX_LOADING,
 	RETURN_DATA,
 	ALERT,
-	ADDRESS_FLAG
+	ADDRESS_FLAG,
+	DEFAULT_BRAND
 } from './mutations-types.js'
 
 
@@ -41,8 +42,12 @@ export default {
 		context.commit(ALERT,obj);
 	},
 
-	[ADDRESS_FLAG](context,flag){ //action 提交mutations  全局弹出窗
-		context.commit(ALERT,flag);
+	[ADDRESS_FLAG](context,flag){ //从哪个页面跳转地址页面的标示
+		context.commit(ADDRESS_FLAG,flag);
+	},
+
+	[DEFAULT_BRAND](context,flag){ //首页跳品牌页面传品牌值
+		context.commit(DEFAULT_BRAND,flag);
 	}
 
 }

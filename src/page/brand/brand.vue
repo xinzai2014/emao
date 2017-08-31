@@ -15,14 +15,15 @@
         </div>
     </header>
 
-    <section class="index-car-source brand-list-source">
+    <section class="index-car-source brand-list-source" v-if="serieData.length>0">
+        <p class="index-car-title">本地车源</p>
         <ul class="index-car-con">
             <li v-for="(item,index) in serieData" @click="goSerie(item.id)">
                 <img  :src = item.imgUrl alt="">
                 <p class="index-car-name">{{item.name}}</p>
                 <p class="index-car-price"><span>{{item.minPrice}}</span>万起</p>
                 <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
-                <p class="index-car-sale">最高下 <strong>{{item.maxFall}}万</strong></p>
+                <p class="index-car-sale" v-if="item.maxFall>0">最高下 <strong>{{item.maxFall}}万</strong></p>
             </li>
         </ul>
     </section>
@@ -116,7 +117,7 @@ import car from '../index/car'
             },
         },
         mounted(){
-           this.brandName = this.$router.currentRoute.query.brandName;
+           this.brandName = this.$store.state.defaultBrand;
            this.initData.brandId = this.$router.currentRoute.params.id; //获取路由当前品牌ID
            this.getAllBrand();
            this.getDataByBrandID();     
@@ -141,7 +142,7 @@ import car from '../index/car'
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 
 /*品牌列表页-车源*/
-.brand-list-source{padding-top:0 !important;}
+/*.brand-list-source{padding-top:0 !important;}*/
 
 /*品牌列表页-车源-弹窗*/
 .brand-list-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
@@ -151,9 +152,9 @@ import car from '../index/car'
 
 .index-brand{padding:.5333rem;}
 .index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-list li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;}
+.index-brand-list li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;overflow:hidden;}
 .index-brand-list li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
-.index-brand-list li span{color:#2c2c2c;font-size:0.3733rem;}
+.index-brand-list li span{color:#2c2c2c;font-size:0.3733rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .index-more-brand{margin-top:.8rem;text-align:center;}
 .index-more-brand i{margin-left:.1333rem;}
 

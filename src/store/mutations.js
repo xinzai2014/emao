@@ -6,7 +6,8 @@ import {
 	AJAX_LOADING,
 	RETURN_DATA,
 	ALERT,
-	ADDRESS_FLAG
+	ADDRESS_FLAG,
+	DEFAULT_BRAND
 } from './mutations-types.js'
 
 
@@ -43,7 +44,11 @@ export default {
 	},
 
 	[ADDRESS_FLAG](state,flag){ //获取选中车型
-		addressFlag = flag;
+		state.addressFlag = flag;
+	},
+
+	[DEFAULT_BRAND](state,flag){ //获取选中车型
+		state.defaultBrand = flag;
 	}
 
 }

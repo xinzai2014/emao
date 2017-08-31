@@ -9,7 +9,7 @@
                 </li>
             </ul>
             <p class="index-more-brand" @click="seeMore" v-if="look">更多品牌 <i class="yellow-bt"></i></p>
-            <p class="index-more-brand brand-collect" @click="seeMore" v-if="collect">收取 <i class="yellow-bt"></i></p>
+            <p class="index-more-brand brand-collect" @click="seeMore" v-if="collect">收起<i class="yellow-bt"></i></p>
         </div>
     </section>
 
@@ -32,7 +32,10 @@ export default {
   		this.collect = !this.collect
   	},
   	goBrand(index,name){ //去品牌列表页
-  		this.$router.push('/brand/'+index+"?brandName="+name); //车系路由跳转
+  		this.$router.push('brand/' + index); //车系路由跳转
+      this.$store.dispatch("DEFAULT_BRAND", // 通过store传值
+        name
+      );
   	}
   },
   mounted(){
