@@ -15,15 +15,15 @@
 	                <h3>{{item.name}}</h3>
 	                <p class="interior">{{item.color}}</p>
 	                <p class="payment" v-if="item.status == 7 || item.status ==2">需付保证金：<span>{{item.price}}元</span></p>
-	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p>
-	                <div class="full-state">
+	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
+                </router-link>
+                <div class="full-state">
 	                    <div class="state-lt wait-active">
 	                        <p class="state-wait">{{item.waitActive}}</p>
 	                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}自动取消</p>
 	                    </div>
-	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'">{{item.btnActive}}</div>
+	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'" @click="confirmCar(item)">{{item.btnActive}}</div>
 	                </div>
-                </router-link>
 	            </div>
 	        </div>
 	        <div class="branch">
@@ -36,6 +36,21 @@
             <p>暂无此类订单</p>
         </section>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+    	<!-- 确认收货 -->
+    	<div class="mask-receipt" v-show="receiptShow">
+	        <div class="receipt">
+	            <div class="receipt-tit">
+	                <b>{{receiptData.name}}</b>
+	                <span>{{receiptData.color}}</span>
+	            </div>
+	            <p class="receipt-code">{{receiptData.vinNumber}}</p>
+	            <div class="options" v-if="receiptData.attachment">
+	                <b>请确认随车附件：</b>
+	                <p>{{receiptData.attachment}}</p>
+	            </div>
+	            <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+	        </div>
+	    </div>
     </div>
 </template>
 <script>
@@ -51,7 +66,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
         		arr:[], //用于判断状态
         		countNum:0,
                 showAlert:false,  //错误弹出窗
-		      	alertText:null //错误提醒信息
+		      	alertText:null, //错误提醒信息
+		      	receiptData:{},
+				receiptShow:false,
             }
         },
         components:{
@@ -61,6 +78,51 @@ import alertTip from '../../components/common/alertTip/alertTip'
             //组件方法
             resetIndex(){
                 this.$router.push({name:'profile'});
+            },
+            confirmCar(item){ //确认收货弹框信息
+            	if(item.status=='4'){
+            		this.receiptShow = !this.receiptShow;
+					var data = {
+		                token:this.token,
+		                orderNum:item.orderNum
+		            }
+		            this.$http({
+		                url:"order/full/receiptDetail",
+		                method:"GET",
+		                params:data
+		            }).then(function (response) {
+		            	this.receiptData = response.body.data;
+		            }).catch(function (error) {
+		                this.showAlert = true;
+			          	this.alertText = error.body.msg
+		            });
+	            }
+	            if(item.status=='7'){
+	            	this.$router.push({name:'paymentSubmit'});
+	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+			            {
+			                orderNum:this.orderInfo.orderNum,
+			                orderId:this.orderInfo.id
+			            }
+		            );
+	            }
+				
+            },
+            receiptStatus(){
+            	this.receiptShow = !this.receiptShow;
+            	var data = {
+	                token:this.token,
+	                goods_stock_id:this.receiptData.id
+	            }
+	            this.$http.post(
+	                "order/full/receipt",data
+	            ).then(function (response) {
+	            	//该状态
+	            	this.showData();
+	            }).catch(function (error) {
+	                this.showAlert = true;
+		          	this.alertText = error.body.msg
+	            });
             },
             showData(){
             	var data = {
@@ -296,5 +358,66 @@ import alertTip from '../../components/common/alertTip/alertTip'
 .branch p i{
 	float:right;
 }
+/*待收货弹框*/
+.mask-receipt{
+	width:100%;
+	height:100%;
+	position:fixed;
+	left:0;
+	top:0;
+	background:rgba(0,0,0,0.8);
+}
+.receipt{
+	width:7.2rem;
+	position:fixed;
+	left:50%;
+	margin-left:-3.6rem;
+	top:25%;
+	background:#fff;
+	border-radius:0.133333rem;
+	overflow:hidden;
+}
+.receipt-tit{
+	width:5.026667rem;
+	height:2.053333rem;
+	border-bottom:1px solid #2c2c2c;
+	margin:0.533333rem auto;
+	text-align:center;
+}
+.receipt-tit b{
+	display:block;
+	font-size:0.453333rem;
+	color:#2c2c2c;
+}
+.receipt-tit span{
+	display:block;
+	font-size:0.32rem;
+	color:#999;
+	padding:0.133333rem 0;
+}
+.receipt-code{
+	font-size:0.453333rem;
+	color:#d6ab55;
+	text-align:center;
+	margin-bottom:0.533333rem;
+}
+.options{
+	padding:0 0.533333rem;
+	font-size:0.346667rem;
+	color:#2c2c2c;
+	padding-bottom:0.533333rem;
+}
+.options b{
+	display:block;
+	
+}
+.receipt-btn{
+	font-size:0.453333rem;
+	color:#fff;
+	text-align:center;
+	line-height:1.173333rem;
+	background:#d6ab55;
+}
+
 
 </style>
