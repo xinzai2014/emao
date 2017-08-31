@@ -78,10 +78,6 @@
             			'address':item.id
             		}*/
             	});
-            	// sessionStorage.addressId=item.id;
-            	// sessionStorage.addresstxt=item.address;
-            	// sessionStorage.addressPhone=item.phone;
-            	// sessionStorage.addressName=item.name;
             	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
 			        {
 			          id:item.id,

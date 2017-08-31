@@ -103,7 +103,6 @@
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
-            <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
                 <p class="buy-agreement-con">
                     <iframe src="//tcmapi.emao.com/app_html/agreement/show" class="agreemenIframe"></iframe></p>
@@ -179,10 +178,10 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.serieId);
+            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
         },
         goIndex(){
-            this.$router.go("index");
+            this.$router.push("/index");
         },
         goDeatail(id){
              this.$router.push("/displayDetail/" + id);
@@ -234,14 +233,12 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = {
-                            "address":sessionStorage.addresstxt,
-                            "id":sessionStorage.addressId,
-                            "name":sessionStorage.addressName,
-                            "phone":sessionStorage.addressPhone
-                        }
+                        this.address = this.$store.state.defaultAdress;
                    }else{
                         this.address = data.address;
+                        this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                            data.address
+                        ); 
                    }
 		           this.car = data.car;
                    var coupon = data.coupon;
@@ -320,7 +317,7 @@ export default {
             if(isNaN(num)){
                 num = 0;
             }
-            return parseInt(num).toFixed(2);
+            return parseInt(num).toLocaleString() +".00";
         }
       },
 	  mounted(){

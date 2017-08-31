@@ -9,7 +9,7 @@
                 </div>
                 <div class="index-search-price">
                     <label for="">期望价格：</label>
-                    <input type="tel" v-model="carPrice">
+                    <input type="tel" v-model="carPrice" >
                     <span>万元</span>
                 </div>
             </div>
@@ -18,9 +18,9 @@
         <section class="brand-list-popup" v-show="needCarDialog">
           <div class="brand-popup-in">
             <div class="brand-search-tips">
-              <p>服务顾问正在为你查找</br>找到后会及时和你联系</p>
+              <p>服务顾问正在为您查找</br>找到后会及时和您联系</p>
             </div> 
-            <div class="brand-popup-ok" @click="subDialog">好的</div>
+            <div class="brand-popup-ok" @click="closeDialog">好的</div>
           </div>
       </section>
     </section>
@@ -55,6 +55,16 @@ export default {
             );
             return false;
           }
+          var numRegExp = /^[0-9][0-9.]*[0-9]$/
+          if(!numRegExp.test(this.carPrice)){
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:"期望价格请输入数字格式"
+              }
+            );
+            return false;
+          }
           this.$http.post(
                 "car/choose",
                  {
@@ -66,20 +76,24 @@ export default {
                  }
             ).then(function (response) {
               this.subDialog();
-              this.$store.dispatch("CAR_DATA", // 通过store传值
-                {
-                  globalBrandID:"",
-                  globalSerieID:"",
-                  carId:"",
-                  carName:"选择车型"
-                }
-              );
             }).catch(function (error) {
 
             });
         },
         subDialog(){
-          this.needCarDialog = !this.needCarDialog;
+          this.needCarDialog = true;
+        },
+        closeDialog(){
+          this.$store.dispatch("CAR_DATA", // 通过store传值
+            {
+              globalBrandID:"",
+              globalSerieID:"",
+              carId:"",
+              carName:"选择车型"
+            }
+          );
+          this.carPrice = "";
+          this.needCarDialog = false;
         }
       },
       mounted(){

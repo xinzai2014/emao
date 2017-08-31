@@ -11,3 +11,7 @@ export const AJAX_LOADING = "AJAX_LOADING" //全局ajax加载状态
 export const RETURN_DATA = "RETURN_DATA" //汇款凭证
 
 export const ALERT = "ALERT" //全局弹出窗
+
+export const ADDRESS_FLAG = "ADDRESS_FLAG" //全局弹出窗
+
+export const DEFAULT_BRAND = "DEFAULT_BRAND" //首页跳转品牌页传值

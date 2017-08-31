@@ -8,26 +8,17 @@ Vue.use(Vuex)
 
 
 const state = {
-	// autoId:1258,
-	// fullPayment:{
-	// 	id:2,
-	// 	name:3
-	// },
-	// displayPayment:{
-	// 	sex:"男",
-	// 	name:"胡再兴"
-	// }
 	fullPaymentData:{}, //全款购车传参
 	defaultAdress:{},
 	chooseCar:false,
 	carData:{
 		carName:"选择车型"
 	},
+	defaultBrand:"", //首页跳转品牌页面传默认品牌
 	ajaxLoading:false, //ajax加载Loading
 	returnData:{}, //汇款凭证
-	ajaxLoading:false,
-	alert:{
-	}
+	alert:{},
+	addressFlag:"" //跳转选地址页面的标识
 }
 
 export default new Vuex.Store({
