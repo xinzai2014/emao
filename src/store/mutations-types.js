@@ -1,5 +1,7 @@
 export const FULL_PAYMENT = 'FULL_PAYMENT' //全款购车数据
 
+export const DISPLAY_CAR = 'DISPLAY_CAR' //申请展车数据
+
 export const DEFAULT_ADDRESS = 'DEFAULT_ADDRESS' //选地址
 
 export const CHOOSE_CAR = 'CHOOSE_CAR' //首页选车型

@@ -209,14 +209,12 @@
         </section>
     </div>
 
-    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 </div>
 
 </template>
 
 <script>
 import BScroll from 'better-scroll';
-import alertTip from '../../components/common/alertTip/alertTip'
 export default {
 	  name: 'orderConfrim',
 	  data () {
@@ -251,8 +249,6 @@ export default {
             showAgreement:false,
             showSuccessResult:false,
             successData:null,
-            showAlert:false,
-            alertText:"",
             messageData:{},
             codeText:"发送到手机", //下单成功后发送短信到手机
             num:60, //下单成功后倒计时
@@ -360,8 +356,12 @@ export default {
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
             if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
-                this.showAlert = true;
-                this.alertText="营销支持费不能大于" + this.marketingSupport.usable;
+                this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"营销支持费不能大于" + this.marketingSupport.usable
+                  }
+                 );
                 return false;
             }
             this.showMarket = !this.showMarket;
@@ -376,9 +376,13 @@ export default {
         },
         rebateConfrim(){
              if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
-                this.showAlert = true;
-                this.alertText="返利不能大于" + this.rebate.usable;
-                return false;
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"返利不能大于" + this.rebate.usable
+                  }
+                 );
+                 return false;
             }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
@@ -479,9 +483,6 @@ export default {
         },
 	  },
 	  mounted(){
-        console.log(this.$store.state.defaultAdress);
-        console.log(this.$store.state.fullPaymentData);
-        console.log(this.$router.currentRoute.query);
         this.serieId = this.$router.currentRoute.query.serieId;
 	  },
       filters:{
@@ -491,9 +492,6 @@ export default {
             }
             return parseInt(num).toLocaleString() +".00";
         }
-      },
-      components:{
-        alertTip
       },
       computed:{
         totalData:function(){
@@ -509,7 +507,6 @@ export default {
 
             vm.initData = vm.$store.state.fullPaymentData; //从vuex中获取
             vm.address = vm.$store.state.defaultAdress; //从vuex中获取
-		    //vm.initData = vm.$router.currentRoute.query; //从路由中获取
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
             //保存提交信息
