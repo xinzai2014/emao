@@ -306,13 +306,17 @@ export default {
    },
    applyExhib(){
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
-      var applyBayData = {};
-      applyBayData.autoId = activeData.autoId;
-      applyBayData.colorId = activeData.colorId;
-      applyBayData.inColorId = activeData.inColorId;
-      applyBayData.serieId = this.serieId;
-      this.$router.push({name:"displayConfrim",params:{id:applyBayData.autoId},query:applyBayData});
-      console.log(applyBayData);
+      console.log(123);
+      this.$store.dispatch("DISPLAY_CAR", // 通过store传值
+        {
+          autoId:activeData.autoId,
+          colorId:activeData.colorId,
+          inColorId:activeData.inColorId,
+          serieId:this.serieId
+        }
+      );
+
+      this.$router.push({name:"displayConfrim",params:{id:activeData.autoId}});
    },
    getTipsData(id){
       this.$http.post(
@@ -334,9 +338,6 @@ export default {
    closeTipsDialog(){
       this.showTips = false;
    },
-   // ...mapMutations([ //不传参数时可以使用 , 不常用
-   //    'FULL_PAYMENT' // 映射 this.FULL_PAYMENT() 为 this.$store.commit('FULL_PAYMENT'),
-   //  ])
   },
   mounted(){
     //组件初始完成需要做什么
@@ -353,25 +354,6 @@ export default {
 
     next();
   },
-  // computed:{   //直接计算属性获取
-  //   // 箭头函数可使代码更简练
-  //   fullPayment: function(state){
-  //     return this.$store.state.fullPayment;
-  //   }
-  // }
-  // computed:mapState({   //通过mapState映射,函数可直接获取state状态 , 常用
-  //   // 箭头函数可使代码更简练
-  //   fullPayment: function(state){
-  //     console.log(this.serieId); //这里的
-  //     return state.fullPayment;
-  //   },
-  //   displayPayment: function(state){
-  //     return state.displayPayment;
-  //   }
-  // }),
-  // computed:mapState([  //计算属性名称跟store节点相同的时候可以传字符串数组
-  //   "autoId"
-  // ])
 }
 </script>
 
