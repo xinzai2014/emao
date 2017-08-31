@@ -106,7 +106,7 @@
                   <b>请确认随车附件：</b>
                   <p>{{receiptData.attachment}}</p>
               </div>
-              <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+              <p class="prompt-btn"><span @click="hidePop">取消</span><span class="confirm" @click="receiptStatus">确认收货</span></p>
           </div>
       </div>
 
@@ -195,6 +195,7 @@ export default {
     },
     hidePop(){
       this.pop=false;
+      this.receiptShow=false;
     },
     getQuery(){
       return this.$route.query.address;

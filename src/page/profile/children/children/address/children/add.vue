@@ -94,7 +94,7 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             	).then(function (response) {
             		this.showAlert = true;
           			this.alertText = "添加成功！";
-		        	this.$router.push({ name: 'address'});
+		        	
 		        	sessionStorage.addressId=response.body.data.id;
 	            	sessionStorage.addresstxt=data.address;
 	            	sessionStorage.addressPhone=data.phone;
@@ -108,6 +108,13 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 				          name:this.name
 				        }
 				    );
+				    if(this.$store.addressFlag!=""){
+				    	var addressFlag=this.$store.state.addressFlag;
+				    	this.$store.dispatch("ADDRESS_FLAG","");
+				    	this.$router.push({ name: addressFlag});				    	
+				    }else{
+				    	this.$router.push({ name: 'address'});
+				    }
 
 		        }).catch(function (error) {
 		            this.showAlert = true;
