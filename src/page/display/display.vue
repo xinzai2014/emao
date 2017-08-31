@@ -101,8 +101,8 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            	this.$router.push({name:'paymentSubmit'});
 	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
 			            {
-			                orderNum:this.orderInfo.orderNum,
-			                orderId:this.orderInfo.id
+			                orderNum:item.orderNum,
+			                orderId:item.id
 			            }
 		            );
 	            }
