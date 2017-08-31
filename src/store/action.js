@@ -1,5 +1,6 @@
 import {
 	FULL_PAYMENT,
+	DISPLAY_CAR,
 	DEFAULT_ADDRESS,
 	CHOOSE_CAR,
 	CAR_DATA,
@@ -15,6 +16,10 @@ export default {
 
 	[FULL_PAYMENT](context,obj){ //action 提交mutations 全款购车
 		context.commit(FULL_PAYMENT,obj);
+	},
+
+	[DISPLAY_CAR](context,obj){ //action 提交mutations 申请展车
+		context.commit(DISPLAY_CAR,obj);
 	},
 
 	[DEFAULT_ADDRESS](context,obj){ //action 提交mutations  选中地址

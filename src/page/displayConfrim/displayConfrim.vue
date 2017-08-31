@@ -178,7 +178,7 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
+            this.$router.push("/serie/" + this.$store.state.displayData.serieId);
         },
         goIndex(){
             this.$router.push("/index");
@@ -332,7 +332,8 @@ export default {
 	  beforeRouteEnter (to, from, next) {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
-		    vm.initData = vm.$router.currentRoute.query;
+		    vm.initData = vm.$store.state.displayData;  //vuex中获取展车数据
+            vm.address = vm.$store.state.defaultAdress; //从vuex中获取
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
             //保存提交信息

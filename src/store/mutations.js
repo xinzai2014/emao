@@ -1,5 +1,6 @@
 import {
 	FULL_PAYMENT,
+	DISPLAY_CAR,
 	DEFAULT_ADDRESS,
 	CHOOSE_CAR,
 	CAR_DATA,
@@ -15,8 +16,11 @@ import {
 export default {
 
 	[FULL_PAYMENT](state,obj){ //保存全款购车地址
-		console.log(obj);
 		state.fullPaymentData = obj;
+	},
+
+	[DISPLAY_CAR](state,obj){ //保存申请展车信息
+		state.displayData = obj;
 	},
 
 	[DEFAULT_ADDRESS](state,obj){ //获取选中地址
@@ -43,7 +47,7 @@ export default {
 		state.alert = obj;
 	},
 
-	[ADDRESS_FLAG](state,flag){ //获取选中车型
+	[ADDRESS_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
 		state.addressFlag = flag;
 	},
 
