@@ -390,7 +390,8 @@ export default {
         },
         changeRebate(){ //切换营销支持费checkbox
             var check = this.checkRebate; //点击获取的时候是基础值
-            if(!this.checkRebate){
+            console.log(check);
+            if(!this.chooseRebate){
                 setTimeout(()=>{
                     this.checkRebate = false;
                 })
@@ -558,15 +559,15 @@ export default {
 .order-support-con{float:left;color:#999;font-size:.3733rem;}
 .order-support-con span{margin-left:.4rem;color:#d5aa5c;font-size:.3733rem;font-weight:600;}
 /*checkbox按钮开始*/
-.order-suport-switch{float:right;margin-right:0;width: .6933rem;font-size:0;}
-.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width: .6933rem;height: .4267rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 16px; box-sizing: border-box;
+.order-suport-switch{float:right;margin-right:0;font-size:0;line-height:1;margin-top:0.273rem;}
+.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width:1.4rem;height: 0.9rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 0.45rem; box-sizing: content-box;
      background-color: #dfdfdf;  -webkit-transition: background-color .1s,border .1s;  transition: background-color .1s,border .1s;-webkit-tap-highlight-color: rgba(0,0,0,0);}
 .order-suport-switch input:checked{border-color: #04be02;background-color: #04be02;}
 .order-suport-switch input:after,.order-suport-switch input:before{content: " ";position: absolute;top: 0;left: 0;height:.4rem;border-radius:.2rem;-webkit-transition: -webkit-transform .3s;}
-.order-suport-switch input:before{width: .667rem; background-color: #fdfdfd;}
+.order-suport-switch input:before{width:100%; background-color: #fdfdfd;height:0.9rem;border-radius: 0.45rem; }
 .order-suport-switch input:checked:before{transform: scale(0);}
-.order-suport-switch input:after{width: .4rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);}
-.order-suport-switch input:checked:after{transform: translateX(.2667rem);}
+.order-suport-switch input:after{width: .9rem;height:0.9rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);border-radius:50%}
+.order-suport-switch input:checked:after{transform: translateX(.5rem);}
 /*checkbox按钮结束*/
 .order-rental{margin-bottom:1.667rem;padding:.533rem .4rem;font-size:.3467rem;background-color:#fff;}
 .order-rental-info{height:.8667rem;line-height:.8667rem;}
