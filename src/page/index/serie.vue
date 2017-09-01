@@ -75,4 +75,5 @@ export default {
 	height:1.8266rem;
 	overflow:hidden;
 }
+
 </style>
