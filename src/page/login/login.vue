@@ -49,8 +49,8 @@ export default {
 .login-logo i{display:inline-block;width:.96rem;height:.6113rem;background:url("../../assets/login-logo.png") no-repeat;background-size:.96rem .6113rem;}
 .login-logo span{display:inline-block;}
 .login-info{margin-left:1.333rem;margin-right:1.333rem;}
-.login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:1px solid #fff;}
-.login-phone input{display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
+.login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:2px solid #fff;}
+.login-phone input{color:#FFF;display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background:none;}
 .login-errror{display:block;position:absolute;bottom:-.8rem;left:0;width:7.333rem;height:.8rem;line-height:.8rem;text-align:center;font-size:.373rem;color:#fff;background-color:#e94545;}
 .login-code{position:relative;height:.933rem;margin:.797rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #fff;}
 .login-code input{display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}

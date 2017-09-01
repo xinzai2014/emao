@@ -19,10 +19,10 @@
                    <div class="book-car-price">
                        <strong>{{item.emaoPrice}}万</strong>
                    </div>
-                    <div class="book-guide-price clearfix" v-if="item.fallPrice>0">
+                    <div class="book-guide-price clearfix">
                         <span>指导价：</span>
                         <em>{{item.guidePrice}}万</em>
-                        <strong>( 下 <i>{{item.fallPrice}}万</i> )</strong>
+                        <strong v-if="item.fallPrice>0">( 下 <i>{{item.fallPrice}}万</i> )</strong>
                     </div>
                </div>
                <div class="book-car-action clearfix">
@@ -42,7 +42,34 @@
     <!--首页-订车-详情页-订车保障-->
     <section class="book-car-guarantee">
         <p>下单流程</p>
-        <div class="book-car-pic"></div>
+        <div class="book-car-text">
+          <div class="text-item clearfix">
+            <i></i>
+            <p>选择车辆下单</p>
+            <p>线上选订新车或申请展车</p>
+          </div>
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <div class="text-item clearfix">
+            <i></i>
+            <p>上传凭证</p>
+            <p>订车后上传汇款凭证</p>
+          </div>
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <div class="text-item clearfix">
+            <i></i>
+            <p>闪电发车</p>
+            <p>付款确认后平台闪电发车</p>
+          </div>
+
+        </div>
     </section>
     <!--首页-订车-详情页-到货提醒-弹窗-->
     <section class="brand-list-popup" v-if="showTips" @click="closeTipsDialog">
@@ -408,7 +435,7 @@ export default {
 .book-car-contrast{position:relative;height:1.4667rem;padding-left:.4rem;margin-bottom:.4rem;line-height:1.4667rem;font-size:.4266rem;background-color:#fff;}
 .book-car-contrast i{position:absolute;top:.533rem;right:.4666rem;}
 .book-car-guarantee{padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
-.book-car-guarantee p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
+.book-car-guarantee>p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
 .book-car-guarantee .book-car-pic{width:9.2rem;height:11.7467rem;background:url("../../assets/book-car.jpg") no-repeat;background-size:100% 100%;}
 
 
@@ -434,4 +461,22 @@ export default {
 .brand-popup-in{position:fixed;top:50%;left:50%;width:7.2rem;height:4.4rem;margin-left:-3.6rem;margin-top:-2.2rem;font-size:.4533rem;border-radius:.1333rem;overflow:hidden;}
 .brand-search-tips{height:2.1334rem;padding:1.0666rem 1.0rem 0 1.0rem;background-color:#fff;}
 .brand-popup-ok{height:1.2rem;line-height:1.2rem;color:#fff;text-align:center;background-color:#d5aa5c;}
+
+.book-car-text{padding:1.2rem 0.4rem;}
+.book-car-text i{width:1.6rem;height:1.6rem;display:block;float:left;background-size: 100%;}
+.text-item p{margin-left:2rem;}
+.text-item p:nth-of-type(1){font-size:0.45rem;color:#000;padding-top:0.1rem;}
+.text-item p:nth-of-type(2){font-size:0.35rem;color:#999;padding-top:0.15rem;}
+
+.text-item:nth-of-type(1) i{
+  background-image:url("../../assets/icon-m1.png");
+}
+.text-item:nth-of-type(2) i{
+  background-image:url("../../assets/icon-m2.png");
+}
+.text-item:nth-of-type(3) i{
+  background-image:url("../../assets/icon-m3.png");
+}
+.book-car-text ul{padding-left:0.8rem;padding-bottom:0.267rem;}
+.book-car-text li{display:block;width:0.08rem;height:0.08rem;border-radius:50%;background:#d6d6d6;margin-top:0.267rem;}
 </style>

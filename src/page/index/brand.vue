@@ -53,20 +53,4 @@ export default {
 .index-more-brand{margin-top:.8rem;text-align:center;color:#d5aa5c;}
 .index-more-brand i{margin-left:.1333rem;}
 .brand-collect i{transform:rotateX(180deg)}
-/*首页本地车源*/
-.index-car-source{padding-top:.5333rem;padding-bottom:.5333rem;background-color:#fff;}
-.index-car-title{padding-left:.4rem;margin:0 0 .5333rem .4rem;font-size:.5066rem;color:#2c2c2c;border-left:2px solid #2c2c2c;}
-.index-car-con li{margin-bottom:.1333rem;color:#fff;}
-.index-car-con li{display:block;position:relative;color:#fff;}
-.index-car-con li img{display:block;width:10rem;height:5.333rem;}
-.index-car-name{position:absolute;top:.5333rem;left:.5333rem;font-size:.5066rem;}
-.index-car-price{position:absolute;top:2.333rem;left:.5333rem;font-size:.4rem;}
-.index-car-price span{margin-left:.2rem;font-size:.5866rem;}
-.index-car-count{position:absolute;top:3.0666rem;left:.5333rem;font-size:.4rem;}
-.index-car-sale{position:absolute;top:3.7333rem;left:.5333rem;display:block;padding:.0666rem .3333rem .0666rem .1333rem;font-size:.5066rem;color:#fff;border-top-right-radius:.4rem;border-bottom-right-radius:.4rem;background-color:#d6ab55;}
-
-.index-brand-info{
-	height:1.8266rem;
-	overflow:hidden;
-}
 </style>
