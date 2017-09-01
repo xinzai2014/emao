@@ -9,7 +9,7 @@
                 </div>
                 <div class="index-search-price">
                     <label for="">期望价格：</label>
-                    <input type="tel" v-model="carPrice" >
+                    <input type="number" v-model="carPrice" >
                     <span>万元</span>
                 </div>
             </div>
@@ -51,16 +51,6 @@ export default {
               {
                 flag:true,
                 text:"请选择一款车型"
-              }
-            );
-            return false;
-          }
-          var numRegExp = /^[0-9][0-9.]*[0-9]$/
-          if(!numRegExp.test(this.carPrice)){
-            this.$store.dispatch("ALERT", // 通过store传值
-              {
-                flag:true,
-                text:"期望价格请输入数字格式"
               }
             );
             return false;

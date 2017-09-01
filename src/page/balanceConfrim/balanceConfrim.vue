@@ -32,7 +32,7 @@
         </div>
         <div class="order-message">
             <span>买家留言：</span>
-            <input type="text" v-model="remark" placeholder="选填（对此展车的相关说明）"/>
+            <input type="text" v-model="remark" placeholder="选填 (对此订单的相关说明)"/>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -92,7 +92,7 @@
         </div>
         <div class="order-rental-info">
             <span>应付金额</span>
-            <p><strong>￥{{totalData|getMoney}}</strong></p>
+            <p><strong><em>￥{{totalData|getMoney}}</em></strong></p>
         </div>
     </section>
 
@@ -541,10 +541,10 @@ export default {
 .order-phone{float:right;margin-right:.7733rem;}
 .order-address{position:relative;margin-top:.4rem;padding-right:.4rem;}
 .order-address i{position:absolute;top:0;right:.1333rem;}
-.order-car-info{background-color:#fff;padding:.5333rem .4rem;margin-bottom:.4rem;}
-.order-car-name{font-size: .42667rem;color: #000;font-weight:600;}
-.order-car-color{display:block;margin-top:.1333rem;font-size: .3467rem;color: #999;}
-.order-price-count{margin-top:.4667rem;margin-bottom:.4rem;font-size:.3733rem;}
+.order-car-info{background-color:#fff;padding:.5333rem .4rem 0;margin-bottom:.4rem;}
+.order-car-name{font-size: .4rem;color: #000;font-weight:600;}
+.order-car-color{display:block;margin-top:.1833rem;font-size: .3467rem;color: #999;}
+.order-price-count{margin-top:.3667rem;margin-bottom:.4rem;font-size:.3733rem;}
 .order-car-price{float:left;color:#2c2c2c;}
 .order-car-price span{color:#fc3036;}
 .order-car-count{float:right;color:#999;}
@@ -569,7 +569,7 @@ export default {
 .order-suport-switch input:after,.order-suport-switch input:before{content: " ";position: absolute;top: 0;left: 0;height:.4rem;border-radius:.2rem;-webkit-transition: -webkit-transform .3s;}
 .order-suport-switch input:before{width:100%; background-color: #fdfdfd;height:0.9rem;border-radius: 0.45rem; }
 .order-suport-switch input:checked:before{transform: scale(0);}
-.order-suport-switch input:after{width: .9rem;height:0.9rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);border-radius:50%}
+.order-suport-switch input:after{width: .9rem;height:0.9rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);border-radius:50%;box-shadow:0 1px 3px rgba(0, 0, 0, 0.4);}
 .order-suport-switch input:checked:after{transform: translateX(.5rem);}
 /*checkbox按钮结束*/
 .order-rental{margin-bottom:1.667rem;padding:.533rem .4rem;font-size:.3467rem;background-color:#fff;}
@@ -577,15 +577,16 @@ export default {
 .order-rental-info span{display:block;float:left;color:#999;}
 .order-rental-info p{float:right;}
 .order-rental-info strong{color:#2c2c2c;}
+.order-rental-info em{color:#fc3036;}
 .order-present-info{position:fixed;bottom:0;width:10rem;background-color:#fff;}
-.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:.3467rem;color:#fff;background-color:#d5aa5c;}
+.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:0.4rem;color:#fff;background-color:#d5aa5c;}
 .order-price{float:right;height:1.2667rem;margin-right: .4rem;line-height: 1.2667rem;font-size:.3467rem;color:#2c2c2c;}
 .order-price strong{font-size:.4267rem;color:#fc3036;}
 
 
 /*选择优惠券-浮层*/
 .coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
-.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:65%}
+.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
 .coupon-con{padding: 0 .533rem .5333rem .533rem;}
