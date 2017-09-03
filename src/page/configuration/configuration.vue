@@ -113,9 +113,9 @@
 .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
-.config{overflow-x:auto;padding-top:1.1733rem;}
+.config{padding-top:1.1733rem;}
 .config-left-con{float: left;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
-.config-right-con{display:inline-block;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
+.config-right-con{padding-left:2.133rem;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
 .config-nothing{width:2.133rem;height:1.7333rem;background-color:#fff;}
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
@@ -132,10 +132,10 @@
 .config-param-head .row-placeholder .row .cell{display:inline-block;width:3.2rem;height:1.733rem;color:#333;font-size:.32rem;padding-left:.24rem;padding-right:.24rem;border-left:1px solid #ccc;}
 
 .config-param-list .row_head{height:1.4267rem;}
-.config-param-list .row_head p{line-height: 1.4267rem;font-size:.4rem;padding-left:3.6rem;}
+.config-param-list .row_head p{line-height: 1.4267rem;font-size:.4rem;width:100%;padding-left:2rem;}
 .config-param-list .row_head p span{display:inline-block;padding-right:.5333rem;}
 .config-param-list .row{border-top:1px solid #ccc;background-color:#fff;height:1.36rem;}
-.config-param-list .row .cell{display:inline-block;width:100%;border-right:1px solid #ccc;}
+.config-param-list .row .cell{display:inline-block;width:100%;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
 
 .config-right-con .head-fixed,.config-left-con .head-fixed{
