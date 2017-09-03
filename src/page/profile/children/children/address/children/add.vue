@@ -108,7 +108,7 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 				          name:this.name
 				        }
 				    );
-				    if(this.$store.addressFlag!=""){
+				    if(this.$store.state.addressFlag!=""){
 				    	var addressFlag=this.$store.state.addressFlag;
 				    	this.$store.dispatch("ADDRESS_FLAG","");
 				    	this.$router.push({ name: addressFlag});				    	

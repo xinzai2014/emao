@@ -35,21 +35,25 @@
               <p><span>{{editData.bank_info.account}}</span>汇款账户：</p>
           </div>
           <div class="voucher-item">
-              <p><span>{{editData.price}}</span>汇款金额：</p>
+              <p><span>{{editData.price}}元</span>汇款金额：</p>
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款回执单<em>代付证明</em></p>
+              <p>汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
                       <img :src="editData.payimg">
                   </div>
-                   <div class="voucher-lt">
-                    <img :src="editData.bank_info.explan_path">
-                </div>
                   <div class="voucher-lt">
                       <img :src="editData.payimg2" v-if="editData.payimg2">
                   </div>
+                 
+              </div>
+              <p>代付证明</p>
+              <div class="voucher-img">
+                   <div class="voucher-lt">
+                    <img :src="editData.bank_info.explan_path">
+                </div>
                  
               </div>
 

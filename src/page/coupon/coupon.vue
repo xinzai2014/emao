@@ -2,7 +2,7 @@
   <div>
         <!--头部-->
         <header class="user-tit">
-            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>我的优惠券
+            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>优惠券
         </header>
         <!--我的优惠券-->
         <section class="coupon-wrap">

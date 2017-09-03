@@ -63,7 +63,7 @@
               <div class="send-to" v-if="bankInfo.accountType==2">
                   <p>
                       <label>付款人：</label>
-                      <span>{{bankInfo.name}}</span>
+                      <span>{{bankInfo.companyName}}</span>
                   </p>
                   <p>
                       <label>银行：</label>
@@ -514,7 +514,7 @@ export default {
 }
 .order-full h3 {
     font-size: 0.426667rem;
-    line-height: 1.5rem;
+    padding: 0.3rem 0;
 }
 .order-full .interior {
     color: #999;

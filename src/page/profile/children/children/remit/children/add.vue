@@ -79,7 +79,7 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"door",
-                    image:'static/sample1.jpg'
+                    image:'static/sample3.jpg'
                 },
                 dataURL:{},
                 showAlert: false, //弹出框

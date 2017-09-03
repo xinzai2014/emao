@@ -11,7 +11,7 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
-                  <p class="payment">需付款：<span>{{item.price}}元</span></p>
+                  <p class="payment">已付款：<span>{{item.price}}元</span></p>
                   <div class="full-state">
                       <div class="state-lt">
                           <p class="state-wait">{{item.state}}</p>
@@ -98,7 +98,7 @@ export default {
                 arr[i].state='车辆出库中';
             break;
             case '8' : 
-                arr[i].state='审核中';
+                arr[i].state='付款审核中';
             break; 
           }
           
