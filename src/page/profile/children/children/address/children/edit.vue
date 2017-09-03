@@ -123,7 +123,13 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 		        ).then(function (response) {
 		        	this.showAlert = true;
           			this.alertText = "保存成功";
-		        	this.$router.push({ name: 'address'});
+		        	if(this.$store.addressFlag!=""){
+				    	var addressFlag=this.$store.state.addressFlag;
+				    	this.$store.dispatch("ADDRESS_FLAG","");
+				    	this.$router.push({ name: addressFlag});				    	
+				    }else{
+				    	this.$router.push({ name: 'address'});
+				    }
 		        }).catch(function (error) {
 		            this.showAlert = true;
           			 this.alertText = error.body.msg||"请求失败了";	            

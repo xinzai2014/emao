@@ -2,7 +2,7 @@
     <div class="alet_container fadeIn">
         <section class="tip_text_container">
 
-            <p class="tip_text">{{alertText}}</p>
+            <p class="tip_text">{{alertTextState}}</p>
         </section>
     </div>
 </template>
@@ -14,6 +14,7 @@
 
             }
         },
+        props: ['alertText'],
         mounted(){
             var that = this;
             setTimeout(function(){
@@ -23,13 +24,14 @@
                     text:""
                   }
                 );
+                that.$emit("closeTip");
             },2000);
         },
         methods: {
         },
         computed:{
-            alertText(){
-                return this.$store.state.alert.text;
+            alertTextState(){
+                return this.$store.state.alert.text||this.alertText;
             }
         }
     }

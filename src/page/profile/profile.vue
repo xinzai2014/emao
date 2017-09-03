@@ -12,7 +12,7 @@
                 <div class="company-ct">
                     <router-link to="/profile/info">
                         <a class="white-rt" href="javascript:;"></a>
-                        <h3>{{name}}<i class="company-icon" v-show="auth_status=='已完成认证'"></i></h3>
+                        <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
                         <p>
                             认证级别
                             <i v-for="n in level"></i>
@@ -141,6 +141,23 @@ export default {
       },
   methods:{
     //组件方法
+    priceG(price){
+        price=Number(price).toLocaleString();
+          var arr=price.split('.');
+          if(arr[1]){
+            if(arr[1].length==2){
+              arr[1]=arr[1];
+            }else if(arr[1].length==1){
+              arr[1]=arr[1]+'0';
+            }else{
+              arr[1]=arr[1].substring(0,2);
+            }
+          }else{
+            arr[1]='00';
+          }
+          price=arr.join('.');
+          return price;
+    }
   },
   mounted(){
     //组件初始完成需要做什么
@@ -157,8 +174,8 @@ export default {
         this.name = response.body.data.name;     //公司名称
         this.auth_status = response.body.data.auth_status;   //认证状态
         this.level = response.body.data.level;    //等级
-        this.rebate = response.body.data.rebate;    //返利金额
-        this.capital = response.body.data.capital;    //营销支持费
+        this.rebate = this.priceG(response.body.data.rebate);    //返利金额
+        this.capital = this.priceG(response.body.data.capital);    //营销支持费
         this.coupon_num = response.body.data.coupon_num;   //优惠券
         this.payment_num = response.body.data.payment_num;   //待付款
         this.delivered_num = response.body.data.delivered_num;   //待发货
@@ -362,12 +379,12 @@ export default {
 }
 .car-icon{
     background:url(../../assets/car-icon.png) no-repeat;
-    background-size:contain;
-    width:0.64rem;
-    height:0.413333rem;
+    background-size: 100%;
+    width: 0.506667rem;
+    height: 0.56rem;
 }
 .transfer-icon{
-    background:url(../../assets/transfer-icon.png) no-repeat;
+    background:url(../../assets/transfer-icon.png) center center no-repeat;
     background-size:contain;
     width:0.56rem;
     height:0.48rem;

@@ -69,7 +69,7 @@ export default {
       price:'',
       remark:'',
       showAlert: false, //弹出框
-      alertText: null, //弹出信息
+      alertText: '', //弹出信息
       success:''
     }
   },
@@ -104,8 +104,8 @@ export default {
             this.type = response.body.data.account_type;
             this.showType();
         }).catch(function (error) {
-           this.showAlert = true;
-          this.alertText = error.body.msg||"请求失败了";    
+           //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了";    
         });
       },
       showType(){
@@ -126,13 +126,13 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
-          console.log(response);
+          //console.log(response);
             this.infoData = response.body.data;
             this.dataLength();
             this.returnDataF();
         }).catch(function (error) {
-            this.showAlert = true;
-          this.alertText = error.body.msg||"请求失败了"; 
+            //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了"; 
         });
      
       },
@@ -197,8 +197,8 @@ export default {
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核"; 
             }).catch(function (error) {
-                this.showAlert = true;
-          this.alertText = error.body.msg||"请求失败了"; 
+                //this.showAlert = true;
+               // this.alertText = error.body.msg||"请求失败了"; 
             });
           }else{
             this.$http.post("order/show/payment",data)
@@ -207,8 +207,8 @@ export default {
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核";    
             }).catch(function (error) {
-                this.showAlert = true;
-          this.alertText = error.body.msg||"请求失败了"; 
+                //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了"; 
             });
           }   
       }
