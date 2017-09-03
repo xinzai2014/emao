@@ -292,7 +292,10 @@ export default {
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
                         ele.check = false;
                    })
-		           this.coupon = coupon;
+		           this.coupon = coupon; //单次初始化
+                   if(coupon.length>0){
+                        this.initIscroll("couponList",this.scrollWrap);
+                   }
 		           this.marketingSupport = data.marketingSupport;
                    if(data.marketingSupport.usable>0){ //判断是否有可用营销支持费
                         this.chooseMarket = true
@@ -314,7 +317,6 @@ export default {
 	  	},
         showCouponDialog(){ //显示优惠券弹窗
             this.showCoupon = !this.showCoupon;
-            this.initIscroll("couponList",this.scrollWrap);
         },
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
@@ -334,24 +336,6 @@ export default {
                 this.checkCoupun = false;
             }
         },  
-        // changeMarket(){ //切换营销支持费checkbox
-        //     var check = this.checkMarket; //点击获取的时候是基础值
-        //     if(!this.chooseMarket){
-        //         setTimeout(()=>{
-        //             this.checkMarket = false;
-        //         })
-        //     }else{
-        //         if(check){
-        //             this.checkMarket = false ;
-        //             this.updateMarket = false ;
-        //             this.updateMarketData = 0;
-        //         }else{
-        //             this.checkMarket = true; 
-        //             this.updateMarketData = parseInt(this.marketingSupport.usable);
-        //         }
-        //     }
-            
-        // },
         showMarketDialog(){ //营销支持费弹出窗
             this.showMarket = !this.showMarket;
         },
@@ -615,7 +599,7 @@ export default {
 
 /*选择优惠券-浮层*/
 .coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
-.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%}
+.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
 .coupon-con{padding: 0 .533rem .5333rem .533rem;}
@@ -652,7 +636,7 @@ export default {
 .buy-agreement-choose li.active{color:#fff;background-color:#d5aa5c;}
 
 .coupon-list{
-    height:100%;
+    height:7.2rem;
     overflow:hidden;
 }
 

@@ -20,7 +20,7 @@
                 that.$store.dispatch("ALERT", // 通过store传值
                   {
                     flag:false,
-                    text:"dsd"
+                    text:""
                   }
                 );
             },2000);
