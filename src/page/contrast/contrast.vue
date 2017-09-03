@@ -1,14 +1,14 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header">
+    <header class="brand-list-header" ref="header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" >{{serieName}}</strong>
         <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
         <span class="brand-switch" v-if="checkALl" @click="looALl">不同配置</span>
     </header>
     <section>
-        <div class="config marb">
+        <div class="config marb" ref="nav">
             <div class="config-left">
                 <div class="config-nothing"></div>
             </div>
@@ -28,14 +28,12 @@
             <div class="config-left">  
                 <template  v-for = "(itemWrap,indexWrap) in dataList" v-if="indexWrap == 0">
                     <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff> 
-                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}">
-                            <span class="cell-text" :class="{'head-fixed':scrollIndex == index}">{{item.name}}</span>
+                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}" :class="{'head-fixed':scrollIndex == index}">
+                            <span class="cell-text" >{{item.name}}</span>
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
-
                                 <span class="cell-text" >{{e.name}}</span>
-
                             </div>
                         </div>
                     </div>
@@ -90,7 +88,8 @@
                 checkALl:false,
                 styleWidth:3.2,
                 styleData:0,
-                drags:[]
+                drags:[],
+                initData:[]
             }
         },
         created:function(){
@@ -106,6 +105,9 @@
                     this.getALl(this.dataList);
                 };
                 this.checkALl = !this.checkALl;
+                setTimeout(()=>{
+                        this.countHeight();
+                    },100)
             },
             drag(style){
                 this.$refs.dragCompare.style.left=style.left;
@@ -137,10 +139,10 @@
 
                     this.getALl(data);
                     //this.getDifferent();
+                    this.getDifferent();
                     setTimeout(()=>{
                         this.countHeight();
                     },100)
-                    this.getDifferent();
                 },function(){
 
                 })
@@ -148,14 +150,16 @@
             countHeight(){ //记录初始楼层高度
                 const carContainer = this.$refs.carWrap;
                 const listArr = Array.from(carContainer.children[0].children);
+                this.carScrollHeight = [];
                 listArr.forEach((item, index) => {
                     this.carScrollHeight[index] = item.offsetTop;
                 });
+                console.log(this.carScrollHeight);
                 var that = this;
                 document.addEventListener('scroll',function(){
                     var scrollTop = document.body.scrollTop;
                     that.carScrollHeight.forEach((item,index) => {
-                        if(scrollTop>item){
+                        if(scrollTop>(item-that.$refs.header.offsetHeight - that.$refs.nav.offsetHeight)){
                             that.scrollIndex = index;
                         }
                     })
@@ -171,12 +175,12 @@
                         })
                     })
                 });
-                this.dataList = data;
+                this.initData = data;
             },
             getDifferent(){
                 var dataArray = [];
                 var that = this;
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
@@ -197,7 +201,7 @@
                     })
                 });
 
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
@@ -216,6 +220,7 @@
                         }
                     })
                 });
+                this.dataList = this.initData;
             },
         },
         mounted(){
@@ -317,11 +322,11 @@
 
 .marb{padding-top:1.1733rem;}
 .config{display: table; width: 100%;}
-.config-left{display: table-cell;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
+.config-left{display: table-cell;width: 2.133rem;border-left: 1px solid #ccc;}
 .config-right{display: table-cell;
     overflow: hidden;
-    position: relative;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
-.config-nothing{width:2.133rem;height:1.7333rem;background-color:#fff;}
+    position: relative;vertical-align: top;}
+.config-nothing{height:1.7333rem;background-color:#fff;}
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
 
@@ -329,7 +334,7 @@
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 
 .config-param-names .row{display: table;width: 100%;}
-.config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
+.config-left .config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
 
 
 .config-param-head{height:1.733rem;background-color:#fff;}
@@ -344,14 +349,13 @@
 .config-param-list .row .cell{display:inline-block;width:100%;border-right:1px solid #ccc;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
 
-.head-fixed{
+.config-right .head-fixed,.config-left .head-fixed{
     position:fixed;
     top:2.906rem;;
     background:#f5f5f5;
 }
 
 .config-list{width:3.2rem;float:left;}
-.config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
 .config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
@@ -366,7 +370,7 @@
 
 
 .marb{position:fixed;left:0;z-index:10;}
-.marCon{padding-top:2.906rem;}
+.marCon{padding-top:4.332rem;}
 
 
 </style>
