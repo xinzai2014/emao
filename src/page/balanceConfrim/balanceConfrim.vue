@@ -583,7 +583,6 @@ export default {
 .order-price{float:right;height:1.2667rem;margin-right: .4rem;line-height: 1.2667rem;font-size:.3467rem;color:#2c2c2c;}
 .order-price strong{font-size:.4267rem;color:#fc3036;}
 
-
 /*选择优惠券-浮层*/
 .coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
 .coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%}

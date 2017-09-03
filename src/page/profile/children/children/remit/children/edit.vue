@@ -50,7 +50,7 @@
                        <div class="voucher-lt">
                         <img :src="editData.explan_path">
                     </div>
-                  </div>-->               
+                  </div>-->                
                 </div>
 			</div>
 			<button class="close-bt" @click="personEdit">保存并使用</button>
@@ -269,3 +269,5 @@
     font-size: 0.4rem;
 }
 </style>
+
+

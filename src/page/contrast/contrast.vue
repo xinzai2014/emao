@@ -1,14 +1,14 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header">
+    <header class="brand-list-header" ref="header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" >{{serieName}}</strong>
-        <span class="brand-switch" v-if="checkALl" @click="looALl">全部配置</span>
-        <span class="brand-switch" v-if="!checkALl" @click="looALl">不同配置</span>
+        <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
+        <span class="brand-switch" v-if="checkALl" @click="looALl">不同配置</span>
     </header>
     <section>
-        <div class="config marb">
+        <div class="config marb" ref="nav">
             <div class="config-left">
                 <div class="config-nothing"></div>
             </div>
@@ -28,14 +28,12 @@
             <div class="config-left">  
                 <template  v-for = "(itemWrap,indexWrap) in dataList" v-if="indexWrap == 0">
                     <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff> 
-                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}">
-                            <span class="cell-text" :class="{'head-fixed':scrollIndex == index}">{{item.name}}</span>
+                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}" :class="{'head-fixed':scrollIndex == index}">
+                            <span class="cell-text" >{{item.name}}</span>
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
-
                                 <span class="cell-text" >{{e.name}}</span>
-
                             </div>
                         </div>
                     </div>
@@ -53,7 +51,7 @@
                                          </template>
                                     </div>
                                    
-                                    <div class="table-row" v-for="(e,i) in item.list" v-if = e.diff>
+                                    <div class="table-row" :class="{color3:!e.styleTag}" v-for="(e,i) in item.list" v-if = e.diff>
                                         <em class="config-list-t3" >{{e.value}}</em>
                                     </div>
                                 </template>
@@ -87,10 +85,12 @@
                 dataList:[],
                 scrollIndex:0,
                 carScrollHeight:[],
-                checkALl:true,
+                checkALl:false,
                 styleWidth:3.2,
                 styleData:0,
-                drags:[]
+                drags:[],
+                initData:[],
+                tagHeight:0
             }
         },
         created:function(){
@@ -106,7 +106,9 @@
                     this.getALl(this.dataList);
                 };
                 this.checkALl = !this.checkALl;
-
+                setTimeout(()=>{
+                        this.countHeight();
+                    },100)
             },
             drag(style){
                 this.$refs.dragCompare.style.left=style.left;
@@ -138,6 +140,7 @@
 
                     this.getALl(data);
                     //this.getDifferent();
+                    this.getDifferent();
                     setTimeout(()=>{
                         this.countHeight();
                     },100)
@@ -148,6 +151,7 @@
             countHeight(){ //记录初始楼层高度
                 const carContainer = this.$refs.carWrap;
                 const listArr = Array.from(carContainer.children[0].children);
+                this.carScrollHeight = [];
                 listArr.forEach((item, index) => {
                     this.carScrollHeight[index] = item.offsetTop;
                 });
@@ -155,7 +159,7 @@
                 document.addEventListener('scroll',function(){
                     var scrollTop = document.body.scrollTop;
                     that.carScrollHeight.forEach((item,index) => {
-                        if(scrollTop>item){
+                        if(scrollTop>(item-that.tagHeight)){
                             that.scrollIndex = index;
                         }
                     })
@@ -171,12 +175,12 @@
                         })
                     })
                 });
-                this.dataList = data;
+                this.initData = data;
             },
             getDifferent(){
                 var dataArray = [];
                 var that = this;
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
@@ -197,13 +201,13 @@
                     })
                 });
 
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
-                            var diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
-                            it.diff = diff;
+                            it.diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
                             //that.dataList[index]['param'][i]['list'][ind]['diff'] = diff;
+                             it.styleTag = (dataArray[num].length == 1) ? false : true;//
                             num++;
                         })
                         var a = e.list.findIndex(function(value,index,arr){
@@ -216,6 +220,7 @@
                         }
                     })
                 });
+                this.dataList = this.initData;
             },
         },
         mounted(){
@@ -224,6 +229,7 @@
             //获取数据
             this.autoId = autoId;
             this.getData();
+            this.tagHeight = this.$refs.header.offsetHeight + this.$refs.nav.offsetHeight;
         },
         components:{
 
@@ -307,7 +313,9 @@
 .table-row{
     display: table;
     width: 100%;
+    color:red;
 }
+.color3{color:#333;}
 *{box-sizing:border-box;}
 .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;z-index: 25;}
 .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
@@ -315,11 +323,11 @@
 
 .marb{padding-top:1.1733rem;}
 .config{display: table; width: 100%;}
-.config-left{display: table-cell;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
+.config-left{display: table-cell;width: 2.133rem;border-left: 1px solid #ccc;}
 .config-right{display: table-cell;
     overflow: hidden;
-    position: relative;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
-.config-nothing{width:2.133rem;height:1.7333rem;background-color:#fff;}
+    position: relative;vertical-align: top;}
+.config-nothing{height:1.7333rem;background-color:#fff;}
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
 
@@ -327,7 +335,7 @@
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 
 .config-param-names .row{display: table;width: 100%;}
-.config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
+.config-left .config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
 
 
 .config-param-head{height:1.733rem;background-color:#fff;}
@@ -342,14 +350,13 @@
 .config-param-list .row .cell{display:inline-block;width:100%;border-right:1px solid #ccc;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
 
-.head-fixed{
+.config-right .head-fixed,.config-left .head-fixed{
     position:fixed;
     top:2.906rem;;
     background:#f5f5f5;
 }
 
 .config-list{width:3.2rem;float:left;}
-.config-con{padding-top:1.35rem;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
 .config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
@@ -364,7 +371,7 @@
 
 
 .marb{position:fixed;left:0;z-index:10;}
-.marCon{padding-top:2.906rem;}
+.marCon{padding-top:4.332rem;}
 
 
 </style>

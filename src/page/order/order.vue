@@ -34,6 +34,7 @@
                         提交汇款凭证
                       </div>
                       -->
+
                       <div class="state-rt" v-if="item.status=='4'" @click="confirmCar(item)">
                         确认收货
                       </div>
