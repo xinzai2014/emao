@@ -5,6 +5,7 @@
     </transition>
     <loader v-if="this.$store.state.ajaxLoading"></loader>
     <alert v-if="this.$store.state.alert.flag"></alert>
+    <lg-preview></lg-preview>
   </div>
 </template>
 

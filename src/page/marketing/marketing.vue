@@ -2,13 +2,13 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>返利资金
+			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>营销支持费
 		</header>
 		<!--返利资金-->
 		<section class="rebate-wrap">
 			<div class="rebate-ct">
 				<div class="rebate-tp">
-					<span>可用资金（元）</span>
+					<span>可用金额（元）</span>
 					<b>{{amount}}</b>
 				</div>
 				<p class="bg-ee"></p>
@@ -100,7 +100,7 @@
             }).then(function (response) {
             	console.log(response)
                 this.rebate = response.body.data.capital_history;
-                this.amount = response.body.data.amount;
+                this.amount = response.body.data.amount||'0.00';
                 if(this.rebate.length > 0){
                 	this.nodata = true
                 }else{
