@@ -113,7 +113,7 @@
             </div>
             <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(index,item.id)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
                             <dt>¥ {{item.price}}</dt>
                             <dd>
