@@ -4,8 +4,8 @@
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" >{{serieName}}</strong>
-        <span class="brand-switch" v-if="checkALl" @click="looALl">全部配置</span>
-        <span class="brand-switch" v-if="!checkALl" @click="looALl">不同配置</span>
+        <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
+        <span class="brand-switch" v-if="checkALl" @click="looALl">不同配置</span>
     </header>
     <section>
         <div class="config marb">
@@ -53,7 +53,7 @@
                                          </template>
                                     </div>
                                    
-                                    <div class="table-row" v-for="(e,i) in item.list" v-if = e.diff>
+                                    <div class="table-row" :class="{color3:!e.styleTag}" v-for="(e,i) in item.list" v-if = e.diff>
                                         <em class="config-list-t3" >{{e.value}}</em>
                                     </div>
                                 </template>
@@ -87,7 +87,7 @@
                 dataList:[],
                 scrollIndex:0,
                 carScrollHeight:[],
-                checkALl:true,
+                checkALl:false,
                 styleWidth:3.2,
                 styleData:0,
                 drags:[]
@@ -106,7 +106,6 @@
                     this.getALl(this.dataList);
                 };
                 this.checkALl = !this.checkALl;
-
             },
             drag(style){
                 this.$refs.dragCompare.style.left=style.left;
@@ -141,6 +140,7 @@
                     setTimeout(()=>{
                         this.countHeight();
                     },100)
+                    this.getDifferent();
                 },function(){
 
                 })
@@ -201,9 +201,9 @@
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
-                            var diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
-                            it.diff = diff;
+                            it.diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
                             //that.dataList[index]['param'][i]['list'][ind]['diff'] = diff;
+                             it.styleTag = (dataArray[num].length == 1) ? false : true;//
                             num++;
                         })
                         var a = e.list.findIndex(function(value,index,arr){
@@ -307,7 +307,9 @@
 .table-row{
     display: table;
     width: 100%;
+    color:red;
 }
+.color3{color:#333;}
 *{box-sizing:border-box;}
 .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;z-index: 25;}
 .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
