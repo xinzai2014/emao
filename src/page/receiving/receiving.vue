@@ -290,3 +290,4 @@ export default {
     line-height: 2rem;
   }
 </style>
+
