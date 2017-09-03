@@ -154,7 +154,6 @@
                 listArr.forEach((item, index) => {
                     this.carScrollHeight[index] = item.offsetTop;
                 });
-                console.log(this.carScrollHeight);
                 var that = this;
                 document.addEventListener('scroll',function(){
                     var scrollTop = document.body.scrollTop;
