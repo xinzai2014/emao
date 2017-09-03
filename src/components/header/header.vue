@@ -30,7 +30,6 @@ export default {
 	  			var myMessage = response.body.data;
 	  			var that = this;
 	  			myMessage.forEach(function(e,index){
-	  				console.log(e);
 	  				var num = e.num?parseInt(e.num):0;
 	  				that.myMessage += num;
 	  			})
