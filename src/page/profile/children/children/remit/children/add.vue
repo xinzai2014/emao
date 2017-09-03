@@ -78,7 +78,8 @@
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
-                    flag:"door"
+                    flag:"door",
+                    image:'static/sample1.jpg'
                 },
                 dataURL:{},
                 showAlert: false, //弹出框

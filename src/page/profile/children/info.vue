@@ -9,7 +9,7 @@
             <div class="user-bt"><span>{{infoData.link_name}}</span>姓名：</div>
             <div class="user-bt"><span>{{infoData.link_phone}}</span>手机号：</div>
             <div><span>{{infoData.city_name}}</span>所在城市：</div>
-            <div class="user-bt"><span><b class="company-icon"></b>{{infoData.name}}</span>公司名称：</div>
+            <div class="user-bt"><span><!--<b class="company-icon"></b>-->{{infoData.name}}</span>公司名称：</div>
             <div class="user-bt"><span>{{infoData.address}}</span>公司地址：</div>
             <div><span>{{infoData.activities}}</span>经营类型：</div>
             <router-link to="/profile/info/remit">
@@ -19,7 +19,7 @@
                 <div><i class="yellow-rt"></i>收货地址管理</div>
             </router-link>
             <div><i class="yellow-rt"></i>设置密码</div>
-            <div><i class="yellow-rt"></i>设置</div>
+            <!--<div><i class="yellow-rt"></i>设置</div>-->
             <button class="close-bt" @click="logOut">退出登录</button>
         </section>
         <transition name="router-slid">
@@ -76,12 +76,15 @@
 </script>
 
 <style>
+.index-fooer{
+    z-index: 1;
+}
 .rating_page{
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    height: 100%;
+    overflow-y: auto;
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;
