@@ -89,7 +89,8 @@
                 styleWidth:3.2,
                 styleData:0,
                 drags:[],
-                initData:[]
+                initData:[],
+                tagHeight:0
             }
         },
         created:function(){
@@ -158,7 +159,7 @@
                 document.addEventListener('scroll',function(){
                     var scrollTop = document.body.scrollTop;
                     that.carScrollHeight.forEach((item,index) => {
-                        if(scrollTop>(item-that.$refs.header.offsetHeight - that.$refs.nav.offsetHeight)){
+                        if(scrollTop>(item-that.tagHeight)){
                             that.scrollIndex = index;
                         }
                     })
@@ -228,6 +229,7 @@
             //获取数据
             this.autoId = autoId;
             this.getData();
+            this.tagHeight = this.$refs.header.offsetHeight + this.$refs.nav.offsetHeight;
         },
         components:{
 
