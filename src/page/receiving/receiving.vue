@@ -152,6 +152,8 @@ export default {
       .then(function (response) {
         //this.orderInfo.status='5';
         //this.orderInfo.state='交易完成';
+        this.showAlert = true;
+        this.alertText = '确认收货成功！';
         this.fillData();
       }).catch(function (error) {
           this.showAlert = true;
