@@ -70,7 +70,7 @@
         <div class="order-present" @click="showAgreementDialog">确认提交</div>
         <div class="order-price">
             需支付：
-            <strong>￥{{totalData}}</strong>
+            <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
     
@@ -162,6 +162,7 @@ export default {
             showCoupon:false,     //优惠券弹出窗
             couponData:{},        //选中的优惠券初始数据
             checkCoupun:false,    //判断是否选择了优惠券
+            scrollWrap:null,      //优惠券滚动容器
             formData:{
           
             },
@@ -246,6 +247,9 @@ export default {
                         ele.check = false;
                    })
 		           this.coupon = coupon;
+                   if(coupon.length>0){
+                        this.initIscroll("couponList",this.scrollWrap);
+                   }
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
                    this.formData.address_id = data.address.id;
@@ -255,7 +259,6 @@ export default {
 	  	},
         showCouponDialog(){ //显示优惠券弹窗
             this.showCoupon = !this.showCoupon;
-            this.initIscroll("couponList",this.scrollWrap);
         },
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
@@ -322,6 +325,7 @@ export default {
       },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
+        this.$store.dispatch("ADDRESS_FLAG","displayConfrim");//展车下单标识,后面选地址会用到
 	  },
       computed:{
         totalData:function(){
@@ -509,7 +513,7 @@ export default {
 .order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 .order-succeed-info .color-disabled{background:#999}
 .order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
-.order-secceed-explain li{margin-bottom:.1333rem;font-size:.32rem;color:#999;}
+.order-secceed-explain li{margin-bottom:.3333rem;font-size:.32rem;color:#999;}
 .order-succeed-second{font-size:.4rem;color:#2c2c2c;}
 .order-succeed-second i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;background:url("../../assets/third-icon.png");background-size:100% 100%;}
 .order-succeed-bottom{position:fixed;bottom:.533rem;left:.4rem;right:.4rem;}

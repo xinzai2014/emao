@@ -138,7 +138,7 @@
                     <input type="number" v-model="marketData"  :max=marketingSupport.usable  min=0>
                     <span>元</span>
                 </div>
-                <p class="use-coupon-info">共 <span>{{marketingSupport.total}}</span>元，本次最多可用 <span>{{marketingSupport.usable}}</span>元</p>
+                <p class="use-coupon-info">共 <span>{{marketingSupport.total|getMoney}}</span>元，本次最多可用 <span>{{marketingSupport.usable|getMoney}}</span>元</p>
             </div>
             <p class="use-coupon-choose">
                 <span @click.stop="closeMarketDialog">取消</span>
@@ -157,7 +157,7 @@
                     <input type="number" v-model="rebateData"  :max=rebate.usable  min=0>
                     <span>元</span>
                 </div>
-                <p class="use-coupon-info">共 <span>{{rebate.total}}</span>元，本次最多可用 <span>{{rebate.usable}}</span>元</p>
+                <p class="use-coupon-info">共 <span>{{rebate.total|getMoney}}</span>元，本次最多可用 <span>{{rebate.usable|getMoney}}</span>元</p>
             </div>
             <p class="use-coupon-choose">
                 <span @click.stop="closeRebateDialog">取消</span>
@@ -189,7 +189,7 @@
         </header>
         <!--订购成功-->
         <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>订购成功 <i class="order-succeed-logo"></i></p>
+            <p class="order-succeed-first"><i class="order-first-logo"></i>在线订购车辆成功 <i class="order-succeed-logo"></i></p>
             <div class="order-second-out">
                 <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
                 <div class="order-succeed-info">
@@ -343,18 +343,26 @@ export default {
             this.showMarket = !this.showMarket;
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
-            if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
+            if(this.marketData == null){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"金额不能为空"
+                  }
+                 );
+            }
+            if(parseFloat(this.marketData)>parseFloat(this.marketingSupport.usable)){
                 this.$store.dispatch("ALERT", // 通过store传值
                   {
                     flag:true,
-                    text:"营销支持费不能大于" + this.marketingSupport.usable
+                    text:"本次最多可用" + parseFloat(this.marketingSupport.usable).toLocaleString() + ".00元"
                   }
                  );
                 return false;
             }
             this.showMarket = !this.showMarket;
             this.updateMarket = true;
-            this.updateMarketData = this.marketData;
+            this.updateMarketData = parseFloat(this.marketData).toLocaleString()+".00";
         },
         showRebateDialog(){ //返利弹出窗
             this.showRebate = !this.showMarket;
@@ -363,18 +371,26 @@ export default {
             this.showRebate = false
         },
         rebateConfrim(){
-             if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
+            if(this.rebateData == null){
                  this.$store.dispatch("ALERT", // 通过store传值
                   {
                     flag:true,
-                    text:"返利不能大于" + this.rebate.usable
+                    text:"金额不能为空"
+                  }
+                 );
+            }
+            if(parseFloat(this.rebateData)>parseFloat(this.rebate.usable)){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"本次最多可用" + parseFloat(this.rebate.usable).toLocaleString() + ".00元"
                   }
                  );
                  return false;
             }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
-            this.updateRebateData = this.rebateData;
+            this.updateRebateData = parseFloat(this.rebateData).toLocaleString()+".00";
         },
         changeRebate(){ //切换营销支持费checkbox
             var check = this.checkRebate; //点击获取的时候是基础值
@@ -473,6 +489,7 @@ export default {
 	  },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
+        this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
 	  },
       filters:{
         getMoney:function(num){
@@ -501,6 +518,7 @@ export default {
                     this.updateMarketData = parseInt(this.marketingSupport.usable);
                 }else{
                     this.updateMarket = false;
+                    this.updateMarketData = "0.00";
                 }
             }
         },
@@ -514,6 +532,7 @@ export default {
                     this.updateRebateData = parseInt(this.rebate.usable);
                 }else{
                     this.updateRebate = false;
+                    this.updateRebateData = "0.00";
                 }
             }
         }
@@ -669,7 +688,7 @@ export default {
 .order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 .order-succeed-info .color-disabled{background:#999}
 .order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
-.order-secceed-explain li{margin-bottom:.1333rem;font-size:.32rem;color:#999;}
+.order-secceed-explain li{margin-bottom:.3333rem;font-size:.32rem;color:#999;}
 .order-succeed-third{font-size:.4rem;color:#2c2c2c;}
 .order-succeed-third i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;background:url("../../assets/third-icon.png");background-size:100% 100%;}
 .order-succeed-bottom{position:fixed;bottom:.533rem;left:.4rem;right:.4rem;}
