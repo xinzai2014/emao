@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<i class="white-lt brand-left-cion" @click="resetIndex"></i>
+			<i class="white-lt" @click="resetIndex"></i>
 	        <strong class="brand-list-title">新增收货地址</strong>
 		</header>
 
