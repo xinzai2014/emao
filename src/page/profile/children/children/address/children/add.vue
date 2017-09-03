@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<i class="white-lt brand-left-cion" @click="resetIndex"></i>
+			<i class="white-lt" @click="resetIndex"></i>
 	        <strong class="brand-list-title">新增收货地址</strong>
 		</header>
 
@@ -108,7 +108,7 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 				          name:this.name
 				        }
 				    );
-				    if(this.$store.addressFlag!=""){
+				    if(this.$store.state.addressFlag!=""){
 				    	var addressFlag=this.$store.state.addressFlag;
 				    	this.$store.dispatch("ADDRESS_FLAG","");
 				    	this.$router.push({ name: addressFlag});				    	
