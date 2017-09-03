@@ -162,6 +162,8 @@ export default {
       }
       this.$http.post("order/full/receipt",data)
       .then(function (response) {
+         this.showAlert = true;
+        this.alertText = '确认收货成功！';
         this.orderInfo.status='5';
         this.orderInfo.state='交易完成';
       }).catch(function (error) {
