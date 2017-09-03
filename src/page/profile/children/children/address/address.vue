@@ -10,7 +10,7 @@
 				<div class="addres-item" v-for="(item,index) in addressList">
 					<label :for="item.id" @click="orderAddress(item)">
 						<div class="weui-cell__hd" v-if="radio">
-		                    <input type="radio" class="weui-check" :id="item.id" name="radio">
+		                    <input type="radio" class="weui-check" :id="item.id" name="radio" :checked="$store.state.defaultAdress.id==item.id">
 		                    <i class="weui-icon-checked"></i>
 		                </div>
 		            </label>

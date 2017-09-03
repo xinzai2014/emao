@@ -11,10 +11,13 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
-                  <p class="payment">需付款：<span>{{item.price}}元</span></p>
+                  <p class="payment">已付款：<span>{{item.price}}元</span></p>
                   <div class="full-state">
                       <div class="state-lt">
                           <p class="state-wait">{{item.state}}</p>
+                      </div>
+                      <div class="state-rt" v-if="item.status=='4'" @click="confirmCar(item)">
+                        确认收货
                       </div>
                   </div>
                 </router-link>
@@ -30,6 +33,22 @@
             <img src="../../assets/no-order.png" alt="">
             <p>暂无此类订单</p>
         </section>
+
+        <!-- 确认收货 -->
+      <div class="mask-receipt" v-show="receiptShow">
+          <div class="receipt">
+              <div class="receipt-tit">
+                  <b>{{receiptData.name}}</b>
+                  <span>{{receiptData.color}}</span>
+              </div>
+              <p class="receipt-code">{{receiptData.vinNumber}}</p>
+              <div class="options" v-if="receiptData.attachment">
+                  <b>请确认随车附件：</b>
+                  <p>{{receiptData.attachment}}</p>
+              </div>
+              <p class="prompt-btn"><span @click="hidePop">取消</span><span class="confirm" @click="receiptStatus">确认收货</span></p>
+          </div>
+      </div>
         
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
@@ -51,6 +70,8 @@ export default {
         countNum:0,
         showAlert: false, //弹出框
       alertText: null, //弹出信息
+       receiptData:{},
+        receiptShow:false,
     }
   }, components:{
         alertTip
@@ -59,6 +80,9 @@ export default {
     //组件方法
     resetIndex(){
         this.$router.push({name:'profile'});
+    },
+    hidePop(){
+      this.receiptShow=false;
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -98,6 +122,41 @@ export default {
           }
           
       }
+    },
+    confirmCar(item){ //确认收货弹框信息
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:sessionStorage.token,
+          orderNum:item.orderNum
+      }
+      this.$http({
+          url:"order/full/receiptDetail",
+          method:"GET",
+          params:data
+      }).then(function (response) {
+        console.log(response)
+        this.receiptData = response.body.data;
+          console.log(this.receiptData)
+      }).catch(function (error) {
+          this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
+      });
+    },
+    receiptStatus(){
+      this.receiptShow = !this.receiptShow;
+      var data = {
+          token:sessionStorage.token,
+          goods_stock_id:this.receiptData.id
+      }
+      this.$http.post("order/full/receipt",data)
+      .then(function (response) {
+        //this.orderInfo.status='5';
+        //this.orderInfo.state='交易完成';
+        this.fillData();
+      }).catch(function (error) {
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
+      });
     },   
     /*返回顶部
     backTop(){

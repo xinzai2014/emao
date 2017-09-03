@@ -33,7 +33,7 @@
             </div>
 
             <div class="voucher-item">
-                <p>汇款回执单</p>
+                <p>汇款底单</p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
             </div>
             <button class="close-bt" @click="submit">提交</button>
@@ -62,7 +62,8 @@ export default {
       uploadData1:{
           url:"https://tcmapi.emao.com/upload",
           count:2,
-          flag:"payment"
+          flag:"payment",
+          image:'static/sample3.jpg'
       },
       dataURL:{},//图片地址
       submitFlag:true,
