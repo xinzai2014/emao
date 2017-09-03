@@ -8,7 +8,7 @@
 		<section class="rebate-wrap">
 			<div class="rebate-ct">
 				<div class="rebate-tp">
-					<span>可用资金（元）</span>
+					<span>可用金额（元）</span>
 					<b>{{amount}}</b>
 				</div>
 				<p class="bg-ee"></p>
@@ -100,7 +100,7 @@
             }).then(function (response) {
             	console.log(response)
                 this.rebate = response.body.data.rebate_history;
-                this.amount = response.body.data.rebate;
+                this.amount = response.body.data.rebate||'0.00';
                 if(this.rebate.length > 0){
                 	this.nodata = true
                 }else{

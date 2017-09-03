@@ -12,11 +12,11 @@
               <p><span>{{editData.bank_info.account}}</span>汇款账户：</p>
           </div>
           <div class="voucher-item">
-              <p><span>{{editData.price}}</span>汇款金额：</p>
+              <p><span>{{editData.price}}元</span>汇款金额：</p>
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款回执单</p>
+              <p>汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
                       <img :src="editData.payimg">
@@ -42,17 +42,17 @@
               <p>汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
-                      <img :src="editData.payimg">
+                      <img :src="img"  v-preview="img" v-for="img in imgs">
                   </div>
                   <div class="voucher-lt">
-                      <img :src="editData.payimg2" v-if="editData.payimg2">
+                      <img :src="editData.payimg2" v-if="editData.payimg2" v-preview="editData.payimg2">
                   </div>
                  
               </div>
               <p>代付证明</p>
               <div class="voucher-img">
                    <div class="voucher-lt">
-                    <img :src="editData.bank_info.explan_path">
+                    <img :src="editData.bank_info.explan_path" v-preview="editData.bank_info.explan_path">
                 </div>
                  
               </div>
@@ -73,6 +73,7 @@ export default {
       type:null,
       showAlert: false, //弹出框
       alertText: null, //弹出信息
+      imgs:[]
     }
   },components:{
         alertTip
@@ -96,6 +97,7 @@ export default {
         })
         .then(function (response) {
             var editData=response.body.data;
+            this.imgs=[editData.payimg];
             var type = response.body.data.bank_info.account_type;
             this.type=type;
             if(this.type == 1){

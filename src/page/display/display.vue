@@ -33,7 +33,7 @@
 	    </section>
 	    <section class="no-auto server-no-response" v-if="!games.length">
             <img src="../../assets/no-order.png" alt="">
-            <p>暂无此类订单</p>
+            <p>暂无展车</p>
         </section>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     	<!-- 确认收货 -->
@@ -148,7 +148,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 				                this.remainingTime(list[a]);
 		                		continue;
 		                	}else if(this.arr[i] == 3){
-							  	list[a].waitActive = '出库中';
+							  	list[a].waitActive = '车辆出库中';
 							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 4){
@@ -176,8 +176,8 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		                		}
 		                		continue;
 		                	}else if(this.arr[i] == 8){
-							  	list[a].waitActive = '待付款审核中';
-							  	list[a].btnActive = '提交汇款凭证';
+							  	list[a].waitActive = '付款审核中';
+							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 9){
 							  	list[a].waitActive = '已购买';
