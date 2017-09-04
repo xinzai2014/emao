@@ -334,7 +334,7 @@
 .config-param-names .row-head{height:1.4267rem;white-space:nowrap;background:#f5f5f5}
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 
-.config-param-names .row{display: table;width: 100%;}
+.config-left .config-param-names .row{display: table;width: 100%;}
 .config-left .config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
 
 
