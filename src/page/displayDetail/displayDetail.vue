@@ -102,9 +102,8 @@
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status == '5'">
-		        	<router-link :to="{name:'balanceConfrim',params:{'orderNum':orderInfo.orderNum,'deposit':capitalInfo.deposit}}">{{btnText}}
-		        	</router-link>
+		        <div class="remits-fixed" v-if="orderInfo.status == '5'" @click="balanceConfrim">
+		        	{{btnText}}
 		        </div>
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
 		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
@@ -203,6 +202,15 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		            {
 		                orderNum:this.orderInfo.orderNum,
 		                orderId:this.orderInfo.id
+		            }
+	            );
+            },
+            balanceConfrim(){
+            	this.$router.push({name:'balanceConfrim'});
+            	this.$store.dispatch("SPARE_DATA", // 通过store传值
+		            {
+		                orderNum:this.orderInfo.orderNum,
+		                deposit:this.capitalInfo.deposit
 		            }
 	            );
             },
@@ -792,6 +800,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .replen i{
 	float:right;
+	position:static;
 }
 /*待收货弹框*/
 .mask-receipt{

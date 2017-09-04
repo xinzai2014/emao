@@ -8,7 +8,8 @@ import {
 	RETURN_DATA,
 	ALERT,
 	ADDRESS_FLAG,
-	DEFAULT_BRAND
+	DEFAULT_BRAND,
+	SPARE_DATA
 } from './mutations-types.js'
 
 
@@ -53,6 +54,10 @@ export default {
 
 	[DEFAULT_BRAND](state,flag){ //获取选中车型
 		state.defaultBrand = flag;
+	},
+
+	[SPARE_DATA](state,obj){ //补余款传值
+		state.alert = obj;
 	}
 
 }

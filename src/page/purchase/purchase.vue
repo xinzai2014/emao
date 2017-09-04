@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>已购展车
 		</header>
 		<!--退订展车-->
-	    <section class="bought" v-scroll="getMore">
+	    <section v-if="infoData.length" class="bought" v-scroll="getMore">
 	        <div class="bought-item" v-for="(item,index) in infoData">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 		            <div class="bought-ct">
@@ -17,7 +17,10 @@
 	            </router-link>
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
+	    <section class="no-auto server-no-response" v-else>
+            <img src="../../assets/no-order.png" alt="">
+            <p>暂无展车</p>
+        </section>
     </div>
 </template>
 <script>
@@ -142,4 +145,15 @@
 	line-height:1.0rem;
 	font-size:0.266667rem;
 }
+.no-auto{
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 </style>

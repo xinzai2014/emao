@@ -8,7 +8,8 @@ import {
 	RETURN_DATA,
 	ALERT,
 	ADDRESS_FLAG,
-	DEFAULT_BRAND
+	DEFAULT_BRAND,
+	SPARE_DATA
 } from './mutations-types.js'
 
 
@@ -53,6 +54,10 @@ export default {
 
 	[DEFAULT_BRAND](context,flag){ //首页跳品牌页面传品牌值
 		context.commit(DEFAULT_BRAND,flag);
-	}
+	},
+
+	[SPARE_DATA](context,flag){ //补余款传值
+		context.commit(SPARE_DATA,flag);
+	},
 
 }
