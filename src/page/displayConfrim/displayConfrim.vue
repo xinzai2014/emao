@@ -69,7 +69,7 @@
     <section class="order-present-info">
         <div class="order-present" @click="showAgreementDialog">确认提交</div>
         <div class="order-price">
-            需支付：
+            应付金额：
             <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>

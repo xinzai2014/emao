@@ -14,20 +14,20 @@
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 	                <h3>{{item.name}}</h3>
 	                <p class="interior">{{item.color}}</p>
-	                <p class="payment" v-if="item.status == 7 || item.status ==2">需付保证金：<span>{{item.price}}元</span></p>
+	                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
 	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
                 </router-link>
                 <div class="full-state">
 	                    <div class="state-lt wait-active">
 	                        <p class="state-wait">{{item.waitActive}}</p>
-	                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}自动取消</p>
+	                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}</p>
 	                    </div>
 	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'" @click="confirmCar(item)">{{item.btnActive}}</div>
 	                </div>
 	            </div>
 	        </div>
-	        <div class="branch">
-	            <router-link to="/cancel"><p><i class="white-rt"></i>退订&取消展车</p></router-link>
+	        <div :class="games.length >=3 ?'branch default' : 'branch'">
+	            <router-link to="/cancel"><p><i class="white-rt"></i>已退展车</p></router-link>
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
 	    </section>
@@ -48,13 +48,12 @@
 	                <b>请确认随车附件：</b>
 	                <p>{{receiptData.attachment}}</p>
 	            </div>
-	            <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+	            <div class="receipt-btn"><span class="receipt-close" @click="receiptShow = !receiptShow">取消</span><span @click="receiptStatus">确认收货</span></div>
 	        </div>
 	    </div>
     </div>
 </template>
 <script>
-import alertTip from '../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -71,9 +70,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
 				receiptShow:false,
             }
         },
-        components:{
-	    	alertTip
-	    },
         methods:{
             //组件方法
             resetIndex(){
@@ -97,7 +93,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			          	this.alertText = error.body.msg
 		            });
 	            }
-	            if(item.status=='7'){
+	            if(item.status=='7' || item.status=='27'){
 	            	this.$router.push({name:'paymentSubmit'});
 	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
 			            {
@@ -106,6 +102,15 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			            }
 		            );
 	            }
+	            /*if(item.status=='5'){
+	            	this.$router.push({name:'paymentSubmit'});
+	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+			            {
+			                orderNum:item.orderNum,
+			                orderId:item.id
+			            }
+		            );
+	            }*/
 				
             },
             receiptStatus(){
@@ -152,7 +157,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 							  	list[a].btnActive = '';
 		                		continue;
 		                	}else if(this.arr[i] == 4){
-							  	list[a].waitActive = '在途';
+							  	list[a].waitActive = '车辆在途';
 							  	list[a].btnActive = '确认收货';
 		                		continue;
 		                	} else if(this.arr[i] == 5){
@@ -168,7 +173,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		                			list[a].waitActive = '已取消';
 							  		list[a].btnActive = '';
 		                		}else{
-		                			list[a].waitActive = '等待付款';
+		                			list[a].waitActive = '等待支付保证金';
 								  	list[a].btnActive = '提交汇款凭证';
 								  	this.countNum=list[a].remainingTime;
 					                list[a].remaining=this.remaining;
@@ -193,7 +198,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		                		continue;
 		                	}else if(this.arr[i] == 28){
 							  	list[a].waitActive = '补款中';
-							  	list[a].btnActive = '补余款';
+							  	list[a].btnActive = '';
 		                		continue;
 		                	}
 		                }
@@ -347,6 +352,13 @@ import alertTip from '../../components/common/alertTip/alertTip'
 .branch{
 	margin-top:0.4rem;
 	background:#fff;
+	width:100%;
+	position:fixed;
+	left:0;
+	bottom:0;
+}
+.branch.default{
+	position:static;
 }
 .branch p{
 	padding:0.533333rem 0.4rem;
@@ -416,7 +428,18 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	color:#fff;
 	text-align:center;
 	line-height:1.173333rem;
+	
+}
+.receipt-btn span{
+	display:inline-block;
+	width:50%;
+	height:1.173333rem;
 	background:#d6ab55;
+	cursor:pointer;
+}
+.receipt-btn span.receipt-close{
+	background:#f5f5f5;
+	color:#000;
 }
 
  
