@@ -39,7 +39,7 @@
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款底单</p>
+              <p class="no-border">汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
                       <img :src="img"  v-preview="img" v-for="img in imgs">
@@ -49,7 +49,7 @@
                   </div>
                  
               </div>
-              <p>代付证明</p>
+              <p class="no-border">代付证明</p>
               <div class="voucher-img">
                    <div class="voucher-lt">
                     <img :src="editData.bank_info.explan_path" v-preview="editData.bank_info.explan_path">
@@ -139,6 +139,9 @@ export default {
   overflow:hidden;
   line-height:0.466667rem;
   border-bottom:1px solid #eee;
+}
+.voucher-item p.no-border{
+  border-bottom:0;
 }
 .voucher-item p span{
   float:right;

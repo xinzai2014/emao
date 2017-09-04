@@ -207,7 +207,7 @@ export default {
     position: absolute;
     width: 100%;
     left: 0;
-    top: 3rem;
+    top: 2.28rem;
     height: 100%;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
@@ -222,14 +222,14 @@ export default {
 .coupon-li li{
     width: 2rem;
     text-align: center;
-    border-bottom: 2px solid #fff;
+    /*border-bottom: 2px solid #fff;*/
     margin: 0 0.633333rem;
     float: left;
     font-size: 0.4rem;
 }
 .coupon-li li.active{
     color:#d5aa5c;
-    border-color:#d5aa5c;
+    border-bottom:2px solid #d5aa5c;
 }
 .coupon-ct{
     padding:0 0.533333rem;

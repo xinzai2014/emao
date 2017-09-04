@@ -112,7 +112,22 @@
       </div>
 
       <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+      <transition name="slide">
+        <section class="fixed_box" v-if="success">
+          <div class="brand-header-out">
+              <header class="brand-list-header">
+                  <i class="white-lt brand-left-cion" @click="hide_success"></i>
+                  <strong class="brand-list-title">收货成功</strong>
+              </header>
+          </div>
+          <section class="no-auto">
+              <img src="../../assets/receipt-succeed.png" alt="">
+              <p>收货成功</p>
+              <p>可在 <router-link :to="{name:'declare'}"><span>售车申报</span></router-link>中查看并管理</p>
+          </section>
 
+        </section>
+        </transition>
     </div>
 </template>
 
@@ -135,7 +150,8 @@ export default {
         receiptShow:false,
          showAlert: false, //弹出框
           alertText: null, //弹出信息
-          vinActive:''
+          vinActive:'',
+          success:false
     }
   },     components:{
         alertTip
@@ -144,6 +160,10 @@ export default {
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    hide_success(){
+      this.success=false;
+      this.fillData();
     },
     paymentSubmit(){
       this.$router.push({name:'paymentSubmit'});
@@ -181,8 +201,11 @@ export default {
       }
       this.$http.post("order/full/receipt",data)
       .then(function (response) {
-        this.orderInfo.status='5';
-        this.orderInfo.state='交易完成';
+         this.showAlert = true;
+        this.alertText = '确认收货成功！';
+        this.success=true;
+        //this.orderInfo.status='5';
+        //this.orderInfo.state='交易完成';
       }).catch(function (error) {
           this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
@@ -445,6 +468,46 @@ export default {
 </script>
 
 <style>
+.fixed_box{
+  position:fixed;
+  width:10rem;
+  height:110%;
+  top:0;
+  bottom:0;
+}
+.brand-header-out {
+    position: relative;
+    z-index: 3;
+}
+.brand-list-header {
+    overflow: hidden;
+    height: 1.1733rem;
+    text-align: center;
+    line-height: 1.1733rem;
+    font-size: .5333rem;
+    color: #fff;
+    background-color: #27282f;
+}
+.brand-left-cion {
+    float: left;
+    margin-left: .4666rem;
+    margin-top: .4rem;
+}
+.no-auto p span {
+    color: #d6ab55;
+    border-bottom: 1px solid #d6ab55;
+}
+.no-auto{background-color: #fff;
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 100%;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 .details-addres .out.white-rt{
   top:0.62rem;
 }
@@ -601,7 +664,7 @@ export default {
   text-align:center;
   height:1.173333rem;
   line-height:1.173333rem;
-  background:#d5aa5c;
+  background: #dbdbdb;
 }
 .nstructions{
   color:#999;

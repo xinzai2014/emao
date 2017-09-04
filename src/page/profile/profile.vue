@@ -389,9 +389,9 @@ export default {
 }
 .transfer-icon{
     background:url(../../assets/transfer-icon.png) center center no-repeat;
-    background-size:contain;
-    width:0.56rem;
-    height:0.48rem;
+    background-size:100%;
+    width: 0.506667rem;
+    height: 0.56rem;
 }
 .order .item .process-in{
     color:#fff;
