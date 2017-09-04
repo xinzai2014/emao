@@ -6,7 +6,7 @@
                 <router-link to="/message">
                     <div class="news">
                         <i class="news-icon"></i>
-                        <span class="process-in" v-if="messageNum">{{messageNum}}</span>
+                        <span class="process-in" v-if="messageNum!='0'">{{messageNum}}</span>
                     </div>
                 </router-link>
                 <div class="company-ct">
@@ -191,7 +191,11 @@ export default {
         method:"GET",
         params:data
      }).then(function (response) {
-        this.messageNum = response.body.data.length;    
+        var n=0;
+        for(var i in response.body.data){
+            n+=response.body.data[i].num;
+        }  
+        this.messageNum = n;  
       }).catch(function (error) {
         this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
