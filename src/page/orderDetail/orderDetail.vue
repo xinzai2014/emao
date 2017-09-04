@@ -41,11 +41,12 @@
                   <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣（不可开票）：</p>
                   <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
                   <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>
-                  <p><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
+                  <p v-if="orderInfo.status=='7'||orderInfo.status=='27'||orderInfo.status=='6'"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+                  <p v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
               </div>
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
-              <p class="remit-tit">付款信息</p>
+              <p class="remit-tit">汇款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
                        <p>
                           <label>汇款单位：</label>

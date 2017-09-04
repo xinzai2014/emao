@@ -11,7 +11,7 @@
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
-                  <p class="payment" v-if="item.status=='7'||item.status=='27'">
+                  <p class="payment" v-if="item.status=='7'||item.status=='27'||item.status=='6'">
                    需付款：
                     <span>{{priceG(item.price)}}元</span>
                   </p>  
