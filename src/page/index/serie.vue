@@ -73,9 +73,5 @@ export default {
 
 .index-car-sale{position:absolute;top:3.7333rem;left:.5333rem;display:block;padding:.0666rem .3333rem .0666rem .1333rem;font-size:.3866rem;color:#fff;border-top-right-radius:.4rem;border-bottom-right-radius:.4rem;background-color:#d6ab55;}
 
-.index-brand-info{
-	height:1.8266rem;
-	overflow:hidden;
-}
 
 </style>

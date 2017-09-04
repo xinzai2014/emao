@@ -152,11 +152,12 @@ import car from '../index/car'
 .brand-search-tips{height:2.1334rem;padding:1.0666rem 1.0rem 0 1.0rem;background-color:#fff;}
 .brand-popup-ok{height:1.2rem;line-height:1.2rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 
-.index-brand{padding:.5333rem;}
+.index-brand{padding:.5333rem 0.4rem;}
 .index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-list li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;overflow:hidden;}
-.index-brand-list li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
-.index-brand-list li span{color:#2c2c2c;font-size:0.3733rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.index-brand-list{padding-bottom:0.533rem;}
+.index-brand-list li{float:left;width:20%;text-align:center;overflow:hidden;line-height:1}
+.index-brand-list li img{display:block;width:1.067rem;height:1.067rem;margin:.666rem auto 0;}
+.index-brand-list li span{display:block;margin-top:0.133rem;color:#2c2c2c;font-size:0.3733rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1}
 .index-more-brand{margin-top:.8rem;text-align:center;}
 .index-more-brand i{margin-left:.1333rem;}
 
@@ -175,8 +176,4 @@ import car from '../index/car'
 .index-car-price span{font-size:.5866rem;}
 .index-car-count{position:absolute;top:2.8666rem;left:.5333rem;font-size:.4rem;}
 .index-car-sale{position:absolute;top:3.7333rem;left:.5333rem;display:block;padding:.0666rem .3333rem .0666rem .1333rem;font-size:.3866rem;color:#fff;border-top-right-radius:.4rem;border-bottom-right-radius:.4rem;background-color:#d6ab55;}
-.index-brand-info{
-    height:1.8266rem;
-    overflow:hidden;
-}
 </style>
