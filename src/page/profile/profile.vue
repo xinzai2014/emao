@@ -6,7 +6,7 @@
                 <router-link to="/message">
                     <div class="news">
                         <i class="news-icon"></i>
-                        <span class="process-in" v-if="messageNum!='0'">{{messageNum}}</span>
+                        <span class="process-in" v-if="messageNum">{{messageNum}}</span>
                     </div>
                 </router-link>
                 <div class="company-ct">
@@ -193,7 +193,7 @@ export default {
      }).then(function (response) {
         var n=0;
         for(var i in response.body.data){
-            n+=response.body.data[i].num;
+            n+=Number(response.body.data[i].num);
         }  
         this.messageNum = n;  
       }).catch(function (error) {
