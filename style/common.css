@@ -26,6 +26,7 @@ html,body{
 	display:inline-block;
 	width:0.186667rem;
 	height:0.346667rem;
+	z-index:10;
 	background:url(../src/assets/lt-icon.png) no-repeat;
 	background-size:contain;
 }
