@@ -9,13 +9,14 @@
 			<div class="adres-ct" v-if="showRemit">
 				<div class="remits-item" v-for="(item,index) in infoData">
 					<div class="remite-lt" v-show="isCheck">
-						<i class="icon" @click="iconId(item)"></i>
+						<i :class="remitId == item.id ? 'icon active' :'icon'" @click="iconId(item)"></i>
 					</div>
 					<div :class="isCheck ? 'remits-rt':''">
 						<p class="remits-info" v-if="item.account_type == 1">{{item.pay_company}}</p>
 						<p class="remits-info" v-else>{{item.name}}</p>
 						<p class="remits-add">汇款账户：{{item.account}}</p>
-						<p class="remits-add">开户行：{{item.bank_name}}</p>
+						<p class="remits-add"  v-if="item.account_type == 1">开户行：{{item.bank_name}}</p>
+						<p class="remits-add"  v-else>银行：{{item.bank_name}}</p>
 						<p class="remits-btn">
 							<router-link :to="{name:'remitEdit',params:{id:item.id}}">
 								<i class="edit">编辑</i>
@@ -31,7 +32,7 @@
 		    </section>
 			<p class="visib-98"></p>
 			<router-link :to="{name:'remitAdd'}">
-					<div class="remits-fixed">新增账户</div>
+					<div class="remits-fixed">新增汇款账户</div>
 			</router-link>
 		</section>
 		<transition name="router-slid">
@@ -54,6 +55,7 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 	            url:'',
 	            showAlert: false, //弹出框
 	            alertText: null, //弹出信息
+	            remitId:sessionStorage.paymentId
             }
         },
         components:{
@@ -221,7 +223,7 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 	background:url(../../../../../assets/check.png) no-repeat;
 	background-size:contain;
 }
-.remite-lt i.icon:hover{
+.remite-lt i.icon:hover,.remite-lt i.icon.active{
 	background:url(../../../../../assets/check-active.png) no-repeat;
 	background-size:contain;
 }
