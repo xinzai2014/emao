@@ -25,7 +25,7 @@
 
         <section class="no-auto server-no-response" v-if=showNoDataVal>
             <img src="../../assets/no-vehicles-sold-news.png" alt="">
-            <p>暂无已售申报车辆信息</p>
+            <p>暂无已售车辆信息</p>
         </section>
 
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
