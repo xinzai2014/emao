@@ -32,8 +32,10 @@
 
 
         <section class="no-auto server-no-response" v-if="showNoDataVal">
+            <img src="../../assets/no-vehicles-sold-news.png" alt="">
             <p>暂无待申报车辆信息</p>
         </section>
+
 
         <transition name="fade">
             <router-view></router-view>
