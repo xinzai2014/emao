@@ -320,7 +320,6 @@
     /*我的-中转库-头部*/
     .brand-header-out{position:relative;z-index:3;}
     .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-    .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 
     /*中转库-信息*/
     .transit-depot-info{padding:.533rem .4rem 0 .4rem;background-color:#fff;}

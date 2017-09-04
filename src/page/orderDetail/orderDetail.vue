@@ -488,11 +488,6 @@ export default {
     color: #fff;
     background-color: #27282f;
 }
-.brand-left-cion {
-    float: left;
-    margin-left: .4666rem;
-    margin-top: .4rem;
-}
 .no-auto p span {
     color: #d6ab55;
     border-bottom: 1px solid #d6ab55;

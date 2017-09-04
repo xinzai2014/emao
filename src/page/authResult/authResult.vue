@@ -82,7 +82,6 @@
 .auth-back{background:#FFF;height:100%;}
 .brand-header-out{position:relative;z-index:3;}
 .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:relative;}
-.brand-left-cion{position:absolute;left:.4666rem;top:.4rem;}
 
 .no-auto{padding-top:3.867rem;background-color:#fff;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}

@@ -133,3 +133,5 @@ html,body{
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
 }
+
+.brand-left-cion{position:absolute;left:.4666rem;top:.4rem;}
