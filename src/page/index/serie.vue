@@ -60,7 +60,7 @@ export default {
 
 <style>
 /*首页本地车源*/
-.index-car-back{position:absolute;top:0;left:0;right:50%;bottom:0;background: -webkit-linear-gradient(left, rgba(172,176,186,075) , rgba(255,255,255,0)); /* Safari 5.1 - 6.0 */}
+.index-car-back{position:absolute;top:0;left:0;right:50%;bottom:0;background: -webkit-linear-gradient(left, rgba(0,0,0,0.5) , rgba(255,255,255,0)); /* Safari 5.1 - 6.0 */}
 .index-car-source{padding-top:.5333rem;padding-bottom:.5333rem;background-color:#fff;}
 .index-car-title{padding-left:.4rem;margin:0 0 .5333rem .4rem;font-size:.5066rem;color:#2c2c2c;border-left:2px solid #2c2c2c;}
 .index-car-con li{margin-bottom:.1333rem;color:#fff;height:5.333rem;}
