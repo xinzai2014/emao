@@ -80,6 +80,7 @@
             countHeight(){ //记录初始楼层高度
                 const carContainer = this.$refs.carWrap;
                 const listArr = Array.from(carContainer.children[0].children);
+                console.log(listArr)
                 listArr.forEach((item, index) => {
                     this.carScrollHeight[index] = item.offsetTop;
                 });

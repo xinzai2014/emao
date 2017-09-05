@@ -39,6 +39,7 @@ export default {
       showRemit:false, //有没有数据
       showAlert: false, //弹出框
       alertText: null, //弹出信息
+      goName:sessionStorage.goName //返回内容
     }
   },
         components:{
@@ -47,7 +48,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.go(-1);
+        this.$router.push({name:this.goName});
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -109,6 +110,17 @@ export default {
     $route(){
         this.fillData();
     }
+  },
+  beforeRouteEnter(to, from, next){
+    next(vm => {
+      if(from.name=='profile'){
+          sessionStorage.goName = 'profile'
+        }
+      if(from.name=='index'){
+          sessionStorage.goName = 'index'
+      }
+      
+    });
   }
 }
 </script>

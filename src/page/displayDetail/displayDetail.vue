@@ -427,7 +427,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.vanInfo = response.body.data;
 	            }).catch(function (error) {
 	                this.showAlert = true;
@@ -823,7 +822,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:2.053333rem;
+	height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;
