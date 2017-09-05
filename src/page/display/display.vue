@@ -52,7 +52,7 @@
 		            </div>
 	            </div>
 	        </div>
-	        <div :class="games.length >=3 ?'branch default' : 'branch'">
+	        <div :class="arr.length >=3 ?'branch default' : 'branch'">
 	            <router-link to="/cancel"><p><i class="white-rt"></i>已退展车</p></router-link>
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
@@ -452,6 +452,7 @@
 }
 .branch p i{
 	float:right;
+	position:static;
 }
 /*待收货弹框*/
 .mask-receipt{
