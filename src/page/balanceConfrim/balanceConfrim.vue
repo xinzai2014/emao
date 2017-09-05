@@ -480,9 +480,7 @@ export default {
 	  },
 	  mounted(){
          this.orderId = this.$store.state.spareData.orderNum;
-         setTimeout(()=>{
-            this.deposit = this.$store.state.spareData.deposit;
-         },5000)
+         this.deposit = this.$store.state.spareData.deposit.replace(",","");
          this.initData["token"] = sessionStorage.token; 
 
          this.initData["orderNum"] = this.orderId;

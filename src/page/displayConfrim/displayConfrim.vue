@@ -264,9 +264,6 @@ export default {
             this.showCoupon = !this.showCoupon;
         },
         chooseCoupon(item,index){  //选择优惠券
-            console.log(item.check)
-            console.log(item);
-            console.log(index);
             this.coupon.forEach(function(ele,ind){
                 console.log(ind);
                 if(index!=ind){
