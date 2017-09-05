@@ -9,7 +9,8 @@ import {
 	ALERT,
 	ADDRESS_FLAG,
 	DEFAULT_BRAND,
-	SPARE_DATA
+	SPARE_DATA,
+	MESSAGE_FLAG
 } from './mutations-types.js'
 
 
@@ -60,4 +61,8 @@ export default {
 		context.commit(SPARE_DATA,flag);
 	},
 
+	[MESSAGE_FLAG](context,flag){ //首页跳品牌页面传品牌值
+		context.commit(MESSAGE_FLAG,flag);
+	}
+	
 }

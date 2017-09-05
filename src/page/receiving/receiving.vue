@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loading">
         <!--头部-->
         <header class="user-tit">
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>待收货
@@ -88,7 +88,8 @@ export default {
       alertText: null, //弹出信息
        receiptData:{},
         receiptShow:false,
-        success:false
+        success:false,
+        loading:false
     }
   }, components:{
         alertTip
@@ -117,6 +118,7 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
+              this.loading=true;
             var orderList=response.body.data.list;
             this.stateAdd(orderList);
             this.orderList=this.orderList.concat(orderList);

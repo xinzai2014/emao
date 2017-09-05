@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loading">
         <!--头部-->
         <header class="user-tit">
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>待付款
@@ -54,6 +54,7 @@ export default {
         countNum:0,
         showAlert: false, //弹出框
       alertText: null, //弹出信息
+      loading:false
     }
   },
         components:{
@@ -76,6 +77,7 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
+              this.loading=true;
             var orderList=response.body.data.list;
             this.stateAdd(orderList);
             this.orderList=this.orderList.concat(orderList);

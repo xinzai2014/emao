@@ -69,14 +69,17 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+                if(this.$store.state.addressFlag!=""){
+			    	var addressFlag=this.$store.state.addressFlag;
+			    	//this.$store.dispatch("ADDRESS_FLAG","");
+			    	this.$router.push({ name: addressFlag});				    	
+			    }else{
+			    	this.$router.push({ name: 'info'});
+			    }
             },
             orderAddress(item){
             	this.$router.push({
-            		path:this.url,
-            		/*query:{
-            			'address':item.id
-            		}*/
+            		name:this.$store.state.addressFlag
             	});
             	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
 			        {
@@ -100,6 +103,14 @@
 			            data
 			        ).then(function (response) {
 			            this.addressList.splice(index, 1);
+					    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+					        {
+					          id:this.addressList[0].id,
+					          address:this.addressList[0].address,
+					          phone:this.addressList[0].phone,
+					          name:this.addressList[0].name
+					        }
+					    );
 			        }).catch(function (error) {
 			            this.showAlert = true;
            this.alertText = error.body.msg||"请求失败了";
