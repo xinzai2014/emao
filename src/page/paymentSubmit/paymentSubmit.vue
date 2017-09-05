@@ -16,7 +16,7 @@
             <router-link to="/profile/info/remit" v-else>  
               <div class="voucher-item item-bor" v-if="type == 1">
                   <!--<p><span>{{editData.account_type}}</span>汇款账户类型：</p>-->
-                  <p><span>{{editData.pay_company}}<i class="white-rt"></i></span>汇款单位：</p>
+                  <p><span>{{editData.pay_company}}</span>汇款单位：</p>
                   <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
                   <p><span>{{editData.account}}</span>汇款账户：</p>
               </div>
@@ -82,6 +82,7 @@ export default {
       //初始化
       this.mountedData();
       //this.acountEdit();
+      this.returnDataF();
   },
   methods:{
       //组件方法
@@ -94,7 +95,7 @@ export default {
       acountEdit(){ //保存并使用公司
         var data = {
             token:sessionStorage.getItem('token'),
-            id:this.$route.query.id||151,
+            id:this.$route.query.id,
         }
        this.$http({
             url:"dealerBank/detailById",
@@ -102,6 +103,7 @@ export default {
             params:data
         }).then(function (response) {
             this.editData = response.body.data;
+            sessionStorage.paymentId=this.editData.id;
             this.type = response.body.data.account_type;
             this.showType();
         }).catch(function (error) {
@@ -129,8 +131,7 @@ export default {
         }).then(function (response) {
           //console.log(response);
             this.infoData = response.body.data;
-            this.dataLength();
-            this.returnDataF();
+            this.dataLength();            
         }).catch(function (error) {
             //this.showAlert = true;
           //this.alertText = error.body.msg||"请求失败了"; 
@@ -145,6 +146,7 @@ export default {
             this.acountEdit();
           }else{
             this.editData=this.infoData[0];
+            sessionStorage.paymentId=this.infoData[0].id;
             this.type = this.editData.account_type;
             this.showType();
           }
@@ -196,7 +198,8 @@ export default {
             .then(function (response) {
                 //this.success=true;
                 this.showAlert = true;
-                this.alertText = "提交成功,请等待审核"; 
+                this.alertText = "提交成功,请等待审核";
+                this.$router.go(-1); 
             }).catch(function (error) {
                 //this.showAlert = true;
                // this.alertText = error.body.msg||"请求失败了"; 
@@ -206,7 +209,8 @@ export default {
             .then(function (response) {
                 //this.success=true;
                 this.showAlert = true;
-                this.alertText = "提交成功,请等待审核";    
+                this.alertText = "提交成功,请等待审核"; 
+                this.$router.go(-1);  
             }).catch(function (error) {
                 //this.showAlert = true;
           //this.alertText = error.body.msg||"请求失败了"; 

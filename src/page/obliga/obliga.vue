@@ -7,17 +7,17 @@
         
         <section v-if="orderList.length">
           <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-              <div class="full-item" v-for="(item,index) in orderList" v-if="item.status=='7'">
+              <div class="full-item" v-for="(item,index) in orderList" v-if="item.status=='7'|| item.status=='27'">
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
                   <p class="payment">需付款：<span>{{item.price}}元</span></p>
                   <div class="full-state">
-                      <div class="state-lt" :class="{'wait-active':item.status=='7'}">
+                      <div class="state-lt" :class="{'wait-active':item.status=='7'||item.status=='27'}">
                           <p class="state-wait">{{item.state}}</p>
                           <p class="state-time">剩余：{{item.remaining}}自动取消</p>
                       </div>
-                      <div class="state-rt" v-if="item.status=='7'">
+                      <div class="state-rt" v-if="item.status=='7'|| item.status=='27'">
                         <router-link to="/paymentSubmit">提交汇款凭证</router-link>
                       </div>
                   </div>
@@ -106,6 +106,17 @@ export default {
                     arr[i].remaining=this.remaining;
                     this.remainingTime(arr[i]);
                 }     
+            break;
+            case '27' : 
+                arr[i].state='请重新提交';
+                if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
+                    //arr[i].status=6;
+                    //arr[i].state='已取消';
+                }else{
+                    this.countNum=arr[i].remainingTime;
+                    arr[i].remaining=this.remaining;  
+                    this.remainingTime(arr[i]); 
+                }         
             break;                       
           }
           

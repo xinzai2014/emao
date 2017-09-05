@@ -10,140 +10,148 @@
             </header>
         </div>
 
-        <!--车辆信息-->
-        <section class="transit-depot-info">
-            <p class="transit-depot-address">{{dealer_name}}</p>
-            <ul class="transit-depot-top clearfix">
-                <li>
-                    <span>{{auto_wait_in}}</span>
-                </li>
-                <li>
-                    <span>{{auto_wait_out}}</span>
-                </li>
-                <li>
-                    <span>{{auto_in_warehouse}}</span>
-                </li>
-            </ul>
-        </section>
+        <div v-if="waitIn.length || waitOut.length || inWarehouse.length">
+            <!--车辆信息-->
+            <section class="transit-depot-info">
+                <p class="transit-depot-address">{{dealer_name}}</p>
+                <ul class="transit-depot-top clearfix">
+                    <li>
+                        <span>{{auto_wait_in}}</span>
+                    </li>
+                    <li>
+                        <span>{{auto_wait_out}}</span>
+                    </li>
+                    <li>
+                        <span>{{auto_in_warehouse}}</span>
+                    </li>
+                </ul>
+            </section>
 
-        <!--中转库的不同状态-->
-        <section class="transit-depot-con">
-            <ul>
-                <li v-if="waitIn.length">
-                    <p class="transit-depot-status">等待入库</p>
-                    <div class="transit-depot-in">
-                        <ul class="transit-depot-list">
-                            <li v-for="(item,index) in waitIn">
-                                <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
-                                <div class="transit-depot-txt">
-                                    <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}} </p>
-                                    <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
-                                    <div class="transit-depot-state">
-                                        <input class="transit-depot-storage transit-depot-btn" type="button" name="" value="确认入库"  @click="showInPopup(item.vin_num,index)">
+            <!--中转库的不同状态-->
+            <section class="transit-depot-con">
+                <ul>
+                    <li v-if="waitIn.length">
+                        <p class="transit-depot-status">等待入库</p>
+                        <div class="transit-depot-in">
+                            <ul class="transit-depot-list">
+                                <li v-for="(item,index) in waitIn">
+                                    <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
+                                    <div class="transit-depot-txt">
+                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}} </p>
+                                        <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
+                                        <div class="transit-depot-state">
+                                            <input class="transit-depot-storage transit-depot-btn" type="button" name="" value="确认入库"  @click="showInPopup(item.vin_num,index)">
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--<div class="no-data" v-if="!waitIn.length">-->
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<div class="no-data" v-if="!waitIn.length">-->
                         <!--<p>暂无等待入库车辆</p>-->
-                    <!--</div>-->
-                </li>
-                <li v-if="waitOut.length">
-                    <p class="transit-depot-status">等待出库</p>
-                    <div class="transit-depot-in">
-                        <ul class="transit-depot-list">
-                            <li v-for="(item,index) in waitOut">
-                                <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
-                                <div class="transit-depot-txt">
-                                    <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
-                                    <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
-                                    <div class="transit-depot-state">
-                                        <input class="transit-depot-stock-removal transit-depot-btn" type="text" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
+                        <!--</div>-->
+                    </li>
+                    <li v-if="waitOut.length">
+                        <p class="transit-depot-status">等待出库</p>
+                        <div class="transit-depot-in">
+                            <ul class="transit-depot-list">
+                                <li v-for="(item,index) in waitOut">
+                                    <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
+                                    <div class="transit-depot-txt">
+                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
+                                        <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
+                                        <div class="transit-depot-state">
+                                            <input class="transit-depot-stock-removal transit-depot-btn" type="text" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--<div class="no-data" v-if="!waitOut.length">-->
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<div class="no-data" v-if="!waitOut.length">-->
                         <!--<p>暂无等待出库车辆</p>-->
-                    <!--</div>-->
-                </li>
-                <li v-if="inWarehouse.length">
-                    <p class="transit-depot-status">在库</p>
-                    <div class="transit-depot-in">
-                        <ul class="transit-depot-list">
-                            <li v-for="item in inWarehouse">
-                                <p class="transit-depot-vin">VIN <span>{{item.vin_num}}</span></p>
-                                <div class="transit-depot-txt">
-                                    <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
-                                    <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
-                                    <div class="transit-depot-state">
-                                        <p>{{item.add_warehouse_time}}</p>
-                                        <p class="transit-depot-txt">入库</p>
+                        <!--</div>-->
+                    </li>
+                    <li v-if="inWarehouse.length">
+                        <p class="transit-depot-status">在库</p>
+                        <div class="transit-depot-in">
+                            <ul class="transit-depot-list">
+                                <li v-for="item in inWarehouse">
+                                    <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
+                                    <div class="transit-depot-txt">
+                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
+                                        <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
+                                        <div class="transit-depot-state">
+                                            <p>{{item.add_warehouse_time}}</p>
+                                            <p class="transit-depot-txt">入库</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--<div class="no-data" v-if="!inWarehouse.length">-->
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<div class="no-data" v-if="!inWarehouse.length">-->
                         <!--<p>暂无在库车辆</p>-->
-                    <!--</div>-->
-                </li>
-            </ul>
-        </section>
+                        <!--</div>-->
+                    </li>
+                </ul>
+            </section>
 
-        <!--中转库入库弹窗-->
-        <section class="transit-depot-popup" :class="{dialogBack:showInPopupStatus}" v-if="showInPopupStatus">
-            <!--入库弹窗-->
-            <div class="storage-popup-out" :class="{dialogShow:showInPopupStatus}">
-                <div class="storage-popup-info">
-                    <div class="storage-popup-txt">
-                        <p class="storage-popup-name">{{inPopupData.brand_name}}{{inPopupData.serie_name}}</p>
-                        <p class="storage-popup-color">{{inPopupData.ext_color}}/{{inPopupData.int_color}}</p>
+            <!--中转库入库弹窗-->
+            <section class="transit-depot-popup" :class="{dialogBack:showInPopupStatus}" v-if="showInPopupStatus">
+                <!--入库弹窗-->
+                <div class="storage-popup-out" :class="{dialogShow:showInPopupStatus}">
+                    <div class="storage-popup-info">
+                        <div class="storage-popup-txt">
+                            <p class="storage-popup-name">{{inPopupData.brand_name}}{{inPopupData.serie_name}}</p>
+                            <p class="storage-popup-color">{{inPopupData.ext_color}}/{{inPopupData.int_color}}</p>
+                        </div>
+                        <p class="storage-popup-vin">{{inPopupData.vin_num}}</p>
                     </div>
-                    <p class="storage-popup-vin">{{inPopupData.vin_num}}</p>
-                </div>
-                <div class="storage-popup-vehicle-accessories">
-                    <p>请确认随车附件：</p>
-                    <div>{{inPopupData.part_text}}</div>
-                </div>
-                <div class="error-tips">{{inErrorTips}}</div>
-                <p class="storage-popup-choose">
-                    <span @click="closeInPopup">取消</span>
-                    <span class="active" @click="confirmIn()">确认入库</span>
-                </p>
-            </div>
-        </section>
-
-        <!--中转库出库弹窗-->
-        <section class="transit-depot-popup" :class="{dialogBack:showOutPopupStatus}" v-if="showOutPopupStatus">
-            <!--出库弹窗-->
-            <div class="stock-removal-popup-out" :class="{dialogShow:showOutPopupStatus}">
-                <div class="stock-removal-popup-title">
-                    <p>出库确认</p>
-                    <p>输入接车员提供的提车码</p>
-                </div>
-                <div class="stock-removal-popup-info">
-                    <div class="stock-removal-con">
-                        <p class="stock-removal-popup-vin">{{outPopupData.vin_num}}</p>
-                        <p>{{outPopupData.brand_name}}{{outPopupData.serie_name}}</p>
-                        <p>{{outPopupData.ext_color}}/{{outPopupData.int_color}}</p>
-                    </div>
-                    <div class="vehicle-accessories-popup-info">
+                    <div class="storage-popup-vehicle-accessories">
                         <p>请确认随车附件：</p>
-                        <div>{{outPopupData.part_text}}</div>
+                        <div>{{inPopupData.part_text}}</div>
                     </div>
-                    <input type="text" placeholder="请输入提车码" v-model="outCode">
+                    <div class="error-tips">{{inErrorTips}}</div>
+                    <p class="storage-popup-choose">
+                        <span @click="closeInPopup">取消</span>
+                        <span class="active" @click="confirmIn()">确认入库</span>
+                    </p>
                 </div>
+            </section>
 
-                <div class="error-tips">{{outErrorTips}}</div>
-                <p class="stock-removal-popup-choose">
-                    <span @click="closeOutPopup">取消</span>
-                    <span class="active" @click="confirmOut()">验证</span>
-                </p>
-            </div>
-        </section>
+            <!--中转库出库弹窗-->
+            <section class="transit-depot-popup" :class="{dialogBack:showOutPopupStatus}" v-if="showOutPopupStatus">
+                <!--出库弹窗-->
+                <div class="stock-removal-popup-out" :class="{dialogShow:showOutPopupStatus}">
+                    <div class="stock-removal-popup-title">
+                        <p>出库确认</p>
+                        <p>输入接车员提供的提车码</p>
+                    </div>
+                    <div class="stock-removal-popup-info">
+                        <div class="stock-removal-con">
+                            <p class="stock-removal-popup-vin">{{outPopupData.vin_num}}</p>
+                            <p>{{outPopupData.brand_name}}{{outPopupData.serie_name}}</p>
+                            <p>{{outPopupData.ext_color}}/{{outPopupData.int_color}}</p>
+                        </div>
+                        <div class="vehicle-accessories-popup-info">
+                            <p>请确认随车附件：</p>
+                            <div>{{outPopupData.part_text}}</div>
+                        </div>
+                        <input type="text" placeholder="请输入提车码" v-model="outCode">
+                    </div>
+
+                    <div class="error-tips">{{outErrorTips}}</div>
+                    <p class="stock-removal-popup-choose">
+                        <span @click="closeOutPopup">取消</span>
+                        <span class="active" @click="confirmOut()">验证</span>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="no-auto server-no-response" v-else="">
+            <img src="../../assets/no-vehicles-sold-news.png" alt="">
+            <p>暂无车辆</p>
+        </div>
+
 
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
@@ -227,7 +235,10 @@
                 this.itemOut.vin_num = this.outPopupData.vin_num;
                 this.$http.post("dealer/warehouse/confirmOut",this.itemOut).then(function(response){
                     this.showOutPopupStatus = !this.showOutPopupStatus;
-                    this.flushCom();
+                   // this.flushCom();
+                    this.showAlert = true;
+                    this.alertText = '车辆出库成功';
+                    setInterval(this.flushCom,3000);
                 }).catch(function(error){
                     this.outErrorTips = error.body.msg;
                 })
@@ -244,7 +255,7 @@
                     this.showInPopupStatus = !this.showInPopupStatus;
                     this.showAlert = true;
                     this.alertText = '车辆已入库';
-                    setInterval(this.flushCom,5000);
+                    setInterval(this.flushCom,3000);
                 }).catch(function(error){
                     this.inErrorTips = error.body.msg;
                 })
@@ -272,7 +283,8 @@
                 day = day < 10 ? ('0' + day) : day;
                 hour = hour < 10 ? ('0' + hour) : hour;
                 minute = minute < 10 ? ('0' + minute) : minute;
-                return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+                //return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+                return year + '-' + month + '-' + day ;
             };
 
 
@@ -290,6 +302,7 @@
                 this.waitIn = response.body.data.waitIn;
                 this.waitOut = response.body.data.waitOut;
                 this.inWarehouse = response.body.data.inWarehouse;
+
                 for (var i = 0; i < this.inWarehouse.length;i++) {
                     this.inWarehouse[i].add_warehouse_time =  getLocalTime(this.inWarehouse[i].add_time);
                 }
@@ -304,34 +317,9 @@
     }
 </script>
 <style>
-    /*.dialogBack{*/
-        /*animation: opacityback 0.8s;*/
-        /*animation-iteration-count:1;*/
-        /*animation-fill-mode: forwards;*/
-        /*animation-timing-function: ease-in-out;*/
-    /*}*/
-    /*.dialogShow {*/
-        /*animation: dialog 0.8s;*/
-        /*animation-iteration-count:1;*/
-        /*animation-fill-mode: forwards;*/
-        /*animation-timing-function: ease-in-out;*/
-    /*}*/
-
-    /*@keyframes opacityback*/
-    /*{*/
-        /*0% {opacity: 0}*/
-        /*100% {opacity: 1}*/
-    /*}*/
-
-    /*@keyframes dialog*/
-    /*{*/
-        /*0% {transform:translateY(100%);opacity: 0}*/
-        /*100% {transform:translateY(0);opacity: 1}*/
-    /*}*/
     /*我的-中转库-头部*/
     .brand-header-out{position:relative;z-index:3;}
     .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-    .brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 
     /*中转库-信息*/
     .transit-depot-info{padding:.533rem .4rem 0 .4rem;background-color:#fff;}
@@ -392,5 +380,10 @@
     .stock-removal-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .stock-removal-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
     .storage-popup-out .error-tips{margin-bottom:.4rem;text-align:center;font-size:.32rem;color:red;}
+
+    /*暂无车辆信息*/
+    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0; background-color: #fff;text-align: center;font-size: 0.453333rem;left: 0;height: 100%;}
+    .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+    .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 
 </style>

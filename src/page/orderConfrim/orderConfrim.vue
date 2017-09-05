@@ -17,8 +17,8 @@
         </div>
         <div class="order-address">
             地址：<strong>{{address.address}}</strong>
-            <i class="white-rt"></i>
         </div>
+        <i class="white-rt"></i>
     </section>
     <!--购车确认-车型信息-->
     <section class="order-car-info">
@@ -564,15 +564,14 @@ export default {
 
 .brand-header-out{position:relative;z-index:3;}
 .brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-.brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 	/*订单确认*/
-.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;}
+.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;position:relative;}
 .order-name{float:left;}
 .order-phone{float:right;margin-right:.7733rem;}
-.order-address{position:relative;margin-top:.4rem;padding-right:.4rem;}
-.order-address i{position:absolute;top:0;right:.1333rem;}
+.order-address{margin-top:.4rem;padding-right:.4rem;}
+.order-confirmation-address i{position:absolute;top:0;left:auto;right:0.4rem;bottom:0;margin:auto;}
 .order-car-info{background-color:#fff;padding:.5333rem .4rem 0;margin-bottom:.4rem;}
 .order-car-name{font-size: .4rem;color: #000;font-weight:600 ;}
 .order-car-color{display:block;margin-top:.1833rem;font-size: .3467rem;color: #999;}

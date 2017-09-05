@@ -413,7 +413,6 @@ export default {
 
 /*首页-订车-商品详情页*/
 .book-car-out{position:relative;}
-.book-car-header{overflow: hidden;height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0.25rem;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
 .book-car-count{padding:.3rem 0;padding-left:.4rem;background-color:#fff;}

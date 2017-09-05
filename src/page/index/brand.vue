@@ -45,12 +45,17 @@ export default {
 </script>
 <style>
 /*首页品牌*/
-.index-brand{padding:.5333rem;}
+.index-brand{padding:.5333rem 0.4rem;}
 .index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-in li{float:left;width:20%;margin-bottom:0.1333rem;text-align:center;overflow:hidden;}
-.index-brand-in li img{display:block;width:.5333rem;height:.5333rem;margin:.666rem auto 0;margin-bottom:.1333rem;}
-.index-brand-in li span{color:#2c2c2c;font-size:0.3733rem;white-space:nowrap;}
-.index-more-brand{margin-top:.8rem;text-align:center;color:#d5aa5c;}
-.index-more-brand i{margin-left:.1333rem;}
+.index-brand-in li{float:left;width:20%;text-align:center;overflow:hidden;}
+.index-brand-in li img{display:block;width:1.067rem;height:1.067rem;margin:.533rem auto 0;}
+.index-brand-in li span{display:block;line-height:1;color:#2c2c2c;font-size:0.3733rem;white-space:nowrap;margin-top:0.133rem;}
+.index-more-brand{margin-top:.8rem;text-align:center;color:#d5aa5c;font-size:0.373rem;}
+.index-more-brand i{margin-left:.1333rem;position:relative;top:-0.04rem;}
 .brand-collect i{transform:rotateX(180deg)}
+
+.index-brand-info{
+  height:2.1rem;
+  overflow:hidden;
+}
 </style>

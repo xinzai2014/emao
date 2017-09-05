@@ -17,3 +17,5 @@ export const ALERT = "ALERT" //全局弹出窗
 export const ADDRESS_FLAG = "ADDRESS_FLAG" //全局弹出窗
 
 export const DEFAULT_BRAND = "DEFAULT_BRAND" //首页跳转品牌页传值
+
+export const SPARE_DATA = "SPARE_DATA" //补余款传值

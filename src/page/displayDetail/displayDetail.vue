@@ -8,7 +8,8 @@
 	    <section class="details-wrap">
 		    <div>
 		        <div class="details-tit" v-show="timeShow">
-		            <h4><span>剩余：{{orderInfo.remaining}}自动取消</span>{{statusText}}</h4>
+		            <h4 v-if="orderInfo.status=='4'"><span>剩余：{{orderInfo.remaining}}自动确认收货</span>{{statusText}}</h4>
+		            <h4 v-else><span>剩余：{{orderInfo.remaining}}</span>{{statusText}}</h4>
 		            <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
 		        </div>
 		        <div class="details-tit" v-show="!timeShow">
@@ -38,35 +39,14 @@
 	            <p class="remit-tit">保证金</p>
 	            <p :class="paymentActive ? 'bond active':'bond'"><span>{{payment}}</span>支付状态：</p>
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
-	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
+	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
+	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
-		            <div v-if="bankInfo.accountType == 1">
-			            <div class="send-to">		               
-			                <p>
-			                    <label>汇款单位：</label>
-			                    <span>{{bankInfo.companyName}}</span>
-			                </p>
-			                 <p>
-			                    <label>开户银行：</label>
-			                    <span>{{bankInfo.bankName}}</span>
-			                </p>
-			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-	                    		<p class="ayment-details">查看详情</p>
-	                  		</router-link>
-			            </div>
-			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&derInfo.status!='5'">
-			                <span>汇款说明：</span>
-			                <em>1.汇款后请上传汇款凭证</em>
-			                <em>2.未按时间付款的订单系统将自动取消</em>
-			            </div>
-		            </div>
-		            <div class="ayment-info" v-else>
-		                <p>
+		            <div class="ayment-info" v-if="bankInfo.accountType == 1">
+			            <p>
 		                    <label>付款人：</label>
-		                    <span>{{bankInfo.bankName}}</span>
+		                    <span>{{bankInfo.companyName}}</span>
 		                </p>
 		                <p>
 		                    <label>银行：</label>
@@ -76,6 +56,31 @@
 	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
 	                    	<p class="ayment-details">查看详情</p>
 	                  	</router-link>
+		            </div>
+		            <div v-else>
+		                <div class="send-to">		               
+			                <p>
+			                    <label>汇款银行：</label>
+			                    <span>{{bankInfo.bankName}}</span>
+			                </p>
+			                 <p>
+			                    <label>公司名称：</label>
+			                    <span>{{bankInfo.companyName}}</span>
+			                </p>
+			                <p>
+			                    <label>账号：</label>
+			                    <span>{{bankInfo.account}}</span>
+			                </p>
+			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+	                    		<p class="ayment-details">查看详情</p>
+	                  		</router-link>
+			            </div>
+			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'">
+			                <span>汇款说明：</span>
+			                <em>1.汇款后请上传汇款凭证</em>
+			                <em>2.未按时间付款的订单系统将自动取消</em>
+			            </div>
 		            </div>
 	            </div>
 	        </div>
@@ -97,9 +102,8 @@
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status == '5'">
-		        	<router-link :to="{name:'balanceConfrim',params:{'orderNum':orderInfo.orderNum,'deposit':capitalInfo.deposit}}">{{btnText}}
-		        	</router-link>
+		        <div class="remits-fixed" v-if="orderInfo.status == '5'" @click="balanceConfrim">
+		        	{{btnText}}
 		        </div>
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
 		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
@@ -130,7 +134,7 @@
 	                <b>请确认随车附件：</b>
 	                <p>{{receiptData.attachment}}</p>
 	            </div>
-	            <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+	            <div class="receipt-btn"><span class="receipt-close" @click="receiptShow = !receiptShow">取消</span><span @click="receiptStatus">确认收货</span></div>
 	        </div>
 	    </div>
 		<!-- 退订展车 -->
@@ -201,6 +205,15 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		            }
 	            );
             },
+            balanceConfrim(){
+            	this.$router.push({name:'balanceConfrim'});
+            	this.$store.dispatch("SPARE_DATA", // 通过store传值
+		            {
+		                orderNum:this.orderInfo.orderNum,
+		                deposit:this.capitalInfo.deposit
+		            }
+	            );
+            },
             fullData(){
             	var data = {
 	                token:this.Token,
@@ -241,7 +254,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             },
             statusAdd(item){
             	if(item.status == 28){
-           			this.statusText = '待付款审核中,请耐心等候';
+           			this.statusText = '补款中';
            			this.vinActive = '审核中';
            			this.process = !this.process;
             	}else if(item.status == 7){
@@ -253,7 +266,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            		this.btmBtn = false;
 	            		this.carCancel = false;
             		}else{
-            			this.statusText = '等待付款';
+            			this.statusText = '等待支付保证金';
 	            		this.countNum=item.remainingTime;
 		                item.remaining=this.remaining;
 		                this.remainingTime(item);
@@ -450,24 +463,15 @@ import alertTip from '../../components/common/alertTip/alertTip'
         computed: {
 	    //转换时间成小时,分
 	    	remaining: function (){
-	          	let days = parseInt(this.countNum/60/60/24);
-	          let hours = parseInt((this.countNum-days*3600*24)/60/60);
-	          let minutes = parseInt((this.countNum-hours*3600)/60);
-	          if (hours < 10) {
-	              days = '0' + days;
-	          }
-	          if (hours < 10) {
-	              hours = '0' + hours;
-	          }
-	          if (minutes < 10) {
-	              minutes = '0' + minutes;
-	          }
-
-	          if(days){
-	            return days + '天' + hours + '小时';
-	          }else{
-	            return hours + '小时' + minutes + '分钟';
-	          }
+	           let hours = parseInt(this.countNum/60/60);
+	          	let minutes = parseInt((this.countNum-hours*3600)/60);
+	          	if (hours < 10) {
+	              	hours = '0' + hours;
+	          	}
+	          	if (minutes < 10) {
+	              	minutes = '0' + minutes;
+	          	}
+	          	return hours + '小时' + minutes + '分钟';
 	      	}        
 	  	},
 	  	watch:{ 
@@ -796,6 +800,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .replen i{
 	float:right;
+	position:static;
 }
 /*待收货弹框*/
 .mask-receipt{
@@ -855,7 +860,18 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	color:#fff;
 	text-align:center;
 	line-height:1.173333rem;
+	
+}
+.receipt-btn span{
+	display:inline-block;
+	width:50%;
+	height:1.173333rem;
 	background:#d6ab55;
+	cursor:pointer;
+}
+.receipt-btn span.receipt-close{
+	background:#f5f5f5;
+	color:#000;
 }
 
 /*退订弹框*/

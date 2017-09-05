@@ -43,7 +43,7 @@
             <!--我的订单-->
             <section class="order">
                 <router-link to="/order">
-                    <div class="tit"><h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>我的订单</h3></div>
+                    <div class="tit"><h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>全款订单</h3></div>
                 </router-link>
                  <router-link to="/obliga">
                     <div class="item">
@@ -191,7 +191,11 @@ export default {
         method:"GET",
         params:data
      }).then(function (response) {
-        this.messageNum = response.body.data.length;    
+        var n=0;
+        for(var i in response.body.data){
+            n+=Number(response.body.data[i].num);
+        }  
+        this.messageNum = n;  
       }).catch(function (error) {
         this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
@@ -385,9 +389,9 @@ export default {
 }
 .transfer-icon{
     background:url(../../assets/transfer-icon.png) center center no-repeat;
-    background-size:contain;
-    width:0.56rem;
-    height:0.48rem;
+    background-size:100%;
+    width: 0.506667rem;
+    height: 0.56rem;
 }
 .order .item .process-in{
     color:#fff;

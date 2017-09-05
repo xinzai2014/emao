@@ -26,6 +26,7 @@ html,body{
 	display:inline-block;
 	width:0.186667rem;
 	height:0.346667rem;
+	z-index:10;
 	background:url(../src/assets/lt-icon.png) no-repeat;
 	background-size:contain;
 }
@@ -133,3 +134,5 @@ html,body{
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
 }
+
+.brand-left-cion{position:absolute;left:.4666rem;top:.4rem;}

@@ -12,7 +12,8 @@
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
                   <p class="payment">已付款：<span>{{item.price}}元</span></p>
-                  <div class="full-state">
+                </router-link>
+                <div class="full-state">
                       <div class="state-lt">
                           <p class="state-wait">{{item.state}}</p>
                       </div>
@@ -20,7 +21,6 @@
                         确认收货
                       </div>
                   </div>
-                </router-link>
               </div>
           </div>
           <transition name="loading">
@@ -52,6 +52,22 @@
         
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
+        <transition name="slide">
+        <section class="fixed_box" v-if="success">
+          <div class="brand-header-out">
+              <header class="brand-list-header">
+                  <i class="white-lt brand-left-cion" @click="hide_success"></i>
+                  <strong class="brand-list-title">收货成功</strong>
+              </header>
+          </div>
+          <section class="no-auto">
+              <img src="../../assets/receipt-succeed.png" alt="">
+              <p>收货成功</p>
+              <p>可在 <router-link :to="{name:'declare'}"><span>售车申报</span></router-link>中查看并管理</p>
+          </section>
+
+        </section>
+        </transition>
     </div>
 </template>
 
@@ -72,6 +88,7 @@ export default {
       alertText: null, //弹出信息
        receiptData:{},
         receiptShow:false,
+        success:false
     }
   }, components:{
         alertTip
@@ -81,8 +98,12 @@ export default {
     resetIndex(){
         this.$router.push({name:'profile'});
     },
+    hide_success(){
+      this.success=false;
+      this.fillData();
+    },
     hidePop(){
-      this.receiptShow=false;
+      this.receiptShow=false; 
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -154,7 +175,8 @@ export default {
         //this.orderInfo.state='交易完成';
         this.showAlert = true;
         this.alertText = '确认收货成功！';
-        this.fillData();
+        //this.fillData();
+        this.success=true;
       }).catch(function (error) {
           this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
@@ -195,6 +217,30 @@ export default {
 </script>
 
 <style>
+.fixed_box{
+  position:fixed;
+  width:10rem;
+  height:110%;
+  top:0;
+  bottom:0;
+}
+.brand-header-out {
+    position: relative;
+    z-index: 3;
+}
+.brand-list-header {
+    overflow: hidden;
+    height: 1.1733rem;
+    text-align: center;
+    line-height: 1.1733rem;
+    font-size: .5333rem;
+    color: #fff;
+    background-color: #27282f;
+}
+.no-auto p span {
+    color: #d6ab55;
+    border-bottom: 1px solid #d6ab55;
+}
 .full-wrap{
   height: 100%;
 }
@@ -289,5 +335,95 @@ export default {
     text-align: center;
     line-height: 2rem;
   }
+  .mask-receipt{
+  width:100%;
+  height:100%;
+  position:fixed;
+  left:0;
+  top:0;
+  background:rgba(0,0,0,0.8);
+}
+.receipt{
+  width:7.2rem;
+  position:fixed;
+  left:50%;
+  margin-left:-3.6rem;
+  top:25%;
+  background:#fff;
+  border-radius:0.133333rem;
+  overflow:hidden;
+}
+.receipt-tit{
+  width:5.026667rem;
+  height:2.053333rem;
+  border-bottom:1px solid #2c2c2c;
+  margin:0.533333rem auto;
+  text-align:center;
+}
+.receipt-tit b{
+  display:block;
+  font-size:0.453333rem;
+  color:#2c2c2c;
+}
+.receipt-tit span{
+  display:block;
+  font-size:0.32rem;
+  color:#999;
+  padding:0.133333rem 0;
+}
+.receipt-code{
+  font-size:0.453333rem;
+  color:#d6ab55;
+  text-align:center;
+  margin-bottom:0.533333rem;
+}
+.options{
+  padding:0 0.533333rem;
+  font-size:0.346667rem;
+  color:#2c2c2c;
+  padding-bottom:0.533333rem;
+}
+.options b{
+  display:block;
+  
+}
+.receipt-btn{
+  font-size:0.453333rem;
+  color:#fff;
+  text-align:center;
+  line-height:1.173333rem;
+  background:#d6ab55;
+}
+.remits-fixed a{
+  color:white;
+}
+.car-vin{
+    border-bottom: 1px solid #e0e0e0;
+    color: #2c2c2c;
+    overflow:hidden;
+    font-size:0.373333rem;
+    padding: 0.533333rem 0;
+}
+.car-vin span{
+  color:#999;
+  float:right;
+}
+.prompt-btn span{
+  display:block;
+  width:50%;
+  float:left;
+  text-align:center;
+  font-size:0.453333rem;
+}
+.prompt-btn span.confirm{
+  background:#d6ab55;
+  color:#fff;
+}
+.prompt-btn{
+  background:#f5f5f5;
+  overflow:hidden;
+  height:1.173333rem;
+  line-height:1.173333rem;
+} 
 </style>
 
