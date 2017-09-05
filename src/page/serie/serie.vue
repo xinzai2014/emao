@@ -412,6 +412,7 @@ export default {
 
 
 /*首页-订车-商品详情页*/
+.book-car-header{height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0;width:100%;background:-webkit-linear-gradient(left, rgba(0,0,0,0.5) , rgba(0,0,0,0))}
 .book-car-out{position:relative;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
