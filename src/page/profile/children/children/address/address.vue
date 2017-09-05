@@ -69,7 +69,13 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+                if(this.$store.state.addressFlag!=""){
+			    	var addressFlag=this.$store.state.addressFlag;
+			    	//this.$store.dispatch("ADDRESS_FLAG","");
+			    	this.$router.push({ name: addressFlag});				    	
+			    }else{
+			    	this.$router.push({ name: 'info'});
+			    }
             },
             orderAddress(item){
             	this.$router.push({

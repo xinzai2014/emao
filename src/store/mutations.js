@@ -9,7 +9,8 @@ import {
 	ALERT,
 	ADDRESS_FLAG,
 	DEFAULT_BRAND,
-	SPARE_DATA
+	SPARE_DATA,
+	MESSAGE_FLAG
 } from './mutations-types.js'
 
 
@@ -58,6 +59,10 @@ export default {
 
 	[SPARE_DATA](state,obj){ //补余款传值
 		state.alert = obj;
+	},
+
+	[MESSAGE_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
+		state.messageFlag = flag;
 	}
 
 }
