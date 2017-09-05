@@ -132,15 +132,16 @@
 			            }
 		            );
 	            }
-	            /*if(item.status=='5'){
-	            	this.$router.push({name:'paymentSubmit'});
-	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+	            if(item.status=='5'){
+	            	this.$router.push({name:'balanceConfrim'});
+	            	this.$store.dispatch("SPARE_DATA", // 通过store传值
 			            {
 			                orderNum:item.orderNum,
-			                orderId:item.id
+			                deposit:item.price
 			            }
 		            );
-	            }*/
+		            
+	            }
 				
             },
             receiptStatus(){
@@ -424,8 +425,8 @@
 	font-size:0.453333rem;
 	padding-left:0.4rem;
 	font-weight:normal;
-	line-height:1.493333rem;
-	height:1.493333rem;
+	line-height:1.42rem;
+	height:1.42rem;
 	width:4rem;
 	border-bottom:1px solid #2c2c2c;
 }

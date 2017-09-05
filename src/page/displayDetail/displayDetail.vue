@@ -41,7 +41,8 @@
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div class="ayment-info" v-if="bankInfo.accountType == 1">
 			            <p>
