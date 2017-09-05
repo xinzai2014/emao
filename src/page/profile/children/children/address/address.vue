@@ -78,6 +78,7 @@
 			    }
             },
             orderAddress(item){
+            	alert(this.url);
             	this.$router.push({
             		name:this.$store.state.addressFlag
             	});

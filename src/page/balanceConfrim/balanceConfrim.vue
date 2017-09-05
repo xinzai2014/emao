@@ -4,7 +4,7 @@
     <!--首页-订单确认-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="goback"></i>
-        <strong class="brand-list-title">全款购车确认</strong>
+        <strong class="brand-list-title">购车确认</strong>
     </header>
     <!--购车确认-->
     <!--购车确认-地址-姓名-->
@@ -35,6 +35,9 @@
             <input type="text" v-model="remark" placeholder="选填 (对此订单的相关说明)"/>
         </div>
     </section>
+    <section class="deposit-con">
+        已支付保证金： <span>-￥{{deposit|getMoney}}</span>
+    </section>
     <!--购车确认-劵信息-->
     <section class="order-coupon-info">
         <!--使用优惠券-->
@@ -49,22 +52,21 @@
 
         <div class="order-support-fee clearfix">
             <div class="order-support-title">营销支持费：</div>
-            <div class="order-support-con" v-if="chooseMarket&&!checkMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
+            <div class="order-support-con" v-if="chooseMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseMarket">无可用</div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&!updateMarket">使用￥<strong>{{marketingSupport.usable}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
+            <div class="order-support-con" v-if="chooseMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
             <div class="order-suport-switch">
-                <input type="checkbox"  v-model="checkMarket" @click="changeMarket">
+                <input type="checkbox"  v-model="checkMarket">
             </div>
         </div>
+
         <div class="order-support-fee clearfix">
             <div class="order-support-title">返利：</div>
-            <div class="order-support-con" v-if="chooseRebate&&!checkRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
+            <div class="order-support-con" v-if="chooseRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseRebate">无可用</div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&!updateRebate">使用￥<strong>{{rebate.usable}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
+            <div class="order-support-con" v-if="chooseRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
             <div class="order-suport-switch">
-                <input type="checkbox"  v-model="checkRebate" @click="changeRebate">
+                <input type="checkbox"  v-model="checkRebate">
             </div>
         </div>
     </section>
@@ -114,7 +116,7 @@
             </div>
             <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(index,item.id)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
                             <dt>¥ {{item.price}}</dt>
                             <dd>
@@ -139,7 +141,7 @@
                     <input type="number" v-model="marketData"  :max=marketingSupport.usable  min=0>
                     <span>元</span>
                 </div>
-                <p class="use-coupon-info">共 <span>{{marketingSupport.total}}</span>元，本次最多可用 <span>{{marketingSupport.usable}}</span>元</p>
+                <p class="use-coupon-info">共 <span>{{marketingSupport.total|getMoney}}</span>元，本次最多可用 <span>{{marketingSupport.usable|getMoney}}</span>元</p>
             </div>
             <p class="use-coupon-choose">
                 <span @click.stop="closeMarketDialog">取消</span>
@@ -224,7 +226,7 @@ export default {
 	  data () {
 	    return {
             orderId:null, //订单号
-            deposit:null, //保证金
+            deposit:0, //保证金
 	    	initData:{}, //初始化路由带过来的数据
 	    	address:{}, //地址信息
 	    	car:{},     //购车信息
@@ -294,7 +296,10 @@ export default {
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
                         ele.check = false;
                    })
-		           this.coupon = coupon;
+                   this.coupon = coupon; //单次初始化
+                   if(coupon.length>0){
+                        this.initIscroll("couponList",this.scrollWrap);
+                   }
 		           this.marketingSupport = data.marketingSupport;
                    if(data.marketingSupport.usable){ //判断是否有可用营销支持费
                         this.chooseMarket = true
@@ -317,7 +322,6 @@ export default {
 	  	},
         showCouponDialog(){ //显示优惠券弹窗
             this.showCoupon = !this.showCoupon;
-            this.initIscroll("couponList",this.scrollWrap);
         },
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
@@ -337,23 +341,6 @@ export default {
                 this.checkCoupun = false;
             }
         },  
-        changeMarket(){ //切换营销支持费checkbox
-            var check = this.checkMarket; //点击获取的时候是基础值
-            if(!this.chooseMarket){
-                setTimeout(()=>{
-                    this.checkMarket = false;
-                })
-            }else{
-                if(check){
-                    this.checkMarket = false ;
-                    this.updateMarket = false ;
-                    this.updateMarketData = 0;
-                }else{
-                    this.checkMarket = true; 
-                    this.updateMarketData = parseInt(this.marketingSupport.usable);
-                }
-            }
-        },
         showMarketDialog(){ //营销支持费弹出窗
             this.showMarket = !this.showMarket;
         },
@@ -361,18 +348,27 @@ export default {
             this.showMarket = !this.showMarket;
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
-            if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
+            if(this.marketData == null||this.marketData == ""){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"金额不能为空"
+                  }
+                 );
+                 return false;
+            }
+            if(parseFloat(this.marketData)>parseFloat(this.marketingSupport.usable)){
                 this.$store.dispatch("ALERT", // 通过store传值
                   {
                     flag:true,
-                    text:"营销支持费不能大于" + this.marketingSupport.usable
+                    text:"本次最多可用" + parseFloat(this.marketingSupport.usable).toLocaleString() + ".00元"
                   }
                  );
                 return false;
             }
             this.showMarket = !this.showMarket;
             this.updateMarket = true;
-            this.updateMarketData = this.marketData;
+            this.updateMarketData = parseFloat(this.marketData).toLocaleString()+".00";
         },
         showRebateDialog(){ //返利弹出窗
             this.showRebate = !this.showMarket;
@@ -381,35 +377,27 @@ export default {
             this.showRebate = false
         },
         rebateConfrim(){
-             if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
-                this.$store.dispatch("ALERT", // 通过store传值
+            if(this.rebateData == null||this.rebateData == ""){
+                 this.$store.dispatch("ALERT", // 通过store传值
                   {
                     flag:true,
-                    text:"返利不能大于" + this.rebate.usable
+                    text:"金额不能为空"
+                  }
+                 );
+                 return false;
+            }
+            if(parseFloat(this.rebateData)>parseFloat(this.rebate.usable)){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"本次最多可用" + parseFloat(this.rebate.usable).toLocaleString() + ".00元"
                   }
                  );
                  return false;
             }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
-            this.updateRebateData = this.rebateData;
-        },
-        changeRebate(){ //切换营销支持费checkbox
-             var check = this.checkRebate; //点击获取的时候是基础值
-            if(!this.chooseRebate){
-                setTimeout(()=>{
-                    this.checkRebate = false;
-                })
-            }else{
-                if(check){
-                    this.checkRebate = false ;
-                    this.updateRebate = false ;
-                    this.updateRebateData = 0;
-                }else{
-                    this.checkRebate = true; 
-                    this.updateRebateData = parseInt(this.rebate.usable);
-                }
-            }
+            this.updateRebateData = parseFloat(this.rebateData).toLocaleString()+".00";
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
@@ -491,9 +479,12 @@ export default {
         },
 	  },
 	  mounted(){
-         this.orderId = this.$route.params.id;
-         this.deposit = this.$route.query.deposit;
-         this.initData["token"] = sessionStorage.token;
+         this.orderId = this.$store.state.spareData.orderNum;
+         setTimeout(()=>{
+            this.deposit = this.$store.state.spareData.deposit;
+         },5000)
+         this.initData["token"] = sessionStorage.token; 
+
          this.initData["orderNum"] = this.orderId;
          this.getData();
 	  },
@@ -503,6 +494,36 @@ export default {
                 num = 0;
             }
             return parseInt(num).toLocaleString() +".00";
+        }
+      },
+      watch:{
+        checkMarket(){
+            if(!this.chooseMarket){
+                this.checkMarket = false;
+                return false;
+            }else{
+                if(this.checkMarket){
+                    this.updateMarket = true
+                    this.updateMarketData = parseInt(this.marketingSupport.usable);
+                }else{
+                    this.updateMarket = false;
+                    this.updateMarketData = "0.00";
+                }
+            }
+        },
+        checkRebate(){
+            if(!this.chooseRebate){
+                this.checkRebate = false;
+                return false;
+            }else{
+                if(this.checkRebate){
+                    this.updateRebate = true
+                    this.updateRebateData = parseInt(this.rebate.usable);
+                }else{
+                    this.updateRebate = false;
+                    this.updateRebateData = "0.00";
+                }
+            }
         }
       },
       computed:{
@@ -528,7 +549,7 @@ export default {
 <style>
 
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
+.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.4rem;color:#fff;background-color:#27282f;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 	/*订单确认*/
@@ -699,6 +720,18 @@ export default {
     width:100%;
     height:10rem;
     border:none;
+}
+
+.deposit-con{
+    padding:0 0.4rem;
+    background:#FFF;
+    line-height:1.467rem;
+    margin-bottom:0.4rem;
+    font-size:0.4rem;
+}
+
+.deposit-con span{
+    float:right;
 }
 </style>
 
