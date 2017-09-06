@@ -63,7 +63,7 @@ export default {
           url:"https://tcmapi.emao.com/upload",
           count:2,
           flag:"payment",
-          image:'static/sample3.jpg'
+          image:'static/payment.jpg'
       },
       dataURL:{},//图片地址
       submitFlag:true,
@@ -199,7 +199,10 @@ export default {
                 //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核";
-                this.$router.go(-1); 
+                var that=this;
+                setTimeout(function(){
+                  that.$router.go(-1); 
+                },100);
             }).catch(function (error) {
                 //this.showAlert = true;
                // this.alertText = error.body.msg||"请求失败了"; 
@@ -210,7 +213,10 @@ export default {
                 //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核"; 
-                this.$router.go(-1);  
+                var that=this;
+                setTimeout(function(){
+                  that.$router.go(-1); 
+                },100);
             }).catch(function (error) {
                 //this.showAlert = true;
           //this.alertText = error.body.msg||"请求失败了"; 

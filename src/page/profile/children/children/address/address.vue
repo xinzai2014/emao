@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_page" v-if="loading">
 		<!--头部-->
 		<header class="user-tit">
 			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>{{title}}
@@ -31,7 +31,7 @@
 
 		<section class="no-auto server-no-response" v-if="show">
 	        <img src="../../../../../assets/no-addres.png" alt="">
-	        <p>未添加收货地址</p>
+	        <p>尚未添加收货地址</p>
 	    </section>
 
 	    <p class="visib-98"></p>
@@ -61,6 +61,7 @@
               showAlert: false, //弹出框
           alertText: null, //弹出信息
           title:'收货地址管理',
+          loading:false
             }
         },
         components:{
@@ -129,6 +130,7 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
+		        	this.loading=true;
 		            this.addressList = response.body.data;
 		        }).catch(function (error) {
 		            this.showAlert = true;

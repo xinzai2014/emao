@@ -459,13 +459,9 @@ export default {
   },
   beforeRouteLeave(to, from, next){
     next(vm => {
-      /*if(to.name=='paymentSubmit'){
-        to.query={
-          'price':vm.orderInfo.price,
-          'remark':vm.orderInfo.remark
-         }
-         console.log(to);
-      }*/
+      if(from.name=='declare'){
+        vm.success=true;
+      }
     });
   }
 

@@ -214,6 +214,13 @@ export default {
     $route(){
         this.fillData();
     }
+  },
+  beforeRouteLeave(to, from, next){
+    next(vm => {
+      if(from.name=='declare'){
+        vm.success=true;
+      }
+    });
   }
 }
 </script>

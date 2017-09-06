@@ -3,12 +3,14 @@
         <section>
             <!--公司认证-->
             <section class="company">
-                <router-link to="/message">
+                
                     <div class="news">
+                        <router-link to="/message">
                         <i class="news-icon"></i>
                         <span class="process-in" v-if="messageNum">{{messageNum}}</span>
+                        </router-link>
                     </div>
-                </router-link>
+                
                 <div class="company-ct">
                     <router-link to="/profile/info">
                         <a class="white-rt" href="javascript:;"></a>
