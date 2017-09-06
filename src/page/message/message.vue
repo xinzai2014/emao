@@ -111,13 +111,15 @@ export default {
         this.fillData();
     }
   },
-      beforeRouteEnter(to, from, next){
-        next(vm => {
-          if(from.name=="index"||from.name=="profile"){
-              vm.$store.dispatch("MESSAGE_FLAG",from.name );
-          } 
-        });
-      }
+
+    beforeRouteEnter(to, from, next){
+      next(vm => {
+        if(from.name=="index"||from.name=="profile"){
+            vm.$store.dispatch("MESSAGE_FLAG",from.name );
+        } 
+      });
+    }
+
 }
 </script>
 

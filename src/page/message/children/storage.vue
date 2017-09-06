@@ -16,7 +16,6 @@
 		        </router-link>
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
     </div>
 </template>
 
@@ -54,7 +53,6 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
@@ -120,7 +118,7 @@
 }
 .notice-bt{
 	padding:0.533333rem 0.4rem;
-	font-size:0.4rem;
+	font-size:0.346667rem;
 	color:#2c2c2c;
 	line-height:0.4rem;
 }

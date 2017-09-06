@@ -118,7 +118,7 @@
         <!--首页-订单确认-头部-->
         <header class="brand-list-header">
             <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
+            <strong class="brand-list-title">申请成功</strong>
         </header>
         <!--订购成功-->
         <section class="order-succeed">
@@ -264,9 +264,6 @@ export default {
             this.showCoupon = !this.showCoupon;
         },
         chooseCoupon(item,index){  //选择优惠券
-            console.log(item.check)
-            console.log(item);
-            console.log(index);
             this.coupon.forEach(function(ele,ind){
                 console.log(ind);
                 if(index!=ind){
@@ -363,7 +360,7 @@ export default {
 <style>
 
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
+.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.4rem;color:#fff;background-color:#27282f;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 	/*订单确认*/

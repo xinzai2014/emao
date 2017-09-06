@@ -41,7 +41,8 @@
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div class="ayment-info" v-if="bankInfo.accountType == 1">
 			            <p>
@@ -427,7 +428,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.vanInfo = response.body.data;
 	            }).catch(function (error) {
 	                this.showAlert = true;
@@ -823,7 +823,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:2.053333rem;
+	height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;

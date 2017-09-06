@@ -22,7 +22,6 @@
 		        </router-link>    
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
     </div>
 </template>
 
@@ -60,7 +59,6 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;

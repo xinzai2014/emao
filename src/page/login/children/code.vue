@@ -5,7 +5,7 @@
             <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
             <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
         </div>
-	    <input class="login-btn" type="text" name="" value="登录" @click="login">
+	    <input class="login-btn" type="button" name="" value="登录" @click="login">
         <p class="login-another" @click="checkNav"><span>账号登录</span></p>
 	</div>
 </template>
