@@ -5,33 +5,59 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>我的展车
 		</header>
 		<!--我的展车-->
-	    <section class="full-wrap" v-if="games.length">
-	        <div class="condition">
-	            <div class="condition-tit">
-	                <b>申请中</b>
+	    <section class="full-wrap" v-show="showGame" >
+	        <div class="condition" ref="carWrap">
+	        	<div class="condition-ct" v-if="games.length">
+		            <div class="condition-tit">
+		            	<p :class="{'head-fixed':scrollIndex == 0}">
+		            		<b>申请中</b>
+		            	</p>
+		            </div>
+		            <div class="full-item" v-for="(item,index) in games">
+		            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
+		                <h3>{{item.name}}</h3>
+		                <p class="interior">{{item.color}}</p>
+		                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
+		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
+	                </router-link>
+	                <div class="full-state">
+		                    <div class="state-lt wait-active">
+		                        <p class="state-wait">{{item.waitActive}}</p>
+		                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}</p>
+		                    </div>
+		                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'" @click="confirmCar(item)">{{item.btnActive}}</div>
+		                </div>
+		            </div>
 	            </div>
-	            <div class="full-item" v-for="(item,index) in games">
-	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
-	                <h3>{{item.name}}</h3>
-	                <p class="interior">{{item.color}}</p>
-	                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
-	                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
-                </router-link>
-                <div class="full-state">
-	                    <div class="state-lt wait-active">
-	                        <p class="state-wait">{{item.waitActive}}</p>
-	                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}</p>
-	                    </div>
-	                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'" @click="confirmCar(item)">{{item.btnActive}}</div>
-	                </div>
+	            <div class="condition-ct" v-if="games1.length">
+		            <div class="condition-tit">
+		                <p :class="{'head-fixed':scrollIndex == 1}">
+		            		<b>在展</b>
+		            	</p>
+		            </div>
+		            <div class="full-item" v-for="(item,index) in games1">
+		            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
+		                <h3>{{item.name}}</h3>
+		                <p class="interior">{{item.color}}</p>
+		                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
+		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
+	                </router-link>
+	                <div class="full-state">
+		                    <div class="state-lt wait-active">
+		                        <p class="state-wait">{{item.waitActive}}</p>
+		                        <p class="state-time" v-show="item.remainingTime"  v-if="item.status == 7 || item.status ==27">剩余：{{item.remaining}}</p>
+		                    </div>
+		                    <div v-show="item.btnActive" v-if="item.status != 3" :class="item.status == 8? 'state-rt active' : 'state-rt'" @click="confirmCar(item)">{{item.btnActive}}</div>
+		                </div>
+		            </div>
 	            </div>
 	        </div>
-	        <div :class="games.length >=3 ?'branch default' : 'branch'">
+	        <div :class="arr.length >=3 ?'branch default' : 'branch'">
 	            <router-link to="/cancel"><p><i class="white-rt"></i>已退展车</p></router-link>
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
 	    </section>
-	    <section class="no-auto server-no-response" v-if="!games.length">
+	    <section class="no-auto server-no-response" v-show="!showGame">
             <img src="../../assets/no-order.png" alt="">
             <p>暂无展车</p>
         </section>
@@ -61,13 +87,17 @@
                 token : sessionStorage.token,
                 perPage : 10, //每页条数，默认10
                 page : 1, //第几页
-        		games: [],
+        		games: [], //申请中数据
+        		games1:[], //在展数据
         		arr:[], //用于判断状态
         		countNum:0,
                 showAlert:false,  //错误弹出窗
 		      	alertText:null, //错误提醒信息
 		      	receiptData:{},
 				receiptShow:false,
+				showGame:true,
+				scrollIndex:-1,
+				carScrollHeight:[]
             }
         },
         methods:{
@@ -102,15 +132,16 @@
 			            }
 		            );
 	            }
-	            /*if(item.status=='5'){
-	            	this.$router.push({name:'paymentSubmit'});
-	            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+	            if(item.status=='5'){
+	            	this.$router.push({name:'balanceConfrim'});
+	            	this.$store.dispatch("SPARE_DATA", // 通过store传值
 			            {
 			                orderNum:item.orderNum,
-			                orderId:item.id
+			                deposit:item.price
 			            }
 		            );
-	            }*/
+		            
+	            }
 				
             },
             receiptStatus(){
@@ -140,74 +171,111 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                var list = response.body.data.list
 	                for(var a in list){
 	                	this.arr.push(list[a].status);
-                		for(var i =0;i<=a;i++){
-		                	if(this.arr[i] == 27){
+                		/*for(var i =0;i<=a;i++){*/
+		                	if(list[a].status == 27){
 		                		list[a].waitActive = '请重新提交';
 						  		list[a].btnActive = '提交汇款凭证';
 						  		this.countNum=list[a].remainingTime;
 				                list[a].remaining=this.remaining;
 				                this.remainingTime(list[a]);
+				                this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 3){
+		                	}else if(list[a].status == 3){
 							  	list[a].waitActive = '车辆出库中';
 							  	list[a].btnActive = '';
+							  	this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 4){
+		                	}else if(list[a].status == 4){
 							  	list[a].waitActive = '车辆在途';
 							  	list[a].btnActive = '确认收货';
+							  	this.games.push(list[a]);
 		                		continue;
-		                	} else if(this.arr[i] == 5){
+		                	} else if(list[a].status == 5){
 		                		list[a].waitActive = '展车在展';
 							  	list[a].btnActive = '补余款';
+							  	this.games1.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 6){
+		                	}else if(list[a].status == 6){
 							  	list[a].waitActive = '已取消';
 							  	list[a].btnActive = '';
+							  	this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 7){
+		                	}else if(list[a].status == 7){
 		                		if(list[a].remainingTime == '' || list[a].remainingTime == '0'){
 		                			list[a].waitActive = '已取消';
 							  		list[a].btnActive = '';
+							  		this.games.push(list[a]);
 		                		}else{
 		                			list[a].waitActive = '等待支付保证金';
 								  	list[a].btnActive = '提交汇款凭证';
 								  	this.countNum=list[a].remainingTime;
 					                list[a].remaining=this.remaining;
 					                this.remainingTime(list[a]);
+					                this.games.push(list[a]);
 		                		}
 		                		continue;
-		                	}else if(this.arr[i] == 8){
+		                	}else if(list[a].status == 8){
 							  	list[a].waitActive = '付款审核中';
 							  	list[a].btnActive = '';
+							  	this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 9){
+		                	}else if(list[a].status == 9){
 							  	list[a].waitActive = '已购买';
 								list[a].btnActive = '';
+								this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 10){
+		                	}else if(list[a].status == 10){
 							  	list[a].waitActive = '展车退订已受理，等待接车';
 								list[a].btnActive = '';
+								this.games1.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 11){
+		                	}else if(list[a].status == 11){
 							  	list[a].waitActive = '已完成退车';
 								list[a].btnActive = '';
+								this.games.push(list[a]);
 		                		continue;
-		                	}else if(this.arr[i] == 28){
+		                	}else if(list[a].status == 28){
 							  	list[a].waitActive = '补款中';
 							  	list[a].btnActive = '';
+							  	this.games1.push(list[a]);
 		                		continue;
 		                	}
-		                }
+		                /*}
+*/					}
+					if(this.games.length > 0 || this.games1.length > 0){
+						this.showGame = this.showGame
+					}else{
+						this.showGame = !this.showGame;
 					}
-					this.games = list
+					setTimeout(()=>{
+                        this.countHeight();
+                    },100)
 	            }).catch(function (error) {
 	                this.showAlert = true;
 		          	this.alertText = error.body.msg;
 	            });
+            },
+            countHeight(){ //记录初始楼层高度
+                const carContainer = this.$refs.carWrap;
+                const listArr = Array.from(carContainer.children);
+                listArr.forEach((item, index) => {
+                    this.carScrollHeight[index] = item.offsetTop;
+                });
+                var that = this;
+                document.addEventListener('scroll',function(){
+                    var scrollTop = document.body.scrollTop;
+                    that.carScrollHeight.forEach((item,index) => {
+                        if(scrollTop>item){
+                            that.scrollIndex = index;
+                        }
+                        if(scrollTop <= 88){
+                        	that.scrollIndex = -1;
+                        }
+                    })
+                })
             },
             //计算时间
             remainingTime(item){
@@ -258,24 +326,31 @@
 </script>
 
 <style>
-.no-auto{background-color: #fff;
+.no-auto{
     text-align: center;
     font-size: 0.453333rem;
     padding: 4.0rem 0;
     position: absolute;
     width: 100%;
     left: 0;
-    height: 100%;}
+}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 .no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 
 /*我的展车*/
+.condition-ct{
+	overflow:hidden;
+	margin-bottom:0.4rem;
+}
 .full-item{
 	padding:0.533333rem 0.4rem;
-	border-top:1px solid #2c2c2c;
+	border-bottom:1px solid #e0e0e0;
 	overflow:hidden;
 	background:#fff;
+}
+.condition-ct .full-item:last-child{
+	border-bottom:none;
 }
 .full-item h3{
 	font-size:0.426667rem;
@@ -288,8 +363,7 @@
 .full-item .payment{
 	font-size:0.373333rem;
 	color:#2c2c2c;
-	border-bottom:1px solid #e0e0e0;
-	padding:0.533333rem 0;
+	padding:0.4rem 0;
 }
 .full-item .payment span,.state-wait{
 	color:#fc3036;
@@ -333,18 +407,28 @@
 	line-height:0.533333rem;
 }
 .condition-tit{
-	padding:0.533333rem 0.4rem;
-	border-top:1px solid #2c2c2c;
 	background:#fff;
+	height:1.493333rem;
+}
+.condition-tit p{
+	background:#fff;
+	height:1.493333rem;
+	width:100%;
+}
+.head-fixed{
+	position:fixed;
+	left:0;
+	top:0;
 }
 .condition-tit b{
 	display:block;
 	font-size:0.453333rem;
-	border-left:0.066667rem solid #2c2c2c;
 	padding-left:0.4rem;
-	font-size:0.453333rem;
 	font-weight:normal;
-	line-height:0.466667rem;
+	line-height:1.42rem;
+	height:1.42rem;
+	width:4rem;
+	border-bottom:1px solid #2c2c2c;
 }
 .condition:last-child .full-item:last-child{
 	border-bottom:none;
@@ -369,6 +453,7 @@
 }
 .branch p i{
 	float:right;
+	position:static;
 }
 /*待收货弹框*/
 .mask-receipt{
@@ -391,7 +476,7 @@
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:2.053333rem;
+	height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;

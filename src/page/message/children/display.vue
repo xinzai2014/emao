@@ -26,7 +26,6 @@
 		        </router-link>
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
     </div>
 </template>
 

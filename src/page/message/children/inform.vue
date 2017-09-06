@@ -10,7 +10,7 @@
 	            <div class="notice-tit">{{item.created_at}}</div>
 	            <div class="notice-ct">
 	                <div class="notice-tp">{{item.content_header}}</div>
-	                <div class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+	                <div class="notice-bt" v-if="item.content_body"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 	            </div>
 	        </div>
 	    </section>
@@ -50,7 +50,6 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.loadingData = !this.loadingData;

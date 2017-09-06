@@ -39,6 +39,7 @@ export default {
       showRemit:false, //有没有数据
       showAlert: false, //弹出框
       alertText: null, //弹出信息
+      url:''
     }
   },
         components:{
@@ -47,7 +48,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.go(-1);
+      this.$router.push({ name: this.$store.state.messageFlag});              
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -109,7 +110,16 @@ export default {
     $route(){
         this.fillData();
     }
-  }
+  },
+
+    beforeRouteEnter(to, from, next){
+      next(vm => {
+        if(from.name=="index"||from.name=="profile"){
+            vm.$store.dispatch("MESSAGE_FLAG",from.name );
+        } 
+      });
+    }
+
 }
 </script>
 

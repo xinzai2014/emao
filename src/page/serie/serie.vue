@@ -1,7 +1,7 @@
 <template>
   <div class="book-car-out" v-if="ajaxLoading">
     <!--首页-订车-详情页-头部-->
-    <header class="book-car-header">
+    <header class="book-car-header" v-if="circular.length">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
     </header>
     <!--首页-订车-详情页-图片滚动-->
@@ -27,9 +27,9 @@
                </div>
                <div class="book-car-action clearfix">
                    <span @click="goConfiguration(item.id)">配置参数</span>
-                   <input class="book-car-buy" @click="showFullpay(item.id,index)" type="text" name="" value="全款购车" v-if="item.sale==1">
-                   <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="text" name="" value="申请展车" v-if="item.show==1">
-                   <input class="book-car-remind" @click="showTipsDialog(item.id)" type="text" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
+                   <input class="book-car-buy" @click="showFullpay(item.id,index)" type="button" name="" value="全款购车" v-if="item.sale==1">
+                   <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="button" name="" value="申请展车" v-if="item.show==1">
+                   <input class="book-car-remind" @click="showTipsDialog(item.id)" type="button" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
                </div>
            </li>
        </ul>
@@ -109,7 +109,7 @@
                 </ul>
             </div>
             <section class="book-buy-now">
-                <input type="text" class="active" name="" @click.stop="fullBay" value="立即购买">
+                <input type="button" class="active" name="" @click.stop="fullBay" value="立即购买">
             </section>
         </div>
     </section>
@@ -142,9 +142,9 @@
               </div>
               <section class="book-buy-now">
                   <!--立即申请展车-->
-                  <input type="text" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请展车">
+                  <input type="button" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请">
                   <!--您已申请此展车-->
-                  <input type="text" class="unavailable" name="" v-else value="您已申请此展车">
+                  <input type="button" class="unavailable" name="" v-else value="您已申请此展车">
               </section>
           </div>
       </section>
@@ -412,6 +412,7 @@ export default {
 
 
 /*首页-订车-商品详情页*/
+.book-car-header{height: 1.1733rem;text-align: center;line-height: 1.1733rem;font-size: .5333rem;position: absolute;z-index: 3;left:0;width:100%;background:-webkit-linear-gradient(left, rgba(0,0,0,0.5) , rgba(0,0,0,0))}
 .book-car-out{position:relative;}
 .book-car-detail .index-icon{left:0;right:.4rem;}
 .book-car-detail .index-icon li{float:right;}
@@ -427,7 +428,7 @@ export default {
 .book-guide-price em{display:block;float:left;}
 .book-car-action{margin-top:.5333rem;font-size:.3733rem;}
 .book-car-action span{display:block;float:left;margin-top:0.333rem;border-bottom:1px solid #000;}
-.book-car-action input{width:2.6666rem;height:1.0667rem;float:right;text-align:center;line-height:1.0667rem;border-radius:.5333rem;}
+.book-car-action input{width:2.6666rem;height:1.0667rem;float:right;text-align:center;line-height:1.0667rem;border-radius:.5333rem;background:none;}
 .book-car-apply{margin-right:.4rem;border:1px solid #666;}
 .book-car-buy{border:1px solid #d5aa5c;}
 .book-car-remind{font-size:.3733rem;color:#6aa3e4;border:1px solid #6aa3e4;}

@@ -55,7 +55,6 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		        	var list = response.body.data.list;
 		        	this.typeLink(list);
 		            this.infoData = this.infoData.concat(list);

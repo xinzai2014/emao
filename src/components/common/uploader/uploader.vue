@@ -3,13 +3,13 @@
    <div class="sample-ct">
         <div class="submit-lt">
             <div class="submit-img">
-                <div class="pic-box" v-for="(item,index) in files" @click="updatePic(index)">
-                     <img :src = item.src >
+                <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src)">
+                    <img :src = item.src >
                     <div class="img-percent" v-if="item.showPercent"> 
                         <p>{{item.percent + "%"}}</p>
                     </div>
                     <div class="img-button">
-                        <p class="up-btn" @click.stop="updatePic(index)" v-if="(index == 0 && item.percent != 100 )||(index != 0)">上传</p>
+                        <p class="up-btn" @click.stop="updatePic(index)" v-if="(item.percent != 100 )">上传</p>
                         <p class="up-btn" v-if="(item.percent == 100)&&(index == 0)" @click.stop="updatePic(index)">修改</p>
                         <p class="up-btn" v-if="index != 0" @click.stop="deletePic(index)">删除</p>
                     </div>
@@ -18,13 +18,16 @@
         </div>
         <div class="submit-rt">
             <div class="submit-img" >
-                <img :src = uploadData.image >
+                <img :src = uploadData.image @click="lookBigImg(uploadData.image)">
             </div>
         </div>
 
         <input type="file" accept="image/*" @change="fileChanged" ref="file" multiple="multiple" class="upfile">
     </div>
     <p class="up-btn continue-btn" v-if="continueUp&&initData.count>1" @click="addBox">继续上传</p>
+    <div class="bigImg-back" @click="closeImg" v-show="showBigImg">
+        <img :src = bigImg>
+    </div>
 </div>
 </template>
 <script>
@@ -40,7 +43,9 @@
                 activeIndex:0,
                 continueUp:false,
                 updateIndex:false,
-                imgURL:[] //回传给父组件的图片绝对路径集合
+                imgURL:[], //回传给父组件的图片绝对路径集合
+                bigImg:null,
+                showBigImg:false
             }
         },
         methods:{
@@ -197,14 +202,30 @@
                     var newImageData = cvs.toDataURL(fileType, 0.9);
                     that.$set(item, 'src', newImageData);
                 }
+            },
+            lookBigImg(src){
+                if(!src) return;
+                this.bigImg = src;
+                this.showBigImg = true;
+            },
+            closeImg(){ 
+                this.showBigImg = false;
             }
         },
         mounted(){
             this.initData = this.uploadData;
+            if("imgArr" in this.uploadData){
+                var img = this.uploadData.imgArr;
+                if(img.length == 0) return;
+                this.files = [];
+                var that = this;
+                img.forEach(function(value,index){
+                    var obj = {};
+                    obj.src = value;
+                    that.files.push(obj);
+                })
+            }
             
-        },
-        components:{
-
         }
     }
 </script>
@@ -282,5 +303,21 @@
     }
     .img-button{
         text-align:center;
+    }
+
+    .bigImg-back{
+        position:fixed;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        background:rgba(0,0,0,0.85);
+        z-index:10;
+    }
+    .bigImg-back img{
+        width:100%;
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
     }
 </style>
