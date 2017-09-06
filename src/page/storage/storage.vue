@@ -60,7 +60,7 @@
                                         <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
-                                            <input class="transit-depot-stock-removal transit-depot-btn" type="text" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
+                                            <input class="transit-depot-stock-removal transit-depot-btn" type="button" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
                                         </div>
                                     </div>
                                 </li>
