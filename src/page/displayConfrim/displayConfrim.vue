@@ -118,7 +118,7 @@
         <!--首页-订单确认-头部-->
         <header class="brand-list-header">
             <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
+            <strong class="brand-list-title">申请成功</strong>
         </header>
         <!--订购成功-->
         <section class="order-succeed">

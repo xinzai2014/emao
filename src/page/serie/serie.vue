@@ -142,7 +142,7 @@
               </div>
               <section class="book-buy-now">
                   <!--立即申请展车-->
-                  <input type="button" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请展车">
+                  <input type="button" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请">
                   <!--您已申请此展车-->
                   <input type="button" class="unavailable" name="" v-else value="您已申请此展车">
               </section>
