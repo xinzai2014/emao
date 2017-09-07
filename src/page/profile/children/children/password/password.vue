@@ -1,7 +1,7 @@
 <template>
 	<div class="rating_page">
 		<header class="user-tit">
-			<a href="javascript:;" class="white-lt"></a>设置密码
+			<a href="javascript:;" class="white-lt" @click="goback"></a>设置密码
 		</header>
 		<section class="set-code">
 			<div>
@@ -23,7 +23,9 @@
             }
         },
         methods:{
-
+        	goback(){
+        		this.$router.go(-1);
+        	}
         },
         mounted(){
 

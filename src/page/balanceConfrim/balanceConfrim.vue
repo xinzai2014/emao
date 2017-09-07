@@ -76,7 +76,7 @@
             <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
-            <span>保证金</span>
+            <span>已付保证金</span>
             <p><i>-</i><strong>￥{{deposit|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
