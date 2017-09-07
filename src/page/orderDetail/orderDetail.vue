@@ -37,7 +37,7 @@
               <p class="car-vin" v-if="orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
               <div class="settlement">
                   <p><span>￥{{capitalInfo.totalPrice}}</span>订单总价：</p>
-                  <!--<p><span>-￥{{capitalInfo.deposit||'0.00'}}</span>已付保证金：</p>-->
+                  <p v-if="capitalInfo.deposit!='0.00'"><span>-￥{{capitalInfo.deposit}}</span>已付保证金：</p>
                   <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣（不可开票）：</p>
                   <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
                   <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>

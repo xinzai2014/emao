@@ -31,7 +31,7 @@
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -53,13 +53,13 @@
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
-                                    <h4>已使用</h4>
-                                    <p>{{item.note}}</p>
+                                    <h4>{{item.name}}</h4>
+                                    <!--<p>{{item.note}}</p>-->
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -80,13 +80,13 @@
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
-                                    <h4>已失效</h4>
-                                    <p>{{item.note}}</p>
+                                    <h4>{{item.name}}</h4>
+                                    <!--<p>{{item.note}}</p>-->
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -165,12 +165,20 @@ export default {
     bActive(arr){
         for(var i=0;i<arr.length;i++){
             arr[i].active=false;
+            arr[i].status='展开详情';
+            arr[i].price=Number(arr[i].price).toLocaleString();
         }
         return arr;
     },
     slideDown(item){
         item.active = !item.active;
-    }
+        if(item.status == '收起'){
+            item.status = '展开详情';
+        }else{
+            item.status = '收起';
+        }
+        
+    },
   },
   mounted(){
     //组件初始完成需要做什么
