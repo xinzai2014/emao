@@ -201,10 +201,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
             	}
                 
             },
-            //刷新当前页面
-            flushCom(){
-                this.$router.go(0);
-            },
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
             	this.$store.dispatch("RETURN_DATA", // 通过store传值
@@ -386,7 +382,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            this.$http.post(
 	                "order/show/cancel",data
 	            ).then(function (response) {
-	            	this.flushCom();
+	            	this.fullData();
 	            }).catch(function (error) {
 	                this.showAlert = true;
            			this.alertText = error.body.msg||"请求失败了"
@@ -410,6 +406,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            });
             },
             receiptStatus(){
+            	this.orderInfo.status = 5;
             	this.receiptShow = !this.receiptShow;
             	var data = {
 	                token:this.Token,
@@ -419,7 +416,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.flushCom();
+	            	this.fullData();
 	            }).catch(function (error) {
 	                this.showAlert = true;
            			this.alertText = error.body.msg||"请求失败了"
