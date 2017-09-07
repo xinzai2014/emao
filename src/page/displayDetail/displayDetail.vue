@@ -41,10 +41,10 @@
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
 	            <p class="bond active" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
-		            <div class="ayment-info" v-if="bankInfo.accountType == 1">
+		            <div class="ayment-info" v-if="bankInfo.accountType == 1 || bankInfo.accountType == 2">
 			            <p>
 		                    <label>付款人：</label>
 		                    <span>{{bankInfo.companyName}}</span>
@@ -54,7 +54,7 @@
 		                    <span>{{bankInfo.bankName}}</span>
 		                </p>
 		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'">
 	                    	<p class="ayment-details">查看详情</p>
 	                  	</router-link>
 		            </div>
@@ -73,7 +73,7 @@
 			                    <span>{{bankInfo.account}}</span>
 			                </p>
 			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
 	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
 			            </div>
@@ -93,9 +93,8 @@
 	            <span class="record-time" v-for="(item,index) in record"><em>{{cancelTime(item)}}</em>{{item.des}}：</span>
 	        </div>
 	        <div class="website" v-show="process">
-	            <span>退订展车</span>
-	            <span class="website-info">退订展车流程</span>
-	            <span class="website-info">1.联退车事宜系服务顾问沟通</span>
+	            <span>退订展车流程</span>
+	            <span class="website-info">1.联系服务顾问沟通退车事宜</span>
 	            <span class="website-info">2.办理接车及退款手续</span>
 	        </div>
 	        <p class="cancel" v-show="carCancel" @click="maskShow = !maskShow">取消申请</p>
@@ -195,7 +194,16 @@ import alertTip from '../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+            	if(sessionStorage.displayName){
+            		this.$router.push({name:sessionStorage.displayName});
+            	}else{
+            		this.$router.go(-1);
+            	}
+                
+            },
+            //刷新当前页面
+            flushCom(){
+                this.$router.go(0);
             },
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
@@ -250,7 +258,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                this.orderInfo=response.body.data.orderInfo;
 	            }).catch(function (error) {
 	                this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             statusAdd(item){
@@ -378,10 +386,10 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            this.$http.post(
 	                "order/show/cancel",data
 	            ).then(function (response) {
-	            	this.fullData()
+	            	this.flushCom();
 	            }).catch(function (error) {
 	                this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             confirmCar(){ //确认收货弹框信息
@@ -398,7 +406,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            	this.receiptData = response.body.data;
 	            }).catch(function (error) {
 	                this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             receiptStatus(){
@@ -411,10 +419,10 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.fullData();
+	            	this.flushCom();
 	            }).catch(function (error) {
 	                this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             vanLayer(){ //展车退订 
@@ -431,7 +439,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                this.vanInfo = response.body.data;
 	            }).catch(function (error) {
 	                this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             sendMes(){
@@ -452,7 +460,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		            },1000);
 		        }).catch(function (error) {
 		            this.showAlert = true;
-		          	this.alertText = error.body.msg
+           			this.alertText = error.body.msg||"请求失败了"
 		        });
    			},
         },
@@ -463,21 +471,36 @@ import alertTip from '../../components/common/alertTip/alertTip'
         computed: {
 	    //转换时间成小时,分
 	    	remaining: function (){
-	           let hours = parseInt(this.countNum/60/60);
+	    		let days = parseInt(this.countNum/60/60/24);
+	           	let hours = parseInt((this.countNum-days*3600*24)/60/60);
 	          	let minutes = parseInt((this.countNum-hours*3600)/60);
+	          	if (hours < 10) {
+		              days = '0' + days;
+		        }
 	          	if (hours < 10) {
 	              	hours = '0' + hours;
 	          	}
 	          	if (minutes < 10) {
 	              	minutes = '0' + minutes;
 	          	}
-	          	return hours + '小时' + minutes + '分钟';
+	          	if(days){
+		            return days + '天' + hours + '小时';
+		        }else{
+		            return hours + '小时' + minutes + '分钟';
+		        }
 	      	}        
 	  	},
 	  	watch:{ 
 		    $route(){
 		        this.showData();
 		    }
+		},
+		beforeRouteEnter(to, from, next){
+		    next(vm => {
+			    if(from.name=='display'){
+			        sessionStorage.displayName = from.name
+			    }
+		    });
 		}
 
 
@@ -823,14 +846,14 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:1.6rem;
+	min-height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;
 }
 .receipt-tit b{
 	display:block;
-	font-size:0.453333rem;
+	font-size:0.4rem;
 	color:#2c2c2c;
 }
 .receipt-tit span{

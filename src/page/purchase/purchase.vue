@@ -11,9 +11,7 @@
 		            <div class="bought-ct">
 		                <p class="bought-tit">{{item.name}}</p>
 		                <p class="bought-color">{{item.color}}</p>
-		                <p class="bought-state">已补余款：<span>{{item.price}}</span></p>
 		            </div>
-		            <p class="bought-spend">已购买</p>
 	            </router-link>
 	        </div>
 	    </section>

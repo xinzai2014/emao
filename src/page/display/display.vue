@@ -31,7 +31,7 @@
 	            </div>
 	            <div class="condition-ct" v-if="games1.length">
 		            <div class="condition-tit">
-		                <p :class="{'head-fixed':scrollIndex == 1}">
+		                <p :class="games.length ? {'head-fixed':scrollIndex == 1} : {'head-fixed':scrollIndex == 0}">
 		            		<b>在展</b>
 		            	</p>
 		            </div>
@@ -105,6 +105,10 @@
             resetIndex(){
                 this.$router.push({name:'profile'});
             },
+            //刷新当前页面
+            flushCom(){
+                this.$router.go(0);
+            },
             confirmCar(item){ //确认收货弹框信息
             	if(item.status=='4'){
             		this.receiptShow = !this.receiptShow;
@@ -146,6 +150,7 @@
             },
             receiptStatus(){
             	this.receiptShow = !this.receiptShow;
+            	var that = this;
             	var data = {
 	                token:this.token,
 	                goods_stock_id:this.receiptData.id
@@ -154,7 +159,7 @@
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.showData();
+	            	this.flushCom();
 	            }).catch(function (error) {
 	                this.showAlert = true;
 		          	this.alertText = error.body.msg
@@ -304,15 +309,23 @@
         computed: {
 	    //转换时间成小时,分
 	    	remaining: function (){
-	          	let hours = parseInt(this.countNum/60/60);
+	          	let days = parseInt(this.countNum/60/60/24);
+	           	let hours = parseInt((this.countNum-days*3600*24)/60/60);
 	          	let minutes = parseInt((this.countNum-hours*3600)/60);
+	          	if (hours < 10) {
+		              days = '0' + days;
+		        }
 	          	if (hours < 10) {
 	              	hours = '0' + hours;
 	          	}
 	          	if (minutes < 10) {
 	              	minutes = '0' + minutes;
 	          	}
-	          	return hours + '小时' + minutes + '分钟';
+	          	if(days){
+		            return days + '天' + hours + '小时';
+		        }else{
+		            return hours + '小时' + minutes + '分钟';
+		        }
 	      	}        
 	  	},
 	  	watch:{ 
@@ -339,6 +352,9 @@
 .no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 
 /*我的展车*/
+.rating_page{
+	background:#f5f5f5;
+}
 .condition-ct{
 	overflow:hidden;
 	margin-bottom:0.4rem;
@@ -476,14 +492,14 @@
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:1.6rem;
+	min-height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;
 }
 .receipt-tit b{
 	display:block;
-	font-size:0.453333rem;
+	font-size:0.4rem;
 	color:#2c2c2c;
 }
 .receipt-tit span{

@@ -87,7 +87,13 @@ export default {
   methods:{
       //组件方法
       resetIndex(){
-          this.$router.go(-1);
+          if(sessionStorage.nameId){
+            this.$router.push({name:sessionStorage.goName,params:{id:this.returnData.orderNum}});
+          }else{
+            this.$router.push({name:sessionStorage.goName});
+          } 
+          sessionStorage.paymentPrice = '';
+          sessionStorage.remark = '';
       },
       getUpload(data,flag){
           this.dataURL[flag] = data;
@@ -201,8 +207,8 @@ export default {
                 this.alertText = "提交成功,请等待审核";
                 var that=this;
                 setTimeout(function(){
-                  that.$router.go(-1); 
-                },100);
+                  that.resetIndex(); 
+                },1000);
             }).catch(function (error) {
                 //this.showAlert = true;
                // this.alertText = error.body.msg||"请求失败了"; 
@@ -215,8 +221,8 @@ export default {
                 this.alertText = "提交成功,请等待审核"; 
                 var that=this;
                 setTimeout(function(){
-                  that.$router.go(-1); 
-                },100);
+                  that.resetIndex(); 
+                },1000);
             }).catch(function (error) {
                 //this.showAlert = true;
           //this.alertText = error.body.msg||"请求失败了"; 
@@ -242,14 +248,20 @@ export default {
     next(vm => {
       if(from.name=='orderDetail'){
           vm.submitFlag=true;
+          sessionStorage.nameId = true;
         }
       if(from.name=='displayDetail'){
           vm.submitFlag=false;
+          sessionStorage.nameId = true;
       }
       if(from.name=='remit'){
           vm.price=sessionStorage.paymentPrice;
           vm.remark=sessionStorage.remark;
+      }else{
+          sessionStorage.goName = from.name
       }
+      
+      
     });
   }
 }

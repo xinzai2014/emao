@@ -69,7 +69,7 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
             //组件方法
             resetIndex(){
             	if(this.isCheck){
-            		this.$router.go(-1);
+            		this.$router.push({name:sessionStorage.remitName});
             	}else{
             		this.$router.push({name:'info'});
             	} 
@@ -138,8 +138,10 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 			    if(from.name=='paymentSubmit'){
 	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
+	        		sessionStorage.remitName = from.name;
 	        	}else{
 	        		vm.isCheck=false;
+	        		
 	        	}
 			  });
         },
