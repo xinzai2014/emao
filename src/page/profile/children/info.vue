@@ -18,8 +18,10 @@
             <router-link to="/profile/info/address">
                 <div><i class="yellow-rt"></i>收货地址管理</div>
             </router-link>
-            <div><i class="yellow-rt"></i>设置密码</div>
-            <!--<div><i class="yellow-rt"></i>设置</div>-->
+            <router-link to="/profile/info/password">
+                <div><i class="yellow-rt"></i>设置密码</div>
+            </router-link>
+            <div><i class="yellow-rt"></i>设置</div>
             <button class="close-bt" @click="logOut">退出登录</button>
         </section>
         <transition name="router-slid">
@@ -32,7 +34,6 @@
     export default {
         data () {
             return {
-              //初始数据结构
               infoData:{}
             }
         },
@@ -43,15 +44,15 @@
             },
             logOut(){
                 if(confirm('确认要退出登录吗?')){
-                   /* this.$http.delete(
-                        "passport/login?token="+sessionStorage.token
+                    this.$http.delete(
+                        "passport/logout?token="+sessionStorage.token
                     ).then(function (response) {
                         console.log(response);
                         alert('ko');
                     }).catch(function (error) {
                         console.log("请求失败了");
-                    });*/
-                    this.$router.push({name:'login/account'});
+                    });
+                    //this.$router.push({name:'login/account'});
                 }
             }
         },
