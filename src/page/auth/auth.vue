@@ -78,13 +78,13 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"signboard",
-                    image:"static/sample5.jpg"
+                    image:"static/sample5.png"
                 },
                 uploadData2:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"inside",
-                    image:"static/sample6.jpg",
+                    image:"static/sample6.png",
                     imgArr:[]
                 },
                 uploadData3:{
@@ -97,14 +97,14 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"identityPos",
-                    image:"static/sample7.jpg",
+                    image:"static/sample8.jpg",
                     imgArr:[]
                 },
                 uploadData5:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"licenseRev",
-                    image:"static/sample8.jpg",
+                    image:"static/sample9.png",
                 },
                 dataURL:{},
                 cityData:[],

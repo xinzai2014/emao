@@ -5,12 +5,10 @@
 		</header>
 		<section class="set-code">
 			<div>
-				<span>原密码</span>
-				<input type="text">
+				<input type="text" placeholder="请输入注册的手机号码">
 			</div>
 			<div>
-				<span>新密码</span>
-				<input type="text">
+				<input type="text" placeholder="验证码">
 			</div>
 			<button class="close-bt">确认</button>
 		</section>

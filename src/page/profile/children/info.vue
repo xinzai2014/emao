@@ -22,11 +22,20 @@
                 <div><i class="yellow-rt"></i>设置密码</div>
             </router-link>
             <div><i class="yellow-rt"></i>设置</div>
-            <button class="close-bt" @click="logOut">退出登录</button>
+            <button class="close-bt" @click="showTips">退出登录</button>
         </section>
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <div class="dialog" v-if="showDialog" @click="closeDialog">
+            <div class="dialog-con">
+                <p>退出登录?</p>
+                <div class="dialog-btn">
+                    <span>取消</span>
+                    <span @click.stop="loginOut">确认</span>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -34,7 +43,8 @@
     export default {
         data () {
             return {
-              infoData:{}
+              infoData:{},
+              showDialog:false
             }
         },
         methods:{
@@ -42,18 +52,21 @@
             resetIndex(){
                 this.$router.push({name:'profile'});
             },
-            logOut(){
-                if(confirm('确认要退出登录吗?')){
-                    this.$http.delete(
-                        "passport/logout?token="+sessionStorage.token
-                    ).then(function (response) {
-                        console.log(response);
-                        alert('ko');
-                    }).catch(function (error) {
-                        console.log("请求失败了");
-                    });
-                    //this.$router.push({name:'login/account'});
-                }
+            showTips(){
+                this.showDialog = !this.showDialog
+            },
+            closeDialog(){
+                this.showDialog = !this.showDialog
+            },
+            loginOut(){
+                this.$http.delete(
+                    "passport/logout?token="+sessionStorage.token
+                ).then(function (response) {
+                     sessionStorage.clear();
+                     this.$router.push("/");
+                }).catch(function (error) {
+                    console.log("请求失败了");
+                });
             }
         },
         mounted(){
@@ -77,6 +90,21 @@
 </script>
 
 <style>
+.dialog{
+    position:fixed;
+    background:rgba(0,0,0,0.75);
+    height:100%;
+    width:100%;
+    top:0;
+    z-index: 10
+}
+.dialog-con{width:7rem;background:#FFF;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);border-radius:0.1rem;}
+.dialog-con p{line-height:2.2rem;text-align:center;font-size:0.42rem}
+.dialog-btn{line-height:1.2rem;font-size:0.36rem;text-align:center;}
+.dialog-btn span{display:block;width:50%;float:left;}
+.dialog-btn span:nth-of-type(1){background:#f5f5f5;border-radius:0 0 0 0.1rem;}
+.dialog-btn span:nth-of-type(2){background:#d5aa5c;color:#FFF;border-radius:0 0 0.1rem 0;}
+
 .index-fooer{
     z-index: 1;
 }
