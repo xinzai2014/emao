@@ -46,7 +46,8 @@
               </div>
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
-              <p class="remit-tit">汇款信息</p>
+              <p class="remit-tit" v-if="orderInfo.status=='7'||orderInfo.status=='27'">汇款信息</p>
+              <p class="remit-tit" v-else>付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
                       
                        <p>
