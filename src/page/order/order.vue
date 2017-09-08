@@ -332,7 +332,7 @@ export default {
         this.fillData();
     }
   },
-  beforeRouteLeave(to, from, next){
+  beforeRouteEnter(to, from, next){
     next(vm => {
       if(from.name=='declare'){
         vm.success=true;
@@ -349,6 +349,7 @@ export default {
   height:110%;
   top:0;
   bottom:0;
+  z-index: 300;
 }
 .brand-header-out {
     position: relative;
