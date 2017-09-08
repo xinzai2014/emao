@@ -39,7 +39,6 @@ import Base64 from 'crypto-js/enc-base64';
 		           this.$parent.telError = false;
 		         }else{
 		           this.$parent.telError = true;
-		           console.log("手机号码错误了");
 		           this.$parent.$refs.telephone.focus();
 		           setTimeout(()=>{
 		           		this.$parent.telError = false;
@@ -79,6 +78,7 @@ import Base64 from 'crypto-js/enc-base64';
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
+		            sessionStorage.telephone = this.$parent.telephone;
 		            this.passportCheck();
 		          },function(error){
 
@@ -86,7 +86,7 @@ import Base64 from 'crypto-js/enc-base64';
 
 		          }).finally(function(){
 		          	 this.getDataToken();
-		          });;
+		          })
 		    },
 		    passportCheck(){ //登录成功后判断是否已通过注册认证
 				this.$http({
@@ -167,7 +167,7 @@ import Base64 from 'crypto-js/enc-base64';
 	    beforeRouteLeave (to, from, next) {
 		    window.clearInterval(window.timer);
 	    	next();
-	  }
+	  	}
 	}
 
 </script>

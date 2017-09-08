@@ -41,6 +41,8 @@ const remitAdd = r => require.ensure([], () => r(require('../page/profile/childr
 const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/edit')), 'remitEdit')
 
 const password = r => require.ensure([], () => r(require('../page/profile/children/children/password/password')), 'password')
+
+const passwordEdit = r => require.ensure([], () => r(require('../page/profile/children/children/password/children/edit')), 'passwordEdit')
 //优惠券
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
 
@@ -226,7 +228,14 @@ var router=new Router({
                         {
                             path: 'password',   //汇款账户列表
                             name: 'password',
-                            component: password
+                            component: password,
+                            children: [
+                                {
+                                    path: 'edit',   //新增账户列表
+                                    name: 'passwordEdit',
+                                    component: passwordEdit
+                                }
+                            ]
                         }
                     ]
                 }
