@@ -293,7 +293,6 @@
 
             confirmInData(){
                 this.itemIn.vin_num = this.inPopupData.vin_num;
-                setTimeout(this.flushIndata,3000);
                 this.$http.post("dealer/warehouse/confirmIn",this.itemIn).then(function(response){
                     this.showInPopupStatus = !this.showInPopupStatus;
                     this.showAlert = true;
