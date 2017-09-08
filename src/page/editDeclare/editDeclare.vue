@@ -101,42 +101,47 @@
         name:"editDeclare",
         data(){
         return {
-            orderId:null,
-            dealerNameVal:'',
-            dealerPhoneVal:'',
-            dealerIDNumberVal:'',
-            dealerEmailVal:'',
-            goodsStockId:'',
-            vinNum:'',
-            errorTips:'',
-            name:'',
-            mobile:'',
-            IDNumber:'',
-            email:'',
-            showAlert:false,
-            alertText:null,
-            showPopup:false,
+            orderId:null, //
+            dealerNameVal:'',       //客户姓名
+            dealerPhoneVal:'',      //客户电话
+            dealerIDNumberVal:'',   //身份证号
+            dealerEmailVal:'',      //电子邮箱
+            goodsStockId:'',        //
+            vinNum:'',              //
+            errorTips:'',           //错误提示
+            name:'',                //姓名
+            mobile:'',              //电话
+            IDNumber:'',            //身份证号
+            email:'',               //邮箱
+            showAlert:false,        //显示错误提示与否
+            alertText:null,         //错误提示内容
+            showPopup:false,        //显示弹窗与否
             declareList:[],
-            orderInfo : {},
+            orderInfo : {},         //订单信息
 
+            //上传蹄片插件
+            //上传身份证正面照片
             uploadData1:{
                 url:"https://tcmapi.emao.com/upload",
-                count:1,
-                flag:"frontOfIDCard",
-                image:"static/sample1.jpg"
+                count:1,                        //传几张照片
+                flag:"frontOfIDCard",           //粘片标志
+                image:"static/sample1.jpg"      //照片路径
             },
+            //上传身份证背面照片
             uploadData2:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"backOfIDCard",
                 image:"static/sample2.jpg"
             },
+            //上传购车发票
             uploadData3:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"invoiceForCarPurchase",
                 image:"static/sample3.jpg"
             },
+            //上传行驶证照片
             uploadData4:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
@@ -145,21 +150,22 @@
             },
 
 
-            dataURL:{},
+            dataURL:{},             //上传数据
 
+            //表单数据
             formData:{
-                token:sessionStorage.token,
-                order_num:'',
-                goods_stock_id:'',
-                name:'',
-                phone:'',
-                idcard:'',
-                email:'',
+                token:sessionStorage.token,        //token
+                order_num:'',                      //订单号
+                goods_stock_id:'',                 //商品id
+                name:'',                           //姓名字段
+                phone:'',                          //电话字段
+                idcard:'',                         //身份证号字段
+                email:'',                          //邮箱字段
 
-                idcard_img_front:'',
-                idcard_img_reverse:'',
-                driving_license_img:'',
-                invoice_img:''
+                idcard_img_front:'',               //身份证正面字段
+                idcard_img_reverse:'',             //身份证反面字段
+                driving_license_img:'',            //购车发票字段
+                invoice_img:''                     //行驶证照片字段
             },
 
         }
@@ -194,11 +200,13 @@
             }
         },
 
+        //关闭弹窗
         closePopup(){
             this.showPopup = false;
             this.$router.push('/declare');//跳转到售车申报列表页
         },
 
+        //提交表单数据
         submitData(){
 
             if (!this.dealerNameVal) {

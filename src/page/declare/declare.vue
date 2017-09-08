@@ -133,9 +133,11 @@
                     this.alertText = error.body.msg;
                 })
             },
+            //隐藏加载状态
             hideLoading(){
                 this.showLoading = false;
             },
+            //加载更多
             loaderMore(){
                 if (this.touchend){
                     return
@@ -160,11 +162,12 @@
                 this.fillData();
             }
         },
+        //路由判断
         beforeRouteEnter (to, from, next) {
             // 导航离开该组件的对应路由时调用
             // 可以访问组件实例 `this`
             next();
-            if (!(from.name == null || from.name == "soldCar" )) {
+            if (!(from.name == null || from.name == "soldCar" || from.name == "editDeclare")) {
                 sessionStorage.setItem("prePath",from.name);
             }
 
