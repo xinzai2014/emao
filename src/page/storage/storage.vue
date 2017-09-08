@@ -246,7 +246,6 @@
 
             //刷新等待入库数据&&在库数据
             flushIndata(){
-                this.waitIn.splice(this.currentInIndex,1);
                 this.waitIn[this.currentInIndex].add_time = Date.parse(new Date())/1000;
                 this.waitIn[this.currentInIndex].add_warehouse_time =  this.getLocalTime(this.waitIn[this.currentInIndex].add_time);
                 var This = this;
@@ -255,6 +254,7 @@
                 });
                 newIndex =  (newIndex == -1 ) ? this.inWarehouse.length : newIndex ;
                 this.inWarehouse.splice( newIndex ,0, this.waitIn[this.currentInIndex]);
+                this.waitIn.splice(this.currentInIndex,1);
             },
 
             //刷新等待出库数据
