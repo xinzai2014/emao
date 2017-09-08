@@ -5,8 +5,8 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>我的展车
 		</header>
 		<!--我的展车-->
-	    <section class="full-wrap" v-show="showGame" >
-	        <div class="condition" ref="carWrap">
+	    <section class="full-wrap">
+	        <div class="condition" ref="carWrap" v-show="showGame">
 	        	<div class="condition-ct" v-if="games.length">
 		            <div class="condition-tit">
 		            	<p :class="{'head-fixed':scrollIndex == 0}">
@@ -56,11 +56,11 @@
 	            <router-link to="/cancel"><p><i class="white-rt"></i>已退展车</p></router-link>
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
+	        <div class="no-auto server-no-response" v-show="!showGame">
+	        	<img src="../../assets/no-order.png" alt="">
+            	<p>暂无展车</p>
+	        </div>
 	    </section>
-	    <section class="no-auto server-no-response" v-show="!showGame">
-            <img src="../../assets/no-order.png" alt="">
-            <p>暂无展车</p>
-        </section>
         <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     	<!-- 确认收货 -->
     	<div class="mask-receipt" v-show="receiptShow">
