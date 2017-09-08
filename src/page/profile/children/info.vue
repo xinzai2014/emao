@@ -21,7 +21,9 @@
             <router-link to="/profile/info/password">
                 <div><i class="yellow-rt"></i>设置密码</div>
             </router-link>
-            <div><i class="yellow-rt"></i>设置</div>
+            <router-link to="/profile/info/setting">
+                <div><i class="yellow-rt"></i>设置</div>
+            </router-link>
             <button class="close-bt" @click="showTips">退出登录</button>
         </section>
         <transition name="router-slid">

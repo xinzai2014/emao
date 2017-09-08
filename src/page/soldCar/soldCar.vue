@@ -38,17 +38,16 @@
         name:'soldCar',
         data(){
         return{
-            declareList:[],
-            touchend:false,
-            perPage:'10',
-            currentPage:'1',
-            lastPage:'0',
-            perPage:'10',
-            showLoading: true,
-            preventRepeatReuqest:false,
-            showNoDataVal:false,
-            showAlert:false,
-            alertText:null
+            declareList:[],                 //已售车量信息
+            touchend:false,                 //是否是加载到底部
+            perPage:'10',                   //每页10条数据
+            currentPage:'1',                //当前页
+            lastPage:'0',                   //最后一页
+            showLoading: true,              //是否显示加载
+            preventRepeatReuqest:false,     //是否阻止重复请求
+            showNoDataVal:false,            //是否显示没有数据
+            showAlert:false,                //是否显示提示弹窗
+            alertText:null                  //错误内容提示
         }
     },
     methods:{
@@ -56,6 +55,7 @@
         resetIndex(){
             this.$router.push({name:'declare'});
         },
+        //隐藏加载状态
         hideLoading(){
             this.showLoading = false;
         },
@@ -76,6 +76,7 @@
             this.currentPage = parseInt(this.currentPage) + 1;
             this.getSoldCarData();
         },
+        //获得已售车辆信息
         getSoldCarData(){
             var dataToken = sessionStorage.token;
             var data = {
