@@ -331,6 +331,13 @@ export default {
     $route(){
         this.fillData();
     }
+  },
+  beforeRouteEnter(to, from, next){
+    next(vm => {
+      if(from.name=='declare'){
+        vm.success=true;
+      }
+    });
   }
 }
 </script>
@@ -342,6 +349,7 @@ export default {
   height:110%;
   top:0;
   bottom:0;
+  z-index: 300;
 }
 .brand-header-out {
     position: relative;

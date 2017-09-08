@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>退订展车
+			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>已退展车
 		</header>
 		<!--退订展车-->
 	    <section v-if="infoData.length" class="bought" v-scroll="getMore">

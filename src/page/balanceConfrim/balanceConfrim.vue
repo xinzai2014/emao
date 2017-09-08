@@ -8,7 +8,7 @@
     </header>
     <!--购车确认-->
     <!--购车确认-地址-姓名-->
-    <section class="order-confirmation-address" @click="goAdressList">
+    <section class="order-confirmation-address">
         <div class="order-name-phone clearfix">
             <div class="order-name">
                 收货人：<span>{{address.name}}</span>
@@ -18,7 +18,6 @@
         <div class="order-address">
             地址：<strong>{{address.address}}</strong>
         </div>
-        <i class="white-rt"></i>
     </section>
     <!--购车确认-车型信息-->
     <section class="order-car-info">
@@ -77,7 +76,7 @@
             <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
-            <span>保证金</span>
+            <span>已付保证金</span>
             <p><i>-</i><strong>￥{{deposit|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
@@ -259,8 +258,7 @@ export default {
             messageData:{},
             codeText:"发送到手机", //下单成功后发送短信到手机
             num:60, //下单成功后倒计时
-            disabled:false,
-            routerAddress:false
+            disabled:false
  	    }
 	  },
 	  methods:{
@@ -273,9 +271,6 @@ export default {
         goDetail(id){
             this.$router.push("/orderDetail/" + id);
         },
-        goAdressList(){
-            this.$router.push("/profile/info/address");
-        },
 	  	getData(){
 			this.$http({
 		          url:"order/full/confirm",
@@ -283,14 +278,7 @@ export default {
 		          params:this.initData
 		      }).then(function (response) {
 		      	   var data = response.body.data;
-                   if(this.routerAddress){
-                        this.address =this.$store.state.defaultAdress;
-                   }else{
-                        this.address = data.address;
-                        this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
-                            data.address
-                        ); 
-                   }
+                   this.address = data.address;
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -531,16 +519,7 @@ export default {
             var rebatePrice = this.updateRebateData>0?this.updateRebateData:0;
             return this.car.price - couponPrice - marketPrice - rebatePrice - this.deposit;
         }
-      },
-      beforeRouteEnter(to, from, next){
-            next(vm => {
-                if(from.name=='address'){
-                    vm.routerAddress = true;
-                }else{
-                    vm.routerAddress = false;
-                }
-              });
-        },
+      }
 }
 </script>
 

@@ -43,23 +43,14 @@
                 this.showDialog = !this.showDialog
             },
             loginOut(){
-                sessionStorage.removeItem("dataToken");
-                sessionStorage.removeItem("token"); 
-                this.$router.push('/');
-                // this.$http.delete("passport/logout",{params:sessionStorage.token},{emulateHTTP:true}
-                // ).then(function (response) {
+                this.$http.delete(
+                    "passport/logout?token="+sessionStorage.token
+                ).then(function (response) {
+                    sessionStorage.clear();
+                    this.$router.push("/");
+                }).catch(function (error) {
 
-                // },function(){
-
-                // })
-                // const xhr = new XMLHttpRequest();
-                // xhr.open('DELETE', "https://tcmapi.emao.com/passport/logout",true)
-                // xhr.setRequestHeader("Accept","application/json;version=1.0.0");
-                // xhr.setRequestHeader('X-Emao-TCM-Wap',1);
-                // xhr.send();
-                // xhr.onload = () => {
-                   
-                // }
+                });
             }
         }
     }

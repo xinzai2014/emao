@@ -11,9 +11,7 @@
 		            <div class="bought-ct">
 		                <p class="bought-tit">{{item.name}}</p>
 		                <p class="bought-color">{{item.color}}</p>
-		                <p class="bought-state">已补余款：<span>{{item.price}}</span></p>
 		            </div>
-		            <p class="bought-spend">已购买</p>
 	            </router-link>
 	        </div>
 	    </section>
@@ -122,7 +120,6 @@
 }
 .bought-ct{
 	padding-bottom:0.533333rem;
-	border-bottom:1px solid #e0e0e0;
 }
 .bought-state{
 	padding-top:0.533333rem;

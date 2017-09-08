@@ -16,13 +16,13 @@
                 <p class="transit-depot-address">{{dealer_name}}</p>
                 <ul class="transit-depot-top clearfix">
                     <li>
-                        <span>{{auto_wait_in}}</span>
+                        <span>{{waitIn.length}}台等待入库</span>
                     </li>
                     <li>
-                        <span>{{auto_wait_out}}</span>
+                        <span>{{waitOut.length}}台等待出库</span>
                     </li>
                     <li>
-                        <span>{{auto_in_warehouse}}</span>
+                        <span>{{inWarehouse.length}}台在库</span>
                     </li>
                 </ul>
             </section>
@@ -46,9 +46,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <!--<div class="no-data" v-if="!waitIn.length">-->
-                        <!--<p>暂无等待入库车辆</p>-->
-                        <!--</div>-->
                     </li>
                     <li v-if="waitOut.length">
                         <p class="transit-depot-status">等待出库</p>
@@ -66,9 +63,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <!--<div class="no-data" v-if="!waitOut.length">-->
-                        <!--<p>暂无等待出库车辆</p>-->
-                        <!--</div>-->
                     </li>
                     <li v-if="inWarehouse.length">
                         <p class="transit-depot-status">在库</p>
@@ -87,9 +81,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <!--<div class="no-data" v-if="!inWarehouse.length">-->
-                        <!--<p>暂无在库车辆</p>-->
-                        <!--</div>-->
                     </li>
                 </ul>
             </section>
@@ -100,7 +91,7 @@
                 <div class="storage-popup-out" :class="{dialogShow:showInPopupStatus}">
                     <div class="storage-popup-info">
                         <div class="storage-popup-txt">
-                            <p class="storage-popup-name">{{inPopupData.brand_name}}{{inPopupData.serie_name}}</p>
+                            <p class="storage-popup-name">{{inPopupData.brand_name}}&nbsp {{inPopupData.serie_name}}</p>
                             <p class="storage-popup-color">{{inPopupData.ext_color}}/{{inPopupData.int_color}}</p>
                         </div>
                         <p class="storage-popup-vin">{{inPopupData.vin_num}}</p>
@@ -128,7 +119,7 @@
                     <div class="stock-removal-popup-info">
                         <div class="stock-removal-con">
                             <p class="stock-removal-popup-vin">{{outPopupData.vin_num}}</p>
-                            <p>{{outPopupData.brand_name}}{{outPopupData.serie_name}}</p>
+                            <p>{{outPopupData.brand_name}}&nbsp{{outPopupData.serie_name}}</p>
                             <p>{{outPopupData.ext_color}}/{{outPopupData.int_color}}</p>
                         </div>
                         <div class="vehicle-accessories-popup-info">
@@ -163,34 +154,37 @@
         name:"storage",
         data(){
             return {
-                dealer_name:'',
-                auto_wait_in:'',
-                auto_wait_out:'',
-                auto_in_warehouse:'',
-                outCode: '',
+                dealer_name:'',//经销商名称
+                auto_wait_in:'',//等待入库数量
+                auto_wait_out:'',//等待出库数量
+                auto_in_warehouse:'',//在库数量
+                outCode: '',//提车码
                 code:'',
-                vinNum:'',
-                inErrorTips:'',
-                outErrorTips:'',
-                showInPopupStatus:false,
-                showOutPopupStatus:false,
-                showAlert:false,
-                alertText:null,
-                timer:null,
-                waitIn:[],
-                waitOut:[],
-                inWarehouse:[],
+                vinNum:'',//车架号
+                inErrorTips:'',//入库弹窗信息提示
+                outErrorTips:'',//出库弹窗信息提示
+                showInPopupStatus:false,//入库弹窗显示与否
+                showOutPopupStatus:false,//出库弹窗显示与否
+                showAlert:false,//错误提示显示与否
+                alertText:null,//错误内容
+                currentInIndex:null,  //当前的索引
+                currentOutIndex:null,  //当前的索引
+                waitIn:[],//等待入库车辆信息
+                waitOut:[],//等待出库车辆信息
+                inWarehouse:[],//在库车辆信息
+                //确定入库接口参数
                 itemIn:{
-                    token:sessionStorage.token,
-                    vin_num : '',
+                    token:sessionStorage.token, //token
+                    vin_num : '' //车架码
                 },
+                //确定出库参数接口
                 itemOut:{
-                    token:sessionStorage.token,
-                    vin_num : '',
-                    code:''
+                    token:sessionStorage.token, //token
+                    vin_num : '', //车架码
+                    code:'' //提车码
                 },
-                inPopupData:{},
-                outPopupData:{}
+                inPopupData:{},//入库弹窗信息
+                outPopupData:{}//出库弹窗信息
             }
         },
         methods:{
@@ -198,8 +192,38 @@
             resetIndex(){
                 this.$router.go(-1);
             },
+            //中转库接口
+            getStorageData(){
+                var dataToken = sessionStorage.token;
+                var data = {
+                    token:dataToken
+                };
+                this.$http({
+                    url:"dealer/warehouse/index",
+                    methods:"GET",
+                    params:data
+                }).then(function(response){
+                    this.dealer_name = response.body.data.base.name;
+                    this.auto_wait_in = response.body.data.base.list[0];
+                    this.auto_wait_out = response.body.data.base.list[1];
+                    this.auto_in_warehouse = response.body.data.base.list[2];
+                    this.waitIn = response.body.data.waitIn;
+                    this.waitOut = response.body.data.waitOut;
+                    this.inWarehouse = response.body.data.inWarehouse;
+
+                    for (var i = 0; i < this.inWarehouse.length;i++) {
+                        this.inWarehouse[i].add_warehouse_time =  this.getLocalTime(this.inWarehouse[i].add_time);
+                    }
+                }).catch(function(error){
+                    this.showAlert = true;
+                    this.alertText = error.body.msg;
+
+                })
+            },
+
             //显示入库弹窗
             showInPopup(vinNum,index){
+                this.currentInIndex = index;
                 this.showInPopupStatus = !this.showInPopupStatus;
                 this.inPopupData = this.waitIn[index];
             },
@@ -220,10 +244,26 @@
                 this.outErrorTips = "";
             },
 
-            //刷新当前页面
-            flushCom(){
-                this.$router.go(0);
+            //刷新等待入库数据&&在库数据
+            flushIndata(){
+                this.waitIn.splice(this.currentInIndex,1);
+                this.waitIn[this.currentInIndex].add_time = Date.parse(new Date())/1000;
+                this.waitIn[this.currentInIndex].add_warehouse_time =  this.getLocalTime(this.waitIn[this.currentInIndex].add_time);
+                var This = this;
+                var newIndex = this.inWarehouse.findIndex(function(currentValue,index,arr){
+                    return currentValue.id > This.waitIn[This.currentInIndex].id
+                });
+                newIndex =  (newIndex == -1 ) ? this.inWarehouse.length : newIndex ;
+                this.inWarehouse.splice( newIndex ,0, this.waitIn[this.currentInIndex]);
             },
+
+            //刷新等待出库数据
+            flushOutData(){
+                // this.$router.go(0);
+                this.waitOut.splice(this.currentOutIndex,1);
+            },
+
+            //
 
             //点击出库弹窗确认按钮
             confirmOut(){
@@ -235,13 +275,12 @@
                 this.itemOut.vin_num = this.outPopupData.vin_num;
                 this.$http.post("dealer/warehouse/confirmOut",this.itemOut).then(function(response){
                     this.showOutPopupStatus = !this.showOutPopupStatus;
-                   // this.flushCom();
                     this.showAlert = true;
                     this.alertText = '车辆出库成功';
-                    setInterval(this.flushCom,3000);
+                    setTimeout(this.flushOutData,3000);
                 }).catch(function(error){
                     this.outErrorTips = error.body.msg;
-                })
+                });
             },
 
             //点击入库弹窗确认按钮
@@ -249,29 +288,24 @@
                 this.confirmInData();
             },
             //提交入库的相关信息
+
+
+
             confirmInData(){
                 this.itemIn.vin_num = this.inPopupData.vin_num;
+                setTimeout(this.flushIndata,3000);
                 this.$http.post("dealer/warehouse/confirmIn",this.itemIn).then(function(response){
                     this.showInPopupStatus = !this.showInPopupStatus;
                     this.showAlert = true;
                     this.alertText = '车辆已入库';
-                    setInterval(this.flushCom,3000);
+                    setTimeout(this.flushIndata,3000);
                 }).catch(function(error){
                     this.inErrorTips = error.body.msg;
                 })
 
-            }
-
-
-        },
-        mounted(){
-            var dataToken = sessionStorage.token;
-            var data = {
-                token:dataToken
-            };
-
+            },
             //把时间戳换成时间格式
-            function getLocalTime(timestamp) {
+            getLocalTime(timestamp) {
                 var date = new Date(parseInt(timestamp) * 1000);
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
@@ -285,31 +319,12 @@
                 minute = minute < 10 ? ('0' + minute) : minute;
                 //return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
                 return year + '-' + month + '-' + day ;
-            };
+            }
 
 
-            //中转库接口
-            this.$http({
-                url:"dealer/warehouse/index",
-                methods:"GET",
-                params:data
-            }).then(function(response){
-                console.log(response);
-                this.dealer_name = response.body.data.base.name;
-                this.auto_wait_in = response.body.data.base.list[0];
-                this.auto_wait_out = response.body.data.base.list[1];
-                this.auto_in_warehouse = response.body.data.base.list[2];
-                this.waitIn = response.body.data.waitIn;
-                this.waitOut = response.body.data.waitOut;
-                this.inWarehouse = response.body.data.inWarehouse;
-
-                for (var i = 0; i < this.inWarehouse.length;i++) {
-                    this.inWarehouse[i].add_warehouse_time =  getLocalTime(this.inWarehouse[i].add_time);
-                }
-            }).catch(function(error){
-                this.showAlert = true;
-                this.errorTips = error.body.msg;
-            })
+        },
+        mounted(){
+            this.getStorageData();
         },
         components:{
             alertTip

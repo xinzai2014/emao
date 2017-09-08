@@ -2,9 +2,14 @@
     <div>
         <!--头部-->
         <header class="user-tit declare-head">
-            <router-link to="/profile">
-                <a href="javascript:;" class="white-lt"></a>
-            </router-link>
+
+
+            <!--<router-link to="/profile">-->
+                <!--<a href="javascript:;" class="white-lt"></a>-->
+            <!--</router-link>-->
+
+
+            <span class="white-lt" @click="resetIndex"></span>
             售车申报
             <router-link to="/soldCar">
                 <span>已售车辆</span>
@@ -50,23 +55,29 @@
         data(){
             return{
                 name:'declare',
-                current_page :'1',
-                last_page:'0',
-                per_page:'10',
-                touchend:false,
-                preventRepeatReuqest:false,
-                showLoading: true,
-                declareList:[],
-                add_order_time:'',
-                showNoDataVal:false,
-                showAlert:false,
-                alertText:null
+                current_page :'1', //当前页
+                last_page:'0', //上一页
+                per_page:'10', //每页的数量
+                touchend:false, //是否触摸到底部
+                preventRepeatReuqest:false, //阻止重复请求
+                showLoading: true, //正在加载
+                declareList:[], //售车申报列表
+                add_order_time:'', //售车申报入库时间
+                showNoDataVal:false, //显示没有数据
+                showAlert:false, //提示框显示与否
+                alertText:null //提示内容
             }
         },
         components:{
             alertTip
         },
         methods:{
+            //回到上一级
+            resetIndex(){
+                console.log(sessionStorage.getItem("prePath"));
+               // this.$router.push({"path":"/"+sessionStorage.getItem("prePath")})
+                this.$router.push({"name":sessionStorage.getItem("prePath")})
+            },
             //组件方法
             goEdit(orderNum,goodsStockId){
                 this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
@@ -148,6 +159,15 @@
             $route(){
                 this.fillData();
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+            next();
+            if (!(from.name == null || from.name == "soldCar" )) {
+                sessionStorage.setItem("prePath",from.name);
+            }
+
         }
     }
 </script>

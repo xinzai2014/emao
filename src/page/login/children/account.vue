@@ -91,6 +91,7 @@ import Base64 from 'crypto-js/enc-base64';
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
+		            sessionStorage.telephone = this.$parent.telephone;
 		            this.passportCheck();
 		          },function(error){
 		          	console.log(error);

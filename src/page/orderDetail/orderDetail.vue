@@ -37,7 +37,7 @@
               <p class="car-vin" v-if="orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
               <div class="settlement">
                   <p><span>￥{{capitalInfo.totalPrice}}</span>订单总价：</p>
-                  <!--<p><span>-￥{{capitalInfo.deposit||'0.00'}}</span>已付保证金：</p>-->
+                  <p v-if="capitalInfo.deposit!='0.00'"><span>-￥{{capitalInfo.deposit}}</span>已付保证金：</p>
                   <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣（不可开票）：</p>
                   <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
                   <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>
@@ -46,7 +46,8 @@
               </div>
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
-              <p class="remit-tit">汇款信息</p>
+              <p class="remit-tit" v-if="orderInfo.status=='7'||orderInfo.status=='27'">汇款信息</p>
+              <p class="remit-tit" v-else>付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
                       
                        <p>
@@ -457,15 +458,11 @@ export default {
       }
 
   },
-  beforeRouteLeave(to, from, next){
+  beforeRouteEnter(to, from, next){
     next(vm => {
-      /*if(to.name=='paymentSubmit'){
-        to.query={
-          'price':vm.orderInfo.price,
-          'remark':vm.orderInfo.remark
-         }
-         console.log(to);
-      }*/
+      if(from.name=='declare'){
+        vm.success=true;
+      }
     });
   }
 
@@ -482,6 +479,7 @@ export default {
   height:110%;
   top:0;
   bottom:0;
+  z-index: 300;
 }
 .brand-header-out {
     position: relative;

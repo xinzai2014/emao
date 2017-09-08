@@ -20,21 +20,21 @@
 					<div class="rebate-wrap" v-show="rebate">
 						<div class="rebate-item" v-for="(item,index) in rebate">
 							<div class="category">
-								<b>{{item.amount}}</b>{{item.note}}
+								<b>{{item.amount}}<em>元</em></b>{{item.note}}
 							</div>
 							<div class="category-info">
 								<div class="category-time">
 									<p class="detailed-tit">{{item.updated_at}}</p>
 									<div class="detailed active" v-if="item.detail.length">
-										<p class="detailed-p" @click="show(index)" v-show="index == i">
+										<p class="detailed-p" @click="show(item)" v-show="item.active">
 											<a href="javascript:;">收起</a>
 											<i class='yellow-bt active'></i>
 										</p>
-										<p class="detailed-p" @click="show(index)" v-show="index !== i">
-											<a href="javascript:;">展开详情</a>
+										<p class="detailed-p" @click="show(item)" v-show="!item.active">
+											<a href="javascript:;">展开详细</a>
 											<i class='yellow-bt'></i>
 										</p>
-										<div class="detailed-info" v-show="index == i" v-for="(val,key) in item.detail">
+										<div class="detailed-info" v-show="item.active" v-for="(val,key) in item.detail">
 											<p><span>{{val.des}}</span>{{val.title}}</p>
 										</div>
 									</div>
@@ -64,8 +64,6 @@
                 //初始数据结构
                 rebate:[],
                 amount:'', //可用资金
-                showAll:false, //展开收起
-                i:-1,
                 nodata:false 
             }
         },
@@ -74,13 +72,11 @@
             resetIndex(){
                 this.$router.go(-1);
             },
-		    show(index) {
-			    if(this.showAll == false){　　
-			        this.i = index;
-			        this.showAll = true
+		    show(item) {
+			    if(!item.active){　　
+			        item.active = !item.active
 			    }else{
-			        this.i = -1;
-			        this.showAll = false
+			        item.active = !item.active
 			    }	
 		    }
             
@@ -98,9 +94,16 @@
                 method:"GET",
                 params:data
             }).then(function (response) {
-            	console.log(response)
-                this.rebate = response.body.data.capital_history;
+                var num = response.body.data.capital_history;
                 this.amount = response.body.data.amount||'0.00';
+                for(var i =0;i<num.length;i++){
+                	num[i].updated_at = num[i].updated_at.substring(5);
+                	num[i].active = false;
+                	if(num[i].amount > 0){
+                		num[i].amount = '+'+num[i].amount;
+                	}
+                }
+                this.rebate = num;
                 if(this.rebate.length > 0){
                 	this.nodata = true
                 }else{
@@ -116,11 +119,12 @@
 
 <style>
 /*返利资金*/
-body,html{
+body,html,.rating_page{
 	background:#fff;
 }
 .rebate-wrap{
 	margin-top:-0.026667rem;
+	background:#fff;
 }
 .rebate-tp{
 	background:#27282f;
@@ -175,6 +179,10 @@ body,html{
 	float:right;
 	font-size:0.533333rem;
 }
+.category b em{
+	font-size:0.32rem;
+	margin-left:0.04rem;
+}
 .category-time{
 	position:relative;
 	padding-top:0.4rem;
@@ -223,6 +231,7 @@ body,html{
 .detailed-info span{
 	float:right;
 	color:#999;
+	max-width:8.0rem;
 }
 .active .detailed-info{
 	display:block;

@@ -40,7 +40,7 @@
 <style>
 .alet_container{
     position:fixed;
-    z-index:25;
+    z-index:250; 
 }
 
 .tip_text{

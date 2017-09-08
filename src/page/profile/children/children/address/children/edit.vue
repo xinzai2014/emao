@@ -23,7 +23,7 @@
 	                </li>
 	            </ul>
 	        </div>
-	        <input class="address-save" type="button" name="" value="保存并使用" @click="saveEdit">
+	        <input class="address-save" type="button" name="" value="保存" @click="saveEdit">
 	    </section>
 		<alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
@@ -123,13 +123,14 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 		        ).then(function (response) {
 		        	this.showAlert = true;
           			this.alertText = "保存成功";
-		        	if(this.$store.addressFlag!=""){
+          			this.$router.push({ name: 'address'});
+		        	/*if(this.$store.addressFlag!=""){
 				    	var addressFlag=this.$store.state.addressFlag;
 				    	this.$store.dispatch("ADDRESS_FLAG","");
 				    	this.$router.push({ name: addressFlag});				    	
 				    }else{
 				    	this.$router.push({ name: 'address'});
-				    }
+				    }*/
 		        }).catch(function (error) {
 		            this.showAlert = true;
           			 this.alertText = error.body.msg||"请求失败了";	            

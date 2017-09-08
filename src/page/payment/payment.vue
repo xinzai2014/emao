@@ -16,13 +16,13 @@
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款底单</p>
+              <p class="no-border">汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
-                      <img :src="editData.payimg">
+                      <img :src="editData.payimg" @click="picView(editData.payimg)">
                   </div>
-                  <div class="voucher-lt" v-if="editData.payimg2">
-                      <img :src="editData.payimg2">
+                  <div class="voucher-lt" v-if="editData.payimg2" >
+                      <img :src="editData.payimg2" @click="picView(editData.payimg2)">
                   </div>
               </div>
           </div>
@@ -42,29 +42,32 @@
               <p class="no-border">汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
-                      <img :src="img"  v-preview="img" v-for="img in imgs">
+                      <img :src="img" v-for="img in imgs" @click="picView(img)">
                   </div>
                   <div class="voucher-lt">
-                      <img :src="editData.payimg2" v-if="editData.payimg2" v-preview="editData.payimg2">
+                      <img :src="editData.payimg2" v-if="editData.payimg2" @click="picView(editData.payimg2)">
                   </div>
                  
               </div>
               <p class="no-border">代付证明</p>
               <div class="voucher-img">
                    <div class="voucher-lt">
-                    <img :src="editData.bank_info.explan_path" v-preview="editData.bank_info.explan_path">
+                    <img :src="editData.bank_info.explan_path" @click="picView(editData.bank_info.explan_path)">
                 </div>
                  
               </div>
 
-              <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+              
           </div>
       </section>
-        
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+      <pic-view v-show="showBigImg" @closeTip="showBigImg = false" :bigImg="bigImg"></pic-view>
+
     </div>
 </template>
 
 <script>
+import picView from '../../components/common/picView/picView'
 import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
@@ -73,15 +76,22 @@ export default {
       type:null,
       showAlert: false, //弹出框
       alertText: null, //弹出信息
-      imgs:[]
+      imgs:[],
+      bigImg:'',
+      showBigImg:false
     }
   },components:{
-        alertTip
+        alertTip,
+        picView
       },
   methods:{
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    picView(src){
+      this.bigImg=src;
+      this.showBigImg=true;
     },
     fillData(){
         var order_num=this.$route.params.id;
