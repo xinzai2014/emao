@@ -105,10 +105,6 @@
             resetIndex(){
                 this.$router.push({name:'profile'});
             },
-            //刷新当前页面
-            flushCom(){
-                this.$router.go(0);
-            },
             confirmCar(item){ //确认收货弹框信息
             	if(item.status=='4'){
             		this.receiptShow = !this.receiptShow;
@@ -149,6 +145,7 @@
 				
             },
             receiptStatus(){
+            	this.orderInfo.status = 5;
             	this.receiptShow = !this.receiptShow;
             	var that = this;
             	var data = {
@@ -159,7 +156,7 @@
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.flushCom();
+	            	this.showData();
 	            }).catch(function (error) {
 	                this.showAlert = true;
 		          	this.alertText = error.body.msg

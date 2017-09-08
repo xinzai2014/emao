@@ -8,8 +8,8 @@
 	    <section class="details-wrap">
 		    <div>
 		        <div class="details-tit" v-show="timeShow">
-		            <h4 v-if="orderInfo.status=='4'"><span>剩余：{{orderInfo.remaining}}自动确认收货</span>{{statusText}}</h4>
-		            <h4 v-else><span>剩余：{{orderInfo.remaining}}</span>{{statusText}}</h4>
+		            <h4 v-if="orderInfo.status=='4'"><span>{{orderInfo.remaining}}自动确认收货</span>{{statusText}}</h4>
+		            <h4 v-else><span>{{orderInfo.remaining}}</span>{{statusText}}</h4>
 		            <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
 		        </div>
 		        <div class="details-tit" v-show="!timeShow">
@@ -312,6 +312,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             		this.statusText = '展车在展';
             		this.vinActive = '在展';
             		this.btnText = '补余款';
+            		this.timeShow = false;
             		this.btmBtn = !this.btmBtn;
             		this.process = !this.process;
             		this.vanShow = !this.vanShow;
@@ -382,7 +383,12 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	            this.$http.post(
 	                "order/show/cancel",data
 	            ).then(function (response) {
-	            	this.fullData();
+	            	this.statusText = '已取消';
+            		this.payment = '未支付';
+            		this.paymentActive = !this.paymentActive;
+            		this.timeShow = false;
+            		this.btmBtn = false;
+            		this.carCancel = false;
 	            }).catch(function (error) {
 	                this.showAlert = true;
            			this.alertText = error.body.msg||"请求失败了"
@@ -416,7 +422,13 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.fullData();
+	            	this.statusText = '展车在展';
+            		this.vinActive = '在展';
+            		this.btnText = '补余款';
+            		this.timeShow = false;
+            		this.btmBtn = true;
+            		this.process = !this.process;
+            		this.vanShow = !this.vanShow;
 	            }).catch(function (error) {
 	                this.showAlert = true;
            			this.alertText = error.body.msg||"请求失败了"
