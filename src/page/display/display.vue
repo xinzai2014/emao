@@ -52,7 +52,7 @@
 		            </div>
 	            </div>
 	        </div>
-	        <div :class="arr.length >=3 ?'branch default' : 'branch'">
+	        <div v-show="showFixed" :class="arr.length >=3 ?'branch default' : 'branch'">
 	            <router-link to="/cancel"><p><i class="white-rt"></i>已退展车</p></router-link>
 	            <router-link to="/purchase"><p><i class="white-rt"></i>已购展车</p></router-link>
 	        </div>
@@ -97,7 +97,8 @@
 				receiptShow:false,
 				showGame:true,
 				scrollIndex:-1,
-				carScrollHeight:[]
+				carScrollHeight:[],
+				showFixed:false
             }
         },
         methods:{
@@ -252,6 +253,7 @@
 					}else{
 						this.showGame = !this.showGame;
 					}
+					this.showFixed = true;
 					setTimeout(()=>{
                         this.countHeight();
                     },100)
