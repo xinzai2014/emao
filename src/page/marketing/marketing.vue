@@ -231,7 +231,7 @@ body,html,.rating_page{
 .detailed-info span{
 	float:right;
 	color:#999;
-	max-width:8.2rem;
+	max-width:8.0rem;
 }
 .active .detailed-info{
 	display:block;
