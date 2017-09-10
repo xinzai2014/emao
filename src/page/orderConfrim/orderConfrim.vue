@@ -56,7 +56,7 @@
             <div class="order-support-title">营销支持费：</div>
             <div class="order-support-con" v-if="chooseMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseMarket">无可用</div>
-            <div class="order-support-con" v-if="chooseMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
+            <div class="order-support-con" v-if="chooseMarket&&updateMarket">-￥<strong>{{updateMarketData|getMoney}}</strong><span @click="showMarketDialog">调整</span></div>
             <div class="order-suport-switch">
                 <input type="checkbox"  v-model="checkMarket">
             </div>
@@ -65,7 +65,7 @@
             <div class="order-support-title">返利：</div>
             <div class="order-support-con" v-if="chooseRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseRebate">无可用</div>
-            <div class="order-support-con" v-if="chooseRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
+            <div class="order-support-con" v-if="chooseRebate&&updateRebate">-￥<strong>{{updateRebateData|getMoney}}</strong><span @click="showRebateDialog">调整</span></div>
             <div class="order-suport-switch">
                 <input type="checkbox"  v-model="checkRebate">
             </div>
@@ -115,10 +115,10 @@
                 <ul class="coupon-con">
                     <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
-                            <dt>¥ {{item.price}}</dt>
+                            <dt>¥ {{parseInt(item.price)}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
-                                <p class="coupon-info">{{item.detail}}</p>
+                              
                                 <p class="coupon-date">有效期：<span>{{item.startDate}} - {{item.endDate}}</span></p>
                             </dd>
                         </dl>
@@ -363,7 +363,7 @@ export default {
             }
             this.showMarket = !this.showMarket;
             this.updateMarket = true;
-            this.updateMarketData = parseFloat(this.marketData).toLocaleString()+".00";
+            this.updateMarketData = this.marketData;
         },
         showRebateDialog(){ //返利弹出窗
             this.showRebate = !this.showMarket;
@@ -392,7 +392,7 @@ export default {
             }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
-            this.updateRebateData = parseFloat(this.rebateData).toLocaleString()+".00";
+            this.updateRebateData = this.rebateData;
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
@@ -480,7 +480,9 @@ export default {
             if(isNaN(num)){
                 num = 0;
             }
-            return parseInt(num).toLocaleString() +".00";
+            var arr = num.toString().split(".");
+            var tagNum = arr.length>1?parseInt(arr[0]).toLocaleString() + "." + arr[1]:parseInt(arr[0]).toLocaleString() +".00"
+            return tagNum;
         }
       },
       computed:{
@@ -605,13 +607,13 @@ export default {
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
 .coupon-con{padding: 0 .533rem .5333rem .533rem;}
-.coupon-con li{position:relative;width:9.1467rem;height:2.9467rem;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
+.coupon-con li{position:relative;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
 .coupon-con dt{float:left;width:2.7733rem;height:2.7733rem;text-align:center;line-height:2.7733rem;font-size:.533rem;color:#d5aa5c;}
 .coupon-con  dd{margin-left:2.7733rem;padding:.4rem;}
 .coupon-name{font-size:.4rem;color:#2c2c2c;}
 .coupon-info{font-size:.32rem;color:#999;}
-.coupon-date{font-size:.32rem;color:#999;}
-.coupon-chose-logo{position:absolute;top:-.1333rem;left:-.1333rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
+.coupon-date{font-size:.32rem;color:#999;margin-top:0.25rem}
+.coupon-chose-logo{position:absolute;top:0.1rem;left:0.1rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
 
 /*营销支持费，返利*/
 .use-coupon-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
