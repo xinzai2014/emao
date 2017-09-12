@@ -685,7 +685,6 @@ export default {
   padding-top:0.4rem;
   font-size:0.453333rem;
   color:#2c2c2c;
-  text-decoration:underline;
 }
 .mask{
   width:100%;

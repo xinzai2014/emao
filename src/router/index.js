@@ -42,11 +42,16 @@ const remitEdit = r => require.ensure([], () => r(require('../page/profile/child
 
 const password = r => require.ensure([], () => r(require('../page/profile/children/children/password/password')), 'password')
 
+
 const passwordEdit = r => require.ensure([], () => r(require('../page/profile/children/children/password/children/edit')), 'passwordEdit')
 
 const setting = r => require.ensure([], () => r(require('../page/profile/children/children/setting/setting')), 'setting')
 
 const about = r => require.ensure([], () => r(require('../page/profile/children/children/setting/children/about')), 'about')
+
+const companyInfo = r => require.ensure([], () => r(require('../page/profile/children/children/companyInfo/companyInfo')), 'companyInfo')
+const agreement = r => require.ensure([], () => r(require('../page/profile/children/children/agreement/agreement')), 'agreement')
+
 
 //优惠券
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
@@ -94,6 +99,8 @@ const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
+const resultSuccess = r => require.ensure([], () => r(require('../page/orderConfrim/children/resultSuccess')), 'resultSuccess')
+
 
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
@@ -103,7 +110,6 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
-
 
 Vue.use(Router)
 
@@ -165,6 +171,11 @@ var router=new Router({
             path: '/orderConfrim/:id',  //全款购车确认页面
             name: 'orderConfrim',
             component: orderConfrim
+        },
+        {
+            path: '/resultSuccess',  //参数配置页
+            name: 'resultSuccess',
+            component: resultSuccess
         },
         {
             path: '/balanceConfrim/:id',  //补余款下单页面
@@ -253,6 +264,17 @@ var router=new Router({
                                     component: about
                                 }
                             ]
+                        }
+                        ,
+                        {
+                            path: 'companyInfo',   //汇款账户列表
+                            name: 'companyInfo',
+                            component: companyInfo
+                        },
+                        {
+                            path: 'agreement',   //汇款账户列表
+                            name: 'agreement',
+                            component: agreement
                         }
                     ]
                 }

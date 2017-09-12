@@ -54,8 +54,8 @@
 		display:inline-block;
 		background:url("../../../../../../assets/icon-about.png") no-repeat;
 		background-size:contain;
-		width:2.96rem;
-		height:0.813333rem;
+		width:3.64rem;
+		height:1.30rem;
 		margin-top:1.066667rem;
 	}
 	.about-tp span{

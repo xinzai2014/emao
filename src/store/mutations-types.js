@@ -20,4 +20,6 @@ export const DEFAULT_BRAND = "DEFAULT_BRAND" //首页跳转品牌页传值
 
 export const SPARE_DATA = "SPARE_DATA" //补余款传值
 
-export const MESSAGE_FLAG = "MESSAGE_FLAG" 
+export const MESSAGE_FLAG = "MESSAGE_FLAG"
+
+export const SUCCESS_DATA = "SUCCESS_DATA"

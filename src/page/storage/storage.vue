@@ -126,13 +126,13 @@
                             <p>请确认随车附件：</p>
                             <div>{{outPopupData.part_text}}</div>
                         </div>
-                        <input type="text" placeholder="请输入提车码" v-model="outCode">
+                        <!--<input type="text" placeholder="请输入提车码" v-model="outCode">-->
                     </div>
 
                     <div class="error-tips">{{outErrorTips}}</div>
                     <p class="stock-removal-popup-choose">
                         <span @click="closeOutPopup">取消</span>
-                        <span class="active" @click="confirmOut()">验证</span>
+                        <span class="active" @click="confirmOut()"><!--验证-->确认出库</span>
                     </p>
                 </div>
             </section>
@@ -181,7 +181,7 @@
                 itemOut:{
                     token:sessionStorage.token, //token
                     vin_num : '', //车架码
-                    code:'' //提车码
+                    //code:'' //提车码
                 },
                 inPopupData:{},//入库弹窗信息
                 outPopupData:{}//出库弹窗信息
@@ -246,7 +246,6 @@
 
             //刷新等待入库数据&&在库数据
             flushIndata(){
-                this.waitIn.splice(this.currentInIndex,1);
                 this.waitIn[this.currentInIndex].add_time = Date.parse(new Date())/1000;
                 this.waitIn[this.currentInIndex].add_warehouse_time =  this.getLocalTime(this.waitIn[this.currentInIndex].add_time);
                 var This = this;
@@ -255,6 +254,7 @@
                 });
                 newIndex =  (newIndex == -1 ) ? this.inWarehouse.length : newIndex ;
                 this.inWarehouse.splice( newIndex ,0, this.waitIn[this.currentInIndex]);
+                this.waitIn.splice(this.currentInIndex,1);
             },
 
             //刷新等待出库数据
@@ -271,7 +271,7 @@
             },
             //提交出库的相关信息
             confirmOutData(code){
-                this.itemOut.code = code;
+                //this.itemOut.code = code;
                 this.itemOut.vin_num = this.outPopupData.vin_num;
                 this.$http.post("dealer/warehouse/confirmOut",this.itemOut).then(function(response){
                     this.showOutPopupStatus = !this.showOutPopupStatus;
@@ -293,7 +293,6 @@
 
             confirmInData(){
                 this.itemIn.vin_num = this.inPopupData.vin_num;
-                setTimeout(this.flushIndata,3000);
                 this.$http.post("dealer/warehouse/confirmIn",this.itemIn).then(function(response){
                     this.showInPopupStatus = !this.showInPopupStatus;
                     this.showAlert = true;

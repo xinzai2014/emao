@@ -18,6 +18,7 @@
                         <p>
                             认证级别
                             <i v-for="n in level"></i>
+                            <span class="auth_status">{{auth_status}}</span>
                         </p>
                     </router-link>                   
                     <div class="company-bt">
@@ -136,6 +137,7 @@ export default {
       is_transtor:'',  //是否是中转库管理员
       showAlert: false, //弹出框
       alertText: null, //弹出信息
+      data_status:''
     }
   },
   components:{
@@ -167,6 +169,17 @@ export default {
     var data = {
         token:dataToken
     }
+    //资料是否齐全
+    this.$http({
+        url:"dealerInfo/dataStatus",
+        method:"GET",
+        params:data
+     }).then(function (response) {
+        this.data_status=response.body.data.data_status;  
+      }).catch(function (error) {
+        //this.showAlert = true;
+        //this.alertText = error.body.msg||"请求失败了";
+      });
     //用户信息
     this.$http({
         url:"dealerInfo/index",
@@ -207,6 +220,13 @@ export default {
 </script>
 
 <style>
+.auth_status{
+    padding:0.05rem 0.13rem ;
+    background: #fe2c2d;
+    color:white;
+    border-radius:0.1rem;
+    font-size: 0.32rem;
+}
 .router-slid-enter-active, .router-slid-leave-active {
     transition: all .4s;
 }

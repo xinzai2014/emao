@@ -10,7 +10,8 @@ import {
 	ADDRESS_FLAG,
 	DEFAULT_BRAND,
 	SPARE_DATA,
-	MESSAGE_FLAG
+	MESSAGE_FLAG,
+	SUCCESS_DATA
 } from './mutations-types.js'
 
 
@@ -63,6 +64,10 @@ export default {
 
 	[MESSAGE_FLAG](context,flag){ //首页跳品牌页面传品牌值
 		context.commit(MESSAGE_FLAG,flag);
+	},
+
+	[SUCCESS_DATA](context,obj){ //成功结果页面传值
+		context.commit(SUCCESS_DATA,obj);
 	}
 	
 }
