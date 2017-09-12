@@ -550,7 +550,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	margin-top:0.533333rem;
 }
 .details-addres{
-	padding:0 0.4rem 0.533333rem 0.4rem;
+	padding:0.533rem 0.4rem;
 	background:#fff;
 	margin-bottom:0.4rem;
 	font-size:0.4rem;
