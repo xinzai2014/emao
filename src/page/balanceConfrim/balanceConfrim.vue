@@ -235,6 +235,9 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
                    this.address = data.address;
+                   this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                        data.address
+                    ); 
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
