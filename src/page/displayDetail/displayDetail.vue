@@ -697,7 +697,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	padding:0.4rem 0;
 	font-size:0.453333rem;
 	color:#2c2c2c;
-	text-decoration:underline;
 	background:#fff;
 }
 .mask{
