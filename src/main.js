@@ -59,8 +59,6 @@ import '../style/common.css';
 import '../plugins/swiper.min.js'
 import '../plugins/swiper.min.css';
 
-
-
 Vue.config.productionTip = false;
 
 
@@ -139,7 +137,6 @@ Vue.directive('load-more',{
 			}
 		})
       }
-
 })
 
 Vue.http.interceptors.push(function(request,next){

@@ -94,6 +94,8 @@ const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
+const resultSuccess = r => require.ensure([], () => r(require('../page/orderConfrim/children/resultSuccess')), 'resultSuccess')
+
 
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
@@ -103,7 +105,6 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
-
 
 Vue.use(Router)
 
@@ -165,6 +166,11 @@ var router=new Router({
             path: '/orderConfrim/:id',  //全款购车确认页面
             name: 'orderConfrim',
             component: orderConfrim
+        },
+        {
+            path: '/resultSuccess',  //参数配置页
+            name: 'resultSuccess',
+            component: resultSuccess
         },
         {
             path: '/balanceConfrim/:id',  //补余款下单页面

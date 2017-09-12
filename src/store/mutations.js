@@ -10,7 +10,8 @@ import {
 	ADDRESS_FLAG,
 	DEFAULT_BRAND,
 	SPARE_DATA,
-	MESSAGE_FLAG
+	MESSAGE_FLAG,
+	SUCCESS_DATA
 } from './mutations-types.js'
 
 
@@ -63,6 +64,10 @@ export default {
 
 	[MESSAGE_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
 		state.messageFlag = flag;
+	},
+
+	[SUCCESS_DATA](state,obj){ //成功结果页面传值
+		state.successData = obj;
 	}
 
 }

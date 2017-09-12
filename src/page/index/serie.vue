@@ -39,10 +39,7 @@ export default {
 	            method:"GET",
 	            params:this.initData
 	        }).then(function (response) {
-	            this.serieList = this.serieList.concat(response.body.data.series);
-	            if(response.body.data.series.length<this.initData.len){
-	            	this.serieMore = !this.serieMore;
-	            }
+	        	this.$emit('subSerieList',response.body.data.series);
 	          }).catch(function (error) {
 
 	          });

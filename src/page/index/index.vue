@@ -10,7 +10,7 @@
     <brand :brandList="brands" v-if="brands.length"></brand>
 
     <!--本地车源-->
-    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" v-if="serieList.length"></serie>
+    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" @subSerieList="subSerieList" v-if="serieList.length"></serie>
 
     <!-- store传值 -->
     <search></search>
@@ -78,6 +78,12 @@ export default {
           }).catch(function (error) {
 
           });
+    },
+    subSerieList(list){
+        this.serieList = this.serieList.concat(list);
+        if(list.length<this.initData.len){
+            this.serieMore = !this.serieMore;
+        }
     }
   },
   mounted(){

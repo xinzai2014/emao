@@ -182,37 +182,6 @@
         </div>
     </section>
 
-    <div class="dialog-content" v-if="showSuccessResult" :class="{dialogAnimateStyle:showSuccessResult}">
-        <!--首页-订单确认-头部-->
-        <header class="brand-list-header">
-            <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
-        </header>
-        <!--订购成功-->
-        <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>订购成功 <i class="order-succeed-logo"></i></p>
-            <div class="order-second-out">
-                <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
-                <div class="order-succeed-info">
-                    <p class="clearfix"><span>汇款银行：</span><strong>{{successData.bankName}}</strong></p>
-                    <p class="clearfix"><span>公司名称：</span><strong>{{successData.companyName}}</strong></p>
-                    <p class="clearfix"><span>账号：</span><strong>{{successData.account}}</strong></p>
-                    <p class="order-send" @click="sendMessage" :class='{"color-disabled":disabled}'>{{codeText}}</p>
-                </div>
-                <ul class="order-secceed-explain">
-                    <li>汇款说明：</li>
-                    <li>1.汇款后请上传汇款凭证</li>
-                    <li>2.未按时间付款的订单系统将自动取消</li>
-                </ul>
-            </div>
-            <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
-        </section>
-        <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply" @click="goIndex">返回订车页</div>
-            <div class="order-to-check" @click="goDetail(successData.orderNum)">查看详情</div>
-        </section>
-    </div>
-
 </div>
 
 </template>
@@ -251,24 +220,12 @@ export default {
           
             },
             remark:null,             //备注信息
-            showAgreement:false,
-            showSuccessResult:false,
-            successData:null,
-            messageData:{},
-            codeText:"发送到手机", //下单成功后发送短信到手机
-            num:60, //下单成功后倒计时
-            disabled:false
+            showAgreement:false
  	    }
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
-        },
-        goIndex(){
-            this.$router.push("/index");
-        },
-        goDetail(id){
-            this.$router.push("/orderDetail/" + id);
+            this.$router.go(-1);
         },
 	  	getData(){
 			this.$http({
@@ -414,8 +371,12 @@ export default {
             this.$http.post(
                 "order/show/balance?token="+sessionStorage.token,
                 this.formData).then(function (response) {
-                    this.showSuccessResult = true;
-                    this.successData = response.body.data;
+                    var data = response.body.data;
+                    data["flag"] = true;
+                    this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                      data
+                     )
+                    this.$router.push("/resultSuccess");
               },function(){
 
             });
@@ -428,44 +389,9 @@ export default {
                 });
             },1000) 
         },
-        sendMessage(){  //发送成功短信
-            if(this.disabled){
-                return false;
-            }
-            this.messageData["token"] = sessionStorage.token;
-            this.messageData["phone"] = this.address.phone;
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
-                this.successData.bankName+ ",账号：" + 
-                this.successData.account + ",公司名称：" + 
-                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
-            this.$http.post(
-                  "message/send",
-                  this.messageData,
-              ).then(function (response) {
-                this.setCode();
-            },function(){
-
-            })
-        }, 
-        setCode(){ //验证码效果
-            this.codeText = this.num+"s";
-            this.disabled = true;
-            var that = this;
-            window.timer = window.setInterval(()=>{
-                that.num--;
-                that.codeText = this.num+"s";
-                this.disabled = true;
-                if(!this.num){
-                    this.codeText = "发送到手机";
-                    this.num = 60;
-                    this.disabled = false;
-                    window.clearInterval(window.timer);
-                    return false;
-                }
-            },1000);
-        },
 	  },
 	  mounted(){
+         this.$store.dispatch("ADDRESS_FLAG","balanceConfrim");//展车下单标识,后面选地址会用到
          this.orderId = this.$store.state.spareData.orderNum;
          this.deposit = this.$store.state.spareData.deposit.replace(",","");
          this.initData["token"] = sessionStorage.token; 

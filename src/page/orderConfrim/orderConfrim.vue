@@ -180,38 +180,9 @@
             </ul>
         </div>
     </section>
-
-    <div class="dialog-content" v-if="showSuccessResult" :class="{dialogAnimateStyle:showSuccessResult}">
-        <!--首页-订单确认-头部-->
-        <header class="brand-list-header">
-            <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
-        </header>
-        <!--订购成功-->
-        <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>在线订购车辆成功 <i class="order-succeed-logo"></i></p>
-            <div class="order-second-out">
-                <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
-                <div class="order-succeed-info">
-                    <p class="clearfix"><span>汇款银行：</span><strong>{{successData.bankName}}</strong></p>
-                    <p class="clearfix"><span>公司名称：</span><strong>{{successData.companyName}}</strong></p>
-                    <p class="clearfix"><span>账号：</span><strong>{{successData.account}}</strong></p>
-                    <p class="order-send" @click="sendMessage" :class='{"color-disabled":disabled}'>{{codeText}}</p>
-                </div>
-                <ul class="order-secceed-explain">
-                    <li>汇款说明：</li>
-                    <li>1.汇款后请上传汇款凭证</li>
-                    <li>2.未按时间付款的订单系统将自动取消</li>
-                </ul>
-            </div>
-            <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
-        </section>
-        <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply" @click="goIndex">返回订车页</div>
-            <div class="order-to-check" @click="goDetail(successData.orderNum)">查看详情</div>
-        </section>
-    </div>
-
+    <transition name="fade">
+        <router-view></router-view>
+    </transition>
 </div>
 
 </template>
@@ -250,24 +221,12 @@ export default {
             },
             remark:null,             //备注信息
             showAgreement:false,
-            showSuccessResult:false,
-            successData:null,
-            messageData:{},
-            codeText:"发送到手机", //下单成功后发送短信到手机
-            num:60, //下单成功后倒计时
-            disabled:false,
             routerAddress:false
  	    }
 	  },
 	  methods:{
         goback(){
             this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
-        },
-        goIndex(){
-            this.$router.push("/index");
-        },
-        goDetail(id){
-            this.$router.push("/orderDetail/" + id);
         },
         goAdressList(){
             this.$router.push("/profile/info/address");
@@ -421,8 +380,12 @@ export default {
             this.$http.post(
                 "order/full/create?token="+sessionStorage.token,
                 this.formData).then(function (response) {
-                    this.showSuccessResult = true;
-                    this.successData = response.body.data;
+                    var data = response.body.data;
+                    data["flag"] = true;
+                    this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                      data
+                     )
+                    this.$router.push("/resultSuccess");
               },function(){
             });
         },
@@ -433,43 +396,7 @@ export default {
                    click:true
                 });
             },1000) 
-        },
-        sendMessage(){  //发送成功短信
-            if(this.disabled){
-                return false;
-            }
-            this.messageData["token"] = sessionStorage.token;
-            this.messageData["phone"] = this.address.phone;
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
-                this.successData.bankName+ ",账号：" + 
-                this.successData.account + ",公司名称：" + 
-                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
-            this.$http.post(
-                  "message/send",
-                  this.messageData,
-              ).then(function (response) {
-                this.setCode();
-            },function(){
-
-            })
-        }, 
-        setCode(){ //验证码效果
-            this.codeText = this.num+"s";
-            this.disabled = true;
-            var that = this;
-            window.timer = window.setInterval(()=>{
-                that.num--;
-                that.codeText = this.num+"s";
-                this.disabled = true;
-                if(!this.num){
-                    this.codeText = "发送到手机";
-                    this.num = 60;
-                    this.disabled = false;
-                    window.clearInterval(window.timer);
-                    return false;
-                }
-            },1000);
-        },
+        } 
 	  },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
@@ -658,29 +585,6 @@ export default {
     animation-timing-function: ease-in-out;
 }
 
-/*订购成功页面*/
-.order-succeed{height:100%;padding:.5333rem .4rem 0 .4rem;background-color:#fff;}
-.order-succeed-first{margin-bottom:1.067rem;font-size:.4rem;color:#2ac26e;font-weight:600;}
-.order-first-logo{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;vertical-align:bottom;background:url("../../assets/first-icon.png");background-size:100% 100%;}
-.order-succeed-logo{display:inline-block;width:.4rem;height:.4rem;margin-left:.2133rem;vertical-align:bottom;background:url("../../assets/complete-icon.png");background-size:100% 100%;}
-.order-succeed-second i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;vertical-align: bottom;background:url("../../assets/second-icon.png");background-size:100% 100%;}
-.order-succeed-second span{color:#fc3D36;}
-.order-succeed-second {font-size:.4rem;color:#2c2c2c;}
-.order-succeed-info{margin:.5333rem .8rem .4rem .8rem;padding-top:.5333rem;border:1px solid #d5aa5c;}
-.order-succeed-info p{margin-bottom:.4rem;font-size:.4rem;}
-.order-succeed-info p span{display:block;float:left;width:2rem;padding-left:.2667rem;text-align:right;color:#999;}
-.order-succeed-info p strong{display:block;margin-left:2rem;padding-right:.133rem;color:#2c2c2c;}
-.order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
-.order-succeed-info .color-disabled{background:#999}
-.order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
-.order-secceed-explain li{margin-bottom:.3333rem;font-size:.32rem;color:#999;}
-.order-succeed-third{font-size:.4rem;color:#2c2c2c;}
-.order-succeed-third i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;background:url("../../assets/third-icon.png");background-size:100% 100%;}
-.order-succeed-bottom{position:fixed;bottom:.533rem;left:.4rem;right:.4rem;}
-.order-succeed-third{margin-top:1.0667rem;}
-.order-succeed-bottom div{float:left;width:4.4rem;height:1.067rem;font-size:.4267rem;line-height:1.067rem;text-align:center;border-radius:.4rem;}
-.order-to-apply{margin-right:.4rem;color:#2c2c2c;background-color:#f6f5fa;}
-.order-to-check{color:#fff;background-color:#d5aa5c;}
 
 
 
@@ -692,29 +596,6 @@ export default {
 .order-failure-back{width:1.9333rem;height:1.0667rem;margin:.8rem auto 0;line-height:1.0667rem;text-align:center;border:1px solid #d5aa5c;border-radius:2.66rem;}
 
 
-.dialog-content{
-    position:fixed;
-    top:0;
-    left:0;
-    height:100%;
-    width:100%;
-    transform:translateX(100%); 
-}
-
-
-@keyframes dialogAnimate
-{
-0% {transform:translateX(100%);opacity: 0}
-100% {transform:translateX(0);opacity: 1}
-}
-
-
-.dialogAnimateStyle {
-    animation: dialogAnimate 0.8s;
-    animation-iteration-count:1;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
 
 
 .agreemenIframe{
