@@ -1,5 +1,9 @@
 <template>
 <!--注册认证--> 
+<div>
+    <header class="brand-list-header">
+        <i class="white-lt brand-left-cion"></i> <strong class="brand-list-title">凌渡 2017款 280TSI DSG豪华版</strong>
+    </header>
     <section class="authen">
         <div class="authen-tit">
             <em>欢迎加入淘车猫</em>
@@ -56,6 +60,7 @@
         <div class="remits-fixed" @click="checkFormData">提交</div>
         <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
     </section>
+</div>
 </template>
 <script>
     import uploader from '../../components/common/uploader/uploader'

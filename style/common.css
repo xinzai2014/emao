@@ -136,3 +136,4 @@ html,body{
 }
 
 .brand-left-cion{position:absolute;left:.4666rem;top:.4rem;}
+.brand-list-header{position:relative;z-index:25;overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}

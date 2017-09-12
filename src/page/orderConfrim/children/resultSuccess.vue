@@ -129,7 +129,6 @@ export default {
 }
 </script>
 <style>
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.4rem;color:#fff;background-color:#27282f;}
 /*订购成功页面*/
 .order-succeed{height:100%;padding:.5333rem .4rem 0 .4rem;background-color:#fff;}
 .order-succeed-first{margin-bottom:1.067rem;font-size:.4rem;color:#2ac26e;font-weight:600;}
