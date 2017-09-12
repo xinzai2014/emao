@@ -42,11 +42,16 @@ const remitEdit = r => require.ensure([], () => r(require('../page/profile/child
 
 const password = r => require.ensure([], () => r(require('../page/profile/children/children/password/password')), 'password')
 
+
 const passwordEdit = r => require.ensure([], () => r(require('../page/profile/children/children/password/children/edit')), 'passwordEdit')
 
 const setting = r => require.ensure([], () => r(require('../page/profile/children/children/setting/setting')), 'setting')
 
 const about = r => require.ensure([], () => r(require('../page/profile/children/children/setting/children/about')), 'about')
+
+const companyInfo = r => require.ensure([], () => r(require('../page/profile/children/children/companyInfo/companyInfo')), 'companyInfo')
+const agreement = r => require.ensure([], () => r(require('../page/profile/children/children/agreement/agreement')), 'agreement')
+
 
 //优惠券
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
@@ -259,6 +264,17 @@ var router=new Router({
                                     component: about
                                 }
                             ]
+                        }
+                        ,
+                        {
+                            path: 'companyInfo',   //汇款账户列表
+                            name: 'companyInfo',
+                            component: companyInfo
+                        },
+                        {
+                            path: 'agreement',   //汇款账户列表
+                            name: 'agreement',
+                            component: agreement
                         }
                     ]
                 }
