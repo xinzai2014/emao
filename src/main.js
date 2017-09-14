@@ -144,14 +144,16 @@ Vue.http.interceptors.push(function(request,next){
       true
     );
     next(function (response) {
-    	var code = response.body.code;
-    	if(code != 200){
-    		this.$store.dispatch("ALERT", // 通过store传值
-		      {
-		      	flag:true,
-		      	text:response.body.msg
-		      }
-		    );
+    	if(response.body){
+	    	var code = response.body.code;
+	    	if(code != 200){
+	    		this.$store.dispatch("ALERT", // 通过store传值
+			      {
+			      	flag:true,
+			      	text:response.body.msg
+			      }
+			    );
+	    	}
     	}
     	//console.log(response.status);
     	if(this.$store.state.ajaxLoading == true){

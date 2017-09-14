@@ -1,16 +1,17 @@
 <template>
 	<div class="rating_page bg_w">
-		<section>
-			<header class="user-tit">
-				<a href="javascript:;" class="white-lt" @click="goback"></a>
-				<span class="brand-switch" @click="showPop">发送到邮箱</span>
-			</header>
+		<header class="user-tit">
+			<a href="javascript:;" class="white-lt" @click="goback"></a>
+			<span class="brand-switch" @click="showPop">发送到邮箱</span>
+		</header>
+		<iframe :srcdoc="iframe"></iframe>
+		<!--<section>
 			<div class="news_title">一猫特约经销商合作协议</div>
 			<p class="text-p">特别提示：</p>
 			<p class="text-p">在您点击同意本一猫特约经销商合作协议（“本协议”）之前，您应当认真阅读本协议。请您务必审慎阅读、充分理解各条款内容，特别是免除或者限制责任的条款、争议解决和法律适用条款。免除或者限制责任的条款可能将以加粗字体显示，您应重点阅读。如您对协议有任何疑问的，应向淘车猫平台客服咨询。</p>
 			<p class="text-p">特别提示：</p>
 			<p class="text-p">当您按照注册页面提示填写信息、阅读并同意本协议且完成全部注册程序后，或您按照激活页面提示填写信息、阅读并同意本协议且完成全部激活程序后，或您以其他淘车猫平台允许的方式实际使用淘车猫平台服务时，即表示您已充分阅读、理解并接受本协议的全部内容，并与一猫达成本协议。您承诺接受并遵守本协议的约定，届时您不应以未阅读本协议的内容或者未获得淘车猫平台对您问询的解答等理由，主张本协议无效，或要求撤销本协议。</p>
-		</section>
+		</section>-->
 		<div class="mask" v-show="pop">
 	        <div class="cancel-car">
 	            <input type="text" placeholder="请输入您的邮箱" v-model="email">
@@ -26,11 +27,11 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
-            	message:{},
+            	iframe:'',
             	pop:false,
             	email:'',
             	showAlert:false,
-            	alertText:''
+            	alertText:'',
             }
         },components:{
         alertTip
@@ -66,6 +67,10 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 			      .then(function (response) {
 			         this.showAlert = true;
 			        this.alertText = '已发往您的邮箱，请注意查收';
+			        setTimeout(function(){
+			        	this.hidePop();
+			        },500);
+			        
 			      }).catch(function (error) {
 			          this.showAlert = true;
 			        this.alertText = error.body.msg||"发送失败,请检查网络";
@@ -82,7 +87,7 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 		        method:"GET",
 		        params:data
 		     }).then(function (response) {
-		        this.message=response.body.data;
+		        this.iframe=response.bodyText;
 		      }).catch(function (error) {
 		        //this.showAlert = true;
 		        //this.alertText = error.body.msg||"请求失败了";
@@ -93,6 +98,11 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 </script>
 
 <style>
+iframe{
+	width:10rem;
+	height:100%;
+	border:0;
+}
 .brand-switch {
     float: right;
     margin-right: .4666rem;
