@@ -1,24 +1,25 @@
 <template>
   <div>
     
-  <div class="brand"  :class="{anmiteStatus:this.$store.state.chooseCar}">
+  <div class="brand" :class='{anmiteStatus:showBrand}'>
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
-        <i class="white-lt brand-left-cion" @click="closebrand"></i>
-        <strong class="brand-list-title">选择车型</strong>
+        <strong class="brand-list-title">请选择授权品牌</strong>
+        <em @click="closebrand" class="brand-cannel">取消</em>
     </header>
 
-    <div class="brand-list-in" >
+    <div class="brand-list-in auth-brand" >
         <!--首页-选择车型-车型按字母排序-->
         <section class="brand-content-list" id="brandWrap"  ref="brandWrapper">
             <ul>
                 <li v-for="(item,index) in brandList">
                     <p>{{item.name}}</p>
-                    <div class="brand-wrap" @click="getSerieById(e.id)" v-for="(e,i) in item.list">
+                    <div class="brand-wrap" @click="openMarkDialog(e)" v-for="(e,i) in item.list">
                             <div class="brand-content-img">
-                                 <img v-bind:src=e.logoUrl >
+                                 <img v-bind:src=e.logoUrl>
                             </div>
                             <span>{{e.name}}</span>
+                            <em>{{e.tagName}}</em>
                     </div>
                 </li>
             </ul>
@@ -28,26 +29,17 @@
                 <li v-for="(item,index) in brandList" @click.stop="srcllToIndex(index)">{{item.name}}</li>
             </ul>
         </section>
-        <!--首页-选择车型-车系-->
-        <section class="brand-models" id="serieWrap" v-if="showSerie" :class="{anmiteStatus:showSerie}">
-            <ul>
-                <li v-for="(item,index) in serieData">
-                    <p>{{item.name}}</p>
-                    <div class="serie-wrap" @click="getCarById(e.id)" v-for="(e,i) in item.list">
-                        {{e.name}}
-                    </div>
-                </li>
-            </ul>
+        
+        <section class="brand-submit">
+          <span class="btn-primary">完成</span>
         </section>
-        <!--首页-选择车型-车型-->
-        <section class="brand-models brand-details"  id="carWrap" v-show="showCar" :class="{anmiteStatus:showCar}">
-            <ul>
-                <li v-for="(item,index) in carData">
-                    <p>{{item.groupName}}</p>
-                    <div class="serie-wrap" v-for="(e,i) in item.list" @click="submitCar(e.id,e.name)">{{e.name}}</div>
-                </li>
-            </ul>
-        </section>
+        <div class="dialog" v-if="showMark">
+          <section class="brand-rank">
+              <ul>
+                <li v-for="(item,index) in agencyList" @click="closeMarkDialog(item,index)">{{item.text}}</li>
+              </ul>
+          </section>
+        </div>
     </div>
     </div>
 </div>
@@ -60,19 +52,25 @@
       props:["showBrand"],
       data () {
         return {
-          brand:false,
-          src:"http://img.emao.net/car/logo/nd/bah/nech.png/120",
           brandList:null,
           brandHeight:[],
           brandScroll:null,
-          showSerie:false,
-          serieData:null,
-          serieScroll:null,
-          showCar:false,
-          globalBrandID:null,
-          globalSerieID:null,
-          carData:null,
-          carScroll:null
+          showMark:false,
+          agencyList:[
+            {
+              id:0,
+              text:"一级代理"
+            },
+            {
+              id:1,
+              text:"二级代理"
+            },
+            {
+              id:2,
+              text:"无代理"
+            }
+          ],
+          currentItem:null
         }
       },
       methods:{
@@ -81,10 +79,16 @@
             var that = this;
             var token = sessionStorage.token;
             this.$http({
-                url:"car/choose/brand?token=" + token,
+                url:"dealer/brand?token=" + token,
                 method:"GET"
             }).then(function (response) {
-                this.brandList = response.body.data;
+                var brand = response.body.data;
+                brand.forEach(function(ele,index){
+                    ele.list.forEach(function(e,ind){
+                      e.tagName = "";
+                    })
+                })
+                this.brandList = brand;
                 this.initIscroll("brandWrap");
                 setTimeout(function(){
                     that.countHeight();
@@ -129,44 +133,20 @@
         srcllToIndex(index){
             this.brandScroll.scrollTo(0, -this.brandHeight[index],500);
         },
-        getSerieById(id){ //根据品牌获取车系
-             this.showSerie = true;
-             this.$http({
-                url:"car/choose/serie?token=" + sessionStorage.token,
-                method:"GET",
-                params:{
-                    brandId:id
-                }
-            }).then(function (response) {
-                this.serieData = response.body.data.list;
-                this.initIscroll("serieWrap",this.serieScroll);
-                this.globalBrandID = response.body.data.id;
-              }).catch(function (error) {
-
-            });
+        openMarkDialog(item){
+          this.currentItem = item;
+          this.showMark = !this.showMark;
         },
-        getCarById(id){ //根据车系获取
-             this.showCar = true;
-             this.$http({
-                url:"car/choose/model?token=" + sessionStorage.token,
-                method:"GET",
-                params:{
-                    brandId:this.globalBrandID,
-                    serieId:id
-                }
-            }).then(function (response) {
-                this.carData = response.body.data.list;
-                this.initIscroll("carWrap",this.carScroll); 
-                this.globalSerieID = response.body.data.id;
-              }).catch(function (error) {
-
-            });
+        closeMarkDialog(item,index){
+          if(index == 2){;
+            this.currentItem.tagName = "";
+          }else{
+            this.currentItem.tagName = item.text;
+          }
+          this.showMark = !this.showMark;
         },
         closebrand(){
-          //this.$emit('getBrandChild'); //父子传值
-          this.$store.dispatch("CHOOSE_CAR", // 通过store传值
-            false
-          );
+          this.$emit("closeCar",false);     
         }
       },
       mounted(){
@@ -179,11 +159,27 @@
 .brand{
     position: fixed;
     top:0;
-    transform:translateX(100%);
+    transform:translateX(100%); 
     width: 100%;
     z-index:100;
     height:100%;
 }
+
+
+.anmiteStatus {
+    animation: myfirst 0.8s;
+    animation-iteration-count:1;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+
+@keyframes myfirst
+{
+0% {transform:translateX(100%);opacity: 0}
+100% {transform:translateX(0);opacity: 1}
+}
+
 
 
 /*品牌列表页-头部*/
@@ -230,5 +226,77 @@
 
 .brand-details{
     width:100%;
+}
+
+/*注册认证授权*/
+.auth-brand ul li .brand-wrap{
+  margin:0 0.4rem;
+  position:relative;
+}
+
+.auth-brand ul li .brand-wrap em{
+  position:absolute;
+  top:0;
+  right:0.4rem;
+  left:auto;
+  bottom:0;
+  margin:auto;
+  color:#d5aa5c;
+}
+
+.auth-brand{
+  padding-bottom:3.5rem;
+  box-sizing:border-box;
+  background:#fff;
+}
+
+.brand-cannel{
+  position:absolute;
+  top:0;
+  left:auto;
+  right:0.4rem;
+  color:#d5aa5c;
+  bottom:0;
+}
+
+.brand-submit{
+  position:fixed;
+  background:#FFF;
+  left:0;
+  bottom:0;
+  width: 100%;
+  padding:0.533rem 0;
+  text-align:center;
+}
+
+.btn-primary{
+  height:1.173rem;
+  line-height:1.173rem;
+  background:#d5aa5c;
+  color:#FFF;
+  font-size:0.453rem;
+  width:5.33rem;
+  display:inline-block;
+  border-radius:0.5rem;
+}
+
+.brand-rank{
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  background:#FFF;
+  text-align:center;
+}
+
+.brand-rank li{
+  line-height:1.467rem;
+  font-size:0.4rem;
+  color:#2c2c2c;
+  border-bottom:1px solid #EEE;
+}
+
+.brand-rank li:last-of-type{
+  border:none;
 }
 </style>

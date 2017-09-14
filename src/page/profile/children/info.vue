@@ -101,14 +101,7 @@
 .user-ct div span.red{
     color:#fe2c2d;
 }
-.dialog{
-    position:fixed;
-    background:rgba(0,0,0,0.75);
-    height:100%;
-    width:100%;
-    top:0;
-    z-index: 10
-}
+
 .dialog-con{width:7rem;background:#FFF;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);border-radius:0.1rem;}
 .dialog-con p{line-height:2.2rem;text-align:center;font-size:0.42rem}
 .dialog-btn{line-height:1.2rem;font-size:0.36rem;text-align:center;}

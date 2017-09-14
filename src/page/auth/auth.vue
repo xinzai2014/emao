@@ -2,36 +2,89 @@
 <!--注册认证--> 
 <div>
     <header class="brand-list-header">
-        <i class="white-lt brand-left-cion"></i> <strong class="brand-list-title">凌渡 2017款 280TSI DSG豪华版</strong>
+        <i class="white-lt brand-left-cion"></i>
+        <strong class="brand-list-title">注册认证</strong>
+        <a class="auth-tel" href="tel:400-825-2368"></a>
     </header>
     <section class="authen">
         <div class="authen-tit">
             <em>欢迎加入淘车猫</em>
-            <span>公司认证后才可以进入商城购买</span>
-            <span>我们将对您提交的信息严格保密</span>
+            <span>您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。</span>
             <i></i>
         </div>
         <div class="authen-info">
             <p>
-                <label>姓名：</label>
-                <input type="text"  v-model="username" ref="username">
+                <label>公司名称：</label>
+                <input type="text"  v-model="companyName" ref="companyName" placeholder="请输入公司名称">
             </p>
             <p>
-                <label>公司名称：</label>
-                <input type="text"  v-model="companyName" ref="companyName">
+                <label>负责人姓名：</label>
+                <input type="text"  v-model="username" ref="username" placeholder="可输入一猫对接人姓名">
             </p>
+            <p>
+                <label>联系电话：</label>
+                <input type="text"  v-model="username" ref="telephone" placeholder="联系电话">
+            </p>
+            <p>
+                <label>总经理姓名：</label>
+                <input type="text"  ref="" placeholder="总经理姓名">
+            </p>
+            <p>
+                <label>总经理电话：</label>
+                <input type="text"  ref="" placeholder="请输入手机号码">
+            </p>
+        </div>
+        <div class="clear20"></div>
+        <div class="authen-info">
             <p @click="getDialogCity">
                 <i class="yellow-rt"></i><label>所在区域：</label>
-                <input type="text"  v-model="location" ref="location">
+                <input type="text"  v-model="location" ref="location" placeholder="请选择地区">
             </p>
             <p>
                 <label>详细地址：</label>
-                <input type="text"  v-model="address" ref="address">
+                <input type="text"  v-model="address" ref="address" placeholder="请输入详细地址">
             </p>
+        </div>
+        <div class="clear20"></div>        
+        <div class="authen-info">
             <p>
                 <label>主营类型：</label>
                 <span @click="setActive(index)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
             </p>
+            <div class="authen-limts">
+                <span>是否经过厂家品牌授权</span>
+                <div class="authen-limts-con">
+                    <em v-for="(item,index) in authTag" :class='{active:item.tag}' @click="checkAuthTag(item,index)"><i ></i>{{item.text}}</em>
+                </div>
+            </div>
+            <div class="authen-limts-list clearfix" v-if="authBrandList.length > 0">
+                <dl>
+                    <dt>授权品牌</dt>
+                    <dt>品牌级别</dt>
+                </dl>
+                <dl v-for="(item,index) in authBrandList">
+                    <dd>{{item.name}}</dd>
+                    <dd>{{item.mark}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="authen-condition">
+            <span>是否具备维修条件</span>
+            <div class="authen-condition-nav clearfix">
+                <ul>
+                    <li v-for="(item,index) in conditions" @click="chooseConditions(item,index)" :class='{"active":item.flag}'>{{item.text}}</li>
+                </ul>
+            </div>
+            <div class="authen-condition-con clearfix">
+                <div class="authen-condition-item" v-show="conditionsIndex === 0">
+                    <div class="authen-condition-text">道路经营许可证</div>
+                    <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
+                </div>
+                <div class="authen-condition-item" v-show="conditionsIndex === 1">
+                    <div class="authen-condition-text">维修场地</div>
+                    <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
+                </div>
+            </div>
         </div>
         <div class="authen-img">
             <div class="user-info">
@@ -57,14 +110,16 @@
             </div>
         </div>
         <p class="visib-98"></p>
-        <div class="remits-fixed" @click="checkFormData">提交</div>
+        <div class="remits-fixed" @click="checkFormData">下一步</div>
         <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
+        <car :showBrand="showBrand" @closeCar="closeCar"></car>
     </section>
 </div>
 </template>
 <script>
     import uploader from '../../components/common/uploader/uploader'
     import city from '../../components/common/city/city'
+    import car from './car'
     export default{
         name:'auth',
         data(){
@@ -74,6 +129,42 @@
                 location:"",
                 address:"",
                 types:"",
+                authTag:[
+                    {
+                        tag:false,
+                        text:"是"
+                    },
+                    {
+                        tag:false,
+                        text:"否"
+                    }
+                ],
+                conditions:[
+                    {
+                        id:1,
+                        flag:false,
+                        text:"具备经营许可"
+                    },
+                    {
+                        id:2,
+                        flag:false,
+                        text:"具备维修场地"
+                    },
+                    {
+                        id:3,
+                        flag:false,
+                        text:"不具备"
+                    }
+                ],
+                conditionsIndex:null,
+                authBrandList:[
+                    // {
+                    //     id:1,
+                    //     name:"奥迪",
+                    //     mark:"1级代理"
+                    // }
+                ],
+                showBrand:false,
                 booth_out_img:null, //展厅门头图片地址
                 booth_in_img:null, //展厅内部图片地址
                 id_card_front:null, //手持身份证正面
@@ -114,8 +205,6 @@
                 dataURL:{},
                 cityData:[],
                 showCity:false,
-                showAlert:false,  //错误弹出窗
-                alertText:null, //错误提醒信息,
                 postCityData:null, //城市提交数据
                 manageType:[
                     {
@@ -136,6 +225,16 @@
         methods:{
             getDialogCity(){
                 this.showCity = true;
+            },
+            checkAuthTag(item,index){
+                var tag = item.tag;
+                this.authTag.forEach((ele,index)=>{
+                    ele.tag = false;
+                })
+                item.tag = !tag;
+                if(index == 0 && item.tag){
+                    this.showBrand = true;
+                }
             },
             closeDialogCity(postData){
                 if(arguments.length == 0){ //无回传数据
@@ -163,6 +262,18 @@
                     },function(error){
 
                     })
+            },
+            chooseConditions(item,index){
+                var flag = item.flag;
+                this.conditions.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+                if(flag){
+                    item.flag = flag;
+                    return false;
+                }
+                item.flag = !flag;
+                this.conditionsIndex = index;
             },
             getUpload(data,flag){
                 this.dataURL[flag] = data;
@@ -308,6 +419,9 @@
                 },function(err){
                     console.log(err);
                 })
+            },
+            closeCar(){
+                this.showBrand = false;
             }
         },
         mounted(){
@@ -317,13 +431,17 @@
         },
         components:{
             uploader,
-            city
+            city,
+            car
         }
     }
 </script>
 <style>
 
 /*注册认证*/
+.authen{
+    background:#FFF;
+}
 .authen-tit{
     height:3.466667rem;
     background:url("../../assets/back-m1.jpg") no-repeat;
@@ -334,21 +452,22 @@
 .authen-tit em{
     display:block;
     font-size:0.453333rem;
-    padding:0.7rem 0 0.25rem 0;
+    padding:0.533rem 0 0.25rem;
     color:#fff;
 }
 .authen-tit span{
     display:block;
-    font-size:0.373333rem;
+    font-size:0.32rem;
     color:#fff;
-    padding-top:0.133333rem;
+    line-height:1.5;
+    width:6.6rem;
 }
 
 .authen-tit i{
     display:block;
-    width:1.87rem;
-    height:1.47rem;
-    background:url("../../assets/icon-s1.png") no-repeat;
+    width:1.853rem;
+    height:1.453rem;
+    background:url("../../assets/icon-s2.png") no-repeat;
     background-size:100%;
     position:absolute;
     top:0;
@@ -359,7 +478,6 @@
 }
 
 .authen-info{
-    background:#fff;
     padding:0 0.4rem;
 }
 .authen-info p{
@@ -373,7 +491,6 @@
     display:inline-block;
 }
 .authen-info p label{
-    width:2.133333rem;
     height:0.85rem;
     line-height:0.85rem;
 }
@@ -395,9 +512,7 @@
 .authen-info p span{
     width:1.786667rem;
     height:0.8rem;
-    color:#666;
     font-size:0.373333rem;
-    border:1px solid #999;
     margin-right:0.4rem;
     text-align:center;
     line-height:0.8rem;
@@ -412,10 +527,6 @@
 }
 
 /*资料*/
-.authen-img{
-    background:#fff;
-    margin-top:0.4rem;
-}
 .user-info{
     padding:0.533333rem 0;
     margin:0 0.4rem;
@@ -430,5 +541,119 @@
     font-size:0.506667rem;
 }
 
-</style>
 
+.brand-list-header{font-size:0.4rem}
+
+/*1.1版本*/
+.auth-tel{
+    display:block;
+    width:0.546rem;
+    height:0.546rem;
+    background:url("../../assets/icon-s3.png") no-repeat;
+    background-size:100%;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:auto;
+    right:0.45rem;
+    margin:auto; 
+}
+
+.clear20{
+    height:0.4rem;
+    background:#f5f5f5;
+}
+
+.authen-limts{
+    font-size:0.4rem;
+    padding:0.233rem 0;
+    line-height:0.85rem;
+    border-bottom:1px solid #EEE;
+}
+
+.authen-limts-con{
+    float:right;
+}
+
+.authen-limts-con em{
+    margin-left:0.8rem;
+    position:relative;
+    padding-left:0.67rem
+}
+
+.authen-limts-con em i{
+    width:0.4rem;
+    height:0.4rem;
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    right:auto;
+    bottom:0;
+    margin:auto;
+    background:url("../../assets/icon-s4.png") no-repeat;
+    background-size:100%;
+}
+
+.authen-limts-con .active{
+    color:#d5aa5c;
+}
+.authen-limts-con .active i{
+    background:url("../../assets/icon-s5.png") no-repeat;
+    background-size:100%;
+}
+
+.authen-condition{
+    font-size:0.4rem;
+    padding:0.233rem 0 0;
+    margin:0 0.4rem;
+    border-bottom:1px solid #EEE;
+}
+.authen-condition-nav{
+    padding-top:0.533rem;
+}
+.authen-condition li{
+    float:left;
+    padding:0.2rem 0.4rem;
+    font-size:0.373rem;
+    margin-right:0.267rem;
+    border-radius:0.133333rem;
+    border:1px solid #d5aa5c;
+    color:#d5aa5c;
+}
+
+.authen-condition li.active{
+    background:#d5aa5c;
+    color:#FFF;
+}
+
+.authen-condition-item.active{
+    display:block;
+}
+.authen-condition-text{
+    padding-top:0.533rem;
+    font-size:0.453rem;
+}
+
+.authen-limts-list{
+    padding-bottom:0.533rem;
+    border-bottom:1px solid #EEE;
+}
+
+
+.authen-limts-list dt,.authen-limts-list dd{
+    width:50%;
+    float:left;
+    margin-top:0.533rem;
+}
+
+.authen-limts-list dt{
+    font-size:0.4rem;
+}
+
+.authen-limts-list dd{
+    font-size:0.38rem;
+    color:#999;
+}
+
+</style>
