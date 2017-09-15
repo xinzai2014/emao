@@ -18,10 +18,6 @@ Vue.use(VeeValidate, {
 	locale:'zh_CN'
 });
 
-//图片预览
-import vuePicturePreview from 'vue-picture-preview'
-Vue.use(vuePicturePreview)
-
 
 
 
