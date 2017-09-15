@@ -31,9 +31,9 @@
         </section>
         
         <section class="brand-submit">
-          <span class="btn-primary">完成</span>
+          <span class="btn-primary" @click="subBrand">完成</span>
         </section>
-        <div class="dialog" v-if="showMark">
+        <div class="dialog" v-if="showMark" @click="showMark = false">
           <section class="brand-rank">
               <ul>
                 <li v-for="(item,index) in agencyList" @click="closeMarkDialog(item,index)">{{item.text}}</li>
@@ -56,17 +56,18 @@
           brandHeight:[],
           brandScroll:null,
           showMark:false,
+          authBrand:[],
           agencyList:[
             {
-              id:0,
+              id:1,
               text:"一级代理"
             },
             {
-              id:1,
+              id:2,
               text:"二级代理"
             },
             {
-              id:2,
+              id:0,
               text:"无代理"
             }
           ],
@@ -138,15 +139,31 @@
           this.showMark = !this.showMark;
         },
         closeMarkDialog(item,index){
+          var that = this;
+          var tagIndex = this.authBrand.findIndex(function(value,index,arr){
+              return value.brand_id == that.currentItem.id;
+          });
+          tagIndex = (tagIndex==(-1))?this.authBrand.length:tagIndex;
           if(index == 2){;
             this.currentItem.tagName = "";
+            this.authBrand.splice(tagIndex,1);
           }else{
             this.currentItem.tagName = item.text;
+            var obj = {
+              "brand_id":this.currentItem.id,
+              "level":item.id,
+              "name":this.currentItem.name,
+              "text":item.text
+            }
+            this.authBrand[tagIndex] = obj;
           }
           this.showMark = !this.showMark;
         },
         closebrand(){
           this.$emit("closeCar",false);     
+        },
+        subBrand(){ //向上提交选取的品牌
+          this.$emit("subBrandList",this.authBrand);
         }
       },
       mounted(){
