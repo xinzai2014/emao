@@ -385,30 +385,6 @@ export default {
 </script>
 
 <style>
-.dialogBack{
-    animation: opacityback 0.8s;
-    animation-iteration-count:1;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
-.dialogShow {
-    animation: dialog 0.8s;
-    animation-iteration-count:1;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
-
-@keyframes opacityback
-{
-  0% {opacity: 0}
-  100% {opacity: 1}
-}
-
-@keyframes dialog
-{
-  0% {transform:translateY(100%);opacity: 0}
-  100% {transform:translateY(0);opacity: 1}
-}
 
 
 /*首页-订车-商品详情页*/

@@ -1,9 +1,9 @@
 <template>
-	<div class="rating_page">
+	<div class="rating_page" v-if="load">
 		<header class="user-tit">
 			<a href="javascript:;" class="white-lt" @click="goback"></a>公司信息
 		</header>
-		<div class="details-tit" v-if="status">
+		<div class="details-tit" v-if="data_status">
             <h4>审核中</h4>
         </div>
 		<section class="user-ct">
@@ -13,8 +13,9 @@
             <div><span>{{info.auth_data.manager_phone}}</span>总经理电话：</div>
 
             <div class="user-bt"><span>{{info.auth_data.activities}}</span>经营类型：</div>
-            <div class="user-bt" v-if="info.auth_data.brand_auth">
-            	<ul v-for="(item,index) in info.auth_data.brand_auth">
+            <div class="user-bt">
+            	<span v-if="!info.auth_data.brand_auth.length">无</span>
+            	<ul v-else v-for="(item,index) in info.auth_data.brand_auth">
 		            <li><em>{{item.brand_name}}</em>{{item.level}}</li>
 	            </ul>
 	            厂家授权品牌及级别：
@@ -35,7 +36,8 @@
             return {
             	oneInfo:{},
             	info:{},
-            	status:false
+            	data_status:false,
+            	load:false
             }
         },
         methods:{
@@ -74,10 +76,22 @@
 			     		}
 			     	}
 		     	}
-		        this.info=info; 
-		        if(this.info.auth_status=="3"){
-		        	this.status=true;
-		        }
+		        this.info=info;
+		        this.load=true;
+		      }).catch(function (error) {
+		        //this.showAlert = true;
+		        //this.alertText = error.body.msg||"请求失败了";
+		      });
+
+		      //资料是否齐全
+		    this.$http({
+		        url:"dealerInfo/dataStatus",
+		        method:"GET",
+		        params:data
+		     }).then(function (response) {
+		        if(response.body.data.data_status=="3"){
+		            this.data_status=true; 
+		        }   
 		      }).catch(function (error) {
 		        //this.showAlert = true;
 		        //this.alertText = error.body.msg||"请求失败了";

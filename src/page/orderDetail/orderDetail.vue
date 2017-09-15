@@ -485,15 +485,6 @@ export default {
     position: relative;
     z-index: 3;
 }
-.brand-list-header {
-    overflow: hidden;
-    height: 1.1733rem;
-    text-align: center;
-    line-height: 1.1733rem;
-    font-size: .5333rem;
-    color: #fff;
-    background-color: #27282f;
-}
 .no-auto p span {
     color: #d6ab55;
     border-bottom: 1px solid #d6ab55;

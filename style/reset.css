@@ -159,3 +159,5 @@ a {
 }
 /*清楚浮动*/
 .clearfix::after{display:block;overflow:hidden;clear:both;height:0;content:'';}
+-webkit-font-smoothing: antialiased | subpixel-antialiased | default: 
+input:-webkit-autofill {background-color: none;background-image: none;}

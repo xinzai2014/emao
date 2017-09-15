@@ -10,7 +10,7 @@
             <div class="user-bt"><span>{{infoData.link_phone}}</span>手机号：</div>
             <div><span>{{infoData.city_name}}</span>所在城市：</div>
             <router-link to="/profile/info/companyInfo">
-                <div><i class="yellow-rt"></i><span class="red">{{infoData.auth_status}}</span>公司信息</div>
+                <div><i class="yellow-rt"></i><span class="red">{{data_status}}</span>公司信息</div>
             </router-link>
             <router-link to="/profile/info/agreement">
                 <div><i class="yellow-rt"></i>一猫特约经销商合作协议</div>
@@ -52,7 +52,9 @@
         data () {
             return {
               infoData:{},
-              showDialog:false
+              showDialog:false,
+              data_status:''
+
             }
         },
         methods:{
@@ -78,11 +80,35 @@
             }
         },
         mounted(){
-        //组件初始完成需要做什么
+                //组件初始完成需要做什么
             var Token = sessionStorage.getItem('token');
             var data = {
                 token:Token,
             }
+            //资料是否齐全
+            this.$http({
+                url:"dealerInfo/dataStatus",
+                method:"GET",
+                params:data
+             }).then(function (response) {
+                if(response.body.data.data_status=="1"){
+                    this.data_status='信息已完善'; 
+                }
+                if(response.body.data.data_status=="2"){
+                    this.data_status='信息待完善'; 
+                }
+                if(response.body.data.data_status=="3"){
+                    this.data_status='信息审核中'; 
+                }
+                if(response.body.data.data_status=="4"){
+                    this.data_status='信息驳回'; 
+                }
+                 
+              }).catch(function (error) {
+                //this.showAlert = true;
+                //this.alertText = error.body.msg||"请求失败了";
+              });
+        
             this.$http({
                 url:"dealerInfo/info",
                 method:"GET",
@@ -101,14 +127,7 @@
 .user-ct div span.red{
     color:#fe2c2d;
 }
-.dialog{
-    position:fixed;
-    background:rgba(0,0,0,0.75);
-    height:100%;
-    width:100%;
-    top:0;
-    z-index: 10
-}
+
 .dialog-con{width:7rem;background:#FFF;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);border-radius:0.1rem;}
 .dialog-con p{line-height:2.2rem;text-align:center;font-size:0.42rem}
 .dialog-btn{line-height:1.2rem;font-size:0.36rem;text-align:center;}
