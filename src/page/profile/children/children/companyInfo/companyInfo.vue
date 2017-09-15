@@ -25,7 +25,8 @@
             <div class="user-bt"><span>{{info.auth_data.qualification.legalPerson}}</span>法人姓名：</div>
             <div class="user-bt"><span>{{info.auth_data.qualification.bankName}}</span>企业开户行：</div>
             <div class="user-bt"><span>{{info.auth_data.qualification.bankNumber}}</span>企业银行账号：</div>
-            <div><span>{{info.auth_data.qualification.TIN}}</span>纳税识别号：</div>
+            <div class="user-bt"><span>{{info.auth_data.qualification.TIN}}</span>纳税识别号：</div>
+            <div><span>{{info.auth_data.qualification.generalTaxpayer}}</span>一般納稅人：</div>
         </section>
 	</div>
 </template>
@@ -75,6 +76,12 @@
 			     			info.auth_data.brand_auth[i].level="二级代理";
 			     		}
 			     	}
+		     	}
+		     	if(info.auth_data.qualification.generalTaxpayer!=""){
+		     		info.auth_data.qualification.generalTaxpayer='是';
+		     	}
+		     	if(info.auth_data.repair_place!=''||info.auth_data.road_license!=''){
+		     		info.auth_data.repair_place="具备";
 		     	}
 		        this.info=info;
 		        this.load=true;
