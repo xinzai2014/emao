@@ -57,12 +57,6 @@
 </script>
 <style>
 
-.dialog-con{width:7rem;background:#FFF;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);border-radius:0.1rem;}
-.dialog-con p{line-height:2.2rem;text-align:center;font-size:0.42rem}
-.dialog-btn{line-height:1.2rem;font-size:0.36rem;text-align:center;}
-.dialog-btn span{display:block;width:50%;float:left;}
-.dialog-btn span:nth-of-type(1){background:#f5f5f5;border-radius:0 0 0 0.1rem;}
-.dialog-btn span:nth-of-type(2){background:#d5aa5c;color:#FFF;border-radius:0 0 0.1rem 0;}
 .auth-back{background:#FFF;height:100%;}
 .brand-header-out{position:relative;z-index:3;}
 

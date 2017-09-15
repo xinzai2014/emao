@@ -2,36 +2,36 @@
 <!--注册认证--> 
 <div>
     <header class="brand-list-header">
-        <i class="white-lt brand-left-cion"></i>
+        <i class="white-lt brand-left-cion" @click="showLoginDialog"></i>
         <strong class="brand-list-title">注册认证</strong>
         <a class="auth-tel" href="tel:400-825-2368"></a>
     </header>
     <section class="authen">
         <div class="authen-tit">
-            <em>欢迎加入淘车猫</em>
-            <span>您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。</span>
+            <em>{{welcomeMessage}}</em>
+            <span>{{authMessage}}</span>
             <i></i>
         </div>
         <div class="authen-info">
             <p>
                 <label>公司名称：</label>
-                <input type="text"  v-model="companyName" ref="companyName" placeholder="请输入公司名称">
+                <input type="text"  v-model="companyName" ref="companyName" placeholder="请输入公司名称" maxlength="40">
             </p>
             <p>
                 <label>负责人姓名：</label>
-                <input type="text"  v-model="username" ref="username" placeholder="可输入一猫对接人姓名">
+                <input type="text"  v-model="username" ref="username" placeholder="可输入一猫对接人姓名" maxlength="40">
             </p>
             <p>
-                <label>联系电话：</label>
-                <input type="text"  v-model="username" ref="telephone" placeholder="联系电话">
+                <label>联系人电话：</label>
+                <input type="text"  v-model="telephone" ref="telephone" placeholder="注册时填写的手机号" maxlength="11">
             </p>
             <p>
                 <label>总经理姓名：</label>
-                <input type="text"  ref="" placeholder="总经理姓名">
+                <input type="text"  v-model="managerName" ref="managerName" placeholder="请输入姓名" maxlength="40">
             </p>
             <p>
                 <label>总经理电话：</label>
-                <input type="text"  ref="" placeholder="请输入手机号码">
+                <input type="text"  v-model="managerTelephone" ref="managerTelephone" placeholder="请输入手机号" maxlength="11">
             </p>
         </div>
         <div class="clear20"></div>
@@ -42,7 +42,7 @@
             </p>
             <p>
                 <label>详细地址：</label>
-                <input type="text"  v-model="address" ref="address" placeholder="请输入详细地址">
+                <input type="text"  v-model="address" ref="address" placeholder="请输入详细地址" maxlength="40">
             </p>
         </div>
         <div class="clear20"></div>        
@@ -57,14 +57,14 @@
                     <em v-for="(item,index) in authTag" :class='{active:item.tag}' @click="checkAuthTag(item,index)"><i ></i>{{item.text}}</em>
                 </div>
             </div>
-            <div class="authen-limts-list clearfix" v-if="authBrandList.length > 0">
+            <div class="authen-limts-list clearfix" v-if="showAuthBrandList&&authBrandList.length" @click="showBrand = true">
                 <dl>
                     <dt>授权品牌</dt>
                     <dt>品牌级别</dt>
                 </dl>
                 <dl v-for="(item,index) in authBrandList">
                     <dd>{{item.name}}</dd>
-                    <dd>{{item.mark}}</dd>
+                    <dd>{{item.text}}</dd>
                 </dl>
             </div>
         </div>
@@ -78,11 +78,11 @@
             <div class="authen-condition-con clearfix">
                 <div class="authen-condition-item" v-show="conditionsIndex === 0">
                     <div class="authen-condition-text">道路经营许可证</div>
-                    <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
+                    <uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
                 </div>
                 <div class="authen-condition-item" v-show="conditionsIndex === 1">
                     <div class="authen-condition-text">维修场地</div>
-                    <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
+                    <uploader :uploadData="uploadData4" @getUpload="getUpload"></uploader>
                 </div>
             </div>
         </div>
@@ -90,29 +90,27 @@
             <div class="user-info">
                 <p class="user-info-tit">展厅门头</p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
-                
             </div>
             <div class="user-info">
                 <p class="user-info-tit">展厅内部</p>
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
-            <div class="user-info">
-                <p class="user-info-tit">手持身份证正面照</p>
-                <uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
-            </div>
-            <div class="user-info">
-                <p class="user-info-tit">手持身份证反面照</p>
-                <uploader :uploadData="uploadData4" @getUpload="getUpload"></uploader>
-            </div>
-            <div class="user-info">
-                <p class="user-info-tit">营业执照</p>
-                <uploader :uploadData="uploadData5" @getUpload="getUpload"></uploader>
-            </div>
         </div>
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">下一步</div>
         <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
-        <car :showBrand="showBrand" @closeCar="closeCar"></car>
+        <car :showBrand="showBrand" @closeCar="closeCar" @subBrandList = "subBrandList"></car>
+
+        <div class="dialog" v-if="showDialog" @click="closeDialog">
+            <div class="dialog-con">
+                <p>确定退出注册认证</p>
+                <div class="dialog-btn">
+                    <span>点错了</span>
+                    <span @click.stop="loginOut">确定退出</span>
+                </div>
+            </div>
+        </div>
+
     </section>
 </div>
 </template>
@@ -124,8 +122,13 @@
         name:'auth',
         data(){
             return{
-                username:"",
+                authMessage:"",
+                welcomeMessage:"",
                 companyName:"",
+                username:"",
+                telephone:"",
+                managerName:"",
+                managerTelephone:"",
                 location:"",
                 address:"",
                 types:"",
@@ -142,7 +145,7 @@
                 conditions:[
                     {
                         id:1,
-                        flag:false,
+                        flag:true,
                         text:"具备经营许可"
                     },
                     {
@@ -156,20 +159,15 @@
                         text:"不具备"
                     }
                 ],
-                conditionsIndex:null,
+                conditionsIndex:0,
                 authBrandList:[
-                    // {
-                    //     id:1,
-                    //     name:"奥迪",
-                    //     mark:"1级代理"
-                    // }
                 ],
+                showAuthBrandList:false,
                 showBrand:false,
                 booth_out_img:null, //展厅门头图片地址
                 booth_in_img:null, //展厅内部图片地址
-                id_card_front:null, //手持身份证正面
-                id_card_back:null, //手持身份证反面
-                business:null, //营业执照图片
+                road_license:null, //道路维修经营许可证
+                repair_place:null, //维修场地
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
@@ -186,21 +184,15 @@
                 uploadData3:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
-                    flag:"identity",
+                    flag:"road",
                     image:"static/sample7.jpg"
                 },
                 uploadData4:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
-                    flag:"identityPos",
+                    flag:"repair",
                     image:"static/sample8.jpg",
                     imgArr:[]
-                },
-                uploadData5:{
-                    url:"https://tcmapi.emao.com/upload",
-                    count:1,
-                    flag:"licenseRev",
-                    image:"static/sample9.png",
                 },
                 dataURL:{},
                 cityData:[],
@@ -219,10 +211,20 @@
                         flag:false,
                         name:"豪华"
                     }
-                ]
+                ],
+                showDialog:false
             }
         },
         methods:{
+            closeDialog(){
+                this.showDialog = false;
+            },
+            showLoginDialog(){
+                this.showDialog = !this.showDialog;
+            },
+            loginOut(){
+                this.$router.go(-1);
+            },
             getDialogCity(){
                 this.showCity = true;
             },
@@ -231,9 +233,16 @@
                 this.authTag.forEach((ele,index)=>{
                     ele.tag = false;
                 })
+                if(tag){
+                    item.tag = tag;
+                    return false;
+                }
                 item.tag = !tag;
                 if(index == 0 && item.tag){
                     this.showBrand = true;
+                }
+                if(index == 1 && item.tag){
+                    this.showAuthBrandList = false;
                 }
             },
             closeDialogCity(postData){
@@ -247,12 +256,13 @@
             setActive(index){ //主营类型
                 var that = this;
                 this.manageType[index]["flag"] = !this.manageType[index]["flag"];
-                this.types = "";
+                var type = [];
                 this.manageType.forEach(function(item,index){
                     if(item.flag == true){
-                        that.types += index.toString() + ","
+                        type.push(index);
                     }
                 })
+                this.types = type.join(",");
             },
             getCity(){
                 this.$http.get(
@@ -261,7 +271,7 @@
                         this.cityData = reponse.body.data;
                     },function(error){
 
-                    })
+                })
             },
             chooseConditions(item,index){
                 var flag = item.flag;
@@ -271,6 +281,10 @@
                 if(flag){
                     item.flag = flag;
                     return false;
+                }
+                if(!flag && (index==2)){
+                    this.road_license = null;
+                    this.repair_place = null;
                 }
                 item.flag = !flag;
                 this.conditionsIndex = index;
@@ -299,34 +313,85 @@
                 }
             },
             checkFormData(){
-                if((this.username == "")||(this.username == null)){
-                    this.$store.dispatch("ALERT", // 通过store传值
-                      {
-                        flag:true,
-                        text:"您有姓名信息没有填写"
-                      }
-                    );
-                    this.$refs.username.focus();
-                    return false
-                }
                 if((this.companyName == "")||(this.companyName == null)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
                         flag:true,
-                        text:"您有公司公司名称没有填写"
+                        text:"您有公司名称信息没有填写"
                       }
                     );
                     this.$refs.companyName.focus();
                     return false
                 }
-                if((this.location == "")||(this.location == null)){
+                if((this.username == "")||(this.username == null)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
                         flag:true,
-                        text:"您还没有选择所在区域"
+                        text:"您有对接人姓名信息没有填写"
                       }
                     );
-                    this.$refs.location.focus();
+                    this.$refs.username.focus();
+                    return false
+                }
+                if((this.telephone == "")||(this.telephone == null)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有联系电话信息没有填写"
+                      }
+                    );
+                    this.$refs.telephone.focus();
+                    return false
+                }
+                var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
+                if(!telExp.test(this.telephone)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请填写正确格式的联系电话"
+                      }
+                    );
+                    this.$refs.telephone.focus();
+                    return false
+                }
+                if((this.managerName == "")||(this.managerName == null)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有总经理姓名信息没有填写"
+                      }
+                    );
+                    this.$refs.managerName.focus();
+                    return false
+                }
+                if((this.managerTelephone == "")||(this.managerTelephone == null)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"您有总经理电话信息没有填写"
+                      }
+                    );
+                    this.$refs.managerTelephone.focus();
+                    return false
+                }
+                if(!telExp.test(this.managerTelephone)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请填写正确格式的总经理电话"
+                      }
+                    );
+                    this.$refs.managerTelephone.focus();
+                    return false
+                }
+                if((this.location == null)||(this.location == "")){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请选择所在区域"
+                      }
+                    );
+                    this.$refs.address.focus();
                     return false
                 }
                 if((this.address == "")||(this.address == null)){
@@ -366,33 +431,9 @@
                     );
                     return false
                 }
-                if((this.id_card_front == "")||(this.id_card_front == null)){
-                    this.$store.dispatch("ALERT", // 通过store传值
-                      {
-                        flag:true,
-                        text:"请上传手持身份证正面照"
-                      }
-                    );
-                    return false
-                }
-                if((this.id_card_back == "")||(this.id_card_back == null)){
-                    this.$store.dispatch("ALERT", // 通过store传值
-                      {
-                        flag:true,
-                        text:"请上传手持身份证反面照"
-                      }
-                    );
-                    return false
-                }
-                if((this.business == "")||(this.business == null)){
-                    this.$store.dispatch("ALERT", // 通过store传值
-                      {
-                        flag:true,
-                        text:"请上传营业执照"
-                      }
-                    );
-                    return false
-                }
+                this.authTag.forEach(function(ele,index){
+                    
+                })
                 this.submitFormData();
             },
             submitFormData(){
@@ -422,11 +463,37 @@
             },
             closeCar(){
                 this.showBrand = false;
+                this.checkAuthTag(this.authTag[1],1);
+            },
+            subBrandList(brandList){
+                this.authBrandList = brandList;
+                if(this.authBrandList.length>0) this.showAuthBrandList = true;
+                this.showBrand = false;
+            },
+            getAuth(){
+                this.$http({
+                    url:"dealerInfo/dataStatus?token=" + sessionStorage.token,
+                    method:"GET"
+                }).then(function (response) {
+                    var data_status=response.body.data.data_status;
+                    if((sessionStorage.idCardAuth === 0)&& (data_status == 2)){ //新用户
+                        this.welcomeMessage = "欢迎加入淘车猫";
+                        this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }else{
+                        this.welcomeMessage = "请完善以下资料";
+                        this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }  
+                }).catch(function (error) {
+                    //this.showAlert = true;
+                    //this.alertText = error.body.msg||"请求失败了";
+                });
             }
         },
         mounted(){
             //提交注册认证
             this.getCity();
+            this.getAuth();
+            this.telephone = sessionStorage.telephone;
             
         },
         components:{
