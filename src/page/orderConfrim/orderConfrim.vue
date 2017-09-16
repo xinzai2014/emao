@@ -229,6 +229,7 @@ export default {
             this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
         },
         goAdressList(){
+            this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
             this.$router.push("/profile/info/address");
         },
 	  	getData(){
@@ -399,8 +400,7 @@ export default {
         } 
 	  },
 	  mounted(){
-        this.serieId = this.$router.currentRoute.query.serieId;
-        this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
+        this.serieId = this.$router.currentRoute.query.serieId;  
 	  },
       filters:{
         getMoney:function(num){

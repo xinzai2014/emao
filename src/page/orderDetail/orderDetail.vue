@@ -157,7 +157,7 @@ export default {
          showAlert: false, //弹出框
           alertText: null, //弹出信息
           vinActive:'',
-          success:false
+          success:false,
     }
   },     components:{
         alertTip
@@ -165,7 +165,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.go(-1);
+        this.$router.push({name:sessionStorage.orderDetailUrl});
     },
     hide_success(){
       this.success=false;
@@ -462,6 +462,9 @@ export default {
     next(vm => {
       if(from.name=='declare'){
         vm.success=true;
+      }
+      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving'){
+        sessionStorage.orderDetailUrl=from.name;
       }
     });
   }

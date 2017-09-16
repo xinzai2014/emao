@@ -72,16 +72,15 @@
             resetIndex(){
                 if(this.$store.state.addressFlag!=""){
 			    	var addressFlag=this.$store.state.addressFlag;
-			    	//this.$store.dispatch("ADDRESS_FLAG","");
 			    	this.$router.push({ name: addressFlag});				    	
 			    }else{
 			    	this.$router.push({ name: 'info'});
 			    }
             },
             orderAddress(item){
-            	this.$router.push({
-            		name:this.$store.state.addressFlag
-            	});
+            	var addressFlag=this.$store.state.addressFlag;
+		    	this.$store.dispatch("ADDRESS_FLAG","");
+		    	this.$router.push({ name: addressFlag});
             	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
 			        {
 			          id:item.id,
