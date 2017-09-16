@@ -300,14 +300,11 @@
                         case "inside":
                             this.booth_in_img = this.dataURL[flag][0]
                             break; 
-                        case "identity":
-                            this.id_card_front = this.dataURL[flag][0] 
+                        case "road":
+                            this.road_license = this.dataURL[flag][0] 
                             break;
-                        case "identityPos":
-                            this.id_card_back = this.dataURL[flag][0] 
-                            break;
-                        case "licenseRev":
-                            this.business = this.dataURL[flag][0] 
+                        case "repair":
+                            this.repair_place = this.dataURL[flag][0] 
                             break;
                     }
                 }
@@ -431,27 +428,53 @@
                     );
                     return false
                 }
-                this.authTag.forEach(function(ele,index){
-                    
-                })
                 this.submitFormData();
             },
             submitFormData(){
+                var activeIndex = this.authTag.findIndex(function(ele,index,arr){
+                    return ele.tag;
+                })
+                var authList = [];
+                if(activeIndex == 0){ //选择
+                    this.authBrandList.forEach(function(ele,index){
+                        var obj = {};
+                        obj["brand_id"] = ele["brand_id"];
+                        obj["level"] = ele["level"];
+                        authList.push(obj);
+                    })
+                }
+                authList = JSON.stringify(authList);
+                var conditionIndex = this.conditions.findIndex(function(ele,index){
+                    return ele.flag;
+                });
+                if(conditionIndex == 0){
+                    this.repair_place = null;
+                }
+                if(conditionIndex == 1){
+                    this.road_license = null;
+                }
+                if(conditionIndex == 2){
+                    this.road_license = null;
+                    this.repair_place = null;
+                }
                 this.$http.post(
                     "dealer/auth?token=" + sessionStorage.token,
                     {
-                        link_name:this.username, 
                         name:this.companyName,
+                        link_name:this.username, 
+                        contact_phone:this.telephone,
+                        manager_name:this.managerName,
+                        manager_phone:this.managerTelephone,
                         province_id:this.postCityData.provinceData.id,
                         city_id:this.postCityData.cityData.id,
                         district_id:this.postCityData.areaData.id,
                         address:this.address,
                         activities:this.types,
+                        brand_auth:authList,
                         booth_out_img:this.booth_out_img,
                         booth_in_img:this.booth_in_img,
-                        id_card_front:this.id_card_front,
-                        id_card_back:this.id_card_back,
-                        business:this.business
+                        road_license:this.road_license,
+                        repair_place:this.repair_place
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
