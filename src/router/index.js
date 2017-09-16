@@ -12,8 +12,8 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
 const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
-const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'auth')
-//const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
+const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'authResult')
+const aptitude = r => require.ensure([], () => r(require('../page/aptitude/aptitude')), 'aptitude')
 
 
 //首页相关组件
@@ -146,6 +146,11 @@ var router=new Router({
             path: '/authResult',  //登录注册个人认证
             name: 'authResult',
             component: authResult
+        },
+        {
+            path: '/aptitude',  //登录注册个人认证
+            name: 'aptitude',
+            component: aptitude
         },
         {
             path: '/index',  //首页

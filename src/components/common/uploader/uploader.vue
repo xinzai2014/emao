@@ -226,6 +226,11 @@
                 })
             }
             
+        },
+        watch:{
+            uploadData:function(){
+                console.log("有变动了");
+            }
         }
     }
 </script>
