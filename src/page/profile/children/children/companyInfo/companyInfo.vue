@@ -77,7 +77,7 @@
 			     		}
 			     	}
 		     	}
-		     	if(info.auth_data.qualification.generalTaxpayer!=""){
+		     	if('generalTaxpayer' in info.auth_data.qualification){
 		     		info.auth_data.qualification.generalTaxpayer='是';
 		     	}
 		     	if(info.auth_data.repair_place!=''||info.auth_data.road_license!=''){
