@@ -1,6 +1,6 @@
 <template>
 <!--注册认证--> 
-<div>
+<div v-if="ajaxLoading">
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="showLoginDialog"></i>
         <strong class="brand-list-title">注册认证</strong>
@@ -98,8 +98,10 @@
         </div>
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">下一步</div>
-        <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
-        <car :showBrand="showBrand" @closeCar="closeCar" @subBrandList = "subBrandList"></car>
+        <keep-alive>
+        <city  v-if="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
+        </keep-alive>
+        <car :showBrand="showBrand" @subBrandList = "subBrandList"></car>
 
         <div class="dialog" v-if="showDialog" @click="closeDialog">
             <div class="dialog-con">
@@ -110,7 +112,6 @@
                 </div>
             </div>
         </div>
-
     </section>
 </div>
 </template>
@@ -195,24 +196,25 @@
                     imgArr:[]
                 },
                 dataURL:{},
-                cityData:[],
                 showCity:false,
+                defaultCityData:[], //初始化城市默认数据
                 postCityData:null, //城市提交数据
                 manageType:[
-                    {
-                        flag:false,
-                        name:"国产"
-                    },
                     {
                         flag:false,
                         name:"合资"
                     },
                     {
                         flag:false,
+                        name:"自主"
+                    },
+                    {
+                        flag:false,
                         name:"豪华"
                     }
                 ],
-                showDialog:false
+                showDialog:false,
+                ajaxLoading:false
             }
         },
         methods:{
@@ -243,9 +245,11 @@
                 }
                 if(index == 1 && item.tag){
                     this.showAuthBrandList = false;
+                    this.authBrandList = [];
                 }
             },
             closeDialogCity(postData){
+                console.log(postData);
                 if(arguments.length == 0){ //无回传数据
                     this.showCity = false;
                 }else{
@@ -263,15 +267,6 @@
                     }
                 })
                 this.types = type.join(",");
-            },
-            getCity(){
-                this.$http.get(
-                    "area?token=" + sessionStorage.token
-                    ).then(function(reponse){
-                        this.cityData = reponse.body.data;
-                    },function(error){
-
-                })
             },
             chooseConditions(item,index){
                 var flag = item.flag;
@@ -490,7 +485,7 @@
             },
             subBrandList(brandList){
                 this.authBrandList = brandList;
-                if(this.authBrandList.length>0) this.showAuthBrandList = true;
+                if(this.authBrandList) this.showAuthBrandList = true; 
                 this.showBrand = false;
             },
             getAuth(){
@@ -510,14 +505,65 @@
                     //this.showAlert = true;
                     //this.alertText = error.body.msg||"请求失败了";
                 });
-            }
+            },
+            passportMessage(){ //获取注册信息
+                this.$http({
+                    url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
+                    method:"GET"
+                }).then(function (response) {
+                   console.log(response);
+                   var data = response.body.data.auth_data;
+                   this.companyName = data.name;
+                   this.username = data.link_name;
+                   this.telephone = data.contact_phone;
+                   this.managerName = data.manager_name;
+                   this.managerTelephone = data.manager_phone;
+                   if(data.province_id&&data.city_id&&data.district_id){
+                     this.defaultCityData = [data.province_id,data.city_id,data.district_id]
+                   }
+                   //省市区
+                   // this.cityData = postData:{
+                   //      provinceData:null,
+                   //      cityData:null,
+                   //      areaData:null
+                   //  }
+                   this.types = data.activities;
+                   this.address = data.address;
+                   var manageTypeList = data.activities.split(",");
+                   manageTypeList.forEach((ele,index) => {
+                        this.manageType[ele-1].flag = true;
+                   });
+                   if(data.auth_data.length > 0){
+                       this.uploadData1 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"signboard",
+                            image:"static/sample5.png",
+                            imgArr:[data.auth_data[0].imgsrc]
+                       }
+                       this.booth_in_img = data.auth_data[0].imgsrc;
+
+                       this.uploadData2 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"signboard",
+                            image:"static/sample5.png",
+                            imgArr:[data.auth_data[1].imgsrc]
+                       }
+                       this.booth_out_img = data.auth_data[1].imgsrc;
+                   }
+
+                   this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
+                },function(){
+
+                });
+            },
         },
         mounted(){
             //提交注册认证
-            this.getCity();
+            this.passportMessage();
             this.getAuth();
-            this.telephone = sessionStorage.telephone;
-            
+            //this.telephone = sessionStorage.telephone;
         },
         components:{
             uploader,

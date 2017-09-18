@@ -67,6 +67,7 @@ input,
 select,
 textarea {
   font-size: 100%;
+  font-family: "Helvetica Neue",Helvetica,STHeiTi,"Microsoft Yahei",Arial,sans-serif;
 }
 /* 去掉各 Table  cell 的边距并让其边重合 */
 table {
