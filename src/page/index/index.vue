@@ -4,6 +4,9 @@
     <!--首页头部-->
     <header-mess ></header-mess>
     <!--首页图片滚动-->
+    <div class="auth-mess" v-if="showAuthMess" @click="goAuth">
+      您还有部分信息待完善，立即完善 <span @click.stop="closeAuthMess">×</span>
+    </div>
     <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页品牌-->
@@ -54,6 +57,7 @@ export default {
 
         ],
         serieList:[], //车系数据
+        showAuthMess:false, //是否展示授权信息
         ajaxLoading:false
     }
   },
@@ -84,11 +88,21 @@ export default {
         if(list.length<this.initData.len){
             this.serieMore = !this.serieMore;
         }
+    },
+    closeAuthMess(){
+        this.showAuthMess = false;
+        sessionStorage.setItem("idCardAuth",null);
+    },
+    goAuth(){
+      this.$router.push("/auth")
     }
   },
   mounted(){
     //组件初始完成需要做什么
     this.getSerie();
+    if(sessionStorage.idCardAuth == 2){
+      this.showAuthMess = true;
+    }
   },
   computed:{
     showbrandTag(){
@@ -114,13 +128,14 @@ export default {
 <style>
 
 /*首页*/
+
+.auth-mess{line-height:1.2rem;background:#d5aa5c;padding-left:0.4rem;color:#FFF;font-size:0.38rem;letter-spacing:0.03rem;}
+.auth-mess span{float:right;margin-right:0.5rem;font-size:0.5rem;}
 /*首页头部*/
 .index-header{position:relative;height:1.1733rem;text-align:center;line-height:1.1733rem;background-color:#27282f;}
 .index-title{font-size:.5333rem;color:#d5aa5c;}
 .index-news{position:absolute;right:.4rem;top:.333rem;}
 .index-news span{position:absolute;top:-.2rem;left:.2666rem;display:block;width:.4rem;height:.4rem;line-height:.4rem;color:#fff;border-radius:.2666rem;background-color:#ff0043;}
-
-
 
 /*首页底部定位*/
 .index-fooer{position:fixed;bottom:0;width:10rem;height:1.3066rem;background-color:#fff;}

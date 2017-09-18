@@ -46,7 +46,7 @@ export default {
 	},
 	methods:{
         goback(){
-            if(this.$store.state.addressFlag == "balanceConfrim"){
+            if(this.successData.addressFlag == "balanceConfrim"){
                 this.goDetail(this.successData.orderNum)
                 return "";
             }
@@ -97,7 +97,7 @@ export default {
     },
 	mounted(){
         this.successData = this.$store.state.successData;
-        switch(this.$store.state.addressFlag)
+        switch(this.successData.addressFlag)
         {
             case "orderConfrim":
                 this.pageMess = {

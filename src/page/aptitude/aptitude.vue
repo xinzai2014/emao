@@ -66,6 +66,21 @@
         </div>
         <p class="visib-98"></p>
         <div class="remits-fixed" @click="checkFormData">提交</div>
+
+        <section class="buy-agreement-pupop" v-if="showAgreement">
+            <div class="buy-agreement-in">
+                <div class="buy-agreement-info">
+                    <p class="buy-agreement-con">
+                       <iframe :srcdoc="iframeCon" class="agreemenIframe"></iframe>
+                    </p>
+                </div>
+                <ul class="buy-agreement-choose clearfix">
+                    <li class="" @click="showAgreement = false">不同意</li>
+                    <li class="active" @click="submitFormData">同意</li>
+                </ul>
+            </div>
+        </section>
+
     </section>
 </div>
 </template>
@@ -80,6 +95,8 @@
                 account:"",
                 revenue:"",
                 showRevenue:false,
+                iframeCon:null,
+                showAgreement:false,
                 authTag:[
                     {
                         tag:false,
@@ -192,6 +209,15 @@
                     }
                 }
             },
+            getAgreement(){
+                this.$http.get("dealer/agreement?token=" + sessionStorage.token)
+                  .then(function (response) {
+                    console.log(response);
+                    this.iframeCon = response.bodyText;
+                  }).catch(function (error) {
+                    
+                  });
+            },
             checkFormData(){
                 if((this.username == "")||(this.username == null)||(this.username.length<=2)){
                     this.$store.dispatch("ALERT", // 通过store传值
@@ -294,7 +320,7 @@
                     );
                     return false
                 }
-                this.submitFormData();
+                this.showAgreement = true;
             },
             submitFormData(){
                 this.$http.post(
@@ -312,17 +338,18 @@
                         billingInfomation:this.billingInfomation,
                     }
                 ).then(function(reponse){
-                    console.log(reponse);
-                    // if(reponse.body.code == 200){
-                    //     this.$router.push('/authResult');
-                    // }
+                    if(reponse.body.code == 200){
+                        this.$router.push('/authResult');
+                    }
                 },function(err){
                     console.log(err);
+                }).finally(function(){
+                    this.showAgreement = false;
                 })
             }
         },
         mounted(){
-
+            this.getAgreement();
         },
         components:{
             uploader
@@ -554,5 +581,21 @@
     top:0;
     left:0;
     width:100%;
+}
+
+/*购车协议*/
+.buy-agreement-pupop{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
+.buy-agreement-in{position:relative;height:80%;margin:1.7067rem .5333rem 1.9333rem .5333rem;font-size:.4rem;border-radius:.1333rem;background-color:#fff;}
+.buy-agreement-info{padding:.4rem .533rem .4rem .533rem;}
+.buy-agreement-title{height:1.2rem;padding-left:.5333rem;color:#2c2c2c;line-height:1.2rem;border-bottom:1px solid #eee;}
+.buy-agreement-con{color:#999;line-height:.6667rem;}
+.buy-agreement-choose{position:absolute;bottom:0;width:100%;}
+.buy-agreement-choose li{float:left;width:50%;height:1.173rem;text-align:center;line-height:1.173rem;font-size:.4267rem;color:#2c2c2c;background-color:#f5f5f5;}
+.buy-agreement-choose li.active{color:#fff;background-color:#d5aa5c;}
+
+.agreemenIframe{
+    width:100%;
+    height:12rem;
+    border:none;
 }
 </style>
