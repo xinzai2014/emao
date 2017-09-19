@@ -485,7 +485,7 @@
             },
             subBrandList(brandList){
                 this.authBrandList = brandList;
-                if(this.authBrandList) this.showAuthBrandList = true; 
+                if(this.authBrandList) this.showAuthBrandList = true;
                 this.showBrand = false;
             },
             getAuth(){
@@ -511,8 +511,20 @@
                     url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
                     method:"GET"
                 }).then(function (response) {
+
                    console.log(response);
                    var data = response.body.data.auth_data;
+
+                   var data_status=response.body.data.data_status;
+
+                    if(data_status != 1){ //新用户
+                        this.welcomeMessage = "欢迎加入淘车猫";
+                        this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }else{
+                        this.welcomeMessage = "请完善以下资料";
+                        this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }  
+
                    this.companyName = data.name;
                    this.username = data.link_name;
                    this.telephone = data.contact_phone;
@@ -529,10 +541,13 @@
                    //  }
                    this.types = data.activities;
                    this.address = data.address;
-                   var manageTypeList = data.activities.split(",");
-                   manageTypeList.forEach((ele,index) => {
-                        this.manageType[ele-1].flag = true;
-                   });
+                   if(data.activities){
+                       var manageTypeList = data.activities.split(",");
+                       manageTypeList.forEach((ele,index) => {
+                            this.manageType[ele-1].flag = true;
+                       });
+                   }
+                   
                    if(data.auth_data.length > 0){
                        this.uploadData1 = {
                             url:"https://tcmapi.emao.com/upload",
@@ -563,7 +578,6 @@
             //提交注册认证
             this.passportMessage();
             this.getAuth();
-            //this.telephone = sessionStorage.telephone;
         },
         components:{
             uploader,

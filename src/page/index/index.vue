@@ -100,7 +100,7 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.getSerie();
-    if(sessionStorage.idCardAuth == 2){
+    if(sessionStorage.idCardAuth == 1){
       this.showAuthMess = true;
     }
   },
