@@ -23,10 +23,10 @@
 		    
 	    },
 	    mounted(){
-        if(sessionStorage.dataToken&&sessionStorage.token){
-           this.$router.push('/index'); //路由跳转
-           return false;
-        }
+        // if(sessionStorage.dataToken&&sessionStorage.token){
+        //    this.$router.push('/index'); //路由跳转
+        //    return false;
+        // }
         console.log(sessionStorage.dataToken+"---"+sessionStorage.token);
 	    	this.$http({
 	            url:"passport/key/notApp",

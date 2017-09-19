@@ -53,7 +53,7 @@ export default {
 .login-phone input{color:#FFF;display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background:none;}
 .login-errror{display:block;position:absolute;bottom:-.8rem;left:0;width:7.333rem;height:.8rem;line-height:.8rem;text-align:center;font-size:.373rem;color:#fff;background-color:#e94545;}
 .login-code{position:relative;height:.933rem;margin:.797rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #fff;}
-.login-code input{display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
+.login-code input{color:#FFF;display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
 .login-code i{display:block;float:right;font-size:.453rem;color:#ffdb7d;}
 .login-code .color-disabled{color:#999}
 .login-btn{display:block;width:5.867rem;height:1.1733rem;margin:.93rem auto 0;text-align:center;font-size:.453rem;color:#fff;line-height:1.17333rem;border:none;Border-radius:.667rem;background-color:#d5aa5c;}
