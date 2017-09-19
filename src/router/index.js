@@ -447,10 +447,8 @@ router.beforeEach((to, from, next) => {
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'))){ //需要登录但是不用认证才能进去的页面
         next();
     }else if(!!(token&&(idCardAuth==1))){ //登录并且已经认证过需要认证
-        console.log("直接走吧");
         next();
     }else{
-        console.log("走不了");
         next('/');
     }
 })
