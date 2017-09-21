@@ -65,7 +65,7 @@
             </div>
         </div>
         <p class="visib-98"></p>
-        <div class="remits-fixed" @click="checkFormData">提交</div>
+        <div class="bth-auth" @click="checkFormData">提交</div>
 
         <section class="buy-agreement-pupop" v-if="showAgreement">
             <div class="buy-agreement-in">
@@ -346,10 +346,70 @@
                 }).finally(function(){
                     this.showAgreement = false;
                 })
-            }
+            },
+            passportMessage(){ //获取注册信息
+                this.$http({
+                    url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
+                    method:"GET"
+                }).then(function (response) {
+                   sessionStorage.authMessage = response.bodyText;
+                   var data = response.body.data.auth_data.qualification;
+                   this.username = data.legalPerson;
+                   this.bank = data.bankName;
+                   this.account = data.bankNumber;
+                   this.revenue = data.TIN;
+
+                   if(data.businessLicense){
+                        this.uploadData1 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"license",
+                            image:"static/sample5.png",
+                            imgArr:[data.businessLicense]
+                        },
+                        this.businessLicense = data.businessLicense;
+                   }
+                   if(data.openingPermit){
+                        this.uploadData2 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"account",
+                            image:"static/sample6.png",
+                            imgArr:[]
+                        },
+                        this.openingPermit = data.openingPermit;
+                   }
+                   if(data.legalPersonIDCard){
+                        this.uploadData3 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"identityFull",
+                            image:"static/sample7.jpg",
+                            imgArr:[data.legalPersonIDCard]
+                        },
+                        this.legalPersonIDCard = data.legalPersonIDCard;
+                   }
+                   if(data.legalPersonIDCardBack){
+                        this.uploadData4 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"identityReverse",
+                            image:"static/sample8.jpg",
+                            imgArr:[data.legalPersonIDCardBack]
+                        },
+                        this.legalPersonIDCardBack = data.legalPersonIDCardBack;
+                   }
+
+
+                   this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
+                },function(){
+
+                });
+            },
         },
         mounted(){
             this.getAgreement();
+            this.passportMessage();
         },
         components:{
             uploader
@@ -361,6 +421,7 @@
 /*注册认证*/
 .authen{
     background:#FFF;
+    padding-bottom:0.5rem;
 }
 .authen-tit{
     height:3.466667rem;
@@ -597,5 +658,19 @@
     width:100%;
     height:12rem;
     border:none;
+}
+
+.bth-auth{
+    width: 5.333333rem;
+    height: 1.173333rem;
+    line-height: 1.173333rem;
+    text-align: center;
+    margin:0 auto;
+    font-size: 0.453333rem;
+    color: #fff;
+    background: #d5aa5c;
+    border-radius: 0.586667rem;
+    border: none;
+    display: block;
 }
 </style>

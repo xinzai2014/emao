@@ -1,7 +1,7 @@
 <template>
 <!--注册认证--> 
-<div v-if="ajaxLoading">
-    <header class="brand-list-header">
+<div v-if="ajaxLoading" class="fixed-con">
+    <header class="brand-list-header header-fixed">
         <i class="white-lt brand-left-cion" @click="showLoginDialog"></i>
         <strong class="brand-list-title">注册认证</strong>
         <a class="auth-tel" href="tel:400-825-2368"></a>
@@ -49,7 +49,7 @@
         <div class="authen-info">
             <p>
                 <label>主营类型：</label>
-                <span @click="setActive(index)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
+                <span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
             </p>
             <div class="authen-limts">
                 <span>是否经过厂家品牌授权</span>
@@ -96,8 +96,7 @@
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
         </div>
-        <p class="visib-98"></p>
-        <div class="remits-fixed" @click="checkFormData">下一步</div>
+        <div class="bth-auth" @click="checkFormData">下一步</div>
         <keep-alive>
         <city  v-if="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
         </keep-alive>
@@ -201,14 +200,17 @@
                 postCityData:null, //城市提交数据
                 manageType:[
                     {
-                        flag:false,
-                        name:"合资"
-                    },
-                    {
+                        sort:2,
                         flag:false,
                         name:"自主"
                     },
                     {
+                        sort:1,
+                        flag:false,
+                        name:"合资"
+                    },
+                    {
+                        sort:3,
                         flag:false,
                         name:"豪华"
                     }
@@ -257,13 +259,13 @@
                     this.location = postData.provinceData["name"] + postData.cityData["name"]+postData.areaData["name"]
                 };
             },
-            setActive(index){ //主营类型
+            setActive(item){ //主营类型
                 var that = this;
-                this.manageType[index]["flag"] = !this.manageType[index]["flag"];
+                item["flag"] = !item["flag"];
                 var type = [];
                 this.manageType.forEach(function(item,index){
                     if(item.flag == true){
-                        type.push(index);
+                        type.push(item.sort);
                     }
                 })
                 this.types = type.join(",");
@@ -473,7 +475,7 @@
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
-                        this.$router.push('/authResult');
+                        this.$router.push('/aptitude');
                     }
                 },function(err){
                     console.log(err);
@@ -511,20 +513,18 @@
                     url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
                     method:"GET"
                 }).then(function (response) {
-
-                   console.log(response);
+                   sessionStorage.authMessage = response.bodyText;
                    var data = response.body.data.auth_data;
 
                    var data_status=response.body.data.data_status;
 
-                    if(data_status != 1){ //新用户
-                        this.welcomeMessage = "欢迎加入淘车猫";
-                        this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
-                    }else{
+                    if(data_status == 1){ //认证通过
                         this.welcomeMessage = "请完善以下资料";
                         this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }else{
+                        this.welcomeMessage = "欢迎加入淘车猫";
+                        this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
                     }  
-
                    this.companyName = data.name;
                    this.username = data.link_name;
                    this.telephone = data.contact_phone;
@@ -544,8 +544,64 @@
                    if(data.activities){
                        var manageTypeList = data.activities.split(",");
                        manageTypeList.forEach((ele,index) => {
-                            this.manageType[ele-1].flag = true;
+                            var index =  this.manageType.findIndex(function(va,ind,arr){
+                                return va.sort == ele;
+                            })
+                            this.manageType[index].flag = true;
                        });
+                   }
+
+                   if(data.brand_auth.length>0){
+                        this.authTag[0].tag = true;
+                        //this.authBrandList = data.brand_auth;
+                        data.brand_auth.forEach((ele,index) =>{
+                            this.authBrandList[index] = {
+                                "name":ele.brand_name,
+                                "brand_id":ele.brand_id,
+                                "level":ele.level
+                            }
+                            switch(parseInt(ele.level)){
+                                case (1) :
+                                    this.authBrandList[index]["text"] = "一级代理";
+                                    break;
+                                case (2) :
+                                    this.authBrandList[index]["text"] = "二级代理";
+                                    break;
+                            }
+                        })
+                        this.showAuthBrandList = true;
+                   }
+                   this.conditions.forEach((ele,index)=>{
+                        ele.flag = false;
+                   });
+                   if(data.repair_place){
+                        this.conditions[1].flag = true;
+                        this.conditionsIndex = 1;
+                   }else{
+                        this.conditions[0].flag = true;
+                        this.conditionsIndex = 0;
+                   }
+
+                   if(data.road_license){
+                        this.uploadData3 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"road",
+                            image:"static/sample7.jpg",
+                            imgArr:[data.road_license]
+                        }
+                        this.road_license = data.road_license;
+                   }
+
+                   if(data.repair_place){
+                        this.uploadData4 = {
+                            url:"https://tcmapi.emao.com/upload",
+                            count:1,
+                            flag:"repair",
+                            image:"static/sample8.jpg",
+                            imgArr:[data.repair_place]
+                        },
+                        this.repair_place = data.repair_place;
                    }
                    
                    if(data.auth_data.length > 0){
@@ -567,7 +623,6 @@
                        }
                        this.booth_out_img = data.auth_data[1].imgsrc;
                    }
-
                    this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
                 },function(){
 
@@ -591,6 +646,7 @@
 /*注册认证*/
 .authen{
     background:#FFF;
+    padding-bottom:0.5rem;
 }
 .authen-tit{
     height:3.466667rem;
@@ -804,6 +860,20 @@
 .authen-limts-list dd{
     font-size:0.38rem;
     color:#999;
+}
+
+.bth-auth{
+    width: 5.333333rem;
+    height: 1.173333rem;
+    line-height: 1.173333rem;
+    text-align: center;
+    margin:0 auto;
+    font-size: 0.453333rem;
+    color: #fff;
+    background: #d5aa5c;
+    border-radius: 0.586667rem;
+    border: none;
+    display: block;
 }
 
 </style>

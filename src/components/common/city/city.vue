@@ -219,7 +219,6 @@
 .city-list{
     width:33.33%;
     float:left;
-    padding:0.25rem 0;
     height:6rem;
     overflow:hidden;
 }

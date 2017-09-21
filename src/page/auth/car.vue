@@ -44,10 +44,10 @@
 
         <div class="dialog" v-if="showCannelDialog" @click="closeCannelDialog">
             <div class="dialog-con">
-                <p>是否取消已选择授权品牌</p>
+                <p>确认关闭?关闭后选择的品牌及级别将清空</p>
                 <div class="dialog-btn">
-                    <span @click="closeCannelDialog">点错了</span>
-                    <span @click="closebrand">确定</span>
+                    <span @click="closeCannelDialog">取消</span>
+                    <span @click="closebrand">确认</span>
                 </div>
             </div>
         </div>
