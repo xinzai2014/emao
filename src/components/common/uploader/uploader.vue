@@ -210,26 +210,28 @@
             },
             closeImg(){ 
                 this.showBigImg = false;
+            },
+            init(){
+                this.initData = this.uploadData;
+                if("imgArr" in this.uploadData){
+                    var img = this.uploadData.imgArr;
+                    if(img.length == 0) return;
+                    this.files = [];
+                    var that = this;
+                    img.forEach(function(value,index){
+                        var obj = {};
+                        obj.src = value;
+                        that.files.push(obj);
+                    })
+                }
             }
         },
         mounted(){
-            this.initData = this.uploadData;
-            if("imgArr" in this.uploadData){
-                var img = this.uploadData.imgArr;
-                if(img.length == 0) return;
-                this.files = [];
-                var that = this;
-                img.forEach(function(value,index){
-                    var obj = {};
-                    obj.src = value;
-                    that.files.push(obj);
-                })
-            }
-            
+            this.init();
         },
         watch:{
             uploadData:function(){
-                console.log("有变动了");
+                this.init();
             }
         }
     }
