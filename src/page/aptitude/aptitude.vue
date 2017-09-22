@@ -360,47 +360,30 @@
                    this.revenue = data.TIN;
 
                    if(data.businessLicense){
-                        this.uploadData1 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"license",
-                            image:"static/sample5.png",
-                            imgArr:[data.businessLicense]
-                        },
+                        this.$set(this.uploadData1,"imgArr",[data.businessLicense])
                         this.businessLicense = data.businessLicense;
                    }
                    if(data.openingPermit){
-                        this.uploadData2 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"account",
-                            image:"static/sample6.png",
-                            imgArr:[]
-                        },
+                        this.uploadData2["imgArr"] = [data.openingPermit];
                         this.openingPermit = data.openingPermit;
                    }
                    if(data.legalPersonIDCard){
-                        this.uploadData3 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"identityFull",
-                            image:"static/sample7.jpg",
-                            imgArr:[data.legalPersonIDCard]
-                        },
+                        this.uploadData3["imgArr"] = [data.legalPersonIDCard];
                         this.legalPersonIDCard = data.legalPersonIDCard;
                    }
                    if(data.legalPersonIDCardBack){
-                        this.uploadData4 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"identityReverse",
-                            image:"static/sample8.jpg",
-                            imgArr:[data.legalPersonIDCardBack]
-                        },
+                        this.uploadData4["imgArr"] = [data.legalPersonIDCardBack];
                         this.legalPersonIDCardBack = data.legalPersonIDCardBack;
                    }
 
-
+                    if(data.generalTaxpayer&&data.billingInfomation){
+                        this.authTag[0].tag = true;
+                        this.showRevenue = true;
+                        this.uploadData5["imgArr"] = [data.generalTaxpayer];
+                        this.uploadData6["imgArr"] = [data.billingInfomation];
+                        this.generalTaxpayer = data.generalTaxpayer;
+                        this.billingInfomation = data.billingInfomation;
+                    }
                    this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
                 },function(){
 

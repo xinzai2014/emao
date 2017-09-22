@@ -165,6 +165,12 @@
             },
             perAreaData:function(){
                 this.initScroll("areaScroll","areaWrap",this.defaultAreaIndex);
+            },
+            'defaultCityData':{
+                handler:function(){
+                    console.log(123);
+                },
+                deep:true
             }
         }
     }

@@ -230,7 +230,7 @@
             this.init();
         },
         watch:{
-            uploadData:function(){
+            'uploadData.imgArr'(){
                 this.init();
             }
         }

@@ -98,7 +98,7 @@
         </div>
         <div class="bth-auth" @click="checkFormData">下一步</div>
         <keep-alive>
-        <city  v-if="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
+        <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
         </keep-alive>
         <car :showBrand="showBrand" @subBrandList = "subBrandList"></car>
 
@@ -583,44 +583,20 @@
                    }
 
                    if(data.road_license){
-                        this.uploadData3 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"road",
-                            image:"static/sample7.jpg",
-                            imgArr:[data.road_license]
-                        }
+                        this.$set(this.uploadData3,"imgArr",[data.road_license])
                         this.road_license = data.road_license;
                    }
 
                    if(data.repair_place){
-                        this.uploadData4 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"repair",
-                            image:"static/sample8.jpg",
-                            imgArr:[data.repair_place]
-                        },
+                        this.$set(this.uploadData4,"imgArr",[data.repair_place])
                         this.repair_place = data.repair_place;
                    }
                    
                    if(data.auth_data.length > 0){
-                       this.uploadData1 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"signboard",
-                            image:"static/sample5.png",
-                            imgArr:[data.auth_data[0].imgsrc]
-                       }
+                       this.$set(this.uploadData1,"imgArr",[data.auth_data[0].imgsrc])
                        this.booth_in_img = data.auth_data[0].imgsrc;
 
-                       this.uploadData2 = {
-                            url:"https://tcmapi.emao.com/upload",
-                            count:1,
-                            flag:"signboard",
-                            image:"static/sample5.png",
-                            imgArr:[data.auth_data[1].imgsrc]
-                       }
+                       this.$set(this.uploadData2,"imgArr",[data.auth_data[1].imgsrc])
                        this.booth_out_img = data.auth_data[1].imgsrc;
                    }
                    this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
