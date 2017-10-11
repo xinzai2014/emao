@@ -185,13 +185,13 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"road",
-                    image:"static/sample7.jpg"
+                    image:"static/sample10.jpg"
                 },
                 uploadData4:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"repair",
-                    image:"static/sample8.jpg",
+                    image:"static/sample11.jpg",
                     imgArr:[]
                 },
                 dataURL:{},

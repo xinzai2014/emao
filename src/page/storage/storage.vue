@@ -37,7 +37,7 @@
                                 <li v-for="(item,index) in waitIn">
                                     <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
                                     <div class="transit-depot-txt">
-                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}} </p>
+                                        <p class="transit-depot-message"><span>{{item.brand_name}}</span><span>{{item.serie_name}}</span>{{item.year}}款{{item.auto_name}} </p>
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
                                             <input class="transit-depot-storage transit-depot-btn" type="button" name="" value="确认入库"  @click="showInPopup(item.vin_num,index)">
@@ -54,7 +54,7 @@
                                 <li v-for="(item,index) in waitOut">
                                     <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
                                     <div class="transit-depot-txt">
-                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
+                                        <p class="transit-depot-message"><span>{{item.brand_name}}</span><span>{{item.serie_name}}</span>{{item.year}}款{{item.auto_name}} </p>
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
                                             <input class="transit-depot-stock-removal transit-depot-btn" type="button" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
@@ -71,7 +71,7 @@
                                 <li v-for="item in inWarehouse">
                                     <p class="transit-depot-vin">VIN: <span>{{item.vin_num}}</span></p>
                                     <div class="transit-depot-txt">
-                                        <p class="transit-depot-message">{{item.brand_name}}{{item.serie_name}}{{item.year}}款{{item.auto_name}}</p>
+                                        <p class="transit-depot-message"><span>{{item.brand_name}}</span><span>{{item.serie_name}}</span>{{item.year}}款{{item.auto_name}} </p>
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
                                             <p>{{item.add_warehouse_time}}</p>
@@ -348,6 +348,7 @@
     .transit-depot-txt p{width:5.867rem;font-size:.3733rem;color:#999;}
     .transit-depot-txt .transit-depot-color{margin-top:.4rem;margin-bottom:.5333rem;font-size:.3467rem;color:#999;}
     .transit-depot-message{height:.9067rem;line-height:.5333rem;}
+    .transit-depot-message span{margin-right:0.2rem;}
     .transit-depot-state{position:absolute;bottom:.53rem;right:0;}
     .transit-depot-state input{width: 2.6666rem;  height: 1.0667rem;font-size:.3733rem;line-height:1.067rem;text-align:center;border-radius:.5333rem;background-color:white;}
     .transit-depot-storage{color:#bb8800;border:1px solid #bb8800;}
@@ -361,7 +362,7 @@
 
 
     /*入库弹窗*/
-    .storage-popup-out{position:absolute;top:50%;left:50%;overflow:hidden;width:7.2rem;padding-top: .533rem;border-radius: .2666rem;transform: translate(-50%,-50%);background-color:#fff;}
+    .storage-popup-out{position:absolute;top:50%;left:50%;overflow:hidden;width:7.2rem;padding-top: .533rem;border-radius: .2666rem;transform: translate(-50%,-50%);background-color:#fff;margin-left:-3.6rem;margin-top:-3.6rem;}
     .storage-popup-info{padding: 0 1.067rem 1.067rem 1.067rem;}
     .storage-popup-txt{padding-bottom:.4rem;border-bottom:1px solid #2c2c2c;}
     .storage-popup-name{font-size:.4267rem;color:#2c2c2c;text-align:center;}
