@@ -319,7 +319,7 @@
         top:0;
         left:0;
         background:rgba(0,0,0,0.85);
-        z-index:10;
+        z-index:99;
     }
     .bigImg-back img{
         width:100%;

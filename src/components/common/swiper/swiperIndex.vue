@@ -56,7 +56,7 @@ export default {
 .index-slider{position:relative;height:4.5333rem;}
 .index-slider img{width:100%;height:4.5333rem;}
 .index-icon{position:absolute;left:.4rem !important;bottom:.24rem !important;z-index:1;}
-.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:red;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;opacity:1 !important}
+.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:#fff;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;opacity:1 !important}
 .index-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;}
 
 .news_title h3{

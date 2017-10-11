@@ -11,7 +11,7 @@
             <img src="../../assets/submit-succeed.png" alt="">
             <p>认证资料已提交，请等待审核</p>
             <p class="tips">请保持您的电话畅通，会有区域经理与您联系</p>
-            <div class="submit-succeed-tel"><i></i><a href="tel:400-000-1234">400-000-1234</a></div>
+            <div class="submit-succeed-tel"><i></i><a href="tel:400-825-2368">400-825-2368</a></div>
         </section>
         <div class="dialog" v-if="showDialog" @click="closeDialog">
             <div class="dialog-con">
