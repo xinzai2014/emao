@@ -7,9 +7,9 @@
                 <i></i>
                 <span>订车</span>
             </li>
-            <li class="index-my">
+            <li class="index-my" @click="goHome">
                 <i></i>
-                <span @click="goHome">我的</span>
+                <span>我的</span>
             </li>
         </ul>
     </footer>
