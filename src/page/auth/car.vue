@@ -5,8 +5,9 @@
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
         <strong class="brand-list-title">请选择授权品牌</strong>
-        <em @click="closebrand" class="brand-cannel">取消</em>
+        <em class="brand-cannel" @click="openCannelDialog">取消</em>
     </header>
+
 
     <div class="brand-list-in auth-brand" >
         <!--首页-选择车型-车型按字母排序-->
@@ -40,6 +41,17 @@
               </ul>
           </section>
         </div>
+
+        <div class="dialog" v-if="showCannelDialog" @click="closeCannelDialog">
+            <div class="dialog-con">
+                <p>确认关闭?关闭后选择的品牌及级别将清空</p>
+                <div class="dialog-btn">
+                    <span @click="closeCannelDialog">取消</span>
+                    <span @click="closebrand">确认</span>
+                </div>
+            </div>
+        </div>
+
     </div>
     </div>
 </div>
@@ -57,6 +69,7 @@
           brandScroll:null,
           showMark:false,
           authBrand:[],
+          showCannelDialog:false, /*取消按钮*/
           agencyList:[
             {
               id:1,
@@ -160,10 +173,22 @@
           this.showMark = !this.showMark;
         },
         closebrand(){
-          this.$emit("closeCar",false);     
+          this.showCannelDialog = true;
+          this.brandList.forEach(function(ele,index){
+              ele.list.forEach(function(e,ind){
+                e.tagName = "";
+              })
+          })
+          this.$emit("subBrandList",null);
         },
         subBrand(){ //向上提交选取的品牌
           this.$emit("subBrandList",this.authBrand);
+        },
+        openCannelDialog(){
+          this.showCannelDialog = true;
+        },
+        closeCannelDialog(){
+          this.showCannelDialog = false;
         }
       },
       mounted(){

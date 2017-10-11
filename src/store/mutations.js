@@ -14,7 +14,7 @@ import {
 	SUCCESS_DATA
 } from './mutations-types.js'
 
-
+import {setStore, getStore} from '../config/mUtils'
 
 export default {
 
@@ -28,6 +28,8 @@ export default {
 
 	[DEFAULT_ADDRESS](state,obj){ //获取选中地址
 		state.defaultAdress = obj;
+		//存入sessionStorage
+		setStore('defaultAdress', state.defaultAdress);
 	},
 
 	[CHOOSE_CAR](state,flag){ //控制选车显示隐藏

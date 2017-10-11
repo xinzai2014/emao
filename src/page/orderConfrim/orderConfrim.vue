@@ -71,6 +71,16 @@
             </div>
         </div>
     </section>
+    
+    <section class="order-coupon-info">
+        <div class="order-support-fee clearfix">
+            <div class="order-support-title">使用金融方式购买：</div>
+            <div class="order-suport-switch">
+                <input type="checkbox"  v-model="financial">
+            </div>
+        </div>
+    </section>
+
     <!--购车确认-总额-->
     <section class="order-rental">
         <div class="order-rental-info">
@@ -221,6 +231,7 @@ export default {
             },
             remark:null,             //备注信息
             showAgreement:false,
+            financial:false,
             routerAddress:false
  	    }
 	  },
@@ -229,6 +240,7 @@ export default {
             this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
         },
         goAdressList(){
+            this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
             this.$router.push("/profile/info/address");
         },
 	  	getData(){
@@ -270,6 +282,7 @@ export default {
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
                    this.formData.address_id = data.address.id;
+
 		        },function(){
 
 		        })
@@ -370,6 +383,7 @@ export default {
         },
         sumbitOrder(){ //提交表单
             this.closeAgreementDialog();
+            this.formData.buy_finance = this.financial?1:0;
             this.formData.deduction = this.totalData;
             this.formData.remark = this.remark;
 
@@ -382,6 +396,7 @@ export default {
                 this.formData).then(function (response) {
                     var data = response.body.data;
                     data["flag"] = true;
+                    data["addressFlag"] = "orderConfrim";
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )
@@ -399,8 +414,7 @@ export default {
         } 
 	  },
 	  mounted(){
-        this.serieId = this.$router.currentRoute.query.serieId;
-        this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
+        this.serieId = this.$router.currentRoute.query.serieId;  
 	  },
       filters:{
         getMoney:function(num){

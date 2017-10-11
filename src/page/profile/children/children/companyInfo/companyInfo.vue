@@ -25,7 +25,8 @@
             <div class="user-bt"><span>{{info.auth_data.qualification.legalPerson}}</span>法人姓名：</div>
             <div class="user-bt"><span>{{info.auth_data.qualification.bankName}}</span>企业开户行：</div>
             <div class="user-bt"><span>{{info.auth_data.qualification.bankNumber}}</span>企业银行账号：</div>
-            <div><span>{{info.auth_data.qualification.TIN}}</span>纳税识别号：</div>
+            <div class="user-bt"><span>{{info.auth_data.qualification.TIN}}</span>纳税识别号：</div>
+            <!--<div><span>{{info.auth_data.qualification.generalTaxpayer}}</span>一般納稅人：</div>-->
         </section>
 	</div>
 </template>
@@ -57,15 +58,7 @@
 		     }).then(function (response) {
 		     	this.oneInfo=response.body.data;
 		     	var info=response.body.data;
-		     	if(info.auth_data.activities.indexOf('1')){
-		     		info.auth_data.activities='合资';
-		     	}
-		     	if(info.auth_data.activities.indexOf('2')){
-		     		info.auth_data.activities=info.auth_data.activities+',自主';
-		     	}
-		     	if(info.auth_data.activities.indexOf('3')){
-		     		info.auth_data.activities=info.auth_data.activities+',豪华';
-		     	}
+		     	info.auth_data.activities=info.auth_data.activities.replace('1','合资').replace('2','自主').replace('3','豪华');	
 		     	if(info.auth_data.brand_auth){
 		     		for(var i=0;i<info.auth_data.brand_auth.length;i++){
 			     		if(info.auth_data.brand_auth[i].level=='1'){
@@ -75,6 +68,14 @@
 			     			info.auth_data.brand_auth[i].level="二级代理";
 			     		}
 			     	}
+		     	}
+		     	if('generalTaxpayer' in info.auth_data.qualification){
+		     		info.auth_data.qualification.generalTaxpayer='是';
+		     	}
+		     	if(info.auth_data.repair_place!=''||info.auth_data.road_license!=''){
+		     		info.auth_data.repair_place="具备";
+		     	}else{
+		     		info.auth_data.repair_place="不具备";
 		     	}
 		        this.info=info;
 		        this.load=true;

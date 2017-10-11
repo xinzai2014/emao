@@ -18,7 +18,7 @@
                         <p>
                             认证级别
                             <i v-for="n in level"></i>
-                            <span class="auth_status">{{data_status}}</span>
+                            <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
                     </router-link>                   
                     <div class="company-bt">
@@ -176,16 +176,19 @@ export default {
         params:data
      }).then(function (response) {
         if(response.body.data.data_status=="1"){
-            this.data_status='信息已完善'; 
+            // this.data_status='信息已完善'; 
+            this.data_status='';
         }
         if(response.body.data.data_status=="2"){
             this.data_status='信息待完善'; 
         }
         if(response.body.data.data_status=="3"){
-            this.data_status='信息审核中'; 
+            // this.data_status='信息审核中'; 
+            this.data_status='';
         }
         if(response.body.data.data_status=="4"){
-            this.data_status='信息驳回'; 
+            // this.data_status='信息驳回'; 
+            this.data_status='';
         }
          
       }).catch(function (error) {

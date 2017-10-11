@@ -23,7 +23,7 @@
 	                </li>
 	            </ul>
 	        </div>
-	        <input class="address-save" type="button" name="" value="保存" @click="saveEdit">
+	        <input class="address-save" type="button" name="" value="保存并使用" @click="saveEdit">
 	    </section>
 		<alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
@@ -131,6 +131,14 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 				    }else{
 				    	this.$router.push({ name: 'address'});
 				    }*/
+				    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+			        {
+			          id:this.id,
+			          address:this.address,
+			          phone:this.phone,
+			          name:this.name
+			        }
+			    );
 		        }).catch(function (error) {
 		            this.showAlert = true;
           			 this.alertText = error.body.msg||"请求失败了";	            

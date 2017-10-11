@@ -1,7 +1,7 @@
 <template>
 <!--注册认证--> 
-<div>
-    <header class="brand-list-header">
+<div v-if="ajaxLoading" class="fixed-con">
+    <header class="brand-list-header header-fixed">
         <i class="white-lt brand-left-cion" @click="showLoginDialog"></i>
         <strong class="brand-list-title">注册认证</strong>
         <a class="auth-tel" href="tel:400-825-2368"></a>
@@ -49,7 +49,7 @@
         <div class="authen-info">
             <p>
                 <label>主营类型：</label>
-                <span @click="setActive(index)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
+                <span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
             </p>
             <div class="authen-limts">
                 <span>是否经过厂家品牌授权</span>
@@ -96,10 +96,11 @@
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
         </div>
-        <p class="visib-98"></p>
-        <div class="remits-fixed" @click="checkFormData">下一步</div>
-        <city :cityData="cityData" v-if="showCity" @closeCity="closeDialogCity"></city>
-        <car :showBrand="showBrand" @closeCar="closeCar" @subBrandList = "subBrandList"></car>
+        <div class="bth-auth" @click="checkFormData">下一步</div>
+        <keep-alive>
+        <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
+        </keep-alive>
+        <car :showBrand="showBrand" @subBrandList = "subBrandList"></car>
 
         <div class="dialog" v-if="showDialog" @click="closeDialog">
             <div class="dialog-con">
@@ -110,7 +111,6 @@
                 </div>
             </div>
         </div>
-
     </section>
 </div>
 </template>
@@ -195,24 +195,28 @@
                     imgArr:[]
                 },
                 dataURL:{},
-                cityData:[],
                 showCity:false,
+                defaultCityData:[], //初始化城市默认数据
                 postCityData:null, //城市提交数据
                 manageType:[
                     {
+                        sort:2,
                         flag:false,
-                        name:"国产"
+                        name:"自主"
                     },
                     {
+                        sort:1,
                         flag:false,
                         name:"合资"
                     },
                     {
+                        sort:3,
                         flag:false,
                         name:"豪华"
                     }
                 ],
-                showDialog:false
+                showDialog:false,
+                ajaxLoading:false
             }
         },
         methods:{
@@ -243,9 +247,11 @@
                 }
                 if(index == 1 && item.tag){
                     this.showAuthBrandList = false;
+                    this.authBrandList = [];
                 }
             },
             closeDialogCity(postData){
+                console.log(postData);
                 if(arguments.length == 0){ //无回传数据
                     this.showCity = false;
                 }else{
@@ -253,25 +259,16 @@
                     this.location = postData.provinceData["name"] + postData.cityData["name"]+postData.areaData["name"]
                 };
             },
-            setActive(index){ //主营类型
+            setActive(item){ //主营类型
                 var that = this;
-                this.manageType[index]["flag"] = !this.manageType[index]["flag"];
+                item["flag"] = !item["flag"];
                 var type = [];
                 this.manageType.forEach(function(item,index){
                     if(item.flag == true){
-                        type.push(index);
+                        type.push(item.sort);
                     }
                 })
                 this.types = type.join(",");
-            },
-            getCity(){
-                this.$http.get(
-                    "area?token=" + sessionStorage.token
-                    ).then(function(reponse){
-                        this.cityData = reponse.body.data;
-                    },function(error){
-
-                })
             },
             chooseConditions(item,index){
                 var flag = item.flag;
@@ -300,14 +297,11 @@
                         case "inside":
                             this.booth_in_img = this.dataURL[flag][0]
                             break; 
-                        case "identity":
-                            this.id_card_front = this.dataURL[flag][0] 
+                        case "road":
+                            this.road_license = this.dataURL[flag][0] 
                             break;
-                        case "identityPos":
-                            this.id_card_back = this.dataURL[flag][0] 
-                            break;
-                        case "licenseRev":
-                            this.business = this.dataURL[flag][0] 
+                        case "repair":
+                            this.repair_place = this.dataURL[flag][0] 
                             break;
                     }
                 }
@@ -431,31 +425,57 @@
                     );
                     return false
                 }
-                this.authTag.forEach(function(ele,index){
-                    
-                })
                 this.submitFormData();
             },
             submitFormData(){
+                var activeIndex = this.authTag.findIndex(function(ele,index,arr){
+                    return ele.tag;
+                })
+                var authList = [];
+                if(activeIndex == 0){ //选择
+                    this.authBrandList.forEach(function(ele,index){
+                        var obj = {};
+                        obj["brand_id"] = ele["brand_id"];
+                        obj["level"] = ele["level"];
+                        authList.push(obj);
+                    })
+                }
+                authList = JSON.stringify(authList);
+                var conditionIndex = this.conditions.findIndex(function(ele,index){
+                    return ele.flag;
+                });
+                if(conditionIndex == 0){
+                    this.repair_place = null;
+                }
+                if(conditionIndex == 1){
+                    this.road_license = null;
+                }
+                if(conditionIndex == 2){
+                    this.road_license = null;
+                    this.repair_place = null;
+                }
                 this.$http.post(
                     "dealer/auth?token=" + sessionStorage.token,
                     {
-                        link_name:this.username, 
                         name:this.companyName,
+                        link_name:this.username, 
+                        contact_phone:this.telephone,
+                        manager_name:this.managerName,
+                        manager_phone:this.managerTelephone,
                         province_id:this.postCityData.provinceData.id,
                         city_id:this.postCityData.cityData.id,
                         district_id:this.postCityData.areaData.id,
                         address:this.address,
                         activities:this.types,
+                        brand_auth:authList,
                         booth_out_img:this.booth_out_img,
                         booth_in_img:this.booth_in_img,
-                        id_card_front:this.id_card_front,
-                        id_card_back:this.id_card_back,
-                        business:this.business
+                        road_license:this.road_license,
+                        repair_place:this.repair_place
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
-                        this.$router.push('/authResult');
+                        this.$router.push('/aptitude');
                     }
                 },function(err){
                     console.log(err);
@@ -467,7 +487,7 @@
             },
             subBrandList(brandList){
                 this.authBrandList = brandList;
-                if(this.authBrandList.length>0) this.showAuthBrandList = true;
+                if(this.authBrandList) this.showAuthBrandList = true;
                 this.showBrand = false;
             },
             getAuth(){
@@ -487,14 +507,108 @@
                     //this.showAlert = true;
                     //this.alertText = error.body.msg||"请求失败了";
                 });
-            }
+            },
+            passportMessage(){ //获取注册信息
+                this.$http({
+                    url:"dealerInfo/idCardAuth?token="+sessionStorage.token,
+                    method:"GET"
+                }).then(function (response) {
+                   sessionStorage.authMessage = response.bodyText;
+                   var data = response.body.data.auth_data;
+
+                   var data_status=response.body.data.data_status;
+
+                    if(data_status == 1){ //认证通过
+                        this.welcomeMessage = "请完善以下资料";
+                        this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }else{
+                        this.welcomeMessage = "欢迎加入淘车猫";
+                        this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
+                    }  
+                   this.companyName = data.name;
+                   this.username = data.link_name;
+                   this.telephone = data.contact_phone;
+                   this.managerName = data.manager_name;
+                   this.managerTelephone = data.manager_phone;
+                   if(data.province_id&&data.city_id&&data.district_id){
+                     this.defaultCityData = [data.province_id,data.city_id,data.district_id]
+                   }
+                   //省市区
+                   // this.cityData = postData:{
+                   //      provinceData:null,
+                   //      cityData:null,
+                   //      areaData:null
+                   //  }
+                   this.types = data.activities;
+                   this.address = data.address;
+                   if(data.activities){
+                       var manageTypeList = data.activities.split(",");
+                       manageTypeList.forEach((ele,index) => {
+                            var index =  this.manageType.findIndex(function(va,ind,arr){
+                                return va.sort == ele;
+                            })
+                            this.manageType[index].flag = true;
+                       });
+                   }
+
+                   if(data.brand_auth.length>0){
+                        this.authTag[0].tag = true;
+                        //this.authBrandList = data.brand_auth;
+                        data.brand_auth.forEach((ele,index) =>{
+                            this.authBrandList[index] = {
+                                "name":ele.brand_name,
+                                "brand_id":ele.brand_id,
+                                "level":ele.level
+                            }
+                            switch(parseInt(ele.level)){
+                                case (1) :
+                                    this.authBrandList[index]["text"] = "一级代理";
+                                    break;
+                                case (2) :
+                                    this.authBrandList[index]["text"] = "二级代理";
+                                    break;
+                            }
+                        })
+                        this.showAuthBrandList = true;
+                   }
+                   this.conditions.forEach((ele,index)=>{
+                        ele.flag = false;
+                   });
+                   if(data.repair_place){
+                        this.conditions[1].flag = true;
+                        this.conditionsIndex = 1;
+                   }else{
+                        this.conditions[0].flag = true;
+                        this.conditionsIndex = 0;
+                   }
+
+                   if(data.road_license){
+                        this.$set(this.uploadData3,"imgArr",[data.road_license])
+                        this.road_license = data.road_license;
+                   }
+
+                   if(data.repair_place){
+                        this.$set(this.uploadData4,"imgArr",[data.repair_place])
+                        this.repair_place = data.repair_place;
+                   }
+                   
+                   if(data.auth_data.length > 0){
+                       this.$set(this.uploadData1,"imgArr",[data.auth_data[0].imgsrc])
+                       this.booth_in_img = data.auth_data[0].imgsrc;
+
+                       this.$set(this.uploadData2,"imgArr",[data.auth_data[1].imgsrc])
+                       this.booth_out_img = data.auth_data[1].imgsrc;
+                   }
+                   this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
+                },function(){
+
+                });
+            },
         },
         mounted(){
             //提交注册认证
-            this.getCity();
+            this.passportMessage();
             this.getAuth();
-            this.telephone = sessionStorage.telephone;
-            
         },
         components:{
             uploader,
@@ -508,6 +622,7 @@
 /*注册认证*/
 .authen{
     background:#FFF;
+    padding-bottom:0.5rem;
 }
 .authen-tit{
     height:3.466667rem;
@@ -721,6 +836,20 @@
 .authen-limts-list dd{
     font-size:0.38rem;
     color:#999;
+}
+
+.bth-auth{
+    width: 5.333333rem;
+    height: 1.173333rem;
+    line-height: 1.173333rem;
+    text-align: center;
+    margin:0 auto;
+    font-size: 0.453333rem;
+    color: #fff;
+    background: #d5aa5c;
+    border-radius: 0.586667rem;
+    border: none;
+    display: block;
 }
 
 </style>

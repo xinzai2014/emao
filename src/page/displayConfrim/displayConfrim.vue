@@ -144,6 +144,7 @@ export default {
         },
         goAdressList(){
             this.$router.push("/profile/info/address");
+            this.$store.dispatch("ADDRESS_FLAG","displayConfrim");//展车下单标识,后面选地址会用到
         },
 	  	getData(){
 			this.$http({
@@ -219,6 +220,7 @@ export default {
                 this.formData).then(function (response) {
                     var data = response.body.data;
                     data["flag"] = true;
+                    data["addressFlag"] = "displayConfrim";
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )
@@ -247,7 +249,6 @@ export default {
       },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
-        this.$store.dispatch("ADDRESS_FLAG","displayConfrim");//展车下单标识,后面选地址会用到
 	  },
       computed:{
         totalData:function(){

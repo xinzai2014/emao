@@ -376,6 +376,7 @@ export default {
                 this.formData).then(function (response) {
                     var data = response.body.data;
                     data["flag"] = true;
+                    data["addressFlag"] = "balanceConfrim";
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )

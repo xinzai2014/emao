@@ -12,8 +12,8 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
 const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
-const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'auth')
-//const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
+const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'authResult')
+const aptitude = r => require.ensure([], () => r(require('../page/aptitude/aptitude')), 'aptitude')
 
 
 //首页相关组件
@@ -116,9 +116,9 @@ Vue.use(Router)
 var router=new Router({
     routes: [
         {
-            path: '/',
+            path: '*', 
             name: 'loading',
-            component: loading  //loading页面
+            component: loading  //默认路由，匹配不到的时候跳转loading
         },
         {
             path: '/login',     //登录页面
@@ -146,6 +146,11 @@ var router=new Router({
             path: '/authResult',  //登录注册个人认证
             name: 'authResult',
             component: authResult
+        },
+        {
+            path: '/aptitude',  //登录注册个人认证
+            name: 'aptitude',
+            component: aptitude
         },
         {
             path: '/index',  //首页
@@ -430,12 +435,15 @@ var router=new Router({
 })
 
 
-
-
-
 router.beforeEach((to, from, next) => {
-    var token=sessionStorage.getItem('token');
-    if(token||to.name=="loading"||to.name=='account'||to.name=='code'){
+    var token = sessionStorage.getItem('token');
+    var idCardAuth = sessionStorage.getItem('idCardAuth');
+    //如何做登录完了回到某个页面去呢
+    if(to.name=="loading"||to.name=='account'||to.name=='code'){ //不需要登录可以直接跳转的
+        next();
+    }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
+        next();
+    }else if(!!(token&&(idCardAuth==1))){ //登录并且已经认证过需要认证
         next();
     }else{
         next('/');
