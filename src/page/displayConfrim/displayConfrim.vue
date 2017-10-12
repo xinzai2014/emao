@@ -367,7 +367,7 @@ export default {
 .use-coupon-choose span.active{color:#fff;background-color:#d5aa5c;}
 
 /*购车协议*/
-.buy-agreement-pupop{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
+.buy-agreement-pupop{position:fixed;z-index:99;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
 .buy-agreement-in{position:relative;height:80%;margin:1.7067rem .5333rem 1.9333rem .5333rem;font-size:.4rem;border-radius:.1333rem;background-color:#fff;}
 .buy-agreement-info{padding:.4rem .533rem .4rem .533rem;}
 .buy-agreement-title{height:1.2rem;padding-left:.5333rem;color:#2c2c2c;line-height:1.2rem;border-bottom:1px solid #eee;}
@@ -457,6 +457,7 @@ export default {
     width:100%;
     height:10rem;
     border:none;
+    overflow-y:auto;
 }
 </style>
 
