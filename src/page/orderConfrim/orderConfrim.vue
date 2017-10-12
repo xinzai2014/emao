@@ -617,7 +617,8 @@ export default {
     width:100%;
     height:10rem;
     border:none;
-    overflow-y:scroll;
+    -webkit-overflow-scrolling: touch;  
+    overflow-y: scroll; 
 }
 
 </style>

@@ -77,6 +77,8 @@ export default {
 	height:100%;
 	width:100%;
 	border:none;
+	-webkit-overflow-scrolling: touch;  
+    overflow-y: scroll; 
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header" ref="header">
+    <header class="brand-list-header heads" ref="header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" >{{serieName}}</strong>
         <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
@@ -315,9 +315,10 @@
     width: 100%;
     color:red;
 }
+.heads{position:fixed;left:0;top:0;width:100%;}
 .color3{color:#333;}
 *{box-sizing:border-box;}
-.brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
+.brand-switch{position:absolute;right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
 .marb{padding-top:1.1733rem;}
 .config{display: table; width: 100%;}
