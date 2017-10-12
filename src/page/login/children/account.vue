@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="login-phone">
-	      <input type="password" placeholder="密码" v-model="pass" maxlength="20" ref="password"> 
+	      <input type="password" placeholder="密码" v-model="pass" maxlength="20" ref="password">
 	      <span class="login-errror" :class="{fadeIn:errorPass}" v-show="errorPass">请输入密码</span>
 	    </div>
 	    <input class="login-btn" type="button" name="" value="登录" @click="login">
@@ -39,6 +39,7 @@ import Base64 from 'crypto-js/enc-base64';
 		    }
 		},
 		mounted(){
+		    this.getDataToken();
 			// 100服务器用户名密码 13522641774 000000
 		  },
 		methods:{
