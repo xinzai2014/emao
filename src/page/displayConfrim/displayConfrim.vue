@@ -457,7 +457,7 @@ export default {
     width:100%;
     height:10rem;
     border:none;
-    overflow-y:auto;
+    overflow-y:scroll;
 }
 </style>
 
