@@ -87,7 +87,6 @@
                 </div>
                 </router-link>
             </section>
-            <p class="footer-bt"></p>
         </section>
 
         <!--首页底部留白-->
@@ -188,7 +187,7 @@ export default {
         }
         if(response.body.data.data_status=="4"){
             // this.data_status='信息驳回'; 
-            this.data_status='';
+            this.data_status='信息未过审';
         }
          
       }).catch(function (error) {

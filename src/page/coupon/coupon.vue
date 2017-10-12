@@ -208,15 +208,14 @@ export default {
     transform: translate3d(2rem, 0, 0);
     opacity: 0;
 }
-.no-auto{background-color: #fff;
+.no-auto{
     text-align: center;
     font-size: 0.453333rem;
     padding: 4.0rem 0;
     position: absolute;
     width: 100%;
     left: 0;
-    top: 2.28rem;
-    height: 100%;}
+    top: 2.28rem;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 .no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}

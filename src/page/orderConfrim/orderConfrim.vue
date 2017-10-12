@@ -106,6 +106,7 @@
     </section>
 
     <!--确认提交-->
+    <p class="footer-bt"></p>
     <section class="order-present-info">
         <div class="order-present" @click="showAgreementDialog">确认提交</div>
         <div class="order-price">
