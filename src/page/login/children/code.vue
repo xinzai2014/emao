@@ -25,6 +25,9 @@ import Base64 from 'crypto-js/enc-base64';
 		      disabled:false
 		    }
 		},
+		mounted(){
+    		this.getDataToken();
+    },
 		methods:{
 			codeToMD5(passwordWord){
 				var password = passwordWord;
@@ -100,7 +103,7 @@ import Base64 from 'crypto-js/enc-base64';
 		        		this.$router.push('/authResult');
 		        	}else{
 		        		this.$router.push('/auth');
-		        	} 
+		        	}
 		        	// //路由跳转
 		        },function(){
 
