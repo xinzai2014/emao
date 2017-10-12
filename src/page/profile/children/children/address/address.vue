@@ -111,9 +111,9 @@
 					          name:this.addressList[0].name
 					        }
 					    );
-			        }).catch(function (error) {
-			            this.showAlert = true;
-           this.alertText = error.body.msg||"请求失败了";
+			        }).catch(function (error) {	
+           				this.alertText = error.body.msg||"请求失败了";
+           				this.showAlert = true;
 			        });
 		    	}
             },
@@ -225,7 +225,6 @@
     /*bottom: 1.306667rem;*/
     /* height: 110%; */
     overflow-y: auto;
-    background-color: #fff;
     padding-top: 3.867rem;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
@@ -245,7 +244,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 110%;
+    /* height: 110%; */
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;
