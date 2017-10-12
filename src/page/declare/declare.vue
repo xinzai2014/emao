@@ -245,13 +245,12 @@
         line-height: 2rem;
     }
 
-    .no-auto{background-color: #fff;
+    .no-auto{
         text-align: center;
         font-size: 0.453333rem;
         padding: 4.0rem 0;
         position: absolute;
         width: 100%;
-        left: 0;
-        height: 100%;}
+        left: 0;}
     .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>

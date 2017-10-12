@@ -396,7 +396,7 @@
     .storage-popup-out .error-tips{margin-bottom:.4rem;text-align:center;font-size:.32rem;color:red;}
 
     /*暂无车辆信息*/
-    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0; background-color: #fff;text-align: center;font-size: 0.453333rem;left: 0;height: 100%;}
+    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0;text-align: center;font-size: 0.453333rem;left: 0;}
     .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
     .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 

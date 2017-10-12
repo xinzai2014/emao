@@ -223,7 +223,7 @@
     width: 10rem;
     top: 1.173333rem;
     /*bottom: 1.306667rem;*/
-    height: 110%;
+    /* height: 110%; */
     overflow-y: auto;
     background-color: #fff;
     padding-top: 3.867rem;}

@@ -161,3 +161,7 @@ a {
 /*清楚浮动*/
 .clearfix::after{display:block;overflow:hidden;clear:both;height:0;content:'';}
 input:-webkit-autofill {background-color: none;background-image: none;}
+input[type="button"], input[type="submit"], input[type="reset"] {
+-webkit-appearance: none;
+}
+textarea { -webkit-appearance: none;}

@@ -76,7 +76,7 @@
                       url:"https://tcmapi.emao.com/upload",
                       count:1,
                       flag:"dai",
-                      image:'static/sample1.jpg'
+                      image:'static/sample3.jpg'
                   },
                   dataURL:{
                   },//图片地址
