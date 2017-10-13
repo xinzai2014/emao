@@ -63,12 +63,13 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 			        token:dataToken,
 			        email:this.email
 			    }
+          var that = this;
 			    this.$http.post("dealer/agreement/email",data)
 			      .then(function (response) {
 			         this.showAlert = true;
 			        this.alertText = '已发往您的邮箱，请注意查收';
 			        setTimeout(function(){
-			        	this.hidePop();
+			        	that.hidePop();
 			        },500);
 			        
 			      }).catch(function (error) {
@@ -167,5 +168,5 @@ iframe{
   background:#d6ab55;
   color:#fff;
 }
-input{display:block;height:1.067rem;padding-left:.2667rem;background-color:none;border:none;border-bottom:1px solid #e6e6e6;margin:0.73rem 0.4rem;width:6rem;text-align: center;}
+.cancel-car input{display:block;height:1.067rem;line-height:1.067rem;border:none;border-bottom:1px solid #e6e6e6;margin:0.73rem auto;width:6rem;text-align: center;}
 </style>

@@ -613,12 +613,15 @@ export default {
 
 
 
-.agreemenIframe{
-    width:100%;
-    height:10rem;
-    border:none;
+.buy-agreement-con{
     -webkit-overflow-scrolling: touch;  
     overflow-y: scroll; 
+    height:10rem;
+}
+.agreemenIframe{
+    width:100%;
+    border:none;
+    height:100%;
 }
 
 </style>

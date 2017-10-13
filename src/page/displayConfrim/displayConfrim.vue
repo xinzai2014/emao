@@ -452,13 +452,15 @@ export default {
 .order-failure-logo img{width:4rem;height:4rem;}
 .order-failure-message{font-size:.4rem;color:#2c2c2c;text-align:center;}
 .order-failure-back{width:1.9333rem;height:1.0667rem;margin:.8rem auto 0;line-height:1.0667rem;text-align:center;border:1px solid #d5aa5c;border-radius:2.66rem;}
-
-.agreemenIframe{
-    width:100%;
-    height:10rem;
-    border:none;
+.buy-agreement-con{
     -webkit-overflow-scrolling: touch;  
     overflow-y: scroll; 
+    height:10rem;
+}
+.agreemenIframe{
+    width:100%;
+    border:none;
+    height:100%;
 }
 </style>
 
