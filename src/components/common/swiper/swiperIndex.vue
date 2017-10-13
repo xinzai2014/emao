@@ -14,7 +14,9 @@
 			<div class="user-tit">
 				<i class="white-lt" @click="closeFrame"></i>
 			</div>
-		 	<iframe :src = "frameURL"  class="frame"></iframe> 
+			<div class="buy-agreement-con">
+		 		<iframe :src = "frameURL"  class="frame"></iframe> 
+		 	</div>
 		</div> 
 	 </section>
 </template>
@@ -73,12 +75,15 @@ export default {
 	transform:translateX(100%);
 }
 
-.frame{
-	height:100%;
-	width:100%;
-	border:none;
-	-webkit-overflow-scrolling: touch;  
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;  
     overflow-y: scroll; 
+    height:100%;
+}
+.frame{
+    width:100%;
+    border:none;
+    height:100%;
 }
 
 </style>

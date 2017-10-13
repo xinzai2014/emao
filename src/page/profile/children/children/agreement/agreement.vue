@@ -4,7 +4,9 @@
 			<a href="javascript:;" class="white-lt" @click="goback"></a>
 			<span class="brand-switch" @click="showPop">发送到邮箱</span>
 		</header>
-		<iframe :srcdoc="iframe"></iframe>
+    <div class="buy-agreement-con">
+		  <iframe class="agreemenIframe" :srcdoc="iframe"></iframe>
+    </div>
 		<!--<section>
 			<div class="news_title">一猫特约经销商合作协议</div>
 			<p class="text-p">特别提示：</p>
@@ -169,4 +171,14 @@ iframe{
   color:#fff;
 }
 .cancel-car input{display:block;height:1.067rem;line-height:1.067rem;border:none;border-bottom:1px solid #e6e6e6;margin:0.73rem auto;width:6rem;text-align: center;}
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;  
+    overflow-y: scroll; 
+    height:100%;
+}
+.agreemenIframe{
+    width:100%;
+    border:none;
+    height:100%;
+}
 </style>
