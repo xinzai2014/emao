@@ -174,7 +174,7 @@ iframe{
 .buy-agreement-con{
     -webkit-overflow-scrolling: touch;  
     overflow-y: scroll; 
-    height:100%;
+    height:92%;
 }
 .agreemenIframe{
     width:100%;

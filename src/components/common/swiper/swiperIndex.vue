@@ -78,7 +78,7 @@ export default {
 .buy-agreement-con{
     -webkit-overflow-scrolling: touch;  
     overflow-y: scroll; 
-    height:100%;
+    height:94%;
 }
 .frame{
     width:100%;

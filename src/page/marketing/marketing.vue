@@ -35,7 +35,7 @@
 											<i class='yellow-bt'></i>
 										</p>
 										<div class="detailed-info" v-show="item.active" v-for="(val,key) in item.detail">
-											<p><span>{{val.des}}</span>{{val.title}}</p>
+											<p><span><em v-for="(v,k) in val.des">{{v}}</em></span>{{val.title}}</p>
 										</div>
 									</div>
 									<div class="detailed active" v-else>
@@ -101,6 +101,9 @@
                 	num[i].active = false;
                 	if(num[i].amount > 0){
                 		num[i].amount = '+'+num[i].amount;
+                	}
+                	for(var k =0;k<num[i].detail.length;k++){
+                		num[i].detail[k].des=num[i].detail[k].des.split(',');
                 	}
                 }
                 this.rebate = num;
@@ -232,6 +235,10 @@ body,html,.rating_page{
 	float:right;
 	color:#999;
 	max-width:8.0rem;
+}
+.detailed-info span em{
+	display:block;
+	line-height:0.6rem;
 }
 .active .detailed-info{
 	display:block;

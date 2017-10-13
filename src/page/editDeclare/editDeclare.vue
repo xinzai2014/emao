@@ -146,7 +146,7 @@
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"drivingLicense",
-                image:"static/sample4.jpg"
+                image:"static/sample15.jpg"
             },
 
 

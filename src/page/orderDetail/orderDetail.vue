@@ -50,18 +50,19 @@
               <p class="remit-tit" v-else>付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2">
                       
+                       
                        <p>
-                          <label>汇款银行：</label>
-                          <span>{{bankInfo.bankName}}</span>
-                      </p>
-                       <p>
-                          <label>公司名称：</label>
+                          <label>汇款单位：</label>
                           <span>{{bankInfo.companyName}}</span>
                       </p>
                       <p>
+                          <label>开户行：</label>
+                          <span>{{bankInfo.bankName}}</span>
+                      </p>
+                      <!-- <p>
                           <label>账号：</label>
                           <span>{{bankInfo.account}}</span>
-                      </p>
+                      </p> -->
                   <p class="send-phone huang" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
                     <p class="send-phone">查看详情</p>
@@ -165,7 +166,11 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
+      if(sessionStorage.orderDetailUrl == 'displayDetail'){
+        this.$router.go(-1);
+      }else{
         this.$router.push({name:sessionStorage.orderDetailUrl});
+      }
     },
     hide_success(){
       this.success=false;
@@ -459,12 +464,16 @@ export default {
 
   },
   beforeRouteEnter(to, from, next){
+    
     next(vm => {
       if(from.name=='declare'){
         vm.success=true;
       }
       if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving'){
         sessionStorage.orderDetailUrl=from.name;
+      }
+      if(from.name=='displayDetail'){
+        sessionStorage.orderDetailUrl = from.name;
       }
     });
   }
