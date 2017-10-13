@@ -208,6 +208,9 @@
     font-size:0.4rem;
     background:#fff;
 }
+.account-lt-item{
+    border-bottom:1px solid #e0e0e0;
+}
 .account-lt-item label{
     width:2.0rem;
 }
@@ -221,7 +224,6 @@
     background:#fff;
     overflow:hidden;
 }
-
 .submit-lt{
     margin-left:0.8rem !important;
 }
