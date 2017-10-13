@@ -19,7 +19,7 @@
         <section class="sales-wrap" v-if="declareList.length">
             <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore"  infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
                 <div class="sales-item" v-for="(item,index) in declareList">
-                    <h3>{{item.serie_name}} {{item.auto_name}}</h3>
+                    <h3>{{item.brand_name}} {{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                     <p class="sales-number">VIN：{{item.vin_num}}</p>
                     <p class="sales-time">

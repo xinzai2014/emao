@@ -7,7 +7,7 @@
     <!--首页-订车-详情页-图片滚动-->
      <swiper :circular="circular" v-if="circular.length"></swiper>
 
-    <!--首页-订车--详情页-车型信息-->
+    <!--首页-订车-详情页-车型信息-->
     <section class="book-car-count" v-if="serieData.length>0">
         <p>{{serieTitle}}</p>
     </section>

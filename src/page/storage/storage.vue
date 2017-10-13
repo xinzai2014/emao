@@ -377,7 +377,7 @@
     .stock-removal-popup-out .error-tips{text-align:center;font-size:.32rem;color:red;}
 
     /*出库弹窗*/
-    .stock-removal-popup-out{position:absolute;top:50%;left:50%;overflow:hidden;width:7.2rem;padding-top: .533rem;border-radius: .2666rem;transform: translate(-50%,-50%);background-color:#fff;}
+    .stock-removal-popup-out{position:absolute;top:50%;left:50%;overflow:hidden;width:7.2rem;padding-top: .533rem;border-radius: .2666rem;transform: translate(-50%,-50%);background-color:#fff;margin-top:-5.6rem;margin-left:-3.6rem;}
     .stock-removal-popup-title{padding-left:.533rem;padding-bottom:.533rem;border-bottom:1px solid #e6e6e6;}
     .stock-removal-popup-title p:first-child{font-size:.4533rem;color:#2c2c2c;}
     .stock-removal-popup-title p:nth-child(2){margin-top:.2rem;font-size:.3467rem;color:#2c2c2c;}

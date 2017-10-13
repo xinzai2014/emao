@@ -41,10 +41,10 @@
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
-	            <p class="bond active" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
+	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
-		            <div class="ayment-info" v-if="bankInfo.accountType == 1 || bankInfo.accountType == 2">
+		            <div class="ayment-info" v-if="bankInfo.accountType == 2">
 			            <p>
 		                    <label>付款人：</label>
 		                    <span>{{bankInfo.companyName}}</span>
@@ -54,26 +54,40 @@
 		                    <span>{{bankInfo.bankName}}</span>
 		                </p>
 		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'">
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'||orderInfo.status=='9'">
+	                    	<p class="ayment-details">查看详情</p>
+	                  	</router-link>
+		            </div>
+		            <div class="ayment-info" v-else-if="bankInfo.accountType == ''">
+			            <p>
+		                    <label>汇款银行：</label>
+		                    <span>{{bankInfo.bankName}}</span>
+		                </p>
+		                <p>
+		                    <label>公司名称：</label>
+		                    <span>{{bankInfo.companyName}}</span>
+		                </p>
+		                <p>
+		                    <label>账号：</label>
+		                    <span>{{bankInfo.account}}</span>
+		                </p>
+		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'||orderInfo.status=='9'">
 	                    	<p class="ayment-details">查看详情</p>
 	                  	</router-link>
 		            </div>
 		            <div v-else>
-		                <div class="send-to">		               
+		                <div class="send-to">	
+		                	<p>
+			                    <label>汇款单位：</label>
+			                    <span>{{bankInfo.companyName}}</span>
+			                </p>	               
 			                <p>
-			                    <label>汇款银行：</label>
+			                    <label>开户行：</label>
 			                    <span>{{bankInfo.bankName}}</span>
 			                </p>
-			                 <p>
-			                    <label>公司名称：</label>
-			                    <span>{{bankInfo.companyName}}</span>
-			                </p>
-			                <p>
-			                    <label>账号：</label>
-			                    <span>{{bankInfo.account}}</span>
-			                </p>
 			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28'">
+	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28' ||orderInfo.status=='9'">
 	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
 			            </div>
