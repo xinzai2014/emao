@@ -125,21 +125,21 @@
                 url:"https://tcmapi.emao.com/upload",
                 count:1,                        //传几张照片
                 flag:"frontOfIDCard",           //粘片标志
-                image:"static/sample1.jpg"      //照片路径
+                image:"static/sample13.jpg"      //照片路径
             },
             //上传身份证背面照片
             uploadData2:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"backOfIDCard",
-                image:"static/sample2.jpg"
+                image:"static/sample14.jpg"
             },
             //上传购车发票
             uploadData3:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"invoiceForCarPurchase",
-                image:"static/sample3.jpg"
+                image:"static/sample16.jpg"
             },
             //上传行驶证照片
             uploadData4:{

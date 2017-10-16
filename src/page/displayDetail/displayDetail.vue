@@ -91,7 +91,7 @@
 	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
 			            </div>
-			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'">
+			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'&&orderInfo.status!='9'">
 			                <span>汇款说明：</span>
 			                <em>1.汇款后请上传汇款凭证</em>
 			                <em>2.未按时间付款的订单系统将自动取消</em>
