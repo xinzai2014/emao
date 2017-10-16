@@ -95,11 +95,25 @@
                 params:data
             }).then(function (response) {
                 var num = response.body.data.capital_history;
+                if(response.body.data.amount.length == 7){
+				    var str="";
+			        var tmp1 = response.body.data.amount.substring(0,1);
+			        var end1 = response.body.data.amount.substring(1)
+			        str+=tmp1+','+end1;
+				    response.body.data.amount = str
+				}
                 this.amount = response.body.data.amount||'0.00';
                 for(var i =0;i<num.length;i++){
                 	num[i].updated_at = num[i].updated_at.substring(5);
                 	num[i].active = false;
                 	if(num[i].amount > 0){
+                		if(num[i].amount.length == 7){
+						    var newstr="";
+					        var tmp = num[i].amount.substring(0,1);
+					        var end = num[i].amount.substring(1)
+					        newstr+=tmp+','+end;
+						    num[i].amount = newstr
+                		}
                 		num[i].amount = '+'+num[i].amount;
                 	}
                 	for(var k =0;k<num[i].detail.length;k++){

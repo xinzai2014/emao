@@ -128,6 +128,7 @@
                     this.showAlert = true;
                     this.alertText = error.body.msg
                 });
+                
             },
             getUpload(data,flag){
                 this.dataURL[flag] = data;

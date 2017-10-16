@@ -48,7 +48,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-      this.$router.push({ name: this.$store.state.messageFlag});              
+      this.$router.push({ name: sessionStorage.messageFlag});              
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -115,7 +115,9 @@ export default {
     beforeRouteEnter(to, from, next){
       next(vm => {
         if(from.name=="index"||from.name=="profile"){
+            sessionStorage.messageFlag = from.name;
             vm.$store.dispatch("MESSAGE_FLAG",from.name );
+            
         } 
       });
     }

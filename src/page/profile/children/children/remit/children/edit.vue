@@ -122,7 +122,16 @@
 	            }
 	            this.$http.post("dealerBank/updateById",data
 	            ).then(function (response) {
-	                this.resetIndex();
+                    if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':this.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
 	            }).catch(function (error) {
 	                this.showAlert = true;
                     this.alertText = error.body.msg
@@ -161,7 +170,16 @@
 	            }
 	            this.$http.post("dealerBank/updatePerson",data
 	            ).then(function (response) {
-	                this.resetIndex();
+	                if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':this.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
 	            }).catch(function (error) {
 	                this.showAlert = true;
                     this.alertText = error.body.msg

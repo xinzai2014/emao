@@ -394,8 +394,8 @@ export default {
 .book-car-detail .index-icon li{float:right;}
 .book-car-count{padding:.3rem 0;padding-left:.4rem;background-color:#fff;}
 .book-car-count p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
-.book-car-info{background-color:#fff;margin-bottom:.4rem;}
-.book-car-info ul li{padding:.5333rem .4rem;border-top:1px solid #2c2c2c;}
+.book-car-info{background-color:#fff;margin-bottom:.4rem;overflow:hidden;}
+.book-car-info ul li{padding:.5333rem .4rem;border-top:1px solid #2c2c2c;overflow:hidden;}
 .book-car-name{margin-bottom:.4rem;font-size:.42667rem;font-weight:600;color:#333;}
 .book-car-price{float:left;margin-right:.5rem;font-size:.4533rem;font-weight:bold;color:#fc3d36;}
 .book-guide-price{float:left;margin-top:.0667rem;font-size:.3467rem;color:#999;}
@@ -406,9 +406,9 @@ export default {
 .book-car-action span{display:block;float:left;margin-top:0.333rem;border-bottom:1px solid #000;}
 .book-car-action input{width:2.6666rem;height:1.0667rem;float:right;text-align:center;line-height:1.0667rem;border-radius:.5333rem;background:none;}
 .book-car-apply{margin-right:.4rem;border:1px solid #666;}
-.book-car-buy{border:1px solid #d5aa5c;}
+.book-car-buy{border:1px solid #d5aa5c;color:#d5aa5c;}
 .book-car-remind{font-size:.3733rem;color:#6aa3e4;border:1px solid #6aa3e4;}
-.book-car-contrast{position:relative;height:1.4667rem;padding-left:.4rem;margin-bottom:.4rem;line-height:1.4667rem;font-size:.4266rem;background-color:#fff;}
+.book-car-contrast{position:relative;height:1.4667rem;padding-left:.4rem;margin-bottom:.4rem;line-height:1.4667rem;font-size:.4266rem;background-color:#fff;overflow:hidden;}
 .book-car-contrast i{position:absolute;top:.533rem;right:.4666rem;}
 .book-car-guarantee{padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
 .book-car-guarantee>p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
