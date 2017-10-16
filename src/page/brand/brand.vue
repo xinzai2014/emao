@@ -1,7 +1,7 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header">
+    <header class="brand-list-header header-hidden">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title">{{brandName}}</strong>
         <span class="brand-switch" @click="showBrandDialog">切换品牌</span>
@@ -138,9 +138,9 @@ import car from '../index/car'
 <style>
 /*品牌列表页-头部*/
 .brand-header-out{position:relative;z-index:3;}
-.brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
+.brand-switch{position:absolute;right:.4666rem;font-size:.4rem;color:#d5aa5c;margin-right:0;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
-
+.header-hidden{overflow:initial;width:100%;}
 /*品牌列表页-车源*/
 /*.brand-list-source{padding-top:0 !important;}*/
 

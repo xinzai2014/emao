@@ -68,7 +68,7 @@
     <!--确认提交-->
     <p class="footer-bt"></p>
     <section class="order-present-info">
-        <div class="order-present" @click="showAgreementDialog">确认提交</div>
+        <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">
             应付金额：
             <strong>￥{{totalData|getMoney}}</strong>

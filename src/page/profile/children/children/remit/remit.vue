@@ -139,9 +139,11 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
 	        		sessionStorage.remitName = from.name;
+	        		sessionStorage.url = from.fullPath;
 	        	}else{
 	        		vm.isCheck=false;
-	        		
+	        		sessionStorage.remitName = '';
+	        		sessionStorage.url = '';
 	        	}
 			  });
         },
