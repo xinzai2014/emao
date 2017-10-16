@@ -100,7 +100,7 @@
                 	num[i].updated_at = num[i].updated_at.substring(5);
                 	num[i].active = false;
                 	if(num[i].amount > 0){
-                		num[i].amount = '+'+num[i].amount;
+                		num[i].amount = '+'+num[i].amount.toLocaleString();
                 	}
                 	for(var k =0;k<num[i].detail.length;k++){
                 		num[i].detail[k].des=num[i].detail[k].des.split(',');
