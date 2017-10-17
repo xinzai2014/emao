@@ -3,9 +3,9 @@
    <div class="sample-ct">
         <div class="submit-lt">
             <div class="submit-img">
-                <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src)">
+                <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src,index)">
                     <img :src = item.src >
-                    <div class="img-percent" v-if="item.showPercent"> 
+                    <div class="img-percent" v-if="item.showPercent">
                         <p>{{item.percent + "%"}}</p>
                     </div>
                     <div class="img-button">
@@ -76,7 +76,7 @@
                 var dataArr = [];
                 this.imgURL.forEach(function(ele,index){
                     if(ele){
-                       dataArr.push(ele); 
+                       dataArr.push(ele);
                     }
                 });
                 this.$emit("getUpload",dataArr,this.initData.flag);
@@ -184,31 +184,34 @@
                 var image = new Image();
                 image.src = data;
                 image.onload = function(){
-                    var cvs = document.createElement('canvas');  
-                    var scale = 1;    
+                    var cvs = document.createElement('canvas');
+                    var scale = 1;
                     //压缩规则还需要再调整
-                    if(this.width > 1000 || this.height > 1000){ 
-                        if(this.width > this.height){    
-                            scale = 1000 / this.width;  
-                        }else{    
-                            scale = 1000 / this.height;    
-                        }    
+                    if(this.width > 1000 || this.height > 1000){
+                        if(this.width > this.height){
+                            scale = 1000 / this.width;
+                        }else{
+                            scale = 1000 / this.height;
+                        }
                     }
-                    cvs.width = this.width*scale;    
-                    cvs.height = this.height*scale; 
+                    cvs.width = this.width*scale;
+                    cvs.height = this.height*scale;
                     var ctx = cvs.getContext('2d');
-                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);  
-                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);   
+                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
                     var newImageData = cvs.toDataURL(fileType, 0.9);
                     that.$set(item, 'src', newImageData);
                 }
             },
-            lookBigImg(src){
-                if(!src) return;
+            lookBigImg(src,index){
+                if(!src) {
+                  this.updatePic(index);
+                  return;
+                };
                 this.bigImg = src;
                 this.showBigImg = true;
             },
-            closeImg(){ 
+            closeImg(){
                 this.showBigImg = false;
             },
             init(){
@@ -221,9 +224,11 @@
                     img.forEach(function(value,index){
                         var obj = {};
                         obj.src = value;
+                        obj.percent = 100;
                         that.files.push(obj);
                     })
                 }
+                console.log(this.files);
             }
         },
         mounted(){
