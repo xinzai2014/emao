@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+
   <div class="brand"  :class="{anmiteStatus:this.$store.state.chooseCar}">
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
@@ -117,7 +117,7 @@
                    probeType: 3,
                    click:true
                 });
-            },100) 
+            },100)
         },
         countHeight(){ //记录初始楼层高度
             const brandContainer = this.$refs.brandWrapper;
@@ -156,7 +156,7 @@
                 }
             }).then(function (response) {
                 this.carData = response.body.data.list;
-                this.initIscroll("carWrap",this.carScroll); 
+                this.initIscroll("carWrap",this.carScroll);
                 this.globalSerieID = response.body.data.id;
               }).catch(function (error) {
 
@@ -223,10 +223,10 @@
 
 
 /*首页-选择车型-车型列表页*/
-.brand-models{transform:translateX(100%);width:8.42667rem;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;}
+.brand-models{transform:translateX(100%);width:73%;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;}
 .brand-models ul{}
 .brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;}
-.brand-models ul li p{height:1.44rem;margin-left:0;padding-left:.4rem;line-height:1.44rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
+.brand-models ul li p{height:1.2rem;margin-left:0;padding-left:.4rem;line-height:1.2rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
 
 .brand-details{
     width:100%;

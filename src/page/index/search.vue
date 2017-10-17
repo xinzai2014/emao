@@ -19,7 +19,7 @@
           <div class="brand-popup-in">
             <div class="brand-search-tips">
               <p>服务顾问正在为您查找</br>找到后会及时和您联系</p>
-            </div> 
+            </div>
             <div class="brand-popup-ok" @click="closeDialog">好的</div>
           </div>
       </section>
@@ -87,7 +87,7 @@ export default {
         }
       },
       mounted(){
-        
+
       },
       computed:{
 
