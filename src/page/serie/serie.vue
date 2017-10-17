@@ -353,6 +353,7 @@ export default {
               autoId:id
             }
         ).then(function (response) {
+          this.showTips = true;
           console.log(response);
         },function (error) {
           console.log(error);
@@ -360,7 +361,6 @@ export default {
    },
    showTipsDialog(id){   //到货提醒
       this.getTipsData(id);
-      this.showTips = true;
    },
    closeTipsDialog(){
       this.showTips = false;

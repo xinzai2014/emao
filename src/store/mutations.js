@@ -32,12 +32,13 @@ export default {
 		setStore('defaultAdress', state.defaultAdress);
 	},
 
-	[CHOOSE_CAR](state,flag){ //控制选车显示隐藏
+	[CHOOSE_CAR](state,flag){ //控制选车显示隐藏 UI相关特效不需要记录
 		state.chooseCar = flag;
 	},
 
 	[CAR_DATA](state,obj){ //获取选中车型
 		state.carData = obj;
+    setStore('carData',obj);
 	},
 
 	[AJAX_LOADING](state,flag){ //获取选中车型

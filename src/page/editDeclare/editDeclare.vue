@@ -183,7 +183,12 @@
                     order_num:this.orderId
                 }
             }).then(function(response){
+                var arr = response.body.data.orderInfo.name.split(' ');
+                arr.shift();//删除数组最后一个元素
+                response.body.data.orderInfo.name = arr.join(' ');//在拼接成字符串
+                
                 this.orderInfo = response.body.data.orderInfo;
+
                 this.vinNum = this.orderInfo.vinNumber;
             })
         },
