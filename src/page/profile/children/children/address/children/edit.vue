@@ -159,7 +159,7 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 .address-edit-in{}
 .address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;}
 .address-edit-in li:last-child{border-bottom:none;}
-.address-edit-in li span{display:block;float:left;width:2rem;height:1.333rem;line-height:1.333rem;}
+.address-edit-in li span{display:block;float:left;width:2.3rem;height:1.333rem;line-height:1.333rem;}
 .address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;line-height:1.333rem;border:none;}
 .address-save{display:block;margin:1.0667rem auto 0;padding:.36rem 1rem .36rem 1rem;font-size:.4533rem;color:#fff;text-align:center;border:none;border-radius:.8rem;background-color:#d5aa5c;}
 
