@@ -1,5 +1,5 @@
 <template>
-        
+
 	<section class="index-slider">
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
@@ -15,9 +15,9 @@
 				<i class="white-lt" @click="closeFrame"></i>
 			</div>
 			<div class="buy-agreement-con">
-		 		<iframe :src = "frameURL"  class="frame"></iframe> 
+		 		<iframe :src = "frameURL"  class="frame"></iframe>
 		 	</div>
-		</div> 
+		</div>
 	 </section>
 </template>
 
@@ -47,6 +47,7 @@ export default {
 		var mySwiper = new Swiper('.swiper-container', {
 			autoplay: 5000,//可选选项，自动滑动
 			pagination : '.index-icon',
+      loop:true,
 			paginationElement:"li"
 		});
 	  }
@@ -76,8 +77,8 @@ export default {
 }
 
 .buy-agreement-con{
-    -webkit-overflow-scrolling: touch;  
-    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
     height:94%;
 }
 .frame{

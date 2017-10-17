@@ -15,12 +15,15 @@
         </div>
     </header>
 
+    <div class="brand-back" v-if="showBrandSlide" @click="showBrandDialog">
+
+    </div>
     <section class="index-car-source brand-list-source" v-if="serieData.length>0">
         <p class="index-car-title">本地车源</p>
         <ul class="index-car-con">
             <li v-for="(item,index) in serieData" @click="goSerie(item.id)">
+                <img  :src = item.imgUrl alt="">
                 <div class="index-car-back">
-                    <img  :src = item.imgUrl alt="">
                     <p class="index-car-name">{{item.name}}</p>
                     <p class="index-car-price"><span>{{item.minPrice}}</span>万<em v-if="item.saleCars>1">起</em></p>
                     <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
@@ -29,9 +32,9 @@
             </li>
         </ul>
     </section>
-        <!--查询表单--> 
+        <!--查询表单-->
     <search></search>
-    
+
     <!-- 车型数据 -->
     <car v-if="showbrandTag"></car>
 
@@ -53,7 +56,7 @@ import car from '../index/car'
                 },
                 showBrandSlide:false, //是否显示下拉框
                 brandData:[ //品牌数据
-                
+
                 ],
                 serieData:[],
                 showbrand:false //车型弹层
@@ -70,7 +73,7 @@ import car from '../index/car'
                 }).then(function (response) {
                     console.log(response);
                     this.brandData = response.body.data;
-                   
+
                   }).catch(function (error) {
                     console.log("请求失败了");
                   });
@@ -83,7 +86,7 @@ import car from '../index/car'
                 }).then(function (response) {
                     console.log(response);
                     this.serieData = response.body.data;
-                   
+
                   }).catch(function (error) {
                     console.log("请求失败了");
                   });
@@ -122,7 +125,7 @@ import car from '../index/car'
            this.brandName = this.$store.state.defaultBrand;
            this.initData.brandId = this.$router.currentRoute.params.id; //获取路由当前品牌ID
            this.getAllBrand();
-           this.getDataByBrandID();     
+           this.getDataByBrandID();
         },
         components:{
             search,
@@ -143,6 +146,8 @@ import car from '../index/car'
 .header-hidden{overflow:initial;width:100%;}
 /*品牌列表页-车源*/
 /*.brand-list-source{padding-top:0 !important;}*/
+
+.brand-back{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:2;}
 
 /*品牌列表页-车源-弹窗*/
 .brand-list-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}

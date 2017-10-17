@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="login-code clearfix">
-            <input type="text" v-model="code"  name="code"  @click="checkCode" ref="code">
+            <input type="text" v-model="code"  name="code"  ref="code">
             <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
             <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
         </div>
