@@ -374,7 +374,7 @@
     .storage-popup-vehicle-accessories{margin-top:.533rem;margin-bottom:.1067rem;padding-left: .533rem;}
     .storage-popup-vehicle-accessories p:first-child{font-size:.3467rem;font-weight:600;color:#2c2c2c;}
     .storage-popup-vehicle-accessories div{font-size:.3467rem;color:#2c2c2c;}
-    .storage-popup-choose{overflow:hidden;width: 100%;  height: 1.173rem;}
+    .storage-popup-choose{overflow:hidden;width: 100%;  height: 1.173rem;margin-bottom:-1px;}
     .storage-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .storage-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
     .stock-removal-popup-out .error-tips{text-align:center;font-size:.32rem;color:red;}
@@ -393,7 +393,7 @@
     .vehicle-accessories-popup-info p:first-child{font-size:.3467rem;font-weight:600;color:#2c2c2c;}
     .vehicle-accessories-popup-info div{font-size:.3467rem;color:#2c2c2c;}
     .stock-removal-popup-info input{display:block;width:5.867rem;height:1.067rem;padding-left:.2667rem;margin:.4rem auto 0;background-color:none;border:1px solid #e6e6e6;}
-    .stock-removal-popup-choose{margin-top:.4rem;width: 100%;  height: 1.173rem;}
+    .stock-removal-popup-choose{overflow:hidden;width: 100%;  height: 1.173rem;margin-top:.4rem;margin-bottom:-1px;}
     .stock-removal-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .stock-removal-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
     .storage-popup-out .error-tips{margin-bottom:.4rem;text-align:center;font-size:.32rem;color:red;}
