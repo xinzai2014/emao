@@ -99,10 +99,6 @@ export default {
     resetIndex(){
         this.$router.push({name:'profile'});
     },
-    hide_success(){
-      this.success=false;
-      this.fillData();
-    },
     hidePop(){
       this.receiptShow=false; 
     },
@@ -145,6 +141,11 @@ export default {
           }
           
       }
+    },
+    hide_success(){
+      this.$router.go(0);
+      //this.success=false;
+      
     },
     confirmCar(item){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;

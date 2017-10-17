@@ -178,7 +178,7 @@ export default {
         }
         if(!this.dataURL.payment){
           this.showAlert = true;
-          this.alertText = '请上汇款底单！';
+          this.alertText = '请上传汇款底单！';
           return;
         }else{
           var length=this.dataURL.payment.length;

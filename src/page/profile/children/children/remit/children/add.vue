@@ -123,7 +123,16 @@
                 this.$http.post("dealerBank/createBank",this.acountData
                 ).then(function (response) {
                     this.$set(this.acountData,{});
-                    this.resetIndex();
+                    if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':response.body.data.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
                 }).catch(function (error) {
                     this.showAlert = true;
                     this.alertText = error.body.msg
@@ -164,7 +173,16 @@
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
                     this.$set(this.personData,{});
-                    this.resetIndex();
+                    if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':response.body.data.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
                 }).catch(function (error) {
                     this.showAlert = true;
                     this.alertText = error.body.msg
@@ -225,9 +243,9 @@
     background:#fff;
     overflow:hidden;
 }
-.submit-lt{
+/* .submit-lt{
     margin-left:0.8rem !important;
-}
+} */
 .layer{
     line-height:0.8rem;
     height:0.8rem;

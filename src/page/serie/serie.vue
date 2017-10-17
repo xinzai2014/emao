@@ -420,9 +420,9 @@ export default {
 .book-order{position:fixed;bottom:0;z-index:6;width:10rem;background-color:#fff;transform:translateY(100%)}
 .book-order-title{position:relative;height:1.5333rem;line-height:1.5333rem;padding-left:.4rem;font-size:.50667rem;color:#000;border-bottom:1px solid #ccc;}
 .book-order-title i{position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:100% 100%;border-bottom:1px solid #eee;}
-.book-order-info{margin-left:.4rem;margin-right:.4rem;padding:.5333rem 0;border-bottom:1px solid #2c2c2c;}
+.book-order-info{margin-left:.4rem;margin-right:.4rem;padding:.5333rem 0;border-bottom:1px solid #ccc;}
 .book-car-repertory{margin-top:.4rem;color:#999;font-size:.4rem;}
-.book-order-colors{margin:0 .4rem 2.667rem .4rem;padding:.5333rem 0;border-bottom:1px solid #2c2c2c;}
+.book-order-colors{margin:0 .4rem 2.667rem .4rem;padding:.5333rem 0;border-bottom:1px solid #ccc;}
 .book-order-colors p{color:#2c2c2c;font-size:.4rem;margin-bottom:.4rem;}
 .book-order-colors ul{}
 .book-order-colors li{float:left;height:.8533rem;margin-right:.4rem;margin-bottom:.4rem;padding:0 .2667rem;line-height:.8533rem;font-size:.3733rem;border-radius:.1333rem;}
