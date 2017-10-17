@@ -36,7 +36,7 @@
    </section>
     <!--首页-订车-详情页-车型对比-->
     <section class="book-car-contrast" v-if="serieData.length>1">
-        <div @click="goContrast"><span>{{serieData.length}}</span>款车对比</div>
+        <div @click="goContrast"><span>{{serieData.length}}</span>款车型对比</div>
         <i class="white-rt"></i>
     </section>
     <!--首页-订车-详情页-订车保障-->
@@ -75,7 +75,7 @@
     <section class="brand-list-popup" v-if="showTips" @click="closeTipsDialog">
         <div class="brand-popup-in">
             <div class="brand-search-tips">
-                <p>车辆到货时将通知你</p>
+                <p>车辆到货时我们将通知您</p>
             </div>
             <div class="brand-popup-ok">好的</div>
         </div>
@@ -164,21 +164,21 @@ export default {
         serieTitle:null,
         serieData:[],
         fullData:{ //全款购车数据
-          
+
         },
         showMoney:false,//全款购车弹出层
         disabledFullIndex:null, //全款购车颜色置灰索引
         ActiveIndex:null, //全款购车默认选中颜色索引
         fullCount:null, //各颜色对应库存
         ExhibData:{ //展车数据
-          
+
         },
         showExhib:false,//申请展车弹出层
         disabledExhibIndex:null, //全款购车颜色置灰索引
         ActiveExhibIndex:null, //全款购车默认选中颜色索引
         exhibCount:null, //各颜色对应库存
         circular:[    //轮播图数据
-            
+
         ],
         showTips:false,  //到货提醒
         showExhib:false, //申请展车弹出层
@@ -206,7 +206,7 @@ export default {
         }
       });
       if(this.serieData[index].flag){ //避免重复请求
-        this.showMoney = !this.showMoney; 
+        this.showMoney = !this.showMoney;
         return false;
       }
       this.getFullData(id,index);
@@ -228,7 +228,7 @@ export default {
         }
       });
       if(this.serieData[index].exhibFlag){ //避免重复请求
-        this.showExhib = !this.showExhib; 
+        this.showExhib = !this.showExhib;
         return false;
       }
       this.getExhibData(id,index);
