@@ -228,7 +228,6 @@
                         that.files.push(obj);
                     })
                 }
-                console.log(this.files);
             }
         },
         mounted(){

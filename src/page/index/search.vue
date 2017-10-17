@@ -27,9 +27,7 @@
 </template>
 
 <script>
-
-import { mapGetters } from 'vuex'
-
+  
 export default {
       name: 'search',
       data () {
@@ -90,15 +88,9 @@ export default {
 
       },
       computed:{
-
-        ...mapGetters({ //多个对象进行合并，建立映射关系
-          // 映射 this.carMess 为 store.getters.getCar
-          carMess: 'getCar'
-        })
-        // carMess:function(){
-        //   //return this.$store.state.carData; //直接获取
-        //   return this.$store.getters.getCar; //通过getters获取
-        // }
+         carMess:function(){
+           return this.$store.getters.getCar; //通过getters获取
+         }
       },
 }
 </script>
