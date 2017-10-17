@@ -7,7 +7,7 @@
         <!--已售车申报列表-->
         <section v-if="declareList.length">
             <div class="sales-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-                <div class="sales-item" v-for="(item,index) in declareList">
+                <div class="sales-item" v-for="(item,index) in declareList" @click="goDetail(item.id)">
                     <h3>{{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                     <p class="sales-number">VIN：{{item.vin_num}}</p>
@@ -55,6 +55,21 @@
         resetIndex(){
             this.$router.push({name:'declare'});
         },
+
+        //组件方法
+        goDetail(id){
+            //this.$router.push('/soldCarDetail/'+ id);//已售车申报资料详情页跳转
+            //this.$router.push('/soldCarDetail/'+ id);
+            //this.$router.push({path:'/soldCarDetail/'+ id });
+            //this.$router.push({path:~/soldCarDetail/$(id)~})
+
+            //router.push({ path: '/xxxxxx/' + id })
+
+            //this.$router.push({ name: 'soldCarDetail', params: { id: id }})
+
+            this.$router.push('/soldCarDetail/'+ id);
+        },
+
         //隐藏加载状态
         hideLoading(){
             this.showLoading = false;

@@ -57,7 +57,9 @@
                                         <p class="transit-depot-message"><span>{{item.brand_name}}</span><span>{{item.serie_name}}</span>{{item.year}}款{{item.auto_name}} </p>
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
-                                            <input class="transit-depot-stock-removal transit-depot-btn" type="button" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
+                                            <input v-if="item.checkOutStatus == 1 "class="transit-depot-stock-removal transit-depot-btn" type="button" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
+                                            <input v-else-if="item.checkOutStatus == 2 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待订单审核" @click="showOutPopup(item.vin_num,index)">
+                                            <input v-else="item.checkOutStatus == 3 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待物流费用审核" @click="showOutPopup(item.vin_num,index)">
                                         </div>
                                     </div>
                                 </li>
@@ -114,7 +116,7 @@
                 <div class="stock-removal-popup-out" :class="{dialogShow:showOutPopupStatus}">
                     <div class="stock-removal-popup-title">
                         <p>出库确认</p>
-                        <p>输入接车员提供的提车码</p>
+                        <!--<p>输入接车员提供的提车码</p>-->
                     </div>
                     <div class="stock-removal-popup-info">
                         <div class="stock-removal-con">
@@ -353,6 +355,7 @@
     .transit-depot-state input{width: 2.6666rem;  height: 1.0667rem;font-size:.3733rem;line-height:1.067rem;text-align:center;border-radius:.5333rem;background-color:white;}
     .transit-depot-storage{color:#bb8800;border:1px solid #bb8800;}
     .transit-depot-stock-removal{color:#6aa3e4;border:1px solid #6aa3e4;}
+    .transit-depot-state .transit-depot-stock-wait{width:3rem;color:red;text-align:right;border:none;}
     .transit-depot-state p{display:block;padding-right:.4rem;text-align:right;color:#999;font-size:.3467rem;}
     .transit-depot-txt{margin-top:.1333rem;}
     .transit-depot-con .no-data{width:100%;height:100%;padding:4.0rem 0;font-size:.3733rem;text-align:center;background-color:#fff;}
@@ -371,7 +374,7 @@
     .storage-popup-vehicle-accessories{margin-top:.533rem;margin-bottom:.1067rem;padding-left: .533rem;}
     .storage-popup-vehicle-accessories p:first-child{font-size:.3467rem;font-weight:600;color:#2c2c2c;}
     .storage-popup-vehicle-accessories div{font-size:.3467rem;color:#2c2c2c;}
-    .storage-popup-choose{width: 100%;  height: 1.173rem;}
+    .storage-popup-choose{overflow:hidden;width: 100%;  height: 1.173rem;}
     .storage-popup-choose span{display: block;  float: left;  width: 50%;  text-align: center;  line-height: 1.173rem;  font-size: .4533rem;  color: #2c2c2c;  background-color: #f5f5f5;}
     .storage-popup-choose span.active{color: #fff;background-color: #d5aa5c;}
     .stock-removal-popup-out .error-tips{text-align:center;font-size:.32rem;color:red;}
