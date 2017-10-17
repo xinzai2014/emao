@@ -199,6 +199,7 @@
             }).then(function (response) {
                 this.editData = response.body.data;
                 this.type = response.body.data.account_type;
+                this.$set(this.uploadData1,"imgArr",[response.body.data.explan_path]);
                 if(this.editData.account_type == 1){
                 	this.editData.account_type = '公司账户'
                 }else{
