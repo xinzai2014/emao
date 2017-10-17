@@ -96,6 +96,8 @@ const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar
 //售车申报资料提交组件
 const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
+//已售车申报资料详情页组件
+const soldCarDetail = r => require.ensure([],() => r(require('../page/soldCarDetail/soldCarDetail')),'soldCarDetail')
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
@@ -420,6 +422,11 @@ var router=new Router({
             path: '/soldCar',  //已售车辆申报列表
             name: 'soldCar',
             component: soldCar
+        },
+        {
+            path: '/soldCarDetail/:id',   //已售车辆申报资料详情页
+            name: 'soldCarDetail',
+            component: soldCarDetail
         },
         {
             path: '/storage',  //我的中转库列表
