@@ -363,6 +363,7 @@
 .config-list-t3{height: 1.36rem;
     display: table-cell;
     vertical-align: middle;
+    line-height:1.36rem;
     text-align: center;
     background: #FFF;
     border-top: 1px solid #CCC;
