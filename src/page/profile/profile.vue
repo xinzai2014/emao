@@ -252,7 +252,7 @@ export default {
 .company{
     background:url(../../assets/me-bg.jpg) no-repeat;
     background-size:contain;
-    height:6.893333rem;
+    min-height:6.893333rem;
     width:10.0rem;
 }
 .news{
