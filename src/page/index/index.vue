@@ -5,7 +5,10 @@
     <header-mess ></header-mess>
     <!--首页图片滚动-->
     <div class="auth-mess" v-if="showAuthMess" @click="goAuth">
-      您还有部分信息待完善，立即完善 <span @click.stop="closeAuthMess">×</span>
+      <div>
+         {{authData}}
+         <span @click.stop="closeAuthMess">×</span>
+      </div>
     </div>
     <swiper :circular="circular" v-if="circular.length"></swiper>
 
@@ -19,11 +22,11 @@
     <search></search>
 
     <!-- store传值 -->
-    <car v-if="showbrandTag"></car> 
+    <car v-if="showbrandTag"></car>
 
     <!--首页底部-->
     <footerTo></footerTo>
-    
+
   </div>
 
 </template>
@@ -58,6 +61,7 @@ export default {
         ],
         serieList:[], //车系数据
         showAuthMess:false, //是否展示授权信息
+        authData:null,
         ajaxLoading:false
     }
   },
@@ -93,6 +97,24 @@ export default {
         this.showAuthMess = false;
         sessionStorage.setItem("idCardAuth",null);
     },
+    getAuth(){
+      this.$http({
+        url:"dealerInfo/dataStatus?token="+sessionStorage.token,
+        method:"GET"
+      }).then(function (response) {
+          var data = response.body;
+          if(data.data.data_status == 2){
+            this.authData = "您还有部分信息待完善，立即完善";
+            this.showAuthMess = true;
+          }
+          if(data.data.data_status == 4){
+            this.authData = data.msg;
+            this.showAuthMess = true;
+          }
+      },function(){
+
+      });
+    },
     goAuth(){
       this.$router.push("/auth")
     }
@@ -100,9 +122,7 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.getSerie();
-    if(sessionStorage.idCardAuth == 1){
-      this.showAuthMess = true;
-    }
+    this.getAuth();
   },
   computed:{
     showbrandTag(){
@@ -119,7 +139,7 @@ export default {
     footerTo:footer
   },
   beforeRouteEnter (to, from, next) {
-       
+
         next();
   }
 }

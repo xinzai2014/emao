@@ -115,7 +115,6 @@ import Base64 from 'crypto-js/enc-base64';
 		            method:"GET"
 		        }).then(function (response) {
 		        	var code = response.body.data["auth_status"];
-		        	sessionStorage.setItem("idCardAuth",code);
 		        	//return false;
 		        	if(code == 1){ //已通过认证
 		        		this.$router.push('/index');
