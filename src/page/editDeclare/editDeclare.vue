@@ -262,27 +262,35 @@
                 return ;
             }
 
-
-            this.formData.order_num = this.vinNum;
-            this.formData.goods_stock_id = this.goodsStockId;
-            this.formData.name = this.dealerNameVal;
-            this.formData.phone = this.dealerPhoneVal;
-            this.formData.idcard = this.dealerIDNumberVal;
-            this.formData.email = this.dealerEmailVal;
-
-
-            this.formData.idcard_img_front = this.getFileURL('frontOfIDCard');
-            this.formData.idcard_img_reverse = this.getFileURL('backOfIDCard');
-            this.formData.driving_license_img = this.getFileURL('invoiceForCarPurchase');
-            this.formData.invoice_img = this.getFileURL('drivingLicense');
+            var This = this;
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    This.formData.order_num = This.vinNum;
+                    This.formData.goods_stock_id = This.goodsStockId;
+                    This.formData.name = This.dealerNameVal;
+                    This.formData.phone = This.dealerPhoneVal;
+                    This.formData.idcard = This.dealerIDNumberVal;
+                    This.formData.email = This.dealerEmailVal;
 
 
-            this.$http.post("order/sale/info",this.formData).then(function(response){
-                this.showPopup = true;
-            }).catch(function(error){
-                this.showAlert = true;
-                this.errorTips = error.body.msg;
-            })
+                    This.formData.idcard_img_front = This.getFileURL('frontOfIDCard');
+                    This.formData.idcard_img_reverse = This.getFileURL('backOfIDCard');
+                    This.formData.driving_license_img = This.getFileURL('invoiceForCarPurchase');
+                    This.formData.invoice_img = This.getFileURL('drivingLicense');
+
+
+                    This.$http.post("order/sale/info",This.formData).then(function(response){
+                        This.showPopup = true;
+                    }).catch(function(error){
+                        This.showAlert = true;
+                        This.errorTips = error.body.msg;
+                    })
+                }else{
+                    return;
+                }
+            });
+
+
         }
 
 
@@ -346,7 +354,8 @@
                 }
             },
             validate: function (value, args) {
-                return /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value)
+//                return /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value)
+                return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/.test(value)
             }
         };
         this.$validator.extend('IDNumber', isIDNumber);

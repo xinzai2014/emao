@@ -8,7 +8,7 @@
             <div class="news-item" v-for="(item,index) in mesList">
               <router-link :to="'/message/'+item.url">
                 <div class="news-lt">
-                    <i class="envelope"></i>
+                    <i class="envelope" :class="'envelope'+item.typeId"></i>
                     <span v-if="item.num">{{item.num}}</span>
                 </div>
                 <div class="news-rt">
@@ -126,14 +126,14 @@ export default {
 </script>
 
 <style>
-.rating_page{
+.rating_pages{
     position: absolute;
     top: 0;
     left: 0;
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;
-   
+    height:100%;
 }
 .router-slid-enter-active, .router-slid-leave-active {
         transition: all .4s;
@@ -169,6 +169,34 @@ export default {
   background-size:contain;
   margin:0.2rem 0 0 0.2rem;
 }
+.news-lt .envelope1{
+  background:url(../../assets/envelope1.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope2{
+  background:url(../../assets/envelope2.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope3{
+  background:url(../../assets/envelope3.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope4{
+  background:url(../../assets/envelope4.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope5{
+  background:url(../../assets/envelope5.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope6{
+  background:url(../../assets/envelope6.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope7{
+  background:url(../../assets/envelope7.png) no-repeat;
+  background-size:contain;
+}
 .news-lt span{
   color:#fff;
   font-size:0.293333rem;
@@ -186,6 +214,7 @@ export default {
 .news-remind{
   font-size:0.426667rem;
   color:#2c2c2c;
+  font-weight:bold;
 }
 .news-infos{
   font-size:0.4rem;

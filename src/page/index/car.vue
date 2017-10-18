@@ -208,7 +208,7 @@
 /*首页-选择车型-车型按字母排序*/
 .brand-list-in{position:relative;height:100%;}
 .brand-content-list{background-color:#fff;height:100%;overflow:hidden;}
-.brand-content-list ul{}
+.brand-content-list ul{padding-bottom:1.7rem;}
 .brand-content-list ul li p{height:.8rem;padding-left:.4rem;font-size:.2933rem;color:#999;line-height:.8rem;background-color:#f5f5f5;}
 .brand-content-list ul li .brand-wrap{height:1.4133rem;font-size:.4rem;line-height:1.4133rem;}
 .brand-content-list ul li .brand-wrap{display:block;height:100%;margin-left:.8rem;margin-right:.8rem;border-bottom:1px solid #f0f0f0;}
@@ -224,8 +224,8 @@
 
 /*首页-选择车型-车型列表页*/
 .brand-models{transform:translateX(100%);width:73%;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;}
-.brand-models ul{}
-.brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;}
+.brand-models ul{padding-bottom:1.7rem;}
+.brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;overflow:hidden;}
 .brand-models ul li p{height:1.2rem;margin-left:0;padding-left:.4rem;line-height:1.2rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
 
 .brand-details{
