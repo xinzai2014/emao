@@ -16,7 +16,7 @@
                         <a class="white-rt" href="javascript:;"></a>
                         <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
                         <p>
-                            认证级别
+                            星级
                             <i v-for="n in level"></i>
                             <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
@@ -323,7 +323,7 @@ export default {
     vertical-align:bottom;
 }
 .company-ct p i:first-child{
-    margin-left:0.32rem;
+    margin-left:0.2rem;
 }
 .company-bt .item{
     width:3.066667rem;

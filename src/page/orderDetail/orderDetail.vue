@@ -469,12 +469,10 @@ export default {
       if(from.name=='declare'){
         vm.success=true;
       }
-      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving'){
+      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail'){
         sessionStorage.orderDetailUrl=from.name;
       }
-      if(from.name=='displayDetail'){
-        sessionStorage.orderDetailUrl = from.name;
-      }
+      
     });
   }
 

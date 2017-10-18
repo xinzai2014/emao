@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>通知
@@ -10,7 +10,7 @@
 	            <div class="notice-tit">{{item.created_at}}</div>
 	            <div class="notice-ct">
 	                <div class="notice-tp">{{item.content_header}}</div>
-	                <div class="notice-bt" v-if="item.content_body"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+	                <div v-if="item.content_body !='通知'" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 	            </div>
 	        </div>
 	    </section>

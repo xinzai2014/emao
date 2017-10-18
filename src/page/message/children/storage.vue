@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>中转库变动提醒
