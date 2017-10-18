@@ -20,6 +20,7 @@ export default {
 
 	[FULL_PAYMENT](state,obj){ //保存全款购车地址
 		state.fullPaymentData = obj;
+    setStore('fullPaymentData',obj);
 	},
 
 	[DISPLAY_CAR](state,obj){ //保存申请展车信息

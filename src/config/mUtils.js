@@ -14,7 +14,7 @@ export const setStore = (name, content) => {
  */
 export const getStore = name => {
 	if (!name) return;
-	return window.sessionStorage.getItem(name);
+	return JSON.parse(window.sessionStorage.getItem(name));
 }
 
 /**
