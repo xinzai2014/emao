@@ -85,7 +85,7 @@
         <div class="mask" v-if="showPopup">
             <div class="cancel-car">
                 <p class="prompt-tit">申报已成功！可在已售车辆中查看。</p>
-                <p class="prompt-btn"><span class="confirm" @click="closePopup">确认</span></p>
+                <p class="prompt-btn"><span class="confirm" @click="closePopup">知道了</span></p>
             </div>
         </div>
 
@@ -213,7 +213,7 @@
 
         //提交表单数据
         submitData(){
-
+            //判断姓名，手机号，身份证，邮箱，身份证正反面，购车发票，行驶证照片 是否为空
             if (!this.dealerNameVal) {
                 this.showAlert = true;
                 this.alertText = '请填写姓名';
@@ -263,6 +263,7 @@
             }
 
             var This = this;
+            //判断姓名，手机号，身份证，邮箱字段填写是否报错
             this.$validator.validateAll().then(function (result) {
                 if (result) {
                     This.formData.order_num = This.vinNum;

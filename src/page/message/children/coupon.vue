@@ -10,9 +10,9 @@
 		        <router-link  :to="'/coupon/'">
 		            <div class="remind-tit">{{item.created_at}}</div>
 		            <div class="remind-cts">
-		                <div :class="item.type == 301? 'remind-tp color-green' : 'remind-tp color-red'">{{item.content_header}}</div>
+		                <div class="remind-tp">{{item.content_header}}</div>
 		                <div class="remind-bt">
-		                    <p class="remind-auto">{{item.content_body}}</p>
+		                    <p class="remind-auto">{{item.content}}：<span>{{item.content1}}</span></p>
 		                    <p class="remind-stat">
 		                        <i class="white-rt"></i>
 		                        {{item.content_footer}}
@@ -59,6 +59,12 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
+		        	var arr = response.body.data.list;
+		        	for(var i=0;i<arr.length;i++){
+				    	var content = arr[i].content_body.split('：');
+				    	arr[i].content = content[0];
+				    	arr[i].content1 = content[1];
+				    } 
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
@@ -106,6 +112,9 @@
 
 <style>
 /*订单提醒*/
+.remind-item{
+	background:#f5f5f5;
+}
 .remind{
 	padding-bottom:0.666667rem;
 }
@@ -126,6 +135,7 @@
 	padding:0.533333rem 0.2rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .remind-bt{
 	padding:0.533333rem 0.2rem;
@@ -138,6 +148,9 @@
 	overflow:hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+}
+.remind-auto span{
+	color:#d5aa5c;
 }
 .remind-stat{
 	font-size:0.32rem;

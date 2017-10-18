@@ -9,10 +9,10 @@
 	        <div class="remind-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/orderDetail/'+item.order_num">
 		            <div class="remind-tit">{{item.created_at}}</div>
-		            <div :class="isActive(item)">
+		            <div class="remind-ct">
 		                <div class="remind-tp">{{item.content_header}}</div>
 		                <div class="remind-bt">
-		                    <p class="remind-auto">购买车辆：{{item.content_body}}</p>
+		                    <p class="remind-auto"><em>购买车辆：</em><span>{{item.content_body}}</span></p>
 		                    <p class="remind-stat" v-if="item.type == 201">
 		                        <i class="white-rt"></i>
 		                        需支付：<span>{{item.content_footer}}</span>
@@ -88,15 +88,6 @@
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
-			},
-			isActive(item){
-				if(item.type == 104){ //已取消
-					return 'remind-ct remind-green'
-				}else if(item.type == 101){ //未支付
-					return 'remind-ct remind-red'
-				}else{
-					return 'remind-ct'
-				}
 			}
             
         },
@@ -120,6 +111,9 @@
 
 <style>
 /*订单提醒*/
+.remind-item{
+	background:#f5f5f5;
+}
 .remind{
 	padding-bottom:0.666667rem;
 }
@@ -135,7 +129,6 @@
 	padding:0 0.133333rem;
 	margin:0.4rem auto 0 auto;
 	border-radius:0.133333rem;
-	border-left:0.053333rem solid #ccc;
 }
 .remind-tp{
 	color:#2c2c2c;
@@ -147,13 +140,18 @@
 	padding:0.533333rem 0.2rem;
 }
 .remind-auto{
-	width:7.333333rem;
-	height:0.4rem;
-	line-height:0.4rem;
+	line-height:0.6rem;
 	font-size:0.4rem;
 	overflow:hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+}
+.remind-auto em{
+	float:left;
+	width:2.3rem;
+}
+.remind-auto span{
+	float:left;
+	width:5.8rem;
+	line-height:0.6rem;
 }
 .remind-stat{
 	font-size:0.4rem;

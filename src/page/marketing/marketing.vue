@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_page1">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>营销支持费
@@ -136,8 +136,9 @@
 
 <style>
 /*返利资金*/
-body,html,.rating_page{
+.rating_page1{
 	background:#fff;
+	height:100%;
 }
 .rebate-wrap{
 	margin-top:-0.026667rem;

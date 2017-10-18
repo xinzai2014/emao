@@ -57,8 +57,8 @@
                     areaData:null
                 }
             }
-        }, 
-        props:["defaultCityData"],
+        },
+        props:["defaultCityData","showCity"],
         methods:{
             getCity(){
                 var that = this;
@@ -77,7 +77,7 @@
                         this.perAreaData = this.perCityData[this.defaultCityIndex].district;
                         this.defaultAreaIndex = this.getDefalultIndex(this.perAreaData,this.defaultData.defaultAreaID,"areaData");
 
-                        if(this.defaultCityData){
+                        if(this.defaultCityData.length){
                             this.getChooseData();
                         }
 
@@ -90,6 +90,7 @@
                     return ele.id == defaultID;
                 })
                defaulIndex = (defaulIndex == -1)?0:defaulIndex;
+               console.log(defaulIndex);
                if(this.defaultCityData){ //如果传入值，就要回显
                     this.postData[flag] = {
                         id:data[defaulIndex]["id"],
@@ -111,7 +112,7 @@
                       startY: 0,
                       click:true
                     })
-                    
+
                     this.scrollToElement(scroller,scrollWrap,index);
                 })
             },
@@ -119,59 +120,80 @@
                 this[scroller].scrollToElement(document.getElementById(scrollWrap).children[0].getElementsByTagName("li")[index]);
             },
             getCityData(id,name,index){
-                this.defaultProvinceIndex = index; 
+                this.defaultProvinceIndex = index;
                 this.perCityData = this.cityData[this.defaultProvinceIndex].city;
                 this.defaultData.defaultProcinveID = id;
-                this.scrollToElement("provinceScroll","provinceWrap",this.defaultProvinceIndex);  
+                this.scrollToElement("provinceScroll","provinceWrap",this.defaultProvinceIndex);
                 this.postData["provinceData"] = {
                     id:id,
                     name:name
                 };
+
+                //改变省的时候，市需要重新初始化滚动，另外地区需要更新数据并重新初始化
+                var firstItem = this.perCityData[0]; //默认选中第一个
+                this.postData["cityData"] = {
+                  id:firstItem.id,
+                  name:firstItem.name
+                };
+                this.defaultData.defaultCityID = firstItem.id;
+                this.defaultCityIndex = 0;
+
+                //更新市
+                var firstAreaItem =  firstItem["district"][0];
+                this.defaultData.defaultAreaID = firstAreaItem.id;
+
+                this.perAreaData = this.perCityData[0]["district"];
+                this.updateAreaData(firstAreaItem.id,firstAreaItem.name,0);
+
+                this.initCityScroll();
             },
             getAreaData(id,name,index){
-                this.defaultCityIndex = index; 
-                this.perAreaData = this.perCityData[this.defaultCityIndex].district;
+                this.defaultCityIndex = index;
                 this.defaultData.defaultCityID = id;
-                this.scrollToElement("cityScroll","cityWrap",this.defaultCityIndex);
-                this.postData["cityData"] = {
+                this.scrollToElement("cityScroll","cityWrap",index);
+                this.scrollToElement("areaScroll","areaWrap",0);
+                this.postData["areaData"] = {
                     id:id,
                     name:name
                 };
+                this.perAreaData = this.perCityData[index]["district"]
+                var firstAreaItem =  this.perAreaData[0];
+                this.updateAreaData(firstAreaItem.id,firstAreaItem.name,0);
             },
             updateAreaData(id,name,index){
-                this.defaultAreaIndex = index; 
+                this.defaultAreaIndex = index;
                 this.defaultData.defaultAreaID = id;
                 this.scrollToElement("areaScroll","areaWrap",this.defaultAreaIndex);
                 this.postData["areaData"] = {
                     id:id,
                     name:name
                 };
+                this.defaultData.defaultAreaID = id;
+            },
+            initCityScroll(){
+                this.initScroll("provinceScroll","provinceWrap",this.defaultProvinceIndex);
+                this.initScroll("cityScroll","cityWrap",this.defaultCityIndex);
+                this.initScroll("areaScroll","areaWrap",this.defaultAreaIndex);
             }
         },
         mounted(){
-            if(this.defaultCityData){ //如果传入了值的话，就用传入的值，否则用默认到北京北京
+            if(this.defaultCityData.length){ //如果传入了值的话，就用传入的值，否则用默认到北京北京
                 this.defaultData.defaultProcinveID = this.defaultCityData[0];
                 this.defaultData.defaultCityID = this.defaultCityData[1];
                 this.defaultData.defaultAreaID = this.defaultCityData[2];
+            }else{
+               this.defaultData.defaultProcinveID = 1;
+               this.defaultData.defaultCityID = 1;
+               this.defaultData.defaultAreaID = 1;
             };
           this.getCity();
         },
         watch:{
-            cityData:function(){
-                this.initScroll("provinceScroll","provinceWrap",this.defaultProvinceIndex);  
-            },
-            perCityData:function(){
-                this.initScroll("cityScroll","cityWrap",this.defaultCityIndex);
-            },
-            perAreaData:function(){
-                this.initScroll("areaScroll","areaWrap",this.defaultAreaIndex);
-            },
-            'defaultCityData':{
-                handler:function(){
-                    console.log(123);
-                },
-                deep:true
-            }
+          showCity(){
+              if(!this.provinceScroll){
+                 this.initCityScroll();
+              }
+          }
         }
     }
 </script>

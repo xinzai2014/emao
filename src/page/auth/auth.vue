@@ -1,5 +1,5 @@
 <template>
-<!--注册认证--> 
+<!--注册认证-->
 <div v-if="ajaxLoading" class="fixed-con">
     <header class="brand-list-header header-fixed">
         <i class="white-lt brand-left-cion" @click="showLoginDialog"></i>
@@ -45,7 +45,7 @@
                 <input type="text"  v-model="address" ref="address" placeholder="请输入详细地址" maxlength="40">
             </p>
         </div>
-        <div class="clear20"></div>        
+        <div class="clear20"></div>
         <div class="authen-info">
             <p>
                 <label>主营类型：</label>
@@ -98,7 +98,7 @@
         </div>
         <div class="bth-auth" @click="checkFormData">下一步</div>
         <keep-alive>
-        <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData"></city>
+        <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData" :showCity="showCity"></city>
         </keep-alive>
         <car :showBrand="showBrand" @subBrandList = "subBrandList"></car>
 
@@ -296,12 +296,12 @@
                             break;
                         case "inside":
                             this.booth_in_img = this.dataURL[flag][0]
-                            break; 
+                            break;
                         case "road":
-                            this.road_license = this.dataURL[flag][0] 
+                            this.road_license = this.dataURL[flag][0]
                             break;
                         case "repair":
-                            this.repair_place = this.dataURL[flag][0] 
+                            this.repair_place = this.dataURL[flag][0]
                             break;
                     }
                 }
@@ -458,7 +458,7 @@
                     "dealer/auth?token=" + sessionStorage.token,
                     {
                         name:this.companyName,
-                        link_name:this.username, 
+                        link_name:this.username,
                         contact_phone:this.telephone,
                         manager_name:this.managerName,
                         manager_phone:this.managerTelephone,
@@ -476,6 +476,7 @@
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
                         this.$router.push('/aptitude');
+                        sessionStorage.mangerName = this.managerName;
                     }
                 },function(err){
                     console.log(err);
@@ -502,7 +503,7 @@
                     }else{
                         this.welcomeMessage = "请完善以下资料";
                         this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
-                    }  
+                    }
                 }).catch(function (error) {
                     //this.showAlert = true;
                     //this.alertText = error.body.msg||"请求失败了";
@@ -524,7 +525,7 @@
                     }else{
                         this.welcomeMessage = "欢迎加入淘车猫";
                         this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
-                    }  
+                    }
                    this.companyName = data.name;
                    this.username = data.link_name;
                    this.telephone = data.contact_phone;
@@ -591,7 +592,7 @@
                         this.$set(this.uploadData4,"imgArr",[data.repair_place])
                         this.repair_place = data.repair_place;
                    }
-                   
+
                    if(data.auth_data.length > 0){
                        this.$set(this.uploadData1,"imgArr",[data.auth_data[0].imgsrc])
                        this.booth_in_img = data.auth_data[0].imgsrc;
@@ -705,7 +706,7 @@
 .authen-info p span.active{
     background:#d6ab55;
     color:#fff;
-    
+
 }
 
 /*资料*/
@@ -738,7 +739,7 @@
     bottom:0;
     left:auto;
     right:0.45rem;
-    margin:auto; 
+    margin:auto;
 }
 
 .clear20{

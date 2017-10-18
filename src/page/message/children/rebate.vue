@@ -12,7 +12,7 @@
 		            <div class="change-ct">
 		                <p class="change-tp">{{item.content_header}}</p>
 		                <div class="change-bt">
-		                    <p>到账金额：<span>{{item.content_body}}</span></p>
+		                    <p>{{item.content}}：<span>{{item.content1}}</span></p>
 		                    <p><i class="white-rt"></i>到账时间：{{item.updated_at}}</p>
 		                </div>
 		            </div>
@@ -56,7 +56,9 @@
 		            params:data
 		        }).then(function (response) {
 		        	var list = response.body.data.list;
+
 		        	this.typeLink(list);
+
 		            this.infoData = this.infoData.concat(list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.loadingData = !this.loadingData;
@@ -67,6 +69,9 @@
             },
             typeLink(arr){
 			    for(var i=0;i<arr.length;i++){
+			    	var content = arr[i].content_body.split('：');
+			    	arr[i].content = content[0];
+			    	arr[i].content1 = content[1];
 			        switch (arr[i].type){
 			            case '401' : 
 			            	arr[i].url = 'rebate';
@@ -120,6 +125,9 @@
 
 <style>
 /*变动提醒*/
+.change-item{
+	background:#f5f5f5;
+}
 .change-tit{
 	text-align:center;
 	font-size:0.346667rem;
@@ -138,6 +146,7 @@
 	font-size:0.426667rem;
 	padding:0.466667rem 0.266667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .change-bt{
 	padding:0.133333rem 0.266667rem 0.533333rem 0.266667rem;
@@ -148,7 +157,7 @@
 	margin-top:0.4rem;
 }
 .change-bt p span{
-	color:#fc3036;
+	color:#d5aa5c;
 }
 .change-bt p i{
 	float:right;

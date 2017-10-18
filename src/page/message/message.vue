@@ -133,7 +133,7 @@ export default {
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;
-    height:100%;
+    height:120%;
 }
 .router-slid-enter-active, .router-slid-leave-active {
         transition: all .4s;

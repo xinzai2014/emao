@@ -20,6 +20,7 @@
     height:100%;
     background:rgba(0,0,0,0.7);
     z-index:100;
+    z-index:999;
 }
 .loader-box{
     position: fixed;

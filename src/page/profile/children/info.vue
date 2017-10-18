@@ -15,11 +15,6 @@
             <router-link to="/profile/info/agreement">
                 <div><i class="yellow-rt"></i>一猫特约经销商合作协议</div>
             </router-link>
-            <!--
-            <div class="user-bt"><span><b class="company-icon"></b>{{infoData.name}}</span>公司名称：</div>
-            <div class="user-bt"><span>{{infoData.address}}</span>公司地址：</div>
-            <div><span>{{infoData.activities}}</span>经营类型：</div>
-            -->
             <router-link to="/profile/info/remit">
                 <div><i class="yellow-rt"></i>汇款账户管理</div>
             </router-link>
