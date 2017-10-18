@@ -4,7 +4,8 @@
             <p class="index-search-title">急需要什么车型？告诉我</p>
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
-                    <label for="" :brandID=carMess.carId>{{carMess.carName}}</label>
+                    <label for="" :brandID=carMess.carId v-if="carMess">{{carMess.carName}}</label>
+                    <label v-else>选择车型</label>
                     <i class="white-rt"></i>
                 </div>
                 <div class="index-search-price">
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-  
+
 export default {
       name: 'search',
       data () {
@@ -38,13 +39,13 @@ export default {
       },
       methods:{
         chooseCar(){
-            //this.$emit('getCar',true); //父子传值
             this.$store.dispatch("CHOOSE_CAR", // 通过store传值
               true
             );
         },
         submitForm(){
-          if(!this.carMess.carId){
+          console.log(this.carMess);
+          if(!this.carMess){
             this.$store.dispatch("ALERT", // 通过store传值
               {
                 flag:true,
