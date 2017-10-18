@@ -1,5 +1,5 @@
 <template>
-<!--注册认证--> 
+<!--注册认证-->
 <div>
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="goback"></i>
@@ -25,7 +25,7 @@
                 <input type="tel"  v-model="revenue" ref="revenue" placeholder="请输入纳税识别号" maxlength="20">
             </p>
         </div>
-        <div class="clear20"></div>        
+        <div class="clear20"></div>
         <div class="authen-info">
             <div class="authen-limts">
                 <span>是否为一般纳税人</span>
@@ -193,18 +193,18 @@
                             break;
                         case "account":
                             this.openingPermit = this.dataURL[flag][0]
-                            break; 
+                            break;
                         case "identityFull":
-                            this.legalPersonIDCard = this.dataURL[flag][0] 
+                            this.legalPersonIDCard = this.dataURL[flag][0]
                             break;
                         case "identityReverse":
-                            this.legalPersonIDCardBack = this.dataURL[flag][0] 
+                            this.legalPersonIDCardBack = this.dataURL[flag][0]
                             break;
                         case "revenueProve":
-                            this.generalTaxpayer = this.dataURL[flag][0] 
+                            this.generalTaxpayer = this.dataURL[flag][0]
                             break;
                         case "revenueMake":
-                            this.billingInfomation = this.dataURL[flag][0] 
+                            this.billingInfomation = this.dataURL[flag][0]
                             break;
                     }
                 }
@@ -215,11 +215,11 @@
                     console.log(response);
                     this.iframeCon = response.bodyText;
                   }).catch(function (error) {
-                    
+
                   });
             },
             checkFormData(){
-                if((this.username == "")||(this.username == null)||(this.username.length<=2)){
+                if((this.username == "")||(this.username == null)||(this.username.length<2)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
                         flag:true,
@@ -327,7 +327,7 @@
                     "dealer/qualification?token=" + sessionStorage.token,
                     {
                         legalPerson:this.username,
-                        bankName:this.bank, 
+                        bankName:this.bank,
                         bankNumber:this.account,
                         TIN:this.revenue,
                         businessLicense:this.businessLicense,
@@ -354,7 +354,7 @@
                 }).then(function (response) {
                    sessionStorage.authMessage = response.bodyText;
                    var data = response.body.data.auth_data.qualification;
-                   this.username = data.legalPerson;
+                   this.username = data.legalPerson?data.legalPerson:sessionStorage.mangerName;
                    this.bank = data.bankName;
                    this.account = data.bankNumber;
                    this.revenue = data.TIN;
@@ -487,7 +487,7 @@
 .authen-info p span.active{
     background:#d6ab55;
     color:#fff;
-    
+
 }
 
 /*资料*/
@@ -520,7 +520,7 @@
     bottom:0;
     left:auto;
     right:0.45rem;
-    margin:auto; 
+    margin:auto;
 }
 
 .clear20{
