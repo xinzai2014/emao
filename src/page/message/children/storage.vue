@@ -100,6 +100,9 @@
 
 <style>
 /*通知*/
+.notice-item{
+	background:#f5f5f5;
+}
 .notice-tit{
 	padding-top:0.4rem;
 	color:#999;
@@ -115,6 +118,7 @@
 	padding:0.8rem 0.4rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .notice-bt{
 	padding:0.533333rem 0.4rem;

@@ -199,9 +199,10 @@ export default {
               data['payimg'+(i+1)]=this.dataURL.payment[i];
             }   
         }
-        if(this.submitFlag){
+        if(sessionStorage.submitFlag){
           this.$http.post("order/full/payment",data)
             .then(function (response) {
+                console.log(data);
                 //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核";
@@ -216,6 +217,7 @@ export default {
           }else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
+              console.log(data);
                 //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核"; 
@@ -247,11 +249,11 @@ export default {
   beforeRouteEnter(to, from, next){
     next(vm => {
       if(from.name=='orderDetail'){
-          vm.submitFlag=true;
+          sessionStorage.submitFlag=true;
           sessionStorage.nameId = true;
         }
-      if(from.name=='displayDetail'){
-          vm.submitFlag=false;
+      if(from.name=='displayDetail' || from.name=='display'){
+          sessionStorage.submitFlag=false;
           sessionStorage.nameId = true;
       }
       if(from.name=='remit'){

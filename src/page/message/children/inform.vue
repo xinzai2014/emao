@@ -94,6 +94,9 @@
 
 <style>
 /*通知*/
+.notice-item{
+	background:#f5f5f5;
+}
 .notice-tit{
 	padding-top:0.4rem;
 	color:#999;
