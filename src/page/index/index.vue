@@ -107,7 +107,7 @@ export default {
             this.authData = "您还有部分信息待完善，立即完善";
             this.showAuthMess = true;
           }
-          if(data.data.data_status == 1){
+          if(data.data.data_status == 4){
             this.authData = data.msg;
             this.showAuthMess = true;
           }
