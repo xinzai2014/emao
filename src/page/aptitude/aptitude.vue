@@ -637,14 +637,14 @@
 .buy-agreement-choose li{float:left;width:50%;height:1.173rem;text-align:center;line-height:1.173rem;font-size:.4267rem;color:#2c2c2c;background-color:#f5f5f5;}
 .buy-agreement-choose li.active{color:#fff;background-color:#d5aa5c;}
 .buy-agreement-con{
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
-    height:94%;
+    -webkit-overflow-scrolling: touch;  
+    overflow-y: scroll; 
+    height:10rem;
 }
 .agreemenIframe{
     width:100%;
-    height:12rem;
     border:none;
+    height:100%;
 }
 
 .bth-auth{
