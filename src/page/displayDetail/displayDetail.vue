@@ -8,7 +8,7 @@
 	    <section class="details-wrap">
 		    <div>
 		        <div class="details-tit" v-show="timeShow">
-		            <h4 v-if="orderInfo.status=='4'"><span>{{orderInfo.remaining}}自动确认收货</span>{{statusText}}</h4>
+		            <h4 v-if="orderInfo.status=='4'"><span>{{orderInfo.remaining}}后自动确认收货</span>{{statusText}}</h4>
 		            <h4 v-else><span>{{orderInfo.remaining}}</span>{{statusText}}</h4>
 		            <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
 		        </div>
