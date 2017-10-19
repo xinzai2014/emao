@@ -78,7 +78,6 @@
 
             <div class="close-bt-out">
                 <button class="close-bt" @click="submitData" type="submit">提交</button>
-                <p class="error-tips">{{errorTips}}</p>
             </div>
         </section>
 
@@ -108,7 +107,6 @@
             dealerEmailVal:'',      //电子邮箱
             goodsStockId:'',        //
             vinNum:'',              //
-            errorTips:'',           //错误提示
             name:'',                //姓名
             mobile:'',              //电话
             IDNumber:'',            //身份证号
@@ -284,7 +282,7 @@
                         This.showPopup = true;
                     }).catch(function(error){
                         This.showAlert = true;
-                        This.errorTips = error.body.msg;
+                        This.alertText = error.body.msg;
                     })
                 }else{
                     return;
@@ -379,7 +377,8 @@
 <style>
     /*售车申报*/
     .error-tips{ position: absolute;  bottom: -1.067rem;  color: red;  text-align: center;  margin: 0 auto;}
-    .close-bt-out{position:relative;}
+    .close-bt-out{height: 1.705rem;padding-top: .535rem;}
+    .close-bt-out .close-bt{width: 5.333333rem;height: 1.17rem;line-height: 1.17rem;text-align: center;margin: 0 auto .535rem;font-size: 0.453333rem;color: #fff;background: #d5aa5c;border-radius: 0.586667rem;border: none;display: block;cursor: pointer;}
     .sales-item{
         padding:0.533333rem 0.4rem;
         overflow:hidden;

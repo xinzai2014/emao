@@ -223,7 +223,7 @@
 
 
 /*首页-选择车型-车型列表页*/
-.brand-models{transform:translateX(100%);width:73%;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;}
+.brand-models{transform:translateX(100%);width:73%;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;box-shadow: 0 0 14px 0 #e0e0e0;}
 .brand-models ul{padding-bottom:1.7rem;}
 .brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;overflow:hidden;}
 .brand-models ul li p{height:1.2rem;margin-left:0;padding-left:.4rem;line-height:1.2rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
