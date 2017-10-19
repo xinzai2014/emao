@@ -15,7 +15,7 @@
 				<i class="white-lt" @click="closeFrame"></i>
 			</div>
 			<div class="buy-agreement-con">
-		 		<iframe :src = "frameURL"  class="frame"></iframe>
+		 		<iframe :src = "frameURL"  class="frame" scrolling="auto"></iframe>
 		 	</div>
 		</div>
 	 </section>
@@ -69,6 +69,8 @@ export default {
 	position:fixed;
 	top:0;
 	left:0;
+	right:0;
+	bottom:0;
 	width:100%;
 	height:100%;
 	background:#FFF;
