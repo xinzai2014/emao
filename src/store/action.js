@@ -69,5 +69,5 @@ export default {
 	[SUCCESS_DATA](context,obj){ //成功结果页面传值
 		context.commit(SUCCESS_DATA,obj);
 	}
-	
+
 }
