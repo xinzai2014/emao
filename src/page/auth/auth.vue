@@ -586,6 +586,8 @@
                             }
                         })
                         this.showAuthBrandList = true;
+                   }else{
+                     this.authTag[1].tag = true;
                    }
                    this.conditions.forEach((ele,index)=>{
                         ele.flag = false;
