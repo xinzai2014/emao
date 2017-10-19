@@ -172,13 +172,13 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"signboard",
-                    image:"static/sample5.png"
+                    image:"static/sample19.png"
                 },
                 uploadData2:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"inside",
-                    image:"static/sample6.png",
+                    image:"static/sample18.png",
                     imgArr:[]
                 },
                 uploadData3:{
@@ -407,6 +407,21 @@
                     );
                     return false
                 }
+
+                var activeIndex = this.authTag.findIndex(function(ele,index,arr){
+                  return ele.tag;
+                })
+
+                if(activeIndex < 0){
+                  this.$store.dispatch("ALERT", // 通过store传值
+                    {
+                      flag:true,
+                      text:"请选择是否经过厂家品牌授权"
+                    }
+                  );
+                  return false
+                }
+
                 if((this.booth_out_img == "")||(this.booth_out_img == null)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {

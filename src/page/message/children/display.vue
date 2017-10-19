@@ -135,6 +135,7 @@
 	padding:0.533333rem 0.2rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .remind-bt{
 	padding:0.533333rem 0.2rem;
