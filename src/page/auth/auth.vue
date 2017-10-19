@@ -38,7 +38,7 @@
         <div class="authen-info">
             <p @click="getDialogCity">
                 <i class="yellow-rt"></i><label>所在区域：</label>
-                <input type="text"  v-model="location" ref="location" placeholder="请选择地区">
+                <input type="text"  v-model="location" ref="location" disabled="disabled" placeholder="请选择地区">
             </p>
             <p>
                 <label>详细地址：</label>
@@ -586,6 +586,8 @@
                             }
                         })
                         this.showAuthBrandList = true;
+                   }else{
+                     this.authTag[1].tag = true;
                    }
                    this.conditions.forEach((ele,index)=>{
                         ele.flag = false;
@@ -866,6 +868,12 @@
     border-radius: 0.586667rem;
     border: none;
     display: block;
+    margin-top:1rem;
+
+}
+
+.authen-info input:disabled{
+  background:none;
 }
 
 </style>

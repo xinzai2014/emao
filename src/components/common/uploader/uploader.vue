@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="submit-rt">
-            <div class="submit-img" >
-                <img :src = uploadData.image @click="lookBigImg(uploadData.image)">
+            <div class="submit-img" @click="lookBigImg(uploadData.image)">
+                <img :src = uploadData.image >
               <div class="submit-back"><span>示例图</span></div>
             </div>
         </div>
