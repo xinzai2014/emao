@@ -19,10 +19,11 @@
         <div class="submit-rt">
             <div class="submit-img" >
                 <img :src = uploadData.image @click="lookBigImg(uploadData.image)">
+              <div class="submit-back"><span>示例图</span></div>
             </div>
         </div>
 
-        <input type="file" accept="image/*" @change="fileChanged" ref="file" multiple="multiple" class="upfile">
+        <input type="file" accept="image/*" @change="fileChanged" ref="file" class="upfile">
     </div>
     <p class="up-btn continue-btn" v-if="continueUp&&initData.count>1" @click="addBox">继续上传</p>
     <div class="bigImg-back" @click="closeImg" v-show="showBigImg">
@@ -330,5 +331,20 @@
         position:absolute;
         top:50%;
         transform:translateY(-50%);
+    }
+
+  .submit-back{
+    position:absolute;
+    top:0;
+    left:0;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+  }
+    .submit-back span{
+      font-size:0.35rem;
+      color:#FFF;
+      line-height:0.85rem;
+      margin-left:0.25rem;
     }
 </style>

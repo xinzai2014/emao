@@ -124,7 +124,7 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"account",
-                    image:"static/sample6.png",
+                    image:"static/sample6.jpg",
                     imgArr:[]
                 },
                 uploadData3:{
@@ -229,7 +229,7 @@
                     this.$refs.username.focus();
                     return false
                 }
-                if((this.bank == "")||(this.bank == null)||(this.username.length<=2)){
+                if((this.bank == "")||(this.bank == null)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
                         flag:true,
@@ -629,7 +629,7 @@
 
 /*购车协议*/
 .buy-agreement-pupop{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
-.buy-agreement-in{position:relative;height:80%;margin:1.7067rem .5333rem 1.9333rem .5333rem;font-size:.4rem;border-radius:.1333rem;background-color:#fff;}
+.buy-agreement-in{-webkit-overflow-scrolling:touch;position:relative;height:80%;margin:1.7067rem .5333rem 1.9333rem .5333rem;font-size:.4rem;border-radius:.1333rem;background-color:#fff;}
 .buy-agreement-info{padding:.4rem .533rem .4rem .533rem;}
 .buy-agreement-title{height:1.2rem;padding-left:.5333rem;color:#2c2c2c;line-height:1.2rem;border-bottom:1px solid #eee;}
 .buy-agreement-con{color:#999;line-height:.6667rem;}
