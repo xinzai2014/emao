@@ -24,9 +24,9 @@
 					        <i class="del" @click="remove(item,index)">删除</i>
 						</p>
 					</div>
-					
+
 				</div>
-			</div>	
+			</div>
 		</section>
 
 		<section class="no-auto server-no-response" v-if="show">
@@ -42,7 +42,7 @@
 		<transition name="router-slid">
             <router-view></router-view>
         </transition>
-		
+
 		 <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
@@ -70,25 +70,24 @@
         methods:{
             //组件方法
             resetIndex(){
-                if(this.$store.state.addressFlag!=""){
-			    	var addressFlag=this.$store.state.addressFlag;
-			    	this.$router.push({ name: addressFlag});				    	
-			    }else{
-			    	this.$router.push({ name: 'info'});
-			    }
+                if(this.$store.getters.getAddress!=""){
+                    var addressFlag=this.$store.getters.getAddress;
+                    this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
+                  }else{
+                    this.$router.push({ name: 'info'});
+                  }
             },
             orderAddress(item){
-            	var addressFlag=this.$store.state.addressFlag;
-		    	this.$store.dispatch("ADDRESS_FLAG","");
-		    	this.$router.push({ name: addressFlag});
-            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
-			        {
-			          id:item.id,
-			          address:item.address,
-			          phone:item.phone,
-			          name:item.name
-			        }
-			    );
+            	  var addressFlag = this.$store.getters.getAddress;
+		    	      this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
+                this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                  {
+                    id:item.id,
+                    address:item.address,
+                    phone:item.phone,
+                    name:item.name
+                  }
+                );
             },
             remove(item,index){
             	if(confirm('确认要删除么?')){
@@ -111,7 +110,7 @@
 					          name:this.addressList[0].name
 					        }
 					    );
-			        }).catch(function (error) {	
+			        }).catch(function (error) {
            				this.alertText = error.body.msg||"请求失败了";
            				this.showAlert = true;
 			        });
@@ -169,7 +168,7 @@
         created(){
         	//this.fillData();
         }
-   	 }   
+   	 }
 </script>
 
 <style>
@@ -217,7 +216,7 @@
 }
 
 .info-box{
-	
+
 }
 .no-auto{position: fixed;
     width: 10rem;

@@ -46,7 +46,7 @@ export default {
 		state.ajaxLoading = flag;
 	},
 
-	[RETURN_DATA](state,obj){ //获取选中车型
+	[RETURN_DATA](state,obj){ //获取选中车型;
 		state.returnData = obj;
 	},
 
@@ -56,6 +56,7 @@ export default {
 
 	[ADDRESS_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
 		state.addressFlag = flag;
+    setStore('addressFlag',flag);
 	},
 
 	[DEFAULT_BRAND](state,flag){ //获取选中车型

@@ -180,7 +180,7 @@ var router=new Router({
             component: orderConfrim
         },
         {
-            path: '/resultSuccess',  //参数配置页
+            path: '/resultSuccess',  //下单成功页
             name: 'resultSuccess',
             component: resultSuccess
         },
@@ -190,7 +190,7 @@ var router=new Router({
             component: balanceConfrim
         },
         {
-            path: '/contrast',  //全款购车结果页
+            path: '/contrast',  //配置对比页面
             name: 'contrast',
             component: contrast
         },

@@ -238,10 +238,9 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
+            this.$router.push("/serie/" + this.$store.getters.getFullData.serieId);
         },
         goAdressList(){
-            this.$store.dispatch("ADDRESS_FLAG","orderConfrim");//全款下单标识,后面选地址会用到
             this.$router.push("/profile/info/address");
         },
 	  	getData(){
@@ -252,7 +251,7 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = this.$store.state.defaultAdress;
+                        this.address = this.$store.getters.getDefaultAddress;
                    }else{
                         this.address = data.address;
                         this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
@@ -416,6 +415,10 @@ export default {
 	  },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
+        this.$store.dispatch("ADDRESS_FLAG",{
+          tag:"orderConfrim",
+          serieId:this.$store.getters.getFullData.serieId
+        });//全款下单标识,后面选地址会用到
 	  },
       filters:{
         getMoney:function(num){
@@ -468,9 +471,8 @@ export default {
 	  beforeRouteEnter (to, from, next) {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
-
             vm.initData = vm.$store.getters.getFullData; //从vuex中获取
-            vm.address = vm.$store.state.defaultAdress; //从vuex中获取
+            vm.address = vm.$store.getters.getDefaultAddress; //从vuex中获取
 		        vm.initData.token = sessionStorage.token;
 		        vm.getData();
             //保存提交信息

@@ -57,10 +57,11 @@ export default {
                 
             }
             if(this.successData.addressFlag == "balanceConfrim"){
-                this.goDetail(this.successData.orderNum)
+                this.goDetail(this.successData.orderNum);
                 return "";
             }
-            this.$router.push("/serie/" + this.$store.state.fullPaymentData.serieId);
+            console.log(this.$store.getters.getAddress);
+            this.$router.push("/serie/" + this.$store.getters.getAddress.serieId);
         },
         goIndex(){
             this.$router.push("/index");
@@ -74,9 +75,9 @@ export default {
             }
             this.messageData["token"] = sessionStorage.token;
             this.messageData["phone"] = this.$store.state.defaultAdress.phone;
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
-                this.successData.bankName+ ",账号：" + 
-                this.successData.account + ",公司名称：" + 
+            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" +
+                this.successData.bankName+ ",账号：" +
+                this.successData.account + ",公司名称：" +
                 this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
             this.$http.post(
                   "message/send",
@@ -170,7 +171,7 @@ export default {
     left:0;
     height:100%;
     width:100%;
-    transform:translateX(100%); 
+    transform:translateX(100%);
 }
 
 

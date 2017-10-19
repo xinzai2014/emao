@@ -14,7 +14,12 @@ export const setStore = (name, content) => {
  */
 export const getStore = name => {
 	if (!name) return;
-	return JSON.parse(window.sessionStorage.getItem(name));
+  try{
+    return JSON.parse(window.sessionStorage.getItem(name));
+  }catch(error){
+    return window.sessionStorage.getItem(name);
+  }
+
 }
 
 /**
