@@ -140,7 +140,7 @@
             </section>
         </div>
 
-        <div class="no-auto server-no-response" v-else="">
+        <div class="no-auto server-no-response" v-if="showNoDataVal">
             <img src="../../assets/no-vehicles-sold-news.png" alt="">
             <p>暂无车辆</p>
         </div>
@@ -167,6 +167,7 @@
                 outErrorTips:'',//出库弹窗信息提示
                 showInPopupStatus:false,//入库弹窗显示与否
                 showOutPopupStatus:false,//出库弹窗显示与否
+                showNoDataVal:false,  //显示没有数据
                 showAlert:false,//错误提示显示与否
                 alertText:null,//错误内容
                 currentInIndex:null,  //当前的索引
@@ -216,6 +217,14 @@
                     for (var i = 0; i < this.inWarehouse.length;i++) {
                         this.inWarehouse[i].add_warehouse_time =  this.getLocalTime(this.inWarehouse[i].add_time);
                     }
+
+                    /*没有数据时显示暂无车辆页面*/
+                    if (this.waitIn.length == 0 && this.waitIn == 0 && this.inWarehouse == 0) {
+                        this.showNoDataVal = true;
+                    }else{
+                        this.showNoDataVal = false;
+                    }
+
                 }).catch(function(error){
                     this.showAlert = true;
                     this.alertText = error.body.msg;
