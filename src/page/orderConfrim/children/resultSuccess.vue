@@ -46,6 +46,16 @@ export default {
 	},
 	methods:{
         goback(){
+            if(sessionStorage.banlance){
+                if(sessionStorage.banlance == 'displayDetail'){
+                    this.$router.push({name:sessionStorage.banlance,params:{id:sessionStorage.banlanceId}});
+                    return "";
+                }else{
+                    this.$router.push({name:sessionStorage.banlance});
+                    return "";
+                }
+                
+            }
             if(this.successData.addressFlag == "balanceConfrim"){
                 this.goDetail(this.successData.orderNum)
                 return "";

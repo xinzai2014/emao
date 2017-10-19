@@ -450,7 +450,21 @@ export default {
             var rebatePrice = this.updateRebateData>0?this.updateRebateData:0;
             return this.car.price - couponPrice - marketPrice - rebatePrice - this.deposit;
         }
-      }
+      },
+    beforeRouteEnter(to, from, next){
+        next(vm => {
+            if(from.name == 'displayDetail'){
+                var arr =from.path.split('/');
+                sessionStorage.banlance = from.name;
+                sessionStorage.banlanceId = arr[arr.length-1];
+            }else if(from.name == 'display'){
+                sessionStorage.banlance = from.name;
+            }else{
+                sessionStorage.banlance = '';
+            }
+            
+        });
+    }
 }
 </script>
 
