@@ -145,14 +145,14 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"revenueProve",
-                    image:"static/sample8.jpg",
+                    image:"static/sample12.jpg",
                     imgArr:[]
                 },
                 uploadData6:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"revenueMake",
-                    image:"static/sample8.jpg",
+                    image:"static/sample14.jpg",
                     imgArr:[]
                 },
                 dataURL:{}
