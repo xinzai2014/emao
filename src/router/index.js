@@ -118,7 +118,7 @@ Vue.use(Router)
 var router=new Router({
     routes: [
         {
-            path: '*', 
+            path: '*',
             name: 'loading',
             component: loading  //默认路由，匹配不到的时候跳转loading
         },
@@ -444,13 +444,12 @@ var router=new Router({
 
 router.beforeEach((to, from, next) => {
     var token = sessionStorage.getItem('token');
-    var idCardAuth = sessionStorage.getItem('idCardAuth');
     //如何做登录完了回到某个页面去呢
     if(to.name=="loading"||to.name=='account'||to.name=='code'){ //不需要登录可以直接跳转的
         next();
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
         next();
-    }else if(!!(token&&(idCardAuth==1))){ //登录并且已经认证过需要认证
+    }else if(!!token){ //登录并且已经认证过需要认证
         next();
     }else{
         next('/');
