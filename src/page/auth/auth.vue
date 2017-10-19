@@ -503,7 +503,14 @@
             },
             subBrandList(brandList){
                 this.authBrandList = brandList;
-                if(this.authBrandList) this.showAuthBrandList = true;
+                if(this.authBrandList) {
+                  this.showAuthBrandList = true;
+                }else{
+                  this.authTag.forEach(function(item){
+                    item.tag = false;
+                  });
+                  this.authTag[1].tag = true;
+                }
                 this.showBrand = false;
             },
             getAuth(){
@@ -869,11 +876,11 @@
     border: none;
     display: block;
     margin-top:1rem;
-
 }
 
 .authen-info input:disabled{
   background:none;
+  color:#333;
 }
 
 </style>

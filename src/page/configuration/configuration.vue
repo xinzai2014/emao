@@ -122,9 +122,9 @@
 
 .config-param-names .row-head{height:1.4267rem;white-space:nowrap;}
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;padding-right:.1867rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
-.config-left-con .config-param-names .row{height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;}
-
-.config-left-con .config-param-names .row .cell-text{display:block;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.config-left-con .config-param-names .row{width:2.1333rem;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;}
+.config-left-con .config-param-names .row .cell{display:table-cell;height: 1.36rem;width:2.1333rem;vertical-align: middle;text-align: center;}
+.config-left-con .config-param-names .row .cell-text{display:block;font-size:.32rem;color:#666;}
 
 .config-param-head{height:1.733rem;background-color:#fff;}
 .config-param-head .row-placeholder{height:1.733rem;}

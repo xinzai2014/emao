@@ -330,7 +330,7 @@
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
 
-.config-param-names .row-head{height:1.4267rem;white-space:nowrap;background:#f5f5f5}
+.config-param-names .row-head{height:1.4267rem;line-height:1.4267rem;white-space:nowrap;background:#f5f5f5}
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 
 .config-left .config-param-names .row{display: table;width: 100%;}
@@ -363,7 +363,6 @@
 .config-list-t3{height: 1.36rem;
     display: table-cell;
     vertical-align: middle;
-    line-height:1.36rem;
     text-align: center;
     background: #FFF;
     border-top: 1px solid #CCC;
