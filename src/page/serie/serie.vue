@@ -93,10 +93,10 @@
                     <div class="book-car-price">
                         <strong>{{fullData.price}}万</strong>
                     </div>
-                    <div class="book-guide-price clearfix" v-if="fullData.fallPrice>0">
+                    <div class="book-guide-price clearfix">
                         <span>指导价：</span>
                         <em>{{fullData.guidePrice}}万</em>
-                        <strong>( 下 <i>{{fullData.fallPrice}}万</i> )</strong>
+                        <strong v-if="fullData.fallPrice>0">( 下 <i>{{fullData.fallPrice}}万</i> )</strong>
                     </div>
                 </div>
                 <p class="book-car-repertory" v-if="fullCount>10">库存充足</p>
