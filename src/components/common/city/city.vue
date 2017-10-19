@@ -191,7 +191,9 @@
         watch:{
           showCity(){
               if(!this.provinceScroll){
-                 this.initCityScroll();
+                setTimeout(()=>{
+                  this.initCityScroll();
+                })
               }
           }
         }
