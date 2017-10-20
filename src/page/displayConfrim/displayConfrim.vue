@@ -84,7 +84,7 @@
             </div>
              <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(item,index)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(item,index)">
                         <dl class="clearfix">
                             <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
@@ -187,15 +187,18 @@ export default {
         },
         chooseCoupon(item,index){  //选择优惠券
             this.coupon.forEach(function(ele,ind){
-                console.log(ind);
-                if(index!=ind){
-                  ele.check = false;
-                }
-            });
-            item.check = !item.check;
-            this.couponData = (item.check?item:{});
-            this.checkCoupun = (item.check?true:false);
-
+              if(index!=ind){
+                ele.check = false;
+              }
+            })
+            this.coupon[index].check = !this.coupon[index].check;
+            if(this.coupon[index].check){
+              this.couponData = this.coupon[index];
+              this.checkCoupun = true;
+            }else{
+              this.couponData = {};
+              this.checkCoupun = false;
+            }
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
@@ -346,7 +349,7 @@ export default {
 
 
 /*选择优惠券-浮层*/
-.coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
+.coupon-popup{position:fixed;z-index:30;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
 .coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%;}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
