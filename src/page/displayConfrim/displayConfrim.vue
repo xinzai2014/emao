@@ -86,7 +86,7 @@
                 <ul class="coupon-con">
                     <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(item,index)">
                         <dl class="clearfix">
-                            <dt>¥ {{parseInt(item.price)}}</dt>
+                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
                                 <p class="coupon-date">有效期：<span>{{item.startDate}} - {{item.endDate}}</span></p>
