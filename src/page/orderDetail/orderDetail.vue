@@ -166,7 +166,7 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-      if(sessionStorage.orderDetailUrl == 'displayDetail'){
+      if(sessionStorage.orderDetailUrl == 'displayDetail' || sessionStorage.orderDetailUrl == 'resultSuccess'){
         this.$router.go(-1);
       }else{
         this.$router.push({name:sessionStorage.orderDetailUrl});
@@ -469,7 +469,7 @@ export default {
       if(from.name=='declare'){
         vm.success=true;
       }
-      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail'){
+      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess'){
         sessionStorage.orderDetailUrl=from.name;
       }
       

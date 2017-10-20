@@ -143,7 +143,7 @@ export default {
         goback(){
           var data = this.$store.getters.getSuccessURL;
           this.$router.push({
-            path:data.tag +"/"+ data.id
+            path:"/" + data.tag +"/"+ data.id
           });
         },
         goAdressList(){
