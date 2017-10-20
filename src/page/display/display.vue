@@ -176,6 +176,8 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
+	            	this.games = [];
+	            	this.games1 = [];
 	                var list = response.body.data.list
 	                for(var a in list){
 	                	this.arr.push(list[a].status);

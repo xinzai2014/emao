@@ -132,8 +132,8 @@
 .config-param-head .row-placeholder .row .cell{display:inline-block;width:3.2rem;height:1.733rem;color:#333;font-size:.32rem;padding-left:.24rem;padding-right:.24rem;border-left:1px solid #ccc;}
 
 .config-param-list .row_head{height:1.4267rem;}
-.config-param-list .row_head p{line-height: 1.4267rem;font-size:.4rem;width:100%;padding-left:2rem;}
-.config-param-list .row_head p span{display:inline-block;padding-right:.5333rem;}
+.config-param-list .row_head p{line-height: 1.4267rem;font-size:.4rem;width:100%;padding-left:4.5rem;}
+.config-param-list .row_head p span{display:inline-block;padding-right:.2rem;}
 .config-param-list .row{border-top:1px solid #ccc;background-color:#fff;height:1.36rem;}
 .config-param-list .row .cell{display:inline-block;width:100%;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
