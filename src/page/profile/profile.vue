@@ -3,89 +3,96 @@
         <section>
             <!--公司认证-->
             <section class="company">
-                
                     <div class="news">
                         <router-link to="/message">
                         <i class="news-icon"></i>
                         <span class="process-in" v-if="messageNum">{{messageNum}}</span>
                         </router-link>
                     </div>
-                
+
                 <div class="company-ct">
-                    <router-link to="/profile/info">
-                        <a class="white-rt" href="javascript:;"></a>
+                    <div>
+                      <router-link to="/profile/info">
+                        <span class="white-rt" ></span>
                         <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
                         <p>
-                            星级
-                            <i v-for="n in level"></i>
-                            <span class="auth_status" v-if="data_status">{{data_status}}</span>
+                          星级
+                          <i v-for="n in level"></i>
+                          <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
-                    </router-link>                   
+                      </router-link>
+                    </div>
                     <div class="company-bt">
-                        <router-link to="/rebate">
-                            <div class="item">
-                                <b>{{rebate}}</b>
-                                <span>返利</span>
-                            </div>
-                        </router-link>
-                        <router-link to="/marketing">
-                            <div class="item">
-                                <b>{{capital}}</b>
-                                <span>营销支持费</span>
-                            </div>
-                        </router-link>
+                          <div class="item">
+                            <router-link to="/rebate">
+                              <b>{{rebate}}</b>
+                              <span>返利</span>
+                            </router-link>
+                          </div>
+                      <div class="item">
+                          <router-link to="/marketing">
+                            <b>{{capital}}</b>
+                            <span>营销支持费</span>
+                          </router-link>
+                      </div>
+                      <div class="item">
                         <router-link to="/coupon">
-                            <div class="item">
-                                <b>{{coupon_num}}</b>
-                                <span>优惠券</span>
-                            </div>
+                           <b>{{coupon_num}}</b>
+                           <span>优惠券</span>
                         </router-link>
+                      </div>
                     </div>
                 </div>
             </section>
             <!--我的订单-->
             <section class="order">
-                <router-link to="/order">
-                    <div class="tit"><h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>全款购车</h3></div>
-                </router-link>
-                 <router-link to="/obliga">
-                    <div class="item">
-                        <i class="payment-icon"><span class="process-in" v-if="payment_num!='0'">{{payment_num}}</span></i>
-                        <span>待付款</span>
+                    <div class="tit">
+                      <router-link to="/order">
+                        <h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>全款购车</h3>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/sending">
                     <div class="item">
+                       <router-link to="/obliga">
+
+                              <i class="payment-icon"><span class="process-in" v-if="payment_num!='0'">{{payment_num}}</span></i>
+                              <span>待付款</span>
+
+                      </router-link>
+                    </div>
+                    <div class="item">
+                      <router-link to="/sending">
                         <i class="send-icon"><span class="process-in" v-if="delivered_num!='0'">{{delivered_num}}</span></i>
                         <span>待发货</span>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/receiving">
                     <div class="item">
+                      <router-link to="/receiving">
                         <i class="receipt-icon"><span class="process-in" v-if="received_num!='0'">{{received_num}}</span></i>
                         <span>待收货</span>
+                      </router-link>
                     </div>
-                </router-link>
+
             </section>
             <section class="order mar-pd">
-                <router-link to="/display">
                     <div class="item">
+                      <router-link to="/display">
                         <i class="show-icon"></i>
                         <span>我的展车</span>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/declare">
                 <div class="item">
+                  <router-link to="/declare">
                     <i class="car-icon"></i>
                     <span>售车申报</span>
+                  </router-link>
                 </div>
-                </router-link>
-                <router-link to="/storage" v-show="is_transtor=='1'">
-                <div class="item">
+                <div class="item" v-show="is_transtor=='1'">
+                  <router-link to="/storage" >
                     <i class="transfer-icon"></i>
                     <span>中转库管理</span>
+                  </router-link>
                 </div>
-                </router-link>
+
             </section>
         </section>
 
@@ -175,21 +182,21 @@ export default {
         params:data
      }).then(function (response) {
         if(response.body.data.data_status=="1"){
-            // this.data_status='信息已完善'; 
+            // this.data_status='信息已完善';
             this.data_status='';
         }
         if(response.body.data.data_status=="2"){
-            this.data_status='信息待完善'; 
+            this.data_status='信息待完善';
         }
         if(response.body.data.data_status=="3"){
-            // this.data_status='信息审核中'; 
+            // this.data_status='信息审核中';
             this.data_status='';
         }
         if(response.body.data.data_status=="4"){
-            // this.data_status='信息驳回'; 
+            // this.data_status='信息驳回';
             this.data_status='信息未过审';
         }
-         
+
       }).catch(function (error) {
         //this.showAlert = true;
         //this.alertText = error.body.msg||"请求失败了";
@@ -223,8 +230,8 @@ export default {
         var n=0;
         for(var i in response.body.data){
             n+=Number(response.body.data[i].num);
-        }  
-        this.messageNum = n;  
+        }
+        this.messageNum = n;
       }).catch(function (error) {
         this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
@@ -454,4 +461,9 @@ export default {
 .index-my.active i{background:url("../../assets/my-active-cion.png") no-repeat;background-size:contain;}
 .index-my.active{color:#d5aa5c;}
 
+  .company a,.order a{
+    display:block;
+    width:100%;
+    height:100%;
+  }
 </style>
