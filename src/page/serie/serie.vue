@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <p class="book-car-repertory" v-if="fullCount>10">库存充足</p>
-                <p class="book-car-repertory" v-if="fullCount>0&&fullCount<10">库存{{fullCount}}台</p>
+                <p class="book-car-repertory" v-if="fullCount>0&&fullCount<=10">库存{{fullCount}}台</p>
             </div>
             <div class="book-order-colors">
                 <p>可选颜色</p>

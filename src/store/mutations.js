@@ -67,6 +67,7 @@ export default {
 
 	[SPARE_DATA](state,obj){ //补余款传值
 		state.spareData = obj;
+    setStore('spareData',obj);
 	},
 
 	[MESSAGE_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
@@ -75,6 +76,7 @@ export default {
 
 	[SUCCESS_DATA](state,obj){ //成功结果页面传值
 		state.successData = obj;
+    setStore('successData',obj);
 	},
 
   [SUCCESS_URL](state,obj){ //成功结果页面传值

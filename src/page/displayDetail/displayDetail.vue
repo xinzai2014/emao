@@ -218,24 +218,24 @@ import alertTip from '../../components/common/alertTip/alertTip'
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
             	this.$store.dispatch("RETURN_DATA", // 通过store传值
-		            {
-		                orderNum:this.orderInfo.orderNum,
-		                orderId:this.orderInfo.id
-		            }
-	            );
-            },
-            balanceConfrim(){
-            	this.$router.push({name:'balanceConfrim'});
-            	this.$store.dispatch("SPARE_DATA", // 通过store传值
-		            {
-		                orderNum:this.orderInfo.orderNum,
-		                deposit:this.capitalInfo.deduction
-		            }
-	            );
-            this.$store.dispatch("ADDRESS_FLAG",{
-              tag:"displayDetail",
-              id:this.orderInfo.orderNum
-            });//补余款进来标识
+                  {
+                      orderNum:this.orderInfo.orderNum,
+                      orderId:this.orderInfo.id
+                  }
+                );
+              },
+              balanceConfrim(){
+                this.$router.push({name:'balanceConfrim'});
+                this.$store.dispatch("SPARE_DATA", // 通过store传值
+                  {
+                      orderNum:this.orderInfo.orderNum,
+                      deposit:this.capitalInfo.deduction
+                  }
+                );
+              this.$store.dispatch("SUCCESS_URL",{
+                  tag:"displayDetail",
+                  id:this.orderInfo.orderNum
+              });//补余款进来标识
             },
             fullData(){
             	var data = {

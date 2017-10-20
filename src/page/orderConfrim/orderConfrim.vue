@@ -126,7 +126,7 @@
                 <ul class="coupon-con">
                     <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
-                            <dt>¥ {{parseInt(item.price)}}</dt>
+                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
 
@@ -400,6 +400,7 @@ export default {
                     var data = response.body.data;
                     data["flag"] = true;
                     data["addressFlag"] = "orderConfrim";
+                    data["telephone"] = this.address.phone;
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )

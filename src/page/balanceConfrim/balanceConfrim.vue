@@ -117,7 +117,7 @@
                 <ul class="coupon-con">
                     <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
-                            <dt>¥ {{parseInt(item.price)}}</dt>
+                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
                                 <p class="coupon-date">有效期：<span>{{item.startDate}} - {{item.endDate}}</span></p>
@@ -194,12 +194,12 @@ export default {
 	    return {
             orderId:null, //订单号
             deposit:0, //保证金
-	    	initData:{}, //初始化路由带过来的数据
-	    	address:{}, //地址信息
-	    	car:{},     //购车信息
-	    	coupon:[],  //优惠券
-	    	marketingSupport:{}, //营销支持费
-	    	rebate:{},            //返利
+            initData:{}, //初始化路由带过来的数据
+            address:{}, //地址信息
+            car:{},     //购车信息
+            coupon:[],  //优惠券
+            marketingSupport:{}, //营销支持费
+            rebate:{},            //返利
             showCoupon:false,     //优惠券弹出窗
             couponData:{},        //选中的优惠券初始数据
             checkCoupun:false,    //判断是否选择了优惠券
@@ -235,10 +235,7 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
                    this.address = data.address;
-                   this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
-                        data.address
-                    );
-		           this.car = data.car;
+		              this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
                         ele.check = false;
@@ -377,6 +374,7 @@ export default {
                     var data = response.body.data;
                     data["flag"] = true;
                     data["addressFlag"] = "balanceConfrim";
+                    data["telephone"] = this.address.phone;
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )
@@ -395,10 +393,10 @@ export default {
         },
 	  },
 	  mounted(){
-         this.orderId = this.$store.state.spareData.orderNum;
-         this.deposit = this.$store.state.spareData.deposit.replace(",","");
+         var spareData = this.$store.getters.getSpareData;
+         this.orderId = spareData.orderNum;
+         this.deposit = spareData.deposit.replace(",","");
          this.initData["token"] = sessionStorage.token;
-
          this.initData["orderNum"] = this.orderId;
          this.getData();
 	  },
@@ -452,15 +450,7 @@ export default {
       },
     beforeRouteEnter(to, from, next){
         next(vm => {
-            if(from.name == 'displayDetail'){
-                var arr =from.path.split('/');
-                sessionStorage.banlance = from.name;
-                sessionStorage.banlanceId = arr[arr.length-1];
-            }else if(from.name == 'display'){
-                sessionStorage.banlance = from.name;
-            }else{
-                sessionStorage.banlance = '';
-            }
+
         });
     }
 }
