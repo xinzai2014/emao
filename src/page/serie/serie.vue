@@ -200,15 +200,15 @@ export default {
       this.$router.push("/index");
     },
     showFullpay(id,index){
-      this.serieData.forEach(function(ele,ind){
-        if(index != ind){
-          ele.flag = false;
-        }
-      });
-      if(this.serieData[index].flag){ //避免重复请求
-        this.showMoney = !this.showMoney;
-        return false;
-      }
+//      this.serieData.forEach(function(ele,ind){
+//        if(index != ind){
+//          ele.flag = false;
+//        }
+//      });
+//      if(this.serieData[index].flag){ //避免重复请求
+//        this.showMoney = !this.showMoney;
+//        return false;
+//      }
       this.getFullData(id,index);
     },
     closeFullpay(){
@@ -222,15 +222,15 @@ export default {
       this.fullCount = sum;
     },
     showExhibpay(id,index){
-      this.serieData.forEach(function(ele,ind){
-        if(index != ind){
-          ele.exhibFlag = false;
-        }
-      });
-      if(this.serieData[index].exhibFlag){ //避免重复请求
-        this.showExhib = !this.showExhib;
-        return false;
-      }
+//      this.serieData.forEach(function(ele,ind){
+//        if(index != ind){
+//          ele.exhibFlag = false;
+//        }
+//      });
+//      if(this.serieData[index].exhibFlag){ //避免重复请求
+//        this.showExhib = !this.showExhib;
+//        return false;
+//      }
       this.getExhibData(id,index);
     },
     closeExhibPay(){
