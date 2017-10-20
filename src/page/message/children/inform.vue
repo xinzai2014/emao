@@ -7,11 +7,21 @@
 		<!--订单提醒-->
 	    <section class="notice" v-scroll="getMore">
 	        <div class="notice-item" v-for="(item,index) in infoData">
-	            <div class="notice-tit">{{item.created_at}}</div>
-	            <div class="notice-ct">
-	                <div class="notice-tp">{{item.content_header}}</div>
-	                <div v-if="item.content_body !='通知'" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
-	            </div>
+	        	<div v-if="item.content_body !='通知'">
+		            <div class="notice-tit">{{item.created_at}}</div>
+		            <route-link>
+			            <div class="notice-ct">
+			                <div class="notice-tp">{{item.content_header}}</div>
+			                <div v-if="item.content_body !='通知'" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+			            </div>
+		            </route-link>
+		        </div>
+		        <div v-else>
+		            <div class="notice-tit">{{item.created_at}}</div>
+		            <div class="notice-ct">
+		                <div class="notice-tp">{{item.content_header}}</div>
+		            </div>
+		        </div>
 	        </div>
 	    </section>
     </div>
@@ -50,6 +60,7 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
+		        	console.log(response)
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.loadingData = !this.loadingData;
