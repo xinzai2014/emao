@@ -632,6 +632,7 @@
         },
         mounted(){
             //提交注册认证
+            document.documentElement.scrollTop = 0;
             this.passportMessage();
             this.getAuth();
         },
