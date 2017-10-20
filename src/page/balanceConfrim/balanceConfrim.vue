@@ -96,7 +96,7 @@
             <p><strong><em>￥{{totalData|getMoney}}</em></strong></p>
         </div>
     </section>
-
+    <p class="footer-bt"></p>
     <!--确认提交-->
     <section class="order-present-info">
         <div class="order-present" @click="sumbitOrder">确认提交</div>
