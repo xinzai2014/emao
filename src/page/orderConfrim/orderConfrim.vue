@@ -104,7 +104,7 @@
             <p><strong><em>￥{{totalData|getMoney}}</em></strong></p>
         </div>
     </section>
-    
+    <p class="footer-bt"></p>
     <!--确认提交-->
     <p class="footer-bt"></p>
     <section class="order-present-info">
@@ -126,7 +126,7 @@
                 <ul class="coupon-con">
                     <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
-                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
+                            <dt>¥ {{parseInt(item.price)}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
 
@@ -284,6 +284,8 @@ export default {
 
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
+                   this.formData.address_id = data.address.id;
+
 		        },function(){
 
 		        })
@@ -387,7 +389,7 @@ export default {
             this.formData.buy_finance = this.financial?1:0;
             this.formData.deduction = this.totalData;
             this.formData.remark = this.remark;
-            this.formData.address_id = this.address.id;
+
             this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
             this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
             this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
@@ -398,7 +400,6 @@ export default {
                     var data = response.body.data;
                     data["flag"] = true;
                     data["addressFlag"] = "orderConfrim";
-                    data["telephone"] = this.address.phone;
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )
