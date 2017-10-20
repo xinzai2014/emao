@@ -541,7 +541,7 @@
                     if(data_status == 1){ //认证通过
                         this.welcomeMessage = "请完善以下资料";
                         this.authMessage = "完善资料有助于我们更好的为您服务，请务必填写真实有效信息，我们将对您提交的信息严格保密。";
-                    }else if(data_status == 4){
+                    }else if(data_status == 2){
                         this.welcomeMessage = "欢迎加入淘车猫";
                         this.authMessage = "您的账户需要经过公司认证后才可以进入商城购买哟!请务必填写真实有效信息，我们将对您提交的信息严格保密。";
                     }else{
