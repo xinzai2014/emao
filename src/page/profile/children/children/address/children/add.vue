@@ -94,31 +94,26 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             	).then(function (response) {
             		this.showAlert = true;
           			this.alertText = "添加成功！";
-		        	
-		        	sessionStorage.addressId=response.body.data.id;
-	            	sessionStorage.addresstxt=data.address;
-	            	sessionStorage.addressPhone=data.phone;
-	            	sessionStorage.addressName=data.name;
 
 	            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值 如果有异步操作放到action里面
 				        {
-				          id:this.id,
-				          address:this.address,
-				          phone:this.phone,
-				          name:this.name
+				          id:response.body.data.id,
+				          address:data.address,
+				          phone:data.phone,
+				          name:data.name
 				        }
 				    );
-				    if(this.$store.state.addressFlag!=""){
-				    	var addressFlag=this.$store.state.addressFlag;
-				    	this.$store.dispatch("ADDRESS_FLAG","");
-				    	this.$router.push({ name: addressFlag});				    	
+				    if(this.$store.getters.getAddress!=""){
+				    	var addressFlag=this.$store.getters.getAddress;
+				    	this.$router.push({ path: "/" + addressFlag.tag + "/" + addressFlag.serieId });
 				    }else{
-				    	this.$router.push({ name: 'address'});
+              alert(2);
+				    	//this.$router.push({ path: '/address'});
 				    }
 
 		        }).catch(function (error) {
 		            this.showAlert = true;
-           			this.alertText = error.body.msg||"请求失败了";	            
+           			this.alertText = error.body.msg||"请求失败了";
 		        });
             }
         },
@@ -129,11 +124,11 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
         beforeRouteEnter(to, from, next){
         	next(vm => {
 			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
-	        		
+
 	        	}
 			  });
         }
-    }   
+    }
 </script>
 
 <style>

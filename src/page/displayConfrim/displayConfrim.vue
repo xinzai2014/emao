@@ -279,7 +279,7 @@ export default {
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
 
-            if(from.name=='address'){
+            if((from.name=='address')||(from.name=="addressAdd")){
                 vm.routerAddress = true;
             }else{
                 vm.routerAddress = false;
