@@ -48,12 +48,11 @@
             <section class="order">
                     <div class="tit">
                       <router-link to="/order">
-                        <h3><a href="javascript:;">全部订单<i class="yellow-rt"></i></a>全款购车</h3>
+                        <h3><span href="javascript:;">全部订单<i class="yellow-rt"></i></span>全款购车</h3>
                       </router-link>
                     </div>
                     <div class="item">
                        <router-link to="/obliga">
-
                               <i class="payment-icon"><span class="process-in" v-if="payment_num!='0'">{{payment_num}}</span></i>
                               <span>待付款</span>
 
@@ -373,12 +372,12 @@ export default {
     padding:0 0.4rem;
     margin-top:0.466667rem;
 }
-.order .tit h3 a{
+.order .tit h3 span{
     float:right;
     font-size:0.373333rem;
     color:#f6b32e;
 }
-.order .tit h3 a i{
+.order .tit h3 span i{
     margin-left:0.066667rem;
     vertical-align:middle;
 }

@@ -548,7 +548,7 @@ export default {
 
 
 /*选择优惠券-浮层*/
-.coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
+.coupon-popup{position:fixed;z-index:30;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
 .coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
