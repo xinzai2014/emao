@@ -76,6 +76,8 @@ export default {
 	background:#FFF;
 	z-index:20;
 	transform:translateX(100%);
+	-webkit-user-select: none;
+	-moz-user-select: none;
 }
 
 .buy-agreement-con{
