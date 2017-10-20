@@ -46,22 +46,10 @@ export default {
 	},
 	methods:{
         goback(){
-            if(sessionStorage.banlance){
-                if(sessionStorage.banlance == 'displayDetail'){
-                    this.$router.push({name:sessionStorage.banlance,params:{id:sessionStorage.banlanceId}});
-                    return "";
-                }else{
-                    this.$router.push({name:sessionStorage.banlance});
-                    return "";
-                }
-                
-            }
-            if(this.successData.addressFlag == "balanceConfrim"){
-                this.goDetail(this.successData.orderNum);
-                return "";
-            }
-            console.log(this.$store.getters.getAddress);
-            this.$router.push("/serie/" + this.$store.getters.getAddress.serieId);
+            var data = this.$store.getters.getSuccessURL;
+            this.$router.push({
+                path:data.tag +"/"+ data.id
+            });
         },
         goIndex(){
             this.$router.push("/index");

@@ -11,7 +11,8 @@ import {
 	DEFAULT_BRAND,
 	SPARE_DATA,
 	MESSAGE_FLAG,
-	SUCCESS_DATA
+	SUCCESS_DATA,
+  SUCCESS_URL
 } from './mutations-types.js'
 
 
@@ -67,7 +68,10 @@ export default {
 	},
 
 	[SUCCESS_DATA](context,obj){ //成功结果页面传值
-		context.commit(SUCCESS_DATA,obj);
-	}
+    context.commit(SUCCESS_DATA,obj);
+  },
 
+  [SUCCESS_URL](context,obj){ //成功结果页面传值
+    context.commit(SUCCESS_URL,obj);
+  }
 }

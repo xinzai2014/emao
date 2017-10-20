@@ -11,7 +11,8 @@ import {
 	DEFAULT_BRAND,
 	SPARE_DATA,
 	MESSAGE_FLAG,
-	SUCCESS_DATA
+	SUCCESS_DATA,
+  SUCCESS_URL
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -25,6 +26,7 @@ export default {
 
 	[DISPLAY_CAR](state,obj){ //保存申请展车信息
 		state.displayData = obj;
+    setStore('displayData',obj);
 	},
 
 	[DEFAULT_ADDRESS](state,obj){ //获取选中地址
@@ -73,6 +75,11 @@ export default {
 
 	[SUCCESS_DATA](state,obj){ //成功结果页面传值
 		state.successData = obj;
-	}
+	},
+
+  [SUCCESS_URL](state,obj){ //成功结果页面传值
+    state.successURL = obj;
+    setStore('successURL',obj);
+  }
 
 }

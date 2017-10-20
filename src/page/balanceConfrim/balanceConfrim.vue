@@ -105,7 +105,7 @@
             <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
-    
+
     <!-- 选择优惠券 -->
 	<section class="coupon-popup"  :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
@@ -166,7 +166,7 @@
             </p>
         </div>
     </section>
-    
+
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
@@ -207,17 +207,17 @@ export default {
             checkMarket:false,    //营销支持费复选框
             chooseMarket:false,   //未选择营销支持费 营销支持费不为空
             showMarket:false,     //营销支持费弹窗
-            marketData:null,      //初始营销支持费值 
-            updateMarket:false,    //修改过营销支持费 
+            marketData:null,      //初始营销支持费值
+            updateMarket:false,    //修改过营销支持费
             updateMarketData:0.00, //获取修改过的营销支持费值
-            showRebate:false,       //返利逻辑开始 
+            showRebate:false,       //返利逻辑开始
             chooseRebate:false,    //判断返利是否为空
             checkRebate:false,     //返利复选框
             updateRebate:false,     //修改过返利值
             rebateData:null,        //初始化返利
             updateRebateData:0.00,   //获取修改过的返利值
             formData:{
-          
+
             },
             remark:null,             //备注信息
             showAgreement:false
@@ -237,7 +237,7 @@ export default {
                    this.address = data.address;
                    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
                         data.address
-                    ); 
+                    );
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -276,7 +276,7 @@ export default {
         chooseCoupon(index,id){  //选择优惠券
             this.coupon.forEach(function(ele,ind){
                 if(index!=ind){
-                  ele.check = false;   
+                  ele.check = false;
                 }
             })
             this.coupon[index].check = !this.coupon[index].check;
@@ -287,7 +287,7 @@ export default {
                 this.couponData = {};
                 this.checkCoupun = false;
             }
-        },  
+        },
         showMarketDialog(){ //营销支持费弹出窗
             this.showMarket = !this.showMarket;
         },
@@ -391,14 +391,13 @@ export default {
                    probeType: 3,
                    click:true
                 });
-            },1000) 
+            },1000)
         },
 	  },
 	  mounted(){
-         this.$store.dispatch("ADDRESS_FLAG","balanceConfrim");//展车下单标识,后面选地址会用到
          this.orderId = this.$store.state.spareData.orderNum;
          this.deposit = this.$store.state.spareData.deposit.replace(",","");
-         this.initData["token"] = sessionStorage.token; 
+         this.initData["token"] = sessionStorage.token;
 
          this.initData["orderNum"] = this.orderId;
          this.getData();
@@ -462,7 +461,6 @@ export default {
             }else{
                 sessionStorage.banlance = '';
             }
-            
         });
     }
 }
@@ -618,7 +616,7 @@ export default {
     left:0;
     height:100%;
     width:100%;
-    transform:translateX(100%); 
+    transform:translateX(100%);
 }
 
 
