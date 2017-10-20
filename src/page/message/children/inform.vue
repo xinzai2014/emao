@@ -117,7 +117,6 @@
 	padding:0.533333rem 0.4rem;
 	font-size:0.4rem;
 	color:#2c2c2c;
-	line-height:0.4rem;
 }
 .notice-bt i{
 	float:right;

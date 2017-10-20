@@ -37,9 +37,11 @@ export default {
 	  	refresh(url){
 	  		this.showFrame = true;
 	  		this.frameURL = url;
+	  		document.body.style.overflow = 'hidden';
 	  	},
 	  	closeFrame(){
 	  		this.showFrame = false;
+	  		document.body.style.overflow = 'inherit';
 	  	}
 	  },
 	  mounted(){
