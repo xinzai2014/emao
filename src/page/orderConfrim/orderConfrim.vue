@@ -238,7 +238,10 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.$store.getters.getFullData.serieId);
+          var data = this.$store.getters.getSuccessURL;
+          this.$router.push({
+            path:data.tag +"/"+ data.id
+          });
         },
         goAdressList(){
             this.$router.push("/profile/info/address");

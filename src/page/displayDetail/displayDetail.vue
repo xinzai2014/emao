@@ -77,11 +77,11 @@
 	                  	</router-link>
 		            </div>
 		            <div v-else>
-		                <div class="send-to">	
+		                <div class="send-to">
 		                	<p>
 			                    <label>汇款单位：</label>
 			                    <span>{{bankInfo.companyName}}</span>
-			                </p>	               
+			                </p>
 			                <p>
 			                    <label>开户行：</label>
 			                    <span>{{bankInfo.bankName}}</span>
@@ -213,7 +213,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             	}else{
             		this.$router.go(-1);
             	}
-                
+
             },
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
@@ -232,6 +232,10 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		                deposit:this.capitalInfo.deposit
 		            }
 	            );
+            this.$store.dispatch("ADDRESS_FLAG",{
+              tag:"displayDetail",
+              id:this.orderInfo.orderNum
+            });//补余款进来标识
             },
             fullData(){
             	var data = {
@@ -260,7 +264,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		                arr[1]='00';
 		              }
 		              response.body.data.capitalInfo[i]=arr.join('.');
-		            } 	                
+		            }
 	                this.capitalInfo =response.body.data.capitalInfo ;
 	                this.record = response.body.data.record;
 	                this.statusAactive = response.body.data.orderInfo;
@@ -363,9 +367,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			                  	item.status=6;
 			                  	item.waitActive = '已取消';
 								item.btnActive = ''
-			              	}	
+			              	}
 			              this.countNum=item.remainingTime;
-			              item.remaining=this.remaining;  
+			              item.remaining=this.remaining;
 			            }
 			    }, 60000);
 
@@ -373,7 +377,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             cancelTime(item){ //毫秒数转换成时间
             	var that=this;
 				var unixTimestamp = new Date(parseInt(item.time)*1000) ;
-				
+
 				Date.prototype.toLocaleString = function() {
 			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + that.toDouble(this.getHours() )+ ":" + that.toDouble(this.getMinutes());
 			    };
@@ -386,7 +390,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		        }else{
 		          return '0'+num;
 		        }
-		      },  
+		      },
             cancelOrder(){//取消申请展车
             	this.orderInfo.status = 6;
             	this.maskShow = !this.maskShow;
@@ -448,8 +452,8 @@ import alertTip from '../../components/common/alertTip/alertTip'
            			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
-            vanLayer(){ //展车退订 
-            	this.vanMask = !this.vanMask;  
+            vanLayer(){ //展车退订
+            	this.vanMask = !this.vanMask;
             	var data = {
 	                token:this.Token,
 	                orderNum:this.orderNum
@@ -511,9 +515,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		        }else{
 		            return hours + '小时' + minutes + '分钟';
 		        }
-	      	}        
+	      	}
 	  	},
-	  	watch:{ 
+	  	watch:{
 		    $route(){
 		        this.showData();
 		    }
@@ -527,7 +531,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		}
 
 
-    }   
+    }
 </script>
 
 <style>
@@ -898,14 +902,14 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .options b{
 	display:block;
-	
+
 }
 .receipt-btn{
 	font-size:0.453333rem;
 	color:#fff;
 	text-align:center;
 	line-height:1.173333rem;
-	
+
 }
 .receipt-btn span{
 	display:inline-block;

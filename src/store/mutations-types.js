@@ -22,4 +22,6 @@ export const SPARE_DATA = "SPARE_DATA" //补余款传值
 
 export const MESSAGE_FLAG = "MESSAGE_FLAG"
 
-export const SUCCESS_DATA = "SUCCESS_DATA"
+export const SUCCESS_DATA = "SUCCESS_DATA" //成功页数据
+
+export const SUCCESS_URL = "SUCCESS_URL" //成功页跳转标示

@@ -333,7 +333,6 @@ export default {
    },
    applyExhib(){
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
-      console.log(123);
       this.$store.dispatch("DISPLAY_CAR", // 通过store传值
         {
           autoId:activeData.autoId,
@@ -369,6 +368,12 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.serieId = this.$route.params.id;
+    this.$store.dispatch("SUCCESS_URL", // 通过store传值
+      {
+        tag:"serie",
+        id:this.serieId
+      }
+    );
     this.getData();
   },
   components:{

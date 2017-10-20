@@ -74,7 +74,7 @@
             <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
-    
+
     <!-- 选择优惠券 -->
 	<section class="coupon-popup" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
@@ -98,7 +98,7 @@
             </div>
         </div>
     </section>
-    
+
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
@@ -132,7 +132,7 @@ export default {
             checkCoupun:false,    //判断是否选择了优惠券
             scrollWrap:null,      //优惠券滚动容器
             formData:{
-          
+
             },
             remark:null,             //备注信息
             showAgreement:false,
@@ -141,11 +141,13 @@ export default {
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.$store.state.displayData.serieId);
+          var data = this.$store.getters.getSuccessURL;
+          this.$router.push({
+            path:data.tag +"/"+ data.id
+          });
         },
         goAdressList(){
             this.$router.push("/profile/info/address");
-            this.$store.dispatch("ADDRESS_FLAG","displayConfrim");//展车下单标识,后面选地址会用到
         },
 	  	getData(){
 			this.$http({
@@ -155,12 +157,12 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = this.$store.state.defaultAdress;
+                        this.address = this.$store.getters.getDefaultAddress;
                    }else{
                         this.address = data.address;
                         this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
                             data.address
-                        ); 
+                        );
                    }
 		           this.car = data.car;
                    var coupon = data.coupon;
@@ -188,7 +190,7 @@ export default {
             this.coupon.forEach(function(ele,ind){
                 console.log(ind);
                 if(index!=ind){
-                  ele.check = false;   
+                  ele.check = false;
                 }
             });
             item.check = !item.check;
@@ -235,7 +237,7 @@ export default {
                    probeType: 3,
                    click:true
                 });
-            },1000) 
+            },1000)
         },
 	  },
       filters:{
@@ -250,6 +252,10 @@ export default {
       },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
+        this.$store.dispatch("ADDRESS_FLAG",{
+          tag:"displayConfrim",
+          serieId:this.$store.getters.getDisplayData.serieId
+        });//全款下单标识,后面选地址会用到
 	  },
       computed:{
         totalData:function(){
@@ -260,8 +266,8 @@ export default {
 	  beforeRouteEnter (to, from, next) {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
-		    vm.initData = vm.$store.state.displayData;  //vuex中获取展车数据
-            vm.address = vm.$store.state.defaultAdress; //从vuex中获取
+		    vm.initData = vm.$store.getters.getDisplayData;  //vuex中获取展车数据
+        vm.address = vm.$store.getters.getDefaultAddress; //从vuex中获取
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
             //保存提交信息
@@ -388,7 +394,7 @@ export default {
     left:0;
     height:100%;
     width:100%;
-    transform:translateX(100%); 
+    transform:translateX(100%);
 }
 
 
@@ -453,8 +459,8 @@ export default {
 .order-failure-message{font-size:.4rem;color:#2c2c2c;text-align:center;}
 .order-failure-back{width:1.9333rem;height:1.0667rem;margin:.8rem auto 0;line-height:1.0667rem;text-align:center;border:1px solid #d5aa5c;border-radius:2.66rem;}
 .buy-agreement-con{
-    -webkit-overflow-scrolling: touch;  
-    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
     height:10rem;
 }
 .agreemenIframe{

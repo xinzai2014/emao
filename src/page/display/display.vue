@@ -18,7 +18,7 @@
 		                <h3>{{item.name}}</h3>
 		                <p class="interior">{{item.color}}</p>
 		                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
-		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
+		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p>
 	                </router-link>
 	                <div class="full-state">
 		                    <div class="state-lt wait-active">
@@ -40,7 +40,7 @@
 		                <h3>{{item.name}}</h3>
 		                <p class="interior">{{item.color}}</p>
 		                <p class="payment" v-if="item.status == 7 || item.status ==27">需付保证金：<span>{{item.price}}元</span></p>
-		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p> 
+		                <p class="payment payment-active" v-else>已付保证金：<span>{{item.price}}元</span></p>
 	                </router-link>
 	                <div class="full-state">
 		                    <div class="state-lt wait-active">
@@ -134,16 +134,19 @@
 		            );
 	            }
 	            if(item.status=='5'){
-	            	this.$router.push({name:'balanceConfrim'});
+	            	this.$router.push({name:'balanceConfrim',params:{id:item.orderNum}});
 	            	this.$store.dispatch("SPARE_DATA", // 通过store传值
 			            {
 			                orderNum:item.orderNum,
 			                deposit:item.price
 			            }
 		            );
-		            
+                this.$store.dispatch("SUCCESS_URL",{
+                  tag:"display",
+                  id:""
+                });//补余款进来标识
 	            }
-				
+
             },
             receiptStatus(){
             	this.receiptShow = !this.receiptShow;
@@ -291,9 +294,9 @@
 			                  	item.status=6;
 			                  	item.waitActive = '已取消';
 								item.btnActive = ''
-			              	}	
+			              	}
 			              this.countNum=item.remainingTime;
-			              item.remaining=this.remaining;  
+			              item.remaining=this.remaining;
 			            }
 			    }, 60000);
 
@@ -302,7 +305,7 @@
         mounted(){
         //组件初始完成需要做什么
         	this.showData();
-        	        	
+
         },
         computed: {
 	    //转换时间成小时,分
@@ -324,16 +327,16 @@
 		        }else{
 		            return hours + '小时' + minutes + '分钟';
 		        }
-	      	}        
+	      	}
 	  	},
-	  	watch:{ 
+	  	watch:{
 		    $route(){
 		        this.showData();
 		    }
 		}
 
 
-    }   
+    }
 </script>
 
 <style>
@@ -520,14 +523,14 @@
 }
 .options b{
 	display:block;
-	
+
 }
 .receipt-btn{
 	font-size:0.453333rem;
 	color:#fff;
 	text-align:center;
 	line-height:1.173333rem;
-	
+
 }
 .receipt-btn span{
 	display:inline-block;
@@ -541,5 +544,5 @@
 	color:#000;
 }
 
- 
+
 </style>
