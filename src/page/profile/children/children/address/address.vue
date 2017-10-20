@@ -70,12 +70,14 @@
         methods:{
             //组件方法
             resetIndex(){
-                if(this.$store.getters.getAddress!=""){
-                    var addressFlag=this.$store.getters.getAddress;
-                    this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
-                  }else{
-                    this.$router.push({ name: 'info'});
-                  }
+            	if(sessionStorage.infos = from.name){
+            		this.$router.push({ name: 'info'});
+            	}else{
+            		if(this.$store.getters.getAddress){
+	                    var addressFlag=this.$store.getters.getAddress;
+	                    this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
+	                }
+            	}
             },
             orderAddress(item){
             	  var addressFlag = this.$store.getters.getAddress;
@@ -159,9 +161,12 @@
 	        		vm.radio=true;
 	        		vm.title='选择收货地址';
 	        		vm.url=from.fullPath;
+	        		sessionStorage.infos = '';
 	        	}else{
 	        		vm.radio=false;
 	        		vm.title='收货地址管理';
+	        		vm.url='';
+	        		sessionStorage.infos = from.name;
 	        	}
 			  });
         },

@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>订单提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="remind" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="loadingData" infinite-scroll-distance="10">
+	    <section class="remind" v-scroll="getMore">
 	        <div class="remind-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/orderDetail/'+item.order_num">
 		            <div class="remind-tit">{{item.created_at}}</div>
@@ -53,6 +53,7 @@
                 this.$router.push({name:'message'});
             },
             moreFn(itemIndex){
+            	console.log(itemIndex);
 		        var data = {
 		            token:this.token, 
 		            typeId:this.typeId,
@@ -65,38 +66,50 @@
 		            params:data
 		        }).then(function (response) {
 		            this.infoData = this.infoData.concat(response.body.data.list);
+		            console.log(this.infoData);
 		            this.nowPage = response.body.data.page.current_page;
 	                this.lastPage = response.body.data.page.last_page;
-	                this.loadingData = false;
-	                console.log(this.nowPage +'...'+this.lastPage)
-		            if (this.nowPage === this.lastPage) {
-		               this.switchShow = true;
-		              return false
-		            }
-
+	                this.switchShow=!this.switchShow;
+	                this.loadingData = !this.loadingData;
 		        }).catch(function (error) {
 		            console.log("请求失败了");
 		        });
             },
-			loaderMore(){
-			      if (this.switchShow) {
-			        return false
-			      }
-			      //防止重复请求
-			      if (this.loadingData) {
-			        return false
-			      }
-			      this.showLoading = true;
-			      this.loadingData = true;
-
-			      
-			      this.moreFn(this.nowPage)  
+			getMore: function () {
+				//console.log('ok');
+				if(this.nowPage >= this.lastPage){
+					this.switchShow=this.switchShow;
+				}else{
+					if(this.loadingData){
+						this.switchShow=!this.switchShow;
+						this.nowPage = parseInt(this.nowPage)+1;
+						console.log(this.nowPage);
+						this.moreFn(this.nowPage);
+						this.loadingData = !this.loadingData;
+					}
+				}
+				
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
 			}
             
-        }
+        },
+        mounted(){
+         	this.moreFn(this.nowPage);
+        },
+        directives: {// 自定义指令
+			scroll: {
+				bind: function (el, binding){
+					window.addEventListener('scroll', function () {
+						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
+							var fnc = binding.value; 
+							fnc(); 
+						}
+					})
+				}
+			}
+		}
     }   
 </script>
 
