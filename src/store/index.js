@@ -20,9 +20,10 @@ const state = {
 	returnData:{}, //汇款凭证
 	alert:{},
 	addressFlag:"", //跳转选地址页面的标识
-	spareData:{}, //补余款传值
+	spareData:null, //补余款传值
 	messageFlag:"",//消息页标识
-	successData:{} //成功页数据
+	successData:{}, //成功页数据
+  successURL:null
 }
 
 export default new Vuex.Store({
