@@ -70,7 +70,7 @@
         methods:{
             //组件方法
             resetIndex(){
-            	if(sessionStorage.infos = from.name){
+            	if(sessionStorage.infos = 'info'){
             		this.$router.push({ name: 'info'});
             	}else{
             		if(this.$store.getters.getAddress){
