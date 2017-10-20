@@ -63,7 +63,7 @@
                           <label>账号：</label>
                           <span>{{bankInfo.account}}</span>
                       </p> -->
-                  <p class="send-phone huang" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
                     <p class="send-phone">查看详情</p>
                   </router-link>
@@ -77,7 +77,7 @@
                       <label>银行：</label>
                       <span>{{bankInfo.bankName}}</span>
                   </p>
-                  <p class="send-phone huang" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
                     <p class="send-phone">查看详情</p>
                   </router-link>
@@ -95,7 +95,7 @@
                       <label>账号：</label>
                       <span>{{bankInfo.account}}</span>
                   </p>
-                  <p class="send-phone huang" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
                     <p class="send-phone">查看详情</p>
                   </router-link>
@@ -173,10 +173,11 @@ export default {
         Token:sessionStorage.getItem('token'),
         receiptData:{},
         receiptShow:false,
-         showAlert: false, //弹出框
-          alertText: null, //弹出信息
-          vinActive:'',
-          success:false,
+        showAlert: false, //弹出框
+        alertText: null, //弹出信息
+        vinActive:'',
+        success:false,
+        huang:true
     }
   },     components:{
         alertTip
@@ -184,11 +185,12 @@ export default {
   methods:{
     //组件方法
     resetIndex(){
-      if(sessionStorage.orderDetailUrl == 'displayDetail' || sessionStorage.orderDetailUrl == 'resultSuccess'){
+      /*if(sessionStorage.orderDetailUrl == 'displayDetail' || sessionStorage.orderDetailUrl == 'resultSuccess'){
         this.$router.go(-1);
       }else{
         this.$router.push({name:sessionStorage.orderDetailUrl});
-      }
+      }*/
+      this.$router.push({path:sessionStorage.orderDetailUrl});
     },
     hide_success(){
       this.success=false;
@@ -269,25 +271,29 @@ export default {
       
     },
     sendMes(){
-        this.$http.post("message/send",{
-          token:sessionStorage.token,
-          content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
-          phone:''
-        }).then(function (response) {
-            var num=60;
-            let timer = setInterval(()=>{
-              num--;
-              this.sendText = num+"s";
-              if(!num){
-                this.sendText = "发送到手机";
-                clearInterval(timer);
-                return false;
-              }
-            },1000);
-        }).catch(function (error) {
-            this.showAlert = true;
-        this.alertText = error.body.msg||"请求失败了";
-        });
+        if(this.huang){
+            this.$http.post("message/send",{
+              token:sessionStorage.token,
+              content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
+              phone:''
+            }).then(function (response) {
+                var num=60;
+                let timer = setInterval(()=>{
+                  num--;
+                  this.huang = false;
+                  this.sendText = num+"s后重新获取";
+                  if(!num){
+                    this.sendText = "发送到手机";
+                    this.huang = true;
+                    clearInterval(timer);
+                    return false;
+                  }
+                },1000);
+            }).catch(function (error) {
+                this.showAlert = true;
+            this.alertText = error.body.msg||"请求失败了";
+            });
+        }
     },
     remainingTime(item){
         clearInterval(item.timer);        
@@ -484,12 +490,14 @@ export default {
   beforeRouteEnter(to, from, next){
     
     next(vm => {
-      alert(from.name)
       if(from.name=='declare'){
         vm.success=true;
       }
-      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
+/*      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
         sessionStorage.orderDetailUrl=from.name;
+      }*/
+      if(from.name != 'paymentSubmit'){
+        sessionStorage.orderDetailUrl = from.path;
       }
       
     });

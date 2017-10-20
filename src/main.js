@@ -63,18 +63,18 @@ Vue.directive('load-more',{
 		const getStyle = (element, attr, NumberMode = 'int') => {
 		    let target;
 		    // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-		    if (attr === 'scrollTop') { 
+		    if (attr === 'scrollTop') {
 		        target = element.scrollTop;
 		    }else if(element.currentStyle){
-		        target = element.currentStyle[attr]; 
-		    }else{ 
-		        target = document.defaultView.getComputedStyle(element,null)[attr]; 
+		        target = element.currentStyle[attr];
+		    }else{
+		        target = document.defaultView.getComputedStyle(element,null)[attr];
 		    }
 		    //在获取 opactiy 时需要获取小数 parseFloat
 		    return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
-		} 
+		}
 		const loadMore = (element, callback) => {
-			
+
 			let windowHeight = window.screen.height;
 			let height;
 			let setTop;
@@ -104,7 +104,7 @@ Vue.directive('load-more',{
 		       	oldScrollTop = document.body.scrollTop;
 		       	moveEnd();
 		    },{passive: true})
-		    
+
 		    const moveEnd = () => {
 		        requestFram = requestAnimationFrame(() => {
 		            if (document.body.scrollTop != oldScrollTop) {
@@ -127,9 +127,9 @@ Vue.directive('load-more',{
 		}
 		//loadMore(el,binding.value);
 		window.addEventListener('scroll', function () {
-			if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-				var fnc = binding.value; 
-				fnc(); 
+			if(document.documentElement.scrollTop + window.innerHeight >= el.clientHeight) {
+				var fnc = binding.value;
+				fnc();
 			}
 		})
       }
@@ -155,7 +155,7 @@ Vue.http.interceptors.push(function(request,next){
     	if(this.$store.state.ajaxLoading == true){
     		this.$store.dispatch("AJAX_LOADING", // 通过store传值
 		      false
-		    ); 
+		    );
     	}
         return response;
     })
