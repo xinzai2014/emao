@@ -37,22 +37,22 @@
         <div class="authen-condition" v-if="showRevenue">
             <div class="authen-condition-con clearfix">
                 <div class="authen-condition-item">
-                    <div class="authen-condition-text">一般纳税人证明</div>
+                    <div class="authen-condition-text">一般纳税人证明<span>(需加盖公章)</span></div>
                     <uploader :uploadData="uploadData5" @getUpload="getUpload"></uploader>
                 </div>
                 <div class="authen-condition-item">
-                    <div class="authen-condition-text">开票信息(需加盖公章)</div>
+                    <div class="authen-condition-text">开票信息<span>(需加盖公章)</span></div>
                     <uploader :uploadData="uploadData6" @getUpload="getUpload"></uploader>
                 </div>
             </div>
         </div>
         <div class="authen-img">
             <div class="user-info">
-                <p class="user-info-tit">营业执照(需加盖公章)</p>
+                <p class="user-info-tit">营业执照<span>(需加盖公章)</span></p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
             </div>
             <div class="user-info">
-                <p class="user-info-tit">开户许可证</p>
+                <p class="user-info-tit">开户许可证<span>(非必填)</span></p>
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
             <div class="user-info">
@@ -293,15 +293,15 @@
                     );
                     return false
                 }
-                if(this.openingPermit == null){
-                    this.$store.dispatch("ALERT", // 通过store传值
-                      {
-                        flag:true,
-                        text:"请上传开户许可证"
-                      }
-                    );
-                    return false
-                }
+//                if(this.openingPermit == null){  //许可证不用必填
+//                    this.$store.dispatch("ALERT", // 通过store传值
+//                      {
+//                        flag:true,
+//                        text:"请上传开户许可证"
+//                      }
+//                    );
+//                    return false
+//                }
                 if(this.legalPersonIDCard == null){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
@@ -501,6 +501,12 @@
 .user-info-tit{
     font-size:0.453333rem;
 }
+
+.user-info-tit span{
+  color:#999;
+  margin-left:0.1rem;
+  font-size:0.38rem;
+}
 .submit-tit{
     font-size:0.506667rem;
 }
@@ -599,6 +605,12 @@
     font-size:0.453rem;
 }
 
+.authen-condition-text span{
+  color:#999;
+  margin-left:0.1rem;
+  font-size:0.38rem;
+}
+
 .authen-limts-list{
     padding-bottom:0.533rem;
     border-bottom:1px solid #EEE;
@@ -637,8 +649,8 @@
 .buy-agreement-choose li{float:left;width:50%;height:1.173rem;text-align:center;line-height:1.173rem;font-size:.4267rem;color:#2c2c2c;background-color:#f5f5f5;}
 .buy-agreement-choose li.active{color:#fff;background-color:#d5aa5c;}
 .buy-agreement-con{
-    -webkit-overflow-scrolling: touch;  
-    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
     height:10rem;
 }
 .agreemenIframe{
