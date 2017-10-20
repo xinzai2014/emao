@@ -10,7 +10,7 @@
                     </div>
                     <div class="img-button">
                         <p class="up-btn" @click.stop="updatePic(index)" v-if="(item.percent != 100 )">上传</p>
-                        <p class="up-btn" v-if="(item.percent == 100)&&(index == 0)" @click.stop="updatePic(index)">修改</p>
+                        <p class="up-btn" v-if="(item.percent == 100)" @click.stop="updatePic(index)">修改</p>
                         <p class="up-btn" v-if="index != 0" @click.stop="deletePic(index)">删除</p>
                     </div>
                 </div>
