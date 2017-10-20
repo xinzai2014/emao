@@ -229,7 +229,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             	this.$store.dispatch("SPARE_DATA", // 通过store传值
 		            {
 		                orderNum:this.orderInfo.orderNum,
-		                deposit:this.capitalInfo.deposit
+		                deposit:this.capitalInfo.deduction
 		            }
 	            );
             this.$store.dispatch("ADDRESS_FLAG",{
