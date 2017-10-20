@@ -524,8 +524,10 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		},
 		beforeRouteEnter(to, from, next){
 		    next(vm => {
-			    if(from.name=='display'){
+			    if(from.name=='display' || from.name == 'messageRebate' || from.name == 'cancel' || from.name == 'purchase'){
 			        sessionStorage.displayName = from.name
+			    }else{
+			    	sessionStorage.displayName = ''
 			    }
 		    });
 		}

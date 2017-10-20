@@ -7,16 +7,30 @@
 	    <!--账户资金变动提醒-->
 	    <section class="change" v-scroll="getMore">
 	        <div class="change-item" v-for="(item,index) in infoData">
-		        <router-link  :to="'/'+item.url">
-		            <p class="change-tit">{{item.created_at}}</p>
-		            <div class="change-ct">
-		                <p class="change-tp">{{item.content_header}}</p>
-		                <div class="change-bt">
-		                    <p>{{item.content}}：<span>{{item.content1}}</span></p>
-		                    <p><i class="white-rt"></i>到账时间：{{item.updated_at}}</p>
-		                </div>
-		            </div>
-		        </router-link>
+	        	<div v-if="item.order_num">
+	        		<router-link  :to="'/orderDetail/'+item.url">
+			            <p class="change-tit">{{item.created_at}}</p>
+			            <div class="change-ct">
+			                <p class="change-tp">{{item.content_header}}</p>
+			                <div class="change-bt">
+			                    <p>{{item.content}}：<span>{{item.content1}}</span></p>
+			                    <p><i class="white-rt"></i>到账时间：{{item.updated_at}}</p>
+			                </div>
+			            </div>
+		            </router-link>
+	            </div>
+		        <div v-else>
+	        		<router-link  :to="'/'+item.url">
+			            <p class="change-tit">{{item.created_at}}</p>
+			            <div class="change-ct">
+			                <p class="change-tp">{{item.content_header}}</p>
+			                <div class="change-bt">
+			                    <p>{{item.content}}：<span>{{item.content1}}</span></p>
+			                    <p><i class="white-rt"></i>到账时间：{{item.updated_at}}</p>
+			                </div>
+			            </div>
+		            </router-link>
+	            </div>
 	        </div>
 	    </section>
     </div>

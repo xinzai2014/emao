@@ -484,10 +484,11 @@ export default {
   beforeRouteEnter(to, from, next){
     
     next(vm => {
+      alert(from.name)
       if(from.name=='declare'){
         vm.success=true;
       }
-      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess'){
+      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
         sessionStorage.orderDetailUrl=from.name;
       }
       

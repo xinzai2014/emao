@@ -26,7 +26,6 @@
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
                                     <h4>{{item.name}}</h4>
-                                    <p>{{item.note}}</p>
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
@@ -285,6 +284,7 @@ export default {
     width:5.44rem;
     height:2.2rem;
     border-bottom:1px solid #eee;
+    position:relative;
 }
 .coupon-item dd h4{
     font-size:0.373333rem;
@@ -294,6 +294,9 @@ export default {
     font-size:0.32rem;
     color:#999;
     margin-top:0.2rem;
+    position:absolute;
+    left:0;
+    bottom:0.2rem;
 }
 .coupon-prompt{
     background:#eee;

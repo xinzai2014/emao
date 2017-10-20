@@ -2,19 +2,17 @@
     <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
-			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>通知
+			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>通知提醒
 		</header>
 		<!--订单提醒-->
 	    <section class="notice" v-scroll="getMore">
 	        <div class="notice-item" v-for="(item,index) in infoData">
 	        	<div v-if="item.content_body !='通知'">
 		            <div class="notice-tit">{{item.created_at}}</div>
-		            <route-link>
-			            <div class="notice-ct">
+			            <div class="notice-ct" @click=refresh(item.url)>
 			                <div class="notice-tp">{{item.content_header}}</div>
-			                <div v-if="item.content_body !='通知'" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+			                <div v-if="item.content_body" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 			            </div>
-		            </route-link>
 		        </div>
 		        <div v-else>
 		            <div class="notice-tit">{{item.created_at}}</div>
@@ -23,6 +21,14 @@
 		            </div>
 		        </div>
 	        </div>
+	        <div  class="frameCon translateY" v-show="showFrame">
+				<div class="user-tit">
+					<i class="white-lt" @click="closeFrame"></i>
+				</div>
+				<div class="buy-agreement-con">
+			 		<iframe :src = "frameURL"  class="frame" scrolling="auto"></iframe>
+			 	</div>
+		 	</div>
 	    </section>
     </div>
 </template>
@@ -39,7 +45,9 @@
 	           	perPage : 10, //每页条数，默认10
 	            nowPage : 1, //第几页
 	            lastPage : 0,
-	            loadingData : false
+	            loadingData : false,
+	            showFrame:false,
+	      		frameURL:""
                 
             }
         },
@@ -48,6 +56,17 @@
             resetIndex(){
                 this.$router.push({name:'message'});
             },
+            refresh(url){
+		  		this.showFrame = true;
+		  		this.frameURL = url;
+		  		document.body.style.overflow = 'hidden';
+		  		document.body.style.position = 'fixed';
+		  	},
+		  	closeFrame(){
+		  		this.showFrame = false;
+		  		document.body.style.overflow = 'inherit';
+		  		document.body.style.position = 'initial';
+		  	},
             moreFn(itemIndex){
 		        var data = {
 		            token:this.token, 
@@ -141,4 +160,30 @@
 	line-height:1.0rem;
 	font-size:0.266667rem;
 }
+.frameCon{
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	width:100%;
+	height:100%;
+	background:#FFF;
+	z-index:20;
+	transform:translateX(100%);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    height:94%;
+}
+.frame{
+    width:100%;
+    border:none;
+    height:100%;
+}
 </style>
+
