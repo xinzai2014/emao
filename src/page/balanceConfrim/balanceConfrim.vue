@@ -374,6 +374,7 @@ export default {
                     var data = response.body.data;
                     data["flag"] = true;
                     data["addressFlag"] = "balanceConfrim";
+                    data["telephone"] = this.address.phone;
                     this.$store.dispatch("SUCCESS_DATA", // 通过store传值
                       data
                      )

@@ -76,6 +76,7 @@ export default {
 
 	[SUCCESS_DATA](state,obj){ //成功结果页面传值
 		state.successData = obj;
+    setStore('successData',obj);
 	},
 
   [SUCCESS_URL](state,obj){ //成功结果页面传值

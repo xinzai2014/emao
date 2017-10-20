@@ -20,5 +20,8 @@ export default {
   },
   getSpareData(state){ //默认地址
     return state.spareData || getStore("spareData");
+  },
+  getSuccessData(state){ //默认地址
+    return state.successData || getStore("successData");
   }
 }

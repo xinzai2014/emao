@@ -37,13 +37,13 @@ export default {
 	data () {
 	    return {
 	    	successData:{},
-			codeText:"发送到手机", //下单成功后发送短信到手机
-            num:60, //下单成功后倒计时
-            disabled:false,
-            messageData:{},
-            pageMess:{}
-	    }
-	},
+			  codeText:"发送到手机", //下单成功后发送短信到手机
+              num:60, //下单成功后倒计时
+              disabled:false,
+              messageData:{},
+              pageMess:{}
+        }
+    },
 	methods:{
         goback(){
             var data = this.$store.getters.getSuccessURL;
@@ -62,7 +62,7 @@ export default {
                 return false;
             }
             this.messageData["token"] = sessionStorage.token;
-            this.messageData["phone"] = this.$store.state.defaultAdress.phone;
+            this.messageData["phone"] = this.$store.getters.getSuccessData["phone"];
             this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" +
                 this.successData.bankName+ ",账号：" +
                 this.successData.account + ",公司名称：" +
@@ -95,7 +95,7 @@ export default {
         }
     },
 	mounted(){
-        this.successData = this.$store.state.successData;
+        this.successData = this.$store.getters.getSuccessData;
         switch(this.successData.addressFlag)
         {
             case "orderConfrim":
