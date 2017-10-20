@@ -35,9 +35,11 @@
                             </div>
                         </div>
                     </template>
-                </div> 
+                </div>
             </div>
+          <div class="con-msg">注：以上仅供参考,请以实车为准</div>
         </div>
+
     </section>
 </div>
 </template>
@@ -142,6 +144,12 @@
     position:fixed;
     top:1.173rem;
     background:#f5f5f5
+}
+.con-msg{
+  line-height: 1.2rem;
+  color:red;
+  padding-left:0.25rem;;
+  font-size:0.35rem;
 }
 </style>
 

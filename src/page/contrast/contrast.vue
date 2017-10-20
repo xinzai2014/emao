@@ -24,10 +24,10 @@
                 </div>
             </div>
         </div>
-        <div class="config marCon" ref="carWrap">         
-            <div class="config-left">  
+        <div class="config marCon" ref="carWrap">
+            <div class="config-left">
                 <template  v-for = "(itemWrap,indexWrap) in dataList" v-if="indexWrap == 0">
-                    <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff> 
+                    <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff>
                         <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}" :class="{'head-fixed':scrollIndex == index}">
                             <span class="cell-text" >{{item.name}}</span>
                         </div>
@@ -50,7 +50,7 @@
                                             <span>●标配</span><span>○选配</span><span>-无</span>
                                          </template>
                                     </div>
-                                   
+
                                     <div class="table-row" :class="{color3:!e.styleTag}" v-for="(e,i) in item.list" v-if = e.diff>
                                         <em class="config-list-t3" >{{e.value}}</em>
                                     </div>
@@ -68,9 +68,10 @@
                             <div class="cell-text">{{e.value}}</div>
                         </div>
                     </div> -->
-                </div> 
+                </div>
             </div>
         </div>
+        <div class="con-msg">注：以上仅供参考,请以实车为准</div>
     </section>
 </div>
 </template>
@@ -86,7 +87,7 @@
                 scrollIndex:0,
                 carScrollHeight:[],
                 checkALl:false,
-                styleWidth:3.2,
+                styleWidth:5,
                 styleData:0,
                 drags:[],
                 initData:[],
@@ -164,7 +165,7 @@
                         }
                     })
                 });
-            }, 
+            },
             getALl(data){
                 var that = this;
                 data.forEach(function(item,index){
@@ -291,7 +292,7 @@
                             document.removeEventListener('touchmove',_this.bindmove);
                             document.removeEventListener('touchend',_this.bindup);
                        },
-                       init:function(){                        
+                       init:function(){
                            var self=this;
                            self.ele.addEventListener('touchstart', function(event) {
                                 event=event||window.event;
@@ -355,10 +356,10 @@
     background:#f5f5f5;
 }
 
-.config-list{width:3.2rem;float:left;}
+.config-list{width:4.5rem;float:left;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
-.config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
+.config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:4.5rem;}
 .config-list-t2 span{margin-left:0.15rem;}
 .config-list-t3{height: 1.36rem;
     display: table-cell;
@@ -371,7 +372,12 @@
 
 .marb{position:fixed;left:0;z-index:10;}
 .marCon{padding-top:4.332rem;}
-
+.con-msg{
+  line-height: 1.2rem;
+  color:red;
+  padding-left:0.25rem;
+  font-size:0.35rem;
+}
 
 </style>
 

@@ -178,8 +178,8 @@
                 if(index == 1 && item.tag){
                    this.dataURL["revenueProve"] = [];
                    this.dataURL["revenueMake"] = [];
-                   this.generalTaxpayer = null;
-                   this.billingInfomation = null;
+                   this.generalTaxpayer = "";
+                   this.billingInfomation = "";
                    this.showRevenue = false;
                 }
             },
