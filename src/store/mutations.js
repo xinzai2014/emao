@@ -44,7 +44,7 @@ export default {
     setStore('carData',obj);
 	},
 
-	[AJAX_LOADING](state,flag){ //获取选中车型
+	[AJAX_LOADING](state,flag){ //全局ajax_loading
 		state.ajaxLoading = flag;
 	},
 
@@ -52,7 +52,7 @@ export default {
 		state.returnData = obj;
 	},
 
-	[ALERT](state,obj){ //获取选中车型
+	[ALERT](state,obj){ //提示信息
 		state.alert = obj;
 	},
 
@@ -63,6 +63,7 @@ export default {
 
 	[DEFAULT_BRAND](state,flag){ //获取选中车型
 		state.defaultBrand = flag;
+    setStore('defaultBrand',flag);
 	},
 
 	[SPARE_DATA](state,obj){ //补余款传值
@@ -70,7 +71,7 @@ export default {
     setStore('spareData',obj);
 	},
 
-	[MESSAGE_FLAG](state,flag){ //从哪个页面跳转地址页面的标示
+	[MESSAGE_FLAG](state,flag){ //消息跳转地址页面的标示
 		state.messageFlag = flag;
 	},
 

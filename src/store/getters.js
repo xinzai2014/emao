@@ -23,5 +23,8 @@ export default {
   },
   getSuccessData(state){ //默认地址
     return state.successData || getStore("successData");
+  },
+  getDefaultBrand(state){ //默认地址
+    return state.defaultBrand || getStore("defaultBrand");
   }
 }
