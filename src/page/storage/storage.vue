@@ -246,6 +246,7 @@
 
             //显示出库弹窗
             showOutPopup(vinNum,index){
+                this.currentOutIndex = index;
                 this.showOutPopupStatus = !this.showOutPopupStatus;
                 this.outPopupData = this.waitOut[index];
             },
@@ -271,6 +272,7 @@
             //刷新等待出库数据
             flushOutData(){
                 // this.$router.go(0);
+                console.log(this.currentOutIndex);
                 this.waitOut.splice(this.currentOutIndex,1);
             },
 
@@ -278,10 +280,13 @@
 
             //点击出库弹窗确认按钮
             confirmOut(){
-                this.confirmOutData(this.outCode);
+                this.confirmOutData();
             },
+
+
+
             //提交出库的相关信息
-            confirmOutData(code){
+            confirmOutData(){
                 //this.itemOut.code = code;
                 this.itemOut.vin_num = this.outPopupData.vin_num;
                 this.$http.post("dealer/warehouse/confirmOut",this.itemOut).then(function(response){
