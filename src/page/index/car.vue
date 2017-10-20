@@ -164,6 +164,10 @@
         },
         closebrand(){
           //this.$emit('getBrandChild'); //父子传值
+          if(this.showCar){
+            this.showCar = !this.showCar;
+            return false;
+          }
           this.$store.dispatch("CHOOSE_CAR", // 通过store传值
             false
           );
