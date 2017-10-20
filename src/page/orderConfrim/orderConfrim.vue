@@ -284,8 +284,6 @@ export default {
 
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
-                   this.formData.address_id = data.address.id;
-
 		        },function(){
 
 		        })
@@ -389,7 +387,7 @@ export default {
             this.formData.buy_finance = this.financial?1:0;
             this.formData.deduction = this.totalData;
             this.formData.remark = this.remark;
-
+            this.formData.address_id = this.address.id;
             this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
             this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
             this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
