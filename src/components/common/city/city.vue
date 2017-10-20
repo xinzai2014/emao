@@ -90,7 +90,6 @@
                     return ele.id == defaultID;
                 })
                defaulIndex = (defaulIndex == -1)?0:defaulIndex;
-               console.log(defaulIndex);
                if(this.defaultCityData){ //如果传入值，就要回显
                     this.postData[flag] = {
                         id:data[defaulIndex]["id"],
