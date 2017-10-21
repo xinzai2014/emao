@@ -75,14 +75,17 @@
 		        });
             },
             getMore: function () {
+				alert("getMore1");
 				if(this.current_page >= this.lastPage){
 					this.switchShow=this.switchShow;
+					alert("getMore2")
 				}else{
 					if(this.loadingData){
 						this.switchShow=!this.switchShow;
 						//this.nowPage++;
 						this.moreFn(this.current_page);
 						this.loadingData = !this.loadingData;
+						alert("getMore3")
 					}
 				}
 				
@@ -98,11 +101,17 @@
         directives: {// 自定义指令
 			scroll: {
 				bind: function (el, binding){
+					alert(1)
 					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= (el.clientHeight -30) ) {
+						alert(2);
+						alert(document.body.scrollTop + window.innerHeight);
+						alert(el.clientHeight);
+						if(document.body.scrollTop + window.innerHeight >= el.clientHeight ) {
+							alert(3)
 							var fnc = binding.value; 
 							fnc(); 
 						}
+						alert(4)
 					})
 				}
 			}
