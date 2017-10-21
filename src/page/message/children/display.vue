@@ -104,9 +104,12 @@
 					alert(1)
 					window.addEventListener('scroll', function () {
 						alert(2);
-						alert(document.body.scrollTop + window.innerHeight);
+						alert(document.body.scrollTop);
+						alert(window.innerHeight);
 						alert(el.clientHeight);
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight ) {
+						var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+						alert(scrollTop);
+						if(scrollTop + window.innerHeight >= el.clientHeight ) {
 							alert(3)
 							var fnc = binding.value; 
 							fnc(); 
