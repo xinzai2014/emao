@@ -99,7 +99,7 @@
 			scroll: {
 				bind: function (el, binding){
 					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
+						if(document.body.scrollTop + window.innerHeight >= (el.clientHeight -30) ) {
 							var fnc = binding.value; 
 							fnc(); 
 						}
