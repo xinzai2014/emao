@@ -39,7 +39,7 @@
                 infoData:[],
                 token : sessionStorage.token,
 	           	perPage : 10, //每页条数，默认10
-	            nowPage : 1, //第几页
+				current_page : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
 	            loadingData : false
@@ -56,7 +56,7 @@
 		            token:this.token, 
 		            typeId:this.typeId,
 		            perPage:this.perPage,
-		            page:itemIndex         
+		            page:this.current_page
 		        }
 		        this.$http({
 		            url:"dealerMessage/detail",
@@ -66,6 +66,7 @@
 		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
+					this.current_page = response.body.data.page.current_page;
 	                this.switchShow=!this.switchShow;
 	                this.loadingData = !this.loadingData;
 
