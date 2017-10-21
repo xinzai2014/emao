@@ -47,7 +47,8 @@
 	            lastPage : 0,
 	            loadingData : false,
 	            showFrame:false,
-	      		frameURL:""
+	      		frameURL:"",
+				scrollTimer: null
                 
             }
         },
@@ -111,10 +112,14 @@
 			scroll: {
 				bind: function (el, binding){
 					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
+						clearTimeout(this.scrollTimer);
+						this.scrollTimer = setTimeout(function(){
+							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+							if(scrollTop + window.innerHeight >= el.clientHeight ) {
+								var fnc = binding.value;
+								fnc();
+							}
+						}, 1000);
 					})
 				}
 			}
