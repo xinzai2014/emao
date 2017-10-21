@@ -32,7 +32,8 @@
 	            nowPage : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
-	            loadingData : false //是否加载完
+	            loadingData : false, //是否加载完
+				scrollTimer: null
 
             }
         },
@@ -88,10 +89,14 @@
 			scroll: {
 				bind: function (el, binding){
 					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
+						clearTimeout(this.scrollTimer);
+						this.scrollTimer = setTimeout(function(){
+							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+							if(scrollTop + window.innerHeight >= el.clientHeight ) {
+								var fnc = binding.value;
+								fnc();
+							}
+						}, 1000);
 					})
 				}
 			}
