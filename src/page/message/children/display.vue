@@ -42,8 +42,8 @@
 				current_page : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
-	            loadingData : false
-                
+	            loadingData : false,
+				scrollTimer: null
             }
         },
         methods:{
@@ -75,17 +75,17 @@
 		        });
             },
             getMore: function () {
-				alert("getMore1");
+				// alert("getMore1");
 				if(this.current_page >= this.lastPage){
 					this.switchShow=this.switchShow;
-					alert("getMore2")
+					// alert("getMore2")
 				}else{
 					if(this.loadingData){
 						this.switchShow=!this.switchShow;
 						//this.nowPage++;
 						this.moreFn(this.current_page);
 						this.loadingData = !this.loadingData;
-						alert("getMore3")
+						// alert("getMore3")
 					}
 				}
 				
@@ -101,20 +101,25 @@
         directives: {// 自定义指令
 			scroll: {
 				bind: function (el, binding){
-					alert(1)
+					// alert(1)
 					window.addEventListener('scroll', function () {
-						alert(2);
-						alert(document.body.scrollTop);
-						alert(window.innerHeight);
-						alert(el.clientHeight);
-						var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-						alert(scrollTop);
-						if(scrollTop + window.innerHeight >= el.clientHeight ) {
-							alert(3)
-							var fnc = binding.value; 
-							fnc(); 
-						}
-						alert(4)
+						clearTimeout(this.scrollTimer);
+						this.scrollTimer = setTimeout(function(){
+							// alert(2);
+							// alert(document.body.scrollTop);  //0
+							// alert(window.innerHeight);  //583
+							// alert(el.clientHeight); //0
+							// console.log(el)
+							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+							// alert(scrollTop);
+							if(scrollTop + window.innerHeight >= el.clientHeight ) {
+								// alert(3)
+								var fnc = binding.value;
+								fnc();
+							}
+							// alert(4)
+						}, 1000);
+
 					})
 				}
 			}
