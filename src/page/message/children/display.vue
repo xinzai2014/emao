@@ -64,7 +64,8 @@
 		            params:data
 		        }).then(function (response) {
 		        	console.log(response);
-		            this.infoData = this.infoData.concat(response.body.data.list);
+					var infoData = response.body.data.list;
+		            this.infoData = this.infoData.concat(infoData);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
 	                this.loadingData = !this.loadingData;
