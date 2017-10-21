@@ -75,25 +75,25 @@
 		        });
             },
             getMore: function () {
-				if(this.nowPage >= this.lastPage){
+				if(this.current_page >= this.lastPage){
 					this.switchShow=this.switchShow;
 				}else{
 					if(this.loadingData){
 						this.switchShow=!this.switchShow;
-						this.nowPage++;
-						this.moreFn(this.nowPage);
+						//this.nowPage++;
+						this.moreFn(this.current_page);
 						this.loadingData = !this.loadingData;
 					}
 				}
 				
 			},
 			init: function () {
-				this.moreFn(this.nowPage);
+				this.moreFn(this.current_page);
 			}
             
         },
         mounted(){
-         	this.moreFn(this.nowPage);
+         	this.moreFn(this.current_page);
         },
         directives: {// 自定义指令
 			scroll: {
