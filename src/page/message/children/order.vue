@@ -45,7 +45,7 @@
 	            switchShow :false, //加载更多
 	            loadingData : false,
 				scrollTimer: null
-                
+
             }
         },
         methods:{
@@ -56,10 +56,10 @@
             moreFn(itemIndex){
             	console.log(itemIndex);
 		        var data = {
-		            token:this.token, 
+		            token:this.token,
 		            typeId:this.typeId,
 		            perPage:this.perPage,
-		            page:itemIndex         
+		            page:itemIndex
 		        }
 		        this.$http({
 		            url:"dealerMessage/detail",
@@ -89,12 +89,12 @@
 						this.loadingData = !this.loadingData;
 					}
 				}
-				
+
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
 			}
-            
+
         },
         mounted(){
          	this.moreFn(this.nowPage);
@@ -103,7 +103,6 @@
 			scroll: {
 				bind: function (el, binding){
 					window.addEventListener('scroll', function () {
-
 						clearTimeout(this.scrollTimer);
 						this.scrollTimer = setTimeout(function(){
 							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
@@ -111,12 +110,15 @@
 								var fnc = binding.value;
 								fnc();
 							}
-						}, 1000);
+						}, 0);
 					})
 				}
 			}
-		}
-    }   
+		},
+    beforeRouteLeave(to,form,next){
+      this.getMore = null;
+    }
+    }
 </script>
 
 <style>
