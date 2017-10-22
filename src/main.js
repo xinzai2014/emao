@@ -127,7 +127,8 @@ Vue.directive('load-more',{
 		}
 		//loadMore(el,binding.value);
 		window.addEventListener('scroll', function () {
-			if(document.documentElement.scrollTop + window.innerHeight >= el.clientHeight) {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if(scrollTop + window.innerHeight >= (el.clientHeight)) {
 				var fnc = binding.value;
 				fnc();
 			}
