@@ -5,33 +5,34 @@
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>提交汇款凭证
         </header>
         <section class="voucher-ct">
-            <div v-if="!showRemit">
-              <div class="voucher-title">请先添加汇款账户</div>
-              <div class="voucher-item">
-                  <router-link to="/profile/info/remit">
-                    <p><i class="yellow-rt"></i>添加汇款账户：</p>
-                  </router-link>
+            <div @click="subData">
+              <div v-if="!showRemit">
+                <div class="voucher-title">请先添加汇款账户</div>
+                <div class="voucher-item">
+                    <router-link to="/profile/info/remit">
+                      <p><i class="yellow-rt"></i>添加汇款账户：</p>
+                    </router-link>
+                </div>
+              </div>
+              <router-link to="/profile/info/remit" v-else>
+                <div class="voucher-item item-bor" v-if="type == 1">
+                    <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                    <p><span>{{editData.pay_company}}</span>汇款单位：</p>
+                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.account}}</span>汇款账户：</p>
+                </div>
+                <div class="voucher-item item-bor" v-else>
+                    <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                    <p><span>{{editData.name}}</span>姓名：</p>
+                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.account}}</span>汇款账户：</p>
+                </div>
+              </router-link>
+              <div class="voucher-item voucher-gray">
+                  <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
+                  <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
               </div>
             </div>
-            <router-link to="/profile/info/remit" v-else>
-              <div class="voucher-item item-bor" v-if="type == 1">
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
-                  <p><span>{{editData.pay_company}}</span>汇款单位：</p>
-                  <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
-                  <p><span>{{editData.account}}</span>汇款账户：</p>
-              </div>
-              <div class="voucher-item item-bor" v-else>
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
-                  <p><span>{{editData.name}}</span>姓名：</p>
-                  <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
-                  <p><span>{{editData.account}}</span>汇款账户：</p>
-              </div>
-            </router-link>
-            <div class="voucher-item voucher-gray">
-                <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
-                <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
-            </div>
-
             <div class="voucher-item">
                 <p>汇款底单</p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
@@ -83,19 +84,26 @@ export default {
       this.mountedData();
       //this.acountEdit();
       this.returnDataF();
+      var payData = this.$store.getters.getPaymentData;
+      console.log(payData);
+      this.price = payData.paymentPrice;
+      this.remark = payData.remark;
+      var paymentURLTag = this.$store.getters.getPaymentURL["tag"];
+      if( paymentURLTag == 'displayDetail' || paymentURLTag == 'display'){
+        this.submitFlag = false;
+      }
   },
   methods:{
       //组件方法
       resetIndex(){
           var paymentURL = this.$store.getters.getPaymentURL;
-//          if(sessionStorage.nameId){
-//            this.$router.push({name:sessionStorage.goName,params:{id:this.returnData.orderNum}});
-//          }else{
-//            this.$router.push({name:sessionStorage.goName});
-//          }
           this.$router.push({path:"/" + paymentURL["tag"] + "/" + paymentURL["id"] });
-          sessionStorage.paymentPrice = '';
-          sessionStorage.remark = '';
+          this.$store.dispatch("PAYMENT_DATA", // 通过store传值
+            {
+              paymentPrice:"",
+              remark:""
+            }
+          );
       },
       getUpload(data,flag){
           this.dataURL[flag] = data;
@@ -232,7 +240,15 @@ export default {
           //this.alertText = error.body.msg||"请求失败了";
             });
           }
-      }
+      },
+     subData(){
+      this.$store.dispatch("PAYMENT_DATA", // 通过store传值
+        {
+          paymentPrice:this.price,
+          remark:this.remark
+        }
+      );
+    }
   },
   watch:{
     $route(){
@@ -241,12 +257,6 @@ export default {
     success(){
       //this.$router.push({name:''});
     },
-    price(){
-      sessionStorage.paymentPrice=this.price;
-  },
-    remark(){
-      sessionStorage.remark=this.remark;
-    }
   },
   beforeRouteEnter(to, from, next){
     next(vm => {

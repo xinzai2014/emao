@@ -13,7 +13,8 @@ import {
 	MESSAGE_FLAG,
 	SUCCESS_DATA,
   SUCCESS_URL,
-  PAYMENT_URL
+  PAYMENT_URL,
+  PAYMENT_DATA
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -90,6 +91,11 @@ export default {
   [PAYMENT_URL](state,obj){ //进入汇款凭证页面标识，做回退使用
     state.paymentURL = obj;
     setStore('paymentURL',obj);
+  },
+
+  [PAYMENT_DATA](state,obj){
+    state.paymentData = obj;
+    setStore('paymentData',obj);
   }
 
 }

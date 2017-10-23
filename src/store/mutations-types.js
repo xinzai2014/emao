@@ -27,3 +27,5 @@ export const SUCCESS_DATA = "SUCCESS_DATA" //成功页数据
 export const SUCCESS_URL = "SUCCESS_URL" //成功页跳转标示
 
 export const PAYMENT_URL = "PAYMENT_URL" //汇款页跳转URL标示
+
+export const PAYMENT_DATA = "PAYMENT_DATA" //汇款页面跳转汇款账户页面前保存数据

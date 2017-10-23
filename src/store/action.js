@@ -13,7 +13,8 @@ import {
 	MESSAGE_FLAG,
 	SUCCESS_DATA,
   SUCCESS_URL,
-  PAYMENT_URL
+  PAYMENT_URL,
+  PAYMENT_DATA
 } from './mutations-types.js'
 
 
@@ -78,5 +79,9 @@ export default {
 
   [PAYMENT_URL](context,obj){ //汇款凭证页面代码优化
     context.commit(PAYMENT_URL,obj);
+  },
+
+  [PAYMENT_DATA](context,obj){
+    context.commit(PAYMENT_DATA,obj);
   }
 }
