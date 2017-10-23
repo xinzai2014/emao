@@ -107,8 +107,7 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 				    	var addressFlag=this.$store.getters.getAddress;
 				    	this.$router.push({ path: "/" + addressFlag.tag + "/" + addressFlag.serieId });
 				    }else{
-              alert(2);
-				    	//this.$router.push({ path: '/address'});
+				    	this.$router.push({ path: '/address'});
 				    }
 
 		        }).catch(function (error) {
