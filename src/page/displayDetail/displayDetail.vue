@@ -8,12 +8,13 @@
 	    <section class="details-wrap">
 		    <div>
 		        <div class="details-tit" v-show="timeShow">
-		            <h4><span>剩余：{{orderInfo.remaining}}自动取消</span>{{statusText}}</h4>
-		            <p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>
+		            <h4 v-if="orderInfo.status=='4'"><span>{{orderInfo.remaining}}后自动确认收货</span>{{statusText}}</h4>
+		            <h4 v-else><span>{{orderInfo.remaining}}</span>{{statusText}}</h4>
+		            <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
 		        </div>
 		        <div class="details-tit" v-show="!timeShow">
 		            <h4>{{statusText}}</h4>
-		            <p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>
+		            <!--<p v-show="orderInfo.auditInstructions">{{orderInfo.auditInstructions}}</p>-->
 		        </div>
 		        <div class="order-ct">
 		            <div class="order-full">
@@ -37,49 +38,64 @@
 	        <div class="request-ct">
 	            <p class="remit-tit">保证金</p>
 	            <p :class="paymentActive ? 'bond active':'bond'"><span>{{payment}}</span>支付状态：</p>
-	            <p class="bond"><span>{{capitalInfo.totalPrice}}</span>金额：</p>
-	            <p class="bond"><span>-{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
-	            <p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>
-	            <p class="bond active"><span>{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
+	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
+	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
+	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
-		            <div v-if="bankInfo.accountType == 1">
-			            <div class="send-to">
-			                <p>
-			                    <label>汇款银行：</label>
-			                    <span>{{bankInfo.bankName}}</span>
-			                </p>
-			                <p>
-			                    <label>公司名称：</label>
+		            <div class="ayment-info" v-if="bankInfo.accountType == 2">
+			            <p>
+		                    <label>付款人：</label>
+		                    <span>{{bankInfo.companyName}}</span>
+		                </p>
+		                <p>
+		                    <label>银行：</label>
+		                    <span>{{bankInfo.bankName}}</span>
+		                </p>
+		                <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'||orderInfo.status=='9'">
+	                    	<p class="ayment-details">查看详情</p>
+	                  	</router-link>
+		            </div>
+		            <div class="ayment-info" v-else-if="bankInfo.accountType == ''">
+			            <p>
+		                    <label>汇款银行：</label>
+		                    <span>{{bankInfo.bankName}}</span>
+		                </p>
+		                <p>
+		                    <label>公司名称：</label>
+		                    <span>{{bankInfo.companyName}}</span>
+		                </p>
+		                <p>
+		                    <label>账号：</label>
+		                    <span>{{bankInfo.account}}</span>
+		                </p>
+		                <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'|| orderInfo.status=='3'|| orderInfo.status=='4'|| orderInfo.status=='5'|| orderInfo.status=='28'||orderInfo.status=='9'">
+	                    	<p class="ayment-details">查看详情</p>
+	                  	</router-link>
+		            </div>
+		            <div v-else>
+		                <div class="send-to">
+		                	<p>
+			                    <label>汇款单位：</label>
 			                    <span>{{bankInfo.companyName}}</span>
 			                </p>
 			                <p>
-			                    <label>账号：</label>
-			                    <span>{{bankInfo.account}}</span>
+			                    <label>开户行：</label>
+			                    <span>{{bankInfo.bankName}}</span>
 			                </p>
-			                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-	                    		<p class="ayment-details">查看详细</p>
+			                <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28' ||orderInfo.status=='9'">
+	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
 			            </div>
-			            <div class="nstructions">
+			            <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'&&orderInfo.status!='9'">
 			                <span>汇款说明：</span>
 			                <em>1.汇款后请上传汇款凭证</em>
 			                <em>2.未按时间付款的订单系统将自动取消</em>
 			            </div>
-		            </div>
-		            <div class="ayment-info" v-else>
-		                <p>
-		                    <label>付款人：</label>
-		                    <span>{{bankInfo.bankName}}</span>
-		                </p>
-		                <p>
-		                    <label>付款账户：</label>
-		                    <span>{{bankInfo.account}}</span>
-		                </p>
-		                <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-	                  	<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-	                    	<p class="ayment-details">查看详细</p>
-	                  	</router-link>
 		            </div>
 	            </div>
 	        </div>
@@ -91,9 +107,8 @@
 	            <span class="record-time" v-for="(item,index) in record"><em>{{cancelTime(item)}}</em>{{item.des}}：</span>
 	        </div>
 	        <div class="website" v-show="process">
-	            <span>退订展车</span>
-	            <span class="website-info">退订展车流程</span>
-	            <span class="website-info">1.联退车事宜系服务顾问沟通</span>
+	            <span>退订展车流程</span>
+	            <span class="website-info">1.联系服务顾问沟通退车事宜</span>
 	            <span class="website-info">2.办理接车及退款手续</span>
 	        </div>
 	        <p class="cancel" v-show="carCancel" @click="maskShow = !maskShow">取消申请</p>
@@ -101,12 +116,12 @@
 	        <div v-show="btmBtn">
 		        <p class="visib-98"></p>
 		        <div class="remits-fixed active" v-if="orderInfo.status == '8'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status == '5'">{{btnText}}</div>
-
+		        <div class="remits-fixed" v-if="orderInfo.status == '5'" @click="balanceConfrim">
+		        	{{btnText}}
+		        </div>
 		        <div class="remits-fixed" @click="confirmCar" v-if="orderInfo.status == '4'">{{btnText}}</div>
-		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
-	              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-	          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证	</router-link>
+		        <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
+	              	提交汇款凭证
 	          	</div>
 
 	        </div>
@@ -133,7 +148,7 @@
 	                <b>请确认随车附件：</b>
 	                <p>{{receiptData.attachment}}</p>
 	            </div>
-	            <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+	            <div class="receipt-btn"><span class="receipt-close" @click="receiptShow = !receiptShow">取消</span><span @click="receiptStatus">确认收货</span></div>
 	        </div>
 	    </div>
 		<!-- 退订展车 -->
@@ -149,11 +164,12 @@
 	            </p>
 	        </div>
 	    </div>
-
+		<alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
@@ -171,7 +187,7 @@
               	countNum:0,
               	payment:'已支付', //支付状态
               	paymentActive:false,
-              	vinActive:'代发货',//车辆VIN编码状态
+              	vinActive:'待发货',//车辆VIN编码状态
               	btmBtn:false, //底部按钮
               	btnText:'提交汇款凭证', //按钮文字
               	process:false, //退订流程
@@ -182,12 +198,51 @@
               	vanMask:false, //是否显退订示弹框
               	vanInfo:{}, //展车退订弹框数据
               	sendText:'发送到手机',
+              	showAlert:false,  //错误弹出窗
+		      	alertText:null, //错误提醒信息
+		      	huang:true
             }
         },
+        components:{
+	    	alertTip
+	    },
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+            	/*if(sessionStorage.displayName){
+            		this.$router.push({name:sessionStorage.displayName});
+            	}else{
+            		this.$router.go(-1);
+            	}*/
+            	this.$router.push({path:sessionStorage.orderDetailUrl});
+            },
+            paymentSubmit(){
+            	this.$router.push({name:'paymentSubmit'});
+            	this.$store.dispatch("RETURN_DATA", // 通过store传值
+                  {
+                      orderNum:this.orderInfo.orderNum,
+                      orderId:this.orderInfo.id
+                  }
+                );
+              this.$store.dispatch("PAYMENT_URL", // 通过store传值
+                {
+                  tag:"displayDetail",
+                  id:this.orderInfo.orderNum
+                }
+              );
+              },
+              balanceConfrim(){
+                this.$router.push({name:'balanceConfrim'});
+                this.$store.dispatch("SPARE_DATA", // 通过store传值
+                  {
+                      orderNum:this.orderInfo.orderNum,
+                      deposit:this.capitalInfo.deduction
+                  }
+                );
+              this.$store.dispatch("SUCCESS_URL",{
+                  tag:"displayDetail",
+                  id:this.orderInfo.orderNum
+              });//补余款进来标识
             },
             fullData(){
             	var data = {
@@ -201,18 +256,35 @@
 	            }).then(function (response) {
 	                this.address = response.body.data.address;
 	                this.bankInfo = response.body.data.bankInfo;
-	                this.capitalInfo = response.body.data.capitalInfo;
+	                for(var i in response.body.data.capitalInfo){
+		              response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+		              var arr=response.body.data.capitalInfo[i].split('.');
+		              if(arr[1]){
+		                if(arr[1].length==2){
+		                  arr[1]=arr[1];
+		                }else if(arr[1].length==1){
+		                  arr[1]=arr[1]+'0';
+		                }else{
+		                  arr[1]=arr[1].substring(0,2);
+		                }
+		              }else{
+		                arr[1]='00';
+		              }
+		              response.body.data.capitalInfo[i]=arr.join('.');
+		            }
+	                this.capitalInfo =response.body.data.capitalInfo ;
 	                this.record = response.body.data.record;
 	                this.statusAactive = response.body.data.orderInfo;
 	                this.statusAdd(this.statusAactive);
 	                this.orderInfo=response.body.data.orderInfo;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             statusAdd(item){
             	if(item.status == 28){
-           			this.statusText = '待付款审核中,请耐心等候';
+           			this.statusText = '补款中';
            			this.vinActive = '审核中';
            			this.process = !this.process;
             	}else if(item.status == 7){
@@ -224,7 +296,7 @@
 	            		this.btmBtn = false;
 	            		this.carCancel = false;
             		}else{
-            			this.statusText = '等待付款';
+            			this.statusText = '等待支付保证金';
 	            		this.countNum=item.remainingTime;
 		                item.remaining=this.remaining;
 		                this.remainingTime(item);
@@ -256,7 +328,7 @@
 	                item.remaining=this.remaining;
 	                this.remainingTime(item);
 	                this.vinActive = '已发货';
-	                this.payment = '未支付';
+	                this.payment = '已支付';
 	                this.paymentActive = !this.paymentActive;
             		this.timeShow = !this.timeShow;
             		this.btmBtn = !this.btmBtn;
@@ -265,6 +337,7 @@
             		this.statusText = '展车在展';
             		this.vinActive = '在展';
             		this.btnText = '补余款';
+            		this.timeShow = false;
             		this.btmBtn = !this.btmBtn;
             		this.process = !this.process;
             		this.vanShow = !this.vanShow;
@@ -301,22 +374,30 @@
 			                  	item.status=6;
 			                  	item.waitActive = '已取消';
 								item.btnActive = ''
-			              	}	
+			              	}
 			              this.countNum=item.remainingTime;
-			              item.remaining=this.remaining;  
+			              item.remaining=this.remaining;
 			            }
 			    }, 60000);
 
             },
             cancelTime(item){ //毫秒数转换成时间
+            	var that=this;
 				var unixTimestamp = new Date(parseInt(item.time)*1000) ;
-				
+
 				Date.prototype.toLocaleString = function() {
-			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + that.toDouble(this.getHours() )+ ":" + that.toDouble(this.getMinutes());
 			    };
 			    var commonTime = unixTimestamp.toLocaleString();
 			    return commonTime;
             },
+            toDouble(num){
+		        if(num>9){
+		          return num;
+		        }else{
+		          return '0'+num;
+		        }
+		      },
             cancelOrder(){//取消申请展车
             	this.orderInfo.status = 6;
             	this.maskShow = !this.maskShow;
@@ -327,9 +408,15 @@
 	            this.$http.post(
 	                "order/show/cancel",data
 	            ).then(function (response) {
-	            	this.fullData()
+	            	this.statusText = '已取消';
+            		this.payment = '未支付';
+            		this.paymentActive = !this.paymentActive;
+            		this.timeShow = false;
+            		this.btmBtn = false;
+            		this.carCancel = false;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             confirmCar(){ //确认收货弹框信息
@@ -345,10 +432,12 @@
 	            }).then(function (response) {
 	            	this.receiptData = response.body.data;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             receiptStatus(){
+            	this.orderInfo.status = 5;
             	this.receiptShow = !this.receiptShow;
             	var data = {
 	                token:this.Token,
@@ -358,13 +447,20 @@
 	                "order/full/receipt",data
 	            ).then(function (response) {
 	            	//该状态
-	            	this.fullData();
+	            	this.statusText = '展车在展';
+            		this.vinActive = '在展';
+            		this.btnText = '补余款';
+            		this.timeShow = false;
+            		this.btmBtn = true;
+            		this.process = !this.process;
+            		this.vanShow = !this.vanShow;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
-            vanLayer(){ //展车退订 
-            	this.vanMask = !this.vanMask;  
+            vanLayer(){ //展车退订
+            	this.vanMask = !this.vanMask;
             	var data = {
 	                token:this.Token,
 	                orderNum:this.orderNum
@@ -374,31 +470,35 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.vanInfo = response.body.data;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了"
 	            });
             },
             sendMes(){
-		        this.$http.post("message/send",{
-		          	token:sessionStorage.token,
-		          	content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
-		          	phone:''
-		        }).then(function (response) {
-		            var num=60;
-		            let timer = setInterval(()=>{
-		              	num--;
-		              	this.sendText = num+"s后重新获取";
-		              	if(!num){
-			                this.sendText = "发送到手机";
-			                clearInterval(timer);
-			                return false;
-		              	}
-		            },1000);
-		        }).catch(function (error) {
-		            console.log("请求失败了");
-		        });
+            	if(this.huang){
+			        this.$http.post("message/send",{
+			          	token:sessionStorage.token,
+			          	content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
+			          	phone:''
+			        }).then(function (response) {
+			            var num=60;
+			            let timer = setInterval(()=>{
+			              	num--;
+			              	this.huang = false;
+			              	this.sendText = num+"s";
+			              	if(!num){
+				                this.sendText = "发送到手机";
+				                clearInterval(timer);
+				                return false;
+			              	}
+			            },1000);
+			        }).catch(function (error) {
+			            this.showAlert = true;
+	           			this.alertText = error.body.msg||"请求失败了"
+			        });
+		        }
    			},
         },
         mounted(){
@@ -408,25 +508,45 @@
         computed: {
 	    //转换时间成小时,分
 	    	remaining: function (){
-	          	let hours = parseInt(this.countNum/60/60);
+	    		let days = parseInt(this.countNum/60/60/24);
+	           	let hours = parseInt((this.countNum-days*3600*24)/60/60);
 	          	let minutes = parseInt((this.countNum-hours*3600)/60);
+	          	if (hours < 10) {
+		              days = '0' + days;
+		        }
 	          	if (hours < 10) {
 	              	hours = '0' + hours;
 	          	}
 	          	if (minutes < 10) {
 	              	minutes = '0' + minutes;
 	          	}
-	          	return hours + '小时' + minutes + '分钟';
-	      	}        
+	          	if(days){
+		            return days + '天' + hours + '小时';
+		        }else{
+		            return hours + '小时' + minutes + '分钟';
+		        }
+	      	}
 	  	},
-	  	watch:{ 
+	  	watch:{
 		    $route(){
 		        this.showData();
 		    }
+		},
+		beforeRouteEnter(to, from, next){
+		    next(vm => {
+			    /*if(from.name=='display' || from.name == 'messageRebate' || from.name == 'cancel' || from.name == 'purchase'){
+			        sessionStorage.displayName = from.name
+			    }else{
+			    	sessionStorage.displayName = ''
+			    }*/
+			    if(from.name != 'paymentSubmit' && from.name != 'payment'){
+			        sessionStorage.orderDetailUrl = from.path;
+			    }
+		    });
 		}
 
 
-    }   
+    }
 </script>
 
 <style>
@@ -463,7 +583,7 @@
 	margin-top:0.533333rem;
 }
 .details-addres{
-	padding:0 0.4rem 0.533333rem 0.4rem;
+	padding:0.533rem 0.4rem;
 	background:#fff;
 	margin-bottom:0.4rem;
 	font-size:0.4rem;
@@ -610,7 +730,6 @@
 	padding:0.4rem 0;
 	font-size:0.453333rem;
 	color:#2c2c2c;
-	text-decoration:underline;
 	background:#fff;
 }
 .mask{
@@ -681,6 +800,9 @@
 	border:1px solid #d5aa5c;
 	margin:0.533333rem 0;
 }
+.ayment-info a{
+	display:block;
+}
 .ayment-info p {
     color: #2c2c2c;
     font-size: 0.4rem;
@@ -706,13 +828,17 @@
     line-height: 1.17333rem;
     text-align: center;
 }
+
 .send-to p.send-phone ,.ayment-info p.send-phone{
 	font-size:0.453333rem;
 	color:#fff;
 	text-align:center;
 	height:1.173333rem;
 	line-height:1.173333rem;
-	background:#d5aa5c;
+	background: #dbdbdb;
+}
+.ayment-info p.send-phone.huang{
+  background:#d5aa5c;
 }
 /*退订展车*/
 .website{
@@ -745,6 +871,7 @@
 }
 .replen i{
 	float:right;
+	position:static;
 }
 /*待收货弹框*/
 .mask-receipt{
@@ -767,14 +894,14 @@
 }
 .receipt-tit{
 	width:5.026667rem;
-	height:2.053333rem;
+	min-height:1.6rem;
 	border-bottom:1px solid #2c2c2c;
 	margin:0.533333rem auto;
 	text-align:center;
 }
 .receipt-tit b{
 	display:block;
-	font-size:0.453333rem;
+	font-size:0.4rem;
 	color:#2c2c2c;
 }
 .receipt-tit span{
@@ -797,14 +924,25 @@
 }
 .options b{
 	display:block;
-	
+
 }
 .receipt-btn{
 	font-size:0.453333rem;
 	color:#fff;
 	text-align:center;
 	line-height:1.173333rem;
+
+}
+.receipt-btn span{
+	display:inline-block;
+	width:50%;
+	height:1.173333rem;
 	background:#d6ab55;
+	cursor:pointer;
+}
+.receipt-btn span.receipt-close{
+	background:#f5f5f5;
+	color:#000;
 }
 
 /*退订弹框*/

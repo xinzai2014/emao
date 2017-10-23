@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_page1">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>返利资金
@@ -8,7 +8,7 @@
 		<section class="rebate-wrap">
 			<div class="rebate-ct">
 				<div class="rebate-tp">
-					<span>可用资金（元）</span>
+					<span>可用金额（元）</span>
 					<b>{{amount}}</b>
 				</div>
 				<p class="bg-ee"></p>
@@ -20,22 +20,22 @@
 					<div class="rebate-wrap" v-show="rebate">
 						<div class="rebate-item" v-for="(item,index) in rebate">
 							<div class="category">
-								<b>{{item.amount}}</b>{{item.note}}
+								<b>{{item.amount}}<em>元</em></b>{{item.note}}
 							</div>
 							<div class="category-info">
 								<div class="category-time">
 									<p class="detailed-tit">{{item.updated_at}}</p>
 									<div class="detailed active" v-if="item.detail.length">
-										<p class="detailed-p" @click="show(index)" v-show="index == i">
+										<p class="detailed-p" @click="show(item)" v-show="item.active">
 											<a href="javascript:;">收起</a>
 											<i class='yellow-bt active'></i>
 										</p>
-										<p class="detailed-p" @click="show(index)" v-show="index !== i">
-											<a href="javascript:;">展开详情</a>
+										<p class="detailed-p" @click="show(item)" v-show="!item.active">
+											<a href="javascript:;">展开详细</a>
 											<i class='yellow-bt'></i>
 										</p>
-										<div class="detailed-info" v-show="index == i" v-for="(val,key) in item.detail">
-											<p><span>{{val.des}}</span>{{val.title}}</p>
+										<div class="detailed-info" v-show="item.active" v-for="(val,key) in item.detail">
+											<p><span><em v-for="(v,k) in val.des">{{v}}</em></span>{{val.title}}</p>
 										</div>
 									</div>
 									<div class="detailed active" v-else>
@@ -64,8 +64,6 @@
                 //初始数据结构
                 rebate:[],
                 amount:'', //可用资金
-                showAll:false, //展开收起
-                i:-1,
                 nodata:false 
             }
         },
@@ -74,13 +72,11 @@
             resetIndex(){
                 this.$router.go(-1);
             },
-		    show(index) {
-			    if(this.showAll == false){　　
-			        this.i = index;
-			        this.showAll = true
+		    show(item) {
+			    if(!item.active){　　
+			        item.active = !item.active
 			    }else{
-			        this.i = -1;
-			        this.showAll = false
+			        item.active = !item.active
 			    }	
 		    }
             
@@ -98,9 +94,33 @@
                 method:"GET",
                 params:data
             }).then(function (response) {
-            	console.log(response)
-                this.rebate = response.body.data.rebate_history;
-                this.amount = response.body.data.rebate;
+            	var num = response.body.data.rebate_history;	
+				if(response.body.data.rebate.length == 7){
+				    var str="";
+			        var tmp1 = response.body.data.rebate.substring(0,1);
+			        var end1 = response.body.data.rebate.substring(1)
+			        str+=tmp1+','+end1;
+				    response.body.data.rebate = str
+				}
+                this.amount = response.body.data.rebate||'0.00';
+                for(var i =0;i<num.length;i++){
+                	num[i].updated_at = num[i].updated_at.substring(5);
+                	num[i].active = false;
+                	if(num[i].amount > 0){
+                		if(num[i].amount.length == 7){
+						    var newstr="";
+					        var tmp = num[i].amount.substring(0,1);
+					        var end = num[i].amount.substring(1)
+					        newstr+=tmp+','+end;
+						    num[i].amount = newstr
+                		}
+                		num[i].amount = '+'+num[i].amount;
+                	}
+                	for(var k =0;k<num[i].detail.length;k++){
+                		num[i].detail[k].des=num[i].detail[k].des.split(',');
+                	}
+                }
+                this.rebate = num;
                 if(this.rebate.length > 0){
                 	this.nodata = true
                 }else{
@@ -116,11 +136,13 @@
 
 <style>
 /*返利资金*/
-body,html{
+.rating_page1{
 	background:#fff;
+	height:100%;
 }
 .rebate-wrap{
 	margin-top:-0.026667rem;
+	background:#fff;
 }
 .rebate-tp{
 	background:#27282f;
@@ -175,6 +197,10 @@ body,html{
 	float:right;
 	font-size:0.533333rem;
 }
+.category b em{
+	font-size:0.32rem;
+	margin-left:0.04rem;
+}
 .category-time{
 	position:relative;
 	padding-top:0.4rem;
@@ -223,6 +249,11 @@ body,html{
 .detailed-info span{
 	float:right;
 	color:#999;
+	max-width:8.0rem;
+}
+.detailed-info span em{
+	display:block;
+	line-height:0.6rem;
 }
 .active .detailed-info{
 	display:block;

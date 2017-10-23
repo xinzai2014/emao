@@ -7,8 +7,8 @@
         <!--已售车申报列表-->
         <section v-if="declareList.length">
             <div class="sales-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-                <div class="sales-item" v-for="(item,index) in declareList">
-                    <h3>{{item.serie_name}} {{item.auto_name}}</h3>
+                <div class="sales-item" v-for="(item,index) in declareList" @click="goDetail(item.id)">
+                    <h3>{{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                     <p class="sales-number">VIN：{{item.vin_num}}</p>
                     <p class="sales-time">{{item.created_at}}售出</p>
@@ -25,24 +25,29 @@
 
         <section class="no-auto server-no-response" v-if=showNoDataVal>
             <img src="../../assets/no-vehicles-sold-news.png" alt="">
-            <p>暂无已售申报车辆信息</p>
+            <p>暂无已售车辆信息</p>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 <script>
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         name:'soldCar',
         data(){
         return{
-            declareList:[],
-            touchend:false,
-            perPage:'10',
-            currentPage:'1',
-            lastPage:'0',
-            perPage:'10',
-            showLoading: true,
-            preventRepeatReuqest:false,
-            showNoDataVal:false
+            declareList:[],                 //已售车量信息
+            touchend:false,                 //是否是加载到底部
+            perPage:'10',                   //每页10条数据
+            currentPage:'1',                //当前页
+            lastPage:'0',                   //最后一页
+            showLoading: true,              //是否显示加载
+            preventRepeatReuqest:false,     //是否阻止重复请求
+            showNoDataVal:false,            //是否显示没有数据
+            showAlert:false,                //是否显示提示弹窗
+            alertText:null                  //错误内容提示
         }
     },
     methods:{
@@ -50,6 +55,22 @@
         resetIndex(){
             this.$router.push({name:'declare'});
         },
+
+        //组件方法
+        goDetail(id){
+            //this.$router.push('/soldCarDetail/'+ id);//已售车申报资料详情页跳转
+            //this.$router.push('/soldCarDetail/'+ id);
+            //this.$router.push({path:'/soldCarDetail/'+ id });
+            //this.$router.push({path:~/soldCarDetail/$(id)~})
+
+            //router.push({ path: '/xxxxxx/' + id })
+
+            //this.$router.push({ name: 'soldCarDetail', params: { id: id }})
+
+            this.$router.push('/soldCarDetail/'+ id);
+        },
+
+        //隐藏加载状态
         hideLoading(){
             this.showLoading = false;
         },
@@ -70,13 +91,14 @@
             this.currentPage = parseInt(this.currentPage) + 1;
             this.getSoldCarData();
         },
+        //获得已售车辆信息
         getSoldCarData(){
             var dataToken = sessionStorage.token;
             var data = {
                 token:dataToken,
                 perPage:this.perPage,
                 page:this.currentPage
-            }
+            };
             this.$http({
                 url:"order/sale/done",
                 method:"GET",
@@ -102,6 +124,8 @@
             }).catch(function(error){
                 console.log("请求失败");
                 console.log(error);
+                this.showAlert = true;
+                this.alertText = error.body.msg;
             })
         }
 
@@ -116,6 +140,9 @@
         $route(){
             this.getSoldCarData();
         }
+    },
+    components:{
+        alertTip
     }
 
     }
@@ -190,7 +217,7 @@
         line-height: 2rem;
     }
     /*.no-auto{padding-top:3.867rem;background-color:#fff;height:100%;}*/
-    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0; background-color: #fff;text-align: center;font-size: 0.453333rem;left: 0;height: 100%;}
+    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0; text-align: center;font-size: 0.453333rem;left: 0;}
     .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
     .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>

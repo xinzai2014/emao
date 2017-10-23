@@ -78,14 +78,13 @@
 
             <div class="close-bt-out">
                 <button class="close-bt" @click="submitData" type="submit">提交</button>
-                <p class="error-tips">{{errorTips}}</p>
             </div>
         </section>
 
         <div class="mask" v-if="showPopup">
             <div class="cancel-car">
                 <p class="prompt-tit">申报已成功！可在已售车辆中查看。</p>
-                <p class="prompt-btn"><span class="confirm" @click="closePopup">确认</span></p>
+                <p class="prompt-btn"><span class="confirm" @click="closePopup">知道了</span></p>
             </div>
         </div>
 
@@ -101,65 +100,70 @@
         name:"editDeclare",
         data(){
         return {
-            orderId:null,
-            dealerNameVal:'',
-            dealerPhoneVal:'',
-            dealerIDNumberVal:'',
-            dealerEmailVal:'',
-            goodsStockId:'',
-            vinNum:'',
-            errorTips:'',
-            name:'',
-            mobile:'',
-            IDNumber:'',
-            email:'',
-            showAlert:false,
-            alertText:null,
-            showPopup:false,
+            orderId:null, //
+            dealerNameVal:'',       //客户姓名
+            dealerPhoneVal:'',      //客户电话
+            dealerIDNumberVal:'',   //身份证号
+            dealerEmailVal:'',      //电子邮箱
+            goodsStockId:'',        //
+            vinNum:'',              //
+            name:'',                //姓名
+            mobile:'',              //电话
+            IDNumber:'',            //身份证号
+            email:'',               //邮箱
+            showAlert:false,        //显示错误提示与否
+            alertText:null,         //错误提示内容
+            showPopup:false,        //显示弹窗与否
             declareList:[],
-            orderInfo : {},
+            orderInfo : {},         //订单信息
 
+            //上传蹄片插件
+            //上传身份证正面照片
             uploadData1:{
                 url:"https://tcmapi.emao.com/upload",
-                count:1,
-                flag:"frontOfIDCard",
-                image:"static/sample1.jpg"
+                count:1,                        //传几张照片
+                flag:"frontOfIDCard",           //粘片标志
+                image:"static/sample7.jpg"      //照片路径
             },
+            //上传身份证背面照片
             uploadData2:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"backOfIDCard",
-                image:"static/sample2.jpg"
+                image:"static/sample8.jpg"
             },
+            //上传购车发票
             uploadData3:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"invoiceForCarPurchase",
-                image:"static/sample3.jpg"
+                image:"static/sample16.jpg"
             },
+            //上传行驶证照片
             uploadData4:{
                 url:"https://tcmapi.emao.com/upload",
                 count:1,
                 flag:"drivingLicense",
-                image:"static/sample4.jpg"
+                image:"static/sample15.jpg"
             },
 
 
-            dataURL:{},
+            dataURL:{},             //上传数据
 
+            //表单数据
             formData:{
-                token:sessionStorage.token,
-                order_num:'',
-                goods_stock_id:'',
-                name:'',
-                phone:'',
-                idcard:'',
-                email:'',
+                token:sessionStorage.token,        //token
+                order_num:'',                      //订单号
+                goods_stock_id:'',                 //商品id
+                name:'',                           //姓名字段
+                phone:'',                          //电话字段
+                idcard:'',                         //身份证号字段
+                email:'',                          //邮箱字段
 
-                idcard_img_front:'',
-                idcard_img_reverse:'',
-                driving_license_img:'',
-                invoice_img:''
+                idcard_img_front:'',               //身份证正面字段
+                idcard_img_reverse:'',             //身份证反面字段
+                driving_license_img:'',            //购车发票字段
+                invoice_img:''                     //行驶证照片字段
             },
 
         }
@@ -177,7 +181,12 @@
                     order_num:this.orderId
                 }
             }).then(function(response){
+                var arr = response.body.data.orderInfo.name.split(' ');
+                arr.shift();//删除数组最后一个元素
+                response.body.data.orderInfo.name = arr.join(' ');//在拼接成字符串
+                
                 this.orderInfo = response.body.data.orderInfo;
+
                 this.vinNum = this.orderInfo.vinNumber;
             })
         },
@@ -194,28 +203,30 @@
             }
         },
 
+        //关闭弹窗
         closePopup(){
             this.showPopup = false;
             this.$router.push('/declare');//跳转到售车申报列表页
         },
 
+        //提交表单数据
         submitData(){
-
+            //判断姓名，手机号，身份证，邮箱，身份证正反面，购车发票，行驶证照片 是否为空
             if (!this.dealerNameVal) {
                 this.showAlert = true;
-                this.alertText = '请填写买车用户姓名';
+                this.alertText = '请填写姓名';
                 return ;
             }
 
             if (!this.dealerPhoneVal) {
                 this.showAlert = true;
-                this.alertText = '请输入手机号';
+                this.alertText = '请填写正确的手机号';
                 return ;
             }
 
             if (!this.dealerIDNumberVal) {
                 this.showAlert = true;
-                this.alertText = '请输入有效的身份证号码';
+                this.alertText = '请填写有效的身份证号码';
                 return ;
             }
 
@@ -249,29 +260,36 @@
                 return ;
             }
 
-
-            this.formData.order_num = this.vinNum;
-            this.formData.goods_stock_id = this.goodsStockId;
-            this.formData.name = this.dealerNameVal;
-            this.formData.phone = this.dealerPhoneVal;
-            this.formData.idcard = this.dealerIDNumberVal;
-            this.formData.email = this.dealerEmailVal;
-
-
-            this.formData.idcard_img_front = this.getFileURL('frontOfIDCard');
-            this.formData.idcard_img_reverse = this.getFileURL('backOfIDCard');
-            this.formData.driving_license_img = this.getFileURL('invoiceForCarPurchase');
-            this.formData.invoice_img = this.getFileURL('drivingLicense');
+            var This = this;
+            //判断姓名，手机号，身份证，邮箱字段填写是否报错
+            this.$validator.validateAll().then(function (result) {
+                if (result) {
+                    This.formData.order_num = This.vinNum;
+                    This.formData.goods_stock_id = This.goodsStockId;
+                    This.formData.name = This.dealerNameVal;
+                    This.formData.phone = This.dealerPhoneVal;
+                    This.formData.idcard = This.dealerIDNumberVal;
+                    This.formData.email = This.dealerEmailVal;
 
 
-            this.$http.post("order/sale/info",this.formData).then(function(response){
-                //console.log(response);
-                this.showPopup = true;
-            }).catch(function(error){
-                console.log("请求失败");
-                console.log(error);
-                this.errorTips = error.body.msg;
-            })
+                    This.formData.idcard_img_front = This.getFileURL('frontOfIDCard');
+                    This.formData.idcard_img_reverse = This.getFileURL('backOfIDCard');
+                    This.formData.driving_license_img = This.getFileURL('invoiceForCarPurchase');
+                    This.formData.invoice_img = This.getFileURL('drivingLicense');
+
+
+                    This.$http.post("order/sale/info",This.formData).then(function(response){
+                        This.showPopup = true;
+                    }).catch(function(error){
+                        This.showAlert = true;
+                        This.alertText = error.body.msg;
+                    })
+                }else{
+                    return;
+                }
+            });
+
+
         }
 
 
@@ -335,7 +353,8 @@
                 }
             },
             validate: function (value, args) {
-                return /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value)
+//                return /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(value)
+                return /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/.test(value)
             }
         };
         this.$validator.extend('IDNumber', isIDNumber);
@@ -358,7 +377,8 @@
 <style>
     /*售车申报*/
     .error-tips{ position: absolute;  bottom: -1.067rem;  color: red;  text-align: center;  margin: 0 auto;}
-    .close-bt-out{position:relative;}
+    .close-bt-out{height: 1.705rem;padding-top: .535rem;}
+    .close-bt-out .close-bt{width: 5.333333rem;height: 1.17rem;line-height: 1.17rem;text-align: center;margin: 0 auto .535rem;font-size: 0.453333rem;color: #fff;background: #d5aa5c;border-radius: 0.586667rem;border: none;display: block;cursor: pointer;}
     .sales-item{
         padding:0.533333rem 0.4rem;
         overflow:hidden;

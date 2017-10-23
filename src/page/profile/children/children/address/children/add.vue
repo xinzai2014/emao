@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<i class="white-lt brand-left-cion" @click="resetIndex"></i>
+			<i class="white-lt" @click="resetIndex"></i>
 	        <strong class="brand-list-title">新增收货地址</strong>
 		</header>
 
@@ -92,25 +92,42 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             		"dealer/createAddress?token="+token,
             		data
             	).then(function (response) {
-            		alert('添加成功！');
-		        	this.$router.push({ name: 'address'});
-		        	sessionStorage.addressId=response.body.data.id;
-	            	sessionStorage.addresstxt=data.address;
-	            	sessionStorage.addressPhone=data.phone;
-	            	sessionStorage.addressName=data.name;
+            		this.showAlert = true;
+          			this.alertText = "添加成功！";
+
+	            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值 如果有异步操作放到action里面
+				        {
+				          id:response.body.data.id,
+				          address:data.address,
+				          phone:data.phone,
+				          name:data.name
+				        }
+				    );
+				    if(this.$store.getters.getAddress!=""){
+				    	var addressFlag=this.$store.getters.getAddress;
+				    	this.$router.push({ path: "/" + addressFlag.tag + "/" + addressFlag.serieId });
+				    }else{
+				    	this.$router.push({ path: '/address'});
+				    }
+
 		        }).catch(function (error) {
-		            console.log("请求失败了");		            
+		            this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了";
 		        });
             }
         },
         mounted(){
         //组件初始完成需要做什么
 
-        },/*
-        beforeRouteEnter (to, from, next) {
-	    	next();
-	    }*/
-    }   
+        },
+        beforeRouteEnter(to, from, next){
+        	next(vm => {
+			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
+
+	        	}
+			  });
+        }
+    }
 </script>
 
 <style>
@@ -118,10 +135,10 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 .address-edit{}
 .address-edit-out{padding:0 .4rem 0 .4rem;background-color:#fff;}
 .address-edit-in{}
-.address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;position: relative;}
+.address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;position: relative;line-height:1.333rem;}
 .address-edit-in li:last-child{border-bottom:none;}
-.address-edit-in li span{display:block;float:left;width:2rem;height:1.333rem;line-height:1.333rem;}
-.address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;line-height:1.333rem;border:none;}
+.address-edit-in li span{display:block;float:left;width:2.3rem;height:1.333rem;}
+.address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;border:none;}
 .address-save{display:block;margin:1.0667rem auto 0;padding:.36rem 1rem .36rem 1rem;font-size:.4533rem;color:#fff;text-align:center;border:none;border-radius:.8rem;background-color:#d5aa5c;}
 
 </style>

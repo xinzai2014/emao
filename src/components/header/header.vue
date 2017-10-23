@@ -27,7 +27,12 @@ export default {
 	  			type:"GET"
 	  		}).then(function(response){
 	  			console.log(response);
-	  			this.myMessage = response.body.data.length;
+	  			var myMessage = response.body.data;
+	  			var that = this;
+	  			myMessage.forEach(function(e,index){
+	  				var num = e.num?parseInt(e.num):0;
+	  				that.myMessage += num;
+	  			})
 	  		},function(){
 
 	  		})

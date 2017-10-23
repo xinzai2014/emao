@@ -3,88 +3,96 @@
         <section>
             <!--公司认证-->
             <section class="company">
-                <router-link to="/message">
                     <div class="news">
+                        <router-link to="/message">
                         <i class="news-icon"></i>
-                        <span class="process-in">{{messageNum}}</span>
+                        <span class="process-in" v-if="messageNum">{{messageNum}}</span>
+                        </router-link>
                     </div>
-                </router-link>
+
                 <div class="company-ct">
-                    <router-link to="/profile/info">
-                        <a class="white-rt" href="javascript:;"></a>
-                        <h3>{{name}}<i class="company-icon" v-show="auth_status=='已完成认证'"></i></h3>
+                    <div>
+                      <router-link to="/profile/info">
+                        <span class="white-rt" ></span>
+                        <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
                         <p>
-                            认证级别
-                            <i v-for="n in level"></i>
+                          星级
+                          <i v-for="n in level"></i>
+                          <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
-                    </router-link>                   
+                      </router-link>
+                    </div>
                     <div class="company-bt">
-                        <router-link to="/rebate">
-                            <div class="item">
-                                <b>{{rebate}}</b>
-                                <span>返利</span>
-                            </div>
-                        </router-link>
-                        <router-link to="/marketing">
-                            <div class="item">
-                                <b>{{capital}}</b>
-                                <span>营销支持费</span>
-                            </div>
-                        </router-link>
+                          <div class="item">
+                            <router-link to="/rebate">
+                              <b>{{rebate}}</b>
+                              <span>返利</span>
+                            </router-link>
+                          </div>
+                      <div class="item">
+                          <router-link to="/marketing">
+                            <b>{{capital}}</b>
+                            <span>营销支持费</span>
+                          </router-link>
+                      </div>
+                      <div class="item">
                         <router-link to="/coupon">
-                            <div class="item">
-                                <b>{{coupon_num}}</b>
-                                <span>优惠券</span>
-                            </div>
+                           <b>{{coupon_num}}</b>
+                           <span>优惠券</span>
                         </router-link>
+                      </div>
                     </div>
                 </div>
             </section>
             <!--我的订单-->
             <section class="order">
-                <router-link to="/order">
-                    <div class="tit"><h3><a href="javascript:;">查看全部<i class="yellow-rt"></i></a>我的订单</h3></div>
-                </router-link>
-                 <router-link to="/obliga">
-                    <div class="item">
-                        <i class="payment-icon"><span class="process-in">{{payment_num}}</span></i>
-                        <span>待付款</span>
+                    <div class="tit">
+                      <router-link to="/order">
+                        <h3><span href="javascript:;">全部订单<i class="yellow-rt"></i></span>全款购车</h3>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/sending">
                     <div class="item">
-                        <i class="send-icon"><span class="process-in">{{delivered_num}}</span></i>
+                       <router-link to="/obliga">
+                              <i class="payment-icon"><span class="process-in" v-if="payment_num!='0'">{{payment_num}}</span></i>
+                              <span>待付款</span>
+
+                      </router-link>
+                    </div>
+                    <div class="item">
+                      <router-link to="/sending">
+                        <i class="send-icon"><span class="process-in" v-if="delivered_num!='0'">{{delivered_num}}</span></i>
                         <span>待发货</span>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/receiving">
                     <div class="item">
-                        <i class="receipt-icon"><span class="process-in">{{received_num}}</span></i>
+                      <router-link to="/receiving">
+                        <i class="receipt-icon"><span class="process-in" v-if="received_num!='0'">{{received_num}}</span></i>
                         <span>待收货</span>
+                      </router-link>
                     </div>
-                </router-link>
+
             </section>
-            <section class="order mar-pd" v-show="is_transtor=='1'">
-                <router-link to="/display">
+            <section class="order mar-pd">
                     <div class="item">
+                      <router-link to="/display">
                         <i class="show-icon"></i>
                         <span>我的展车</span>
+                      </router-link>
                     </div>
-                </router-link>
-                <router-link to="/declare">
                 <div class="item">
+                  <router-link to="/declare">
                     <i class="car-icon"></i>
                     <span>售车申报</span>
+                  </router-link>
                 </div>
-                </router-link>
-                <router-link to="/storage">
-                <div class="item">
+                <div class="item" v-show="is_transtor=='1'">
+                  <router-link to="/storage" >
                     <i class="transfer-icon"></i>
                     <span>中转库管理</span>
+                  </router-link>
                 </div>
-                </router-link>
+
             </section>
-            <p class="footer-bt"></p>
         </section>
 
         <!--首页底部留白-->
@@ -107,6 +115,8 @@
             </ul>
         </footer>
 
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
@@ -114,6 +124,7 @@
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -128,11 +139,34 @@ export default {
       payment_num:'',    //待付款
       delivered_num:'',  //待发货
       received_num:'',   //待收货
-      is_transtor:''    //是否是中转库管理员
+      is_transtor:'',  //是否是中转库管理员
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
+      data_status:''
     }
   },
+  components:{
+        alertTip
+      },
   methods:{
     //组件方法
+    priceG(price){
+        price=Number(price).toLocaleString();
+          var arr=price.split('.');
+          if(arr[1]){
+            if(arr[1].length==2){
+              arr[1]=arr[1];
+            }else if(arr[1].length==1){
+              arr[1]=arr[1]+'0';
+            }else{
+              arr[1]=arr[1].substring(0,2);
+            }
+          }else{
+            arr[1]='00';
+          }
+          price=arr.join('.');
+          return price;
+    }
   },
   mounted(){
     //组件初始完成需要做什么
@@ -140,6 +174,32 @@ export default {
     var data = {
         token:dataToken
     }
+    //资料是否齐全
+    this.$http({
+        url:"dealerInfo/dataStatus",
+        method:"GET",
+        params:data
+     }).then(function (response) {
+        if(response.body.data.data_status=="1"){
+            // this.data_status='信息已完善';
+            this.data_status='';
+        }
+        if(response.body.data.data_status=="2"){
+            this.data_status='信息待完善';
+        }
+        if(response.body.data.data_status=="3"){
+            // this.data_status='信息审核中';
+            this.data_status='';
+        }
+        if(response.body.data.data_status=="4"){
+            // this.data_status='信息驳回';
+            this.data_status='信息未过审';
+        }
+
+      }).catch(function (error) {
+        //this.showAlert = true;
+        //this.alertText = error.body.msg||"请求失败了";
+      });
     //用户信息
     this.$http({
         url:"dealerInfo/index",
@@ -149,15 +209,16 @@ export default {
         this.name = response.body.data.name;     //公司名称
         this.auth_status = response.body.data.auth_status;   //认证状态
         this.level = response.body.data.level;    //等级
-        this.rebate = response.body.data.rebate;    //返利金额
-        this.capital = response.body.data.capital;    //营销支持费
+        this.rebate = this.priceG(response.body.data.rebate);    //返利金额
+        this.capital = this.priceG(response.body.data.capital);    //营销支持费
         this.coupon_num = response.body.data.coupon_num;   //优惠券
         this.payment_num = response.body.data.payment_num;   //待付款
         this.delivered_num = response.body.data.delivered_num;   //待发货
         this.received_num = response.body.data.received_num;    //待收货
         this.is_transtor = response.body.data.is_transtor;   //是否是中转库管理员
       }).catch(function (error) {
-        console.log("请求失败了");
+        this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
     //消息数
       this.$http({
@@ -165,15 +226,27 @@ export default {
         method:"GET",
         params:data
      }).then(function (response) {
-        this.messageNum = response.body.data.length;    
+        var n=0;
+        for(var i in response.body.data){
+            n+=Number(response.body.data[i].num);
+        }
+        this.messageNum = n;
       }).catch(function (error) {
-        console.log("请求失败了");
+        this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
   }
 }
 </script>
 
 <style>
+.auth_status{
+    padding:0.05rem 0.13rem ;
+    background: #fe2c2d;
+    color:white;
+    border-radius:0.1rem;
+    font-size: 0.32rem;
+}
 .router-slid-enter-active, .router-slid-leave-active {
     transition: all .4s;
 }
@@ -185,7 +258,7 @@ export default {
 .company{
     background:url(../../assets/me-bg.jpg) no-repeat;
     background-size:contain;
-    height:6.893333rem;
+    min-height:6.893333rem;
     width:10.0rem;
 }
 .news{
@@ -256,7 +329,7 @@ export default {
     vertical-align:bottom;
 }
 .company-ct p i:first-child{
-    margin-left:0.32rem;
+    margin-left:0.2rem;
 }
 .company-bt .item{
     width:3.066667rem;
@@ -299,12 +372,12 @@ export default {
     padding:0 0.4rem;
     margin-top:0.466667rem;
 }
-.order .tit h3 a{
+.order .tit h3 span{
     float:right;
     font-size:0.373333rem;
     color:#f6b32e;
 }
-.order .tit h3 a i{
+.order .tit h3 span i{
     margin-left:0.066667rem;
     vertical-align:middle;
 }
@@ -352,15 +425,15 @@ export default {
 }
 .car-icon{
     background:url(../../assets/car-icon.png) no-repeat;
-    background-size:contain;
-    width:0.64rem;
-    height:0.413333rem;
+    background-size: 100%;
+    width: 0.506667rem;
+    height: 0.56rem;
 }
 .transfer-icon{
-    background:url(../../assets/transfer-icon.png) no-repeat;
-    background-size:contain;
-    width:0.56rem;
-    height:0.48rem;
+    background:url(../../assets/transfer-icon.png) center center no-repeat;
+    background-size:100%;
+    width: 0.506667rem;
+    height: 0.56rem;
 }
 .order .item .process-in{
     color:#fff;
@@ -387,4 +460,9 @@ export default {
 .index-my.active i{background:url("../../assets/my-active-cion.png") no-repeat;background-size:contain;}
 .index-my.active{color:#d5aa5c;}
 
+  .company a,.order a{
+    display:block;
+    width:100%;
+    height:100%;
+  }
 </style>

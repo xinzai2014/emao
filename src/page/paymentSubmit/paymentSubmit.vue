@@ -5,34 +5,36 @@
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>提交汇款凭证
         </header>
         <section class="voucher-ct">
-            <div v-if="!showRemit">
-              <div class="voucher-title">请先添加汇款账户</div>
-              <div class="voucher-item">
-                  <router-link to="/profile/info/remit">
-                    <p><i class="yellow-rt"></i>添加汇款账户：</p>
-                  </router-link>
+            <div @click="subData">
+              <div v-if="!showRemit">
+                <div class="voucher-title">请先添加汇款账户</div>
+                <div class="voucher-item">
+                    <router-link to="/profile/info/remit">
+                      <p><i class="yellow-rt"></i>添加汇款账户：</p>
+                    </router-link>
+                </div>
+              </div>
+              <router-link to="/profile/info/remit" v-else>
+                <div class="voucher-item item-bor" v-if="type == 1">
+                    <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                    <p><span>{{editData.pay_company}}</span>汇款单位：</p>
+                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.account}}</span>汇款账户：</p>
+                </div>
+                <div class="voucher-item item-bor" v-else>
+                    <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
+                    <p><span>{{editData.name}}</span>姓名：</p>
+                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.account}}</span>汇款账户：</p>
+                </div>
+              </router-link>
+              <div class="voucher-item voucher-gray">
+                  <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
+                  <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
               </div>
             </div>
-            <router-link to="/profile/info/remit" v-else>  
-              <div class="voucher-item item-bor" v-if="type == 1">
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
-                  <p><span>{{editData.pay_company}}<i class="white-rt"></i></span>汇款单位：</p>
-                  <p><span>{{editData.account}}</span>汇款账户：</p>
-              </div>
-              <div class="voucher-item item-bor" v-else>
-                  <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
-                  <p><span>{{editData.name}}</span>姓名：</p>
-                  <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
-                  <p><span>{{editData.account}}</span>汇款账户：</p>
-              </div>
-            </router-link>
-            <div class="voucher-item voucher-gray">
-                <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
-                <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
-            </div>
-
             <div class="voucher-item">
-                <p>汇款回执单</p>
+                <p>汇款底单</p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
             </div>
             <button class="close-bt" @click="submit">提交</button>
@@ -61,14 +63,15 @@ export default {
       uploadData1:{
           url:"https://tcmapi.emao.com/upload",
           count:2,
-          flag:"payment"
+          flag:"payment",
+          image:'static/payment.jpg'
       },
       dataURL:{},//图片地址
       submitFlag:true,
       price:'',
       remark:'',
       showAlert: false, //弹出框
-      alertText: null, //弹出信息
+      alertText: '', //弹出信息
       success:''
     }
   },
@@ -76,15 +79,32 @@ export default {
     uploader,
     alertTip
   },
-  created:function(){
+  mounted:function(){
       //初始化
       this.mountedData();
       //this.acountEdit();
+      this.returnDataF();
+      var payData = this.$store.getters.getPaymentData;
+      if(!!payData){
+        this.price = payData.paymentPrice;
+        this.remark = payData.remark;
+      }
+      var paymentURLTag = this.$store.getters.getPaymentURL["tag"];
+      if( paymentURLTag == 'displayDetail' || paymentURLTag == 'display'){
+        this.submitFlag = false;
+      }
   },
   methods:{
       //组件方法
       resetIndex(){
-          this.$router.go(-1);
+          var paymentURL = this.$store.getters.getPaymentURL;
+          this.$router.push({path:"/" + paymentURL["tag"] + "/" + paymentURL["id"] });
+          this.$store.dispatch("PAYMENT_DATA", // 通过store传值
+            {
+              paymentPrice:"",
+              remark:""
+            }
+          );
       },
       getUpload(data,flag){
           this.dataURL[flag] = data;
@@ -92,7 +112,7 @@ export default {
       acountEdit(){ //保存并使用公司
         var data = {
             token:sessionStorage.getItem('token'),
-            id:this.$route.query.id||151,
+            id:this.$route.query.id,
         }
        this.$http({
             url:"dealerBank/detailById",
@@ -100,10 +120,12 @@ export default {
             params:data
         }).then(function (response) {
             this.editData = response.body.data;
+            sessionStorage.paymentId=this.editData.id;
             this.type = response.body.data.account_type;
             this.showType();
         }).catch(function (error) {
-           alert(error.body.msg);
+           //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了";
         });
       },
       showType(){
@@ -124,23 +146,24 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
-          console.log(response);
+          //console.log(response);
             this.infoData = response.body.data;
             this.dataLength();
-            this.returnDataF();
         }).catch(function (error) {
-            alert(error.body.msg);
+            //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了";
         });
-     
+
       },
       dataLength(){
         //是否添加账户，默认账户
-        if(this.infoData.length > 0){ 
+        if(this.infoData.length > 0){
           this.showRemit = true;
           if(this.$route.query.id){
             this.acountEdit();
           }else{
             this.editData=this.infoData[0];
+            sessionStorage.paymentId=this.infoData[0].id;
             this.type = this.editData.account_type;
             this.showType();
           }
@@ -150,7 +173,7 @@ export default {
       },
       returnDataF(){
         //订单页数据
-        this.returnData=this.$route.query;
+        this.returnData=this.$store.getters.getReturnData;
       },
       submit(){
          //提交
@@ -166,7 +189,7 @@ export default {
         }
         if(!this.dataURL.payment){
           this.showAlert = true;
-          this.alertText = '请上传汇款凭证！';
+          this.alertText = '请上传汇款底单！';
           return;
         }else{
           var length=this.dataURL.payment.length;
@@ -185,24 +208,48 @@ export default {
                 data['payimg']=this.dataURL.payment[i];
             }else{
               data['payimg'+(i+1)]=this.dataURL.payment[i];
-            }   
+            }
         }
         if(this.submitFlag){
           this.$http.post("order/full/payment",data)
             .then(function (response) {
-                this.success=true;
+                console.log(data);
+                //this.success=true;
+                this.showAlert = true;
+                this.alertText = "提交成功,请等待审核";
+                var that=this;
+                setTimeout(function(){
+                  that.resetIndex();
+                },1000);
             }).catch(function (error) {
-                alert(error.body.msg);
+                //this.showAlert = true;
+               // this.alertText = error.body.msg||"请求失败了";
             });
           }else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
-                this.success=true;
+              console.log(data);
+                //this.success=true;
+                this.showAlert = true;
+                this.alertText = "提交成功,请等待审核";
+                var that=this;
+                setTimeout(function(){
+                  that.resetIndex();
+                },1000);
             }).catch(function (error) {
-                alert(error.body.msg);
+                //this.showAlert = true;
+          //this.alertText = error.body.msg||"请求失败了";
             });
-          }   
-      }
+          }
+      },
+     subData(){
+      this.$store.dispatch("PAYMENT_DATA", // 通过store传值
+        {
+          paymentPrice:this.price,
+          remark:this.remark
+        }
+      );
+    }
   },
   watch:{
     $route(){
@@ -210,16 +257,24 @@ export default {
     },
     success(){
       //this.$router.push({name:''});
-    }
+    },
   },
   beforeRouteEnter(to, from, next){
     next(vm => {
-      if(from.name=='orderDetail'){
-          vm.submitFlag=true;
-        }
-      if(from.name=='displayDetail'){
-          vm.submitFlag=false;
-      }
+//      if(from.name=='orderDetail'){
+//          sessionStorage.submitFlag=true;
+//          sessionStorage.nameId = true;
+//        }
+//      if(from.name=='displayDetail' || from.name=='display'){
+//          sessionStorage.submitFlag=false;
+//          sessionStorage.nameId = true;
+//      }
+//      if(from.name=='remit'){
+//          vm.price=sessionStorage.paymentPrice;
+//          vm.remark=sessionStorage.remark;
+//      }else{
+//          sessionStorage.goName = from.name
+//      }
     });
   }
 }
@@ -281,6 +336,7 @@ padding: 0.15rem 0;
   overflow:hidden;
   line-height:0.466667rem;
   border-bottom:1px solid #eee;
+  padding-right:0.3rem;
 }
 .voucher-item p span{
   float:right;
@@ -353,5 +409,8 @@ padding: 0.15rem 0;
 }
 .close-bt{
   cursor: pointer;
+}
+.white-rt{
+  position: absolute;
 }
 </style>

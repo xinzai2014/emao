@@ -1,15 +1,16 @@
 <template>
     <section class="index-search">
         <div class="index-search-in">
-            <p class="index-search-title">{{title}}</p>
+            <p class="index-search-title">急需要什么车型？告诉我</p>
             <div class="index-search-condition">
                 <div class="index-serach-type" @click="chooseCar">
-                    <label for="" :brandID=carMess.carId>{{carMess.carName}}</label>
+                    <label for="" :brandID=carMess.carId v-if="carMess">{{carMess.carName}}</label>
+                    <label v-else>选择车型</label>
                     <i class="white-rt"></i>
                 </div>
                 <div class="index-search-price">
                     <label for="">期望价格：</label>
-                    <input type="tel" v-model="carPrice">
+                    <input type="number" v-model="carPrice" >
                     <span>万元</span>
                 </div>
             </div>
@@ -18,18 +19,18 @@
         <section class="brand-list-popup" v-show="needCarDialog">
           <div class="brand-popup-in">
             <div class="brand-search-tips">
-              <p>服务顾问正在为你查找</br>找到后会及时和你联系</p>
-            </div> 
-            <div class="brand-popup-ok" @click="subDialog">好的</div>
+              <p>服务顾问正在为您查找</br>找到后会及时和您联系</p>
+            </div>
+            <div class="brand-popup-ok" @click="closeDialog">好的</div>
           </div>
       </section>
     </section>
 </template>
 
 <script>
+
 export default {
       name: 'search',
-      props:["carMess","title"],
       data () {
         return {
           carPrice:null,
@@ -38,41 +39,60 @@ export default {
       },
       methods:{
         chooseCar(){
-            this.$emit('getCar',true);
+            this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+              true
+            );
         },
         submitForm(){
-          if(!this.carMess.carId){
-            this.$emit('subAlert',"请选择一款车型");
+          console.log(this.carMess);
+          if(!this.carMess){
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:"请选择一款车型"
+              }
+            );
             return false;
           }
-          // if(!this.carPrice){
-          //   this.$emit('subAlert',"请输入期望价格");
-          //   return false;
-          // }
           this.$http.post(
                 "car/choose",
                  {
                   token:sessionStorage.token,
-                  brandId:this.carMess.brandId,
-                  serieId:this.carMess.serieId,
+                  brandId:this.carMess.globalBrandID,
+                  serieId:this.carMess.globalSerieID,
                   autoId:this.carMess.carId,
                   price:this.carPrice
                  }
             ).then(function (response) {
               this.subDialog();
             }).catch(function (error) {
-              console.log("请求失败了");
+
             });
         },
         subDialog(){
-          this.needCarDialog = !this.needCarDialog;
+          this.needCarDialog = true;
+        },
+        closeDialog(){
+          this.$store.dispatch("CAR_DATA", // 通过store传值
+            {
+              globalBrandID:"",
+              globalSerieID:"",
+              carId:"",
+              carName:"选择车型"
+            }
+          );
+          this.carPrice = "";
+          this.needCarDialog = false;
         }
       },
       mounted(){
-        
+
       },
-      watch:{
-      }
+      computed:{
+         carMess:function(){
+           return this.$store.getters.getCar; //通过getters获取
+         }
+      },
 }
 </script>
 <style>

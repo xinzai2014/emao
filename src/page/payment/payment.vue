@@ -12,17 +12,17 @@
               <p><span>{{editData.bank_info.account}}</span>汇款账户：</p>
           </div>
           <div class="voucher-item">
-              <p><span>{{editData.price}}</span>汇款金额：</p>
+              <p><span>{{editData.price}}元</span>汇款金额：</p>
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款回执单</p>
+              <p class="no-border">汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
-                      <img :src="editData.payimg">
+                      <img :src="editData.payimg" @click="picView(editData.payimg)">
                   </div>
-                  <div class="voucher-lt" v-if="editData.payimg2">
-                      <img :src="editData.payimg2">
+                  <div class="voucher-lt" v-if="editData.payimg2" >
+                      <img :src="editData.payimg2" @click="picView(editData.payimg2)">
                   </div>
               </div>
           </div>
@@ -35,41 +35,63 @@
               <p><span>{{editData.bank_info.account}}</span>汇款账户：</p>
           </div>
           <div class="voucher-item">
-              <p><span>{{editData.price}}</span>汇款金额：</p>
+              <p><span>{{editData.price}}元</span>汇款金额：</p>
               <p><span>{{editData.message}}</span>备注：</p>
           </div>
           <div class="voucher-item">
-              <p>汇款回执单<em>代付证明</em></p>
+              <p class="no-border">汇款底单</p>
               <div class="voucher-img">
                   <div class="voucher-lt">
-                      <img :src="editData.payimg">
+                      <img :src="img" v-for="img in imgs" @click="picView(img)">
                   </div>
-                   <div class="voucher-lt">
-                    <img :src="editData.bank_info.explan_path">
-                </div>
                   <div class="voucher-lt">
-                      <img :src="editData.payimg2" v-if="editData.payimg2">
+                      <img :src="editData.payimg2" v-if="editData.payimg2" @click="picView(editData.payimg2)">
                   </div>
                  
               </div>
+              <p class="no-border">代付证明</p>
+              <div class="voucher-img">
+                   <div class="voucher-lt">
+                    <img :src="editData.bank_info.explan_path" @click="picView(editData.bank_info.explan_path)">
+                </div>
+                 
+              </div>
+
+              
           </div>
       </section>
-        
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+      <pic-view v-show="showBigImg" @closeTip="showBigImg = false" :bigImg="bigImg"></pic-view>
+
     </div>
 </template>
 
 <script>
+import picView from '../../components/common/picView/picView'
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
       editData:{},
-      type:null
+      type:null,
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
+      imgs:[],
+      bigImg:'',
+      showBigImg:false
     }
-  },
+  },components:{
+        alertTip,
+        picView
+      },
   methods:{
     //组件方法
     resetIndex(){
         this.$router.go(-1);
+    },
+    picView(src){
+      this.bigImg=src;
+      this.showBigImg=true;
     },
     fillData(){
         var order_num=this.$route.params.id;
@@ -85,6 +107,7 @@ export default {
         })
         .then(function (response) {
             var editData=response.body.data;
+            this.imgs=[editData.payimg];
             var type = response.body.data.bank_info.account_type;
             this.type=type;
             if(this.type == 1){
@@ -94,7 +117,8 @@ export default {
             }
             this.editData = editData; 
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+            this.alertText = error.body.msg||"请求失败了";     
         });
     }
   },
@@ -125,6 +149,9 @@ export default {
   overflow:hidden;
   line-height:0.466667rem;
   border-bottom:1px solid #eee;
+}
+.voucher-item p.no-border{
+  border-bottom:0;
 }
 .voucher-item p span{
   float:right;

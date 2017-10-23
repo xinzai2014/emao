@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/'
 
 //无限滚动加载
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -43,7 +44,7 @@ Vue.use(VueResource)
 //全局默认配置
 Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 Vue.http.headers.common = {
-	Accept:"application/json;version=1.0.0"
+	Accept:"application/json; version=1.1.0"
 };
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
@@ -54,8 +55,6 @@ import '../style/common.css';
 import '../plugins/swiper.min.js'
 import '../plugins/swiper.min.css';
 
-
-
 Vue.config.productionTip = false;
 
 
@@ -64,18 +63,18 @@ Vue.directive('load-more',{
 		const getStyle = (element, attr, NumberMode = 'int') => {
 		    let target;
 		    // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-		    if (attr === 'scrollTop') { 
+		    if (attr === 'scrollTop') {
 		        target = element.scrollTop;
 		    }else if(element.currentStyle){
-		        target = element.currentStyle[attr]; 
-		    }else{ 
-		        target = document.defaultView.getComputedStyle(element,null)[attr]; 
+		        target = element.currentStyle[attr];
+		    }else{
+		        target = document.defaultView.getComputedStyle(element,null)[attr];
 		    }
 		    //在获取 opactiy 时需要获取小数 parseFloat
 		    return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
-		} 
+		}
 		const loadMore = (element, callback) => {
-			
+
 			let windowHeight = window.screen.height;
 			let height;
 			let setTop;
@@ -105,7 +104,7 @@ Vue.directive('load-more',{
 		       	oldScrollTop = document.body.scrollTop;
 		       	moveEnd();
 		    },{passive: true})
-		    
+
 		    const moveEnd = () => {
 		        requestFram = requestAnimationFrame(() => {
 		            if (document.body.scrollTop != oldScrollTop) {
@@ -127,21 +126,42 @@ Vue.directive('load-more',{
 		    }
 		}
 		//loadMore(el,binding.value);
-		window.addEventListener('scroll', function () {
-			if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-				var fnc = binding.value; 
-				fnc(); 
+		window.onscroll  = function () {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if(scrollTop + window.innerHeight >= (el.clientHeight)) {
+				var fnc = binding.value;
+				fnc();
 			}
-		})
-      }
-
+		}
+      },
+  unbind(){
+    console.log(window.onscroll);
+    window.onscroll = null;
+    console.log(window.onscroll);
+  }
 })
 
 Vue.http.interceptors.push(function(request,next){
-	obj.showLoading = true;
+	this.$store.dispatch("AJAX_LOADING", // 通过store传值
+      true
+    );
     next(function (response) {
-    	if(this.$root.showLoading == true){
-    		obj.showLoading = false; 
+    	if(response.body){
+	    	var code = response.body.code;
+	    	if(code != 200){
+	    		this.$store.dispatch("ALERT", // 通过store传值
+			      {
+			      	flag:true,
+			      	text:response.body.msg
+			      }
+			    );
+	    	}
+    	}
+    	//console.log(response.status);
+    	if(this.$store.state.ajaxLoading == true){
+    		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+		      false
+		    );
     	}
         return response;
     })
@@ -150,9 +170,7 @@ Vue.http.interceptors.push(function(request,next){
 /* eslint-disable no-new */
 var obj = new Vue({
   el: '#app',          //vue实例挂载点
-  data:{
-  	showLoading : false
-  },
+  store,
   router,              //路由配置对象
   render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
 // template: '<App/>',

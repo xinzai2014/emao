@@ -12,8 +12,8 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
 const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
-const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'auth')
-//const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
+const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'authResult')
+const aptitude = r => require.ensure([], () => r(require('../page/aptitude/aptitude')), 'aptitude')
 
 
 //首页相关组件
@@ -39,6 +39,19 @@ const addressEdit = r => require.ensure([], () => r(require('../page/profile/chi
 const remit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/remit')), 'remit')
 const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/add')), 'remitAdd')
 const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/edit')), 'remitEdit')
+
+const password = r => require.ensure([], () => r(require('../page/profile/children/children/password/password')), 'password')
+
+
+const passwordEdit = r => require.ensure([], () => r(require('../page/profile/children/children/password/children/edit')), 'passwordEdit')
+
+const setting = r => require.ensure([], () => r(require('../page/profile/children/children/setting/setting')), 'setting')
+
+const about = r => require.ensure([], () => r(require('../page/profile/children/children/setting/children/about')), 'about')
+
+const companyInfo = r => require.ensure([], () => r(require('../page/profile/children/children/companyInfo/companyInfo')), 'companyInfo')
+const agreement = r => require.ensure([], () => r(require('../page/profile/children/children/agreement/agreement')), 'agreement')
+
 
 //优惠券
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
@@ -83,9 +96,13 @@ const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar
 //售车申报资料提交组件
 const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
+//已售车申报资料详情页组件
+const soldCarDetail = r => require.ensure([],() => r(require('../page/soldCarDetail/soldCarDetail')),'soldCarDetail')
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
+const resultSuccess = r => require.ensure([], () => r(require('../page/orderConfrim/children/resultSuccess')), 'resultSuccess')
+
 
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
@@ -96,15 +113,14 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
-
 Vue.use(Router)
 
 var router=new Router({
     routes: [
         {
-            path: '/',
+            path: '*',
             name: 'loading',
-            component: loading  //loading页面
+            component: loading  //默认路由，匹配不到的时候跳转loading
         },
         {
             path: '/login',     //登录页面
@@ -134,6 +150,11 @@ var router=new Router({
             component: authResult
         },
         {
+            path: '/aptitude',  //登录注册个人认证
+            name: 'aptitude',
+            component: aptitude
+        },
+        {
             path: '/index',  //首页
             name: 'index',
             component: index
@@ -159,12 +180,17 @@ var router=new Router({
             component: orderConfrim
         },
         {
+            path: '/resultSuccess',  //下单成功页
+            name: 'resultSuccess',
+            component: resultSuccess
+        },
+        {
             path: '/balanceConfrim/:id',  //补余款下单页面
             name: 'balanceConfrim',
             component: balanceConfrim
         },
         {
-            path: '/contrast',  //全款购车结果页
+            path: '/contrast',  //配置对比页面
             name: 'contrast',
             component: contrast
         },
@@ -221,6 +247,41 @@ var router=new Router({
                                     component: remitEdit
                                 }
                             ]
+                        },
+                        {
+                            path: 'password',   //汇款账户列表
+                            name: 'password',
+                            component: password,
+                            children: [
+                                {
+                                    path: 'edit',   //新增账户列表
+                                    name: 'passwordEdit',
+                                    component: passwordEdit
+                                }
+                            ]
+                        },
+                        {
+                            path: 'setting',   //汇款账户列表
+                            name: 'setting',
+                            component: setting,
+                            children: [
+                                {
+                                    path: 'about',   //新增账户列表
+                                    name: 'about',
+                                    component: about
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            path: 'companyInfo',   //汇款账户列表
+                            name: 'companyInfo',
+                            component: companyInfo
+                        },
+                        {
+                            path: 'agreement',   //汇款账户列表
+                            name: 'agreement',
+                            component: agreement
                         }
                     ]
                 }
@@ -363,6 +424,11 @@ var router=new Router({
             component: soldCar
         },
         {
+            path: '/soldCarDetail/:id',   //已售车辆申报资料详情页
+            name: 'soldCarDetail',
+            component: soldCarDetail
+        },
+        {
             path: '/storage',  //我的中转库列表
             name: 'storage',
             component: storage
@@ -376,12 +442,14 @@ var router=new Router({
 })
 
 
-
-
-
 router.beforeEach((to, from, next) => {
-    var token=sessionStorage.getItem('token');
-    if(token||to.name=="loading"||to.name=='account'||to.name=='code'){
+    var token = sessionStorage.getItem('token');
+    //如何做登录完了回到某个页面去呢
+    if(to.name=="loading"||to.name=='account'||to.name=='code'){ //不需要登录可以直接跳转的
+        next();
+    }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
+        next();
+    }else if(!!token){ //登录并且已经认证过需要认证
         next();
     }else{
         next('/');

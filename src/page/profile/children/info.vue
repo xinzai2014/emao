@@ -9,22 +9,45 @@
             <div class="user-bt"><span>{{infoData.link_name}}</span>姓名：</div>
             <div class="user-bt"><span>{{infoData.link_phone}}</span>手机号：</div>
             <div><span>{{infoData.city_name}}</span>所在城市：</div>
-            <div class="user-bt"><span><b class="company-icon"></b>{{infoData.name}}</span>公司名称：</div>
-            <div class="user-bt"><span>{{infoData.address}}</span>公司地址：</div>
-            <div><span>{{infoData.activities}}</span>经营类型：</div>
+            <template v-if="data_status == 1">
+              <router-link to="/profile/info/companyInfo">
+                  <div><i class="yellow-rt"></i><span class="red">{{data_msg}}</span>公司信息</div>
+              </router-link>
+            </template>
+            <template v-if="data_status == 2">
+            <router-link to="/auth">
+              <div><i class="yellow-rt"></i><span class="red">{{data_msg}}</span>公司信息</div>
+            </router-link>
+            </template>
+            <router-link to="/profile/info/agreement">
+                <div><i class="yellow-rt"></i>一猫特约经销商合作协议</div>
+            </router-link>
             <router-link to="/profile/info/remit">
                 <div><i class="yellow-rt"></i>汇款账户管理</div>
             </router-link>
-            <router-link to="/profile/info/address">
-                <div><i class="yellow-rt"></i>收货地址管理</div>
+            <router-link to="/profile/info/address" >
+                <div @click="setDefaultAdress"><i class="yellow-rt"></i>收货地址管理</div>
             </router-link>
-            <div><i class="yellow-rt"></i>设置密码</div>
-            <div><i class="yellow-rt"></i>设置</div>
-            <button class="close-bt" @click="logOut">退出登录</button>
+            <router-link to="/profile/info/password">
+                <div><i class="yellow-rt"></i>设置密码</div>
+            </router-link>
+            <router-link to="/profile/info/setting">
+                <div><i class="yellow-rt"></i>设置</div>
+            </router-link>
+            <button class="close-bt" @click="showTips">退出登录</button>
         </section>
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <div class="dialog" v-if="showDialog" @click="closeDialog">
+            <div class="dialog-con">
+                <p>退出登录?</p>
+                <div class="dialog-btn">
+                    <span>取消</span>
+                    <span @click.stop="loginOut">确认</span>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,8 +55,10 @@
     export default {
         data () {
             return {
-              //初始数据结构
-              infoData:{}
+              infoData:{},
+              showDialog:false,
+              data_status:'',
+              data_msg:""
             }
         },
         methods:{
@@ -41,26 +66,65 @@
             resetIndex(){
                 this.$router.push({name:'profile'});
             },
-            logOut(){
-                if(confirm('确认要退出登录吗?')){
-                   /* this.$http.delete(
-                        "passport/login?token="+sessionStorage.token
-                    ).then(function (response) {
-                        console.log(response);
-                        alert('ko');
-                    }).catch(function (error) {
-                        console.log("请求失败了");
-                    });*/
-                    this.$router.push({name:'login/account'});
-                }
-            }
+            showTips(){
+                this.showDialog = !this.showDialog
+            },
+            closeDialog(){
+                this.showDialog = !this.showDialog
+            },
+            loginOut(){
+                this.$http.delete(
+                    "passport/logout?token="+sessionStorage.token
+                ).then(function (response) {
+                     sessionStorage.clear();
+                     this.$router.push("/");
+                }).catch(function (error) {
+                    console.log("请求失败了");
+                });
+            },
+            setDefaultAdress(){
+                this.$store.dispatch("ADDRESS_FLAG", // 通过store传值
+                  {
+                    tag:"profile/info",
+                    serieId:""
+                  }
+                );
+          }
         },
         mounted(){
-        //组件初始完成需要做什么
+                //组件初始完成需要做什么
             var Token = sessionStorage.getItem('token');
             var data = {
                 token:Token,
             }
+            //资料是否齐全
+            this.$http({
+                url:"dealerInfo/dataStatus",
+                method:"GET",
+                params:data
+             }).then(function (response) {
+                if(response.body.data.data_status=="1"){
+                    // this.data_status='信息已完善';
+                    this.data_msg='';
+                }
+                if(response.body.data.data_status=="2"){
+                    this.data_msg='信息待完善';
+                }
+                if(response.body.data.data_status=="3"){
+                    // this.data_status='信息审核中';
+                    this.data_msg='';
+                }
+                if(response.body.data.data_status=="4"){
+                    // this.data_status='信息驳回';
+                    this.data_msg='';
+                }
+                this.data_status = response.body.data.data_status;
+
+              }).catch(function (error) {
+                //this.showAlert = true;
+                //this.alertText = error.body.msg||"请求失败了";
+              });
+
             this.$http({
                 url:"dealerInfo/info",
                 method:"GET",
@@ -72,16 +136,23 @@
             });
 
         }
-    }   
+    }
 </script>
 
 <style>
+.user-ct div span.red{
+    color:#fe2c2d;
+}
+
+.index-fooer{
+    z-index: 1;
+}
 .rating_page{
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    height: 100%;
+    overflow-y: auto;
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;

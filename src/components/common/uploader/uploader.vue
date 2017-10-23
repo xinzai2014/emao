@@ -3,28 +3,32 @@
    <div class="sample-ct">
         <div class="submit-lt">
             <div class="submit-img">
-                <div class="pic-box" v-for="(item,index) in files" @click="updatePic(index)">
-                     <img :src = item.src >
-                    <div class="img-percent" v-if="item.showPercent"> 
+                <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src,index)">
+                    <img :src = item.src >
+                    <div class="img-percent" v-if="item.showPercent">
                         <p>{{item.percent + "%"}}</p>
                     </div>
                     <div class="img-button">
-                        <p class="up-btn" @click.stop="updatePic(index)" v-if="(index == 0 && item.percent != 100 )||(index != 0)">上传</p>
-                        <p class="up-btn" v-if="(item.percent == 100)&&(index == 0)" @click.stop="updatePic(index)">修改</p>
+                        <p class="up-btn" @click.stop="updatePic(index)" v-if="(item.percent != 100 )">上传</p>
+                        <p class="up-btn" v-if="(item.percent == 100)" @click.stop="updatePic(index)">修改</p>
                         <p class="up-btn" v-if="index != 0" @click.stop="deletePic(index)">删除</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="submit-rt">
-            <div class="submit-img" >
+            <div class="submit-img" @click="lookBigImg(uploadData.image)">
                 <img :src = uploadData.image >
+              <div class="submit-back"><span>示例图</span></div>
             </div>
         </div>
 
-        <input type="file" accept="image/*" @change="fileChanged" ref="file" multiple="multiple" class="upfile">
+        <input type="file" accept="image/*" @change="fileChanged" ref="file" class="upfile">
     </div>
     <p class="up-btn continue-btn" v-if="continueUp&&initData.count>1" @click="addBox">继续上传</p>
+    <div class="bigImg-back" @click="closeImg" v-show="showBigImg">
+        <img :src = bigImg>
+    </div>
 </div>
 </template>
 <script>
@@ -40,7 +44,9 @@
                 activeIndex:0,
                 continueUp:false,
                 updateIndex:false,
-                imgURL:[] //回传给父组件的图片绝对路径集合
+                imgURL:[], //回传给父组件的图片绝对路径集合
+                bigImg:null,
+                showBigImg:false
             }
         },
         methods:{
@@ -71,7 +77,7 @@
                 var dataArr = [];
                 this.imgURL.forEach(function(ele,index){
                     if(ele){
-                       dataArr.push(ele); 
+                       dataArr.push(ele);
                     }
                 });
                 this.$emit("getUpload",dataArr,this.initData.flag);
@@ -179,32 +185,59 @@
                 var image = new Image();
                 image.src = data;
                 image.onload = function(){
-                    var cvs = document.createElement('canvas');  
-                    var scale = 1;    
+                    var cvs = document.createElement('canvas');
+                    var scale = 1;
                     //压缩规则还需要再调整
-                    if(this.width > 1000 || this.height > 1000){ 
-                        if(this.width > this.height){    
-                            scale = 1000 / this.width;  
-                        }else{    
-                            scale = 1000 / this.height;    
-                        }    
+                    if(this.width > 1000 || this.height > 1000){
+                        if(this.width > this.height){
+                            scale = 1000 / this.width;
+                        }else{
+                            scale = 1000 / this.height;
+                        }
                     }
-                    cvs.width = this.width*scale;    
-                    cvs.height = this.height*scale; 
+                    cvs.width = this.width*scale;
+                    cvs.height = this.height*scale;
                     var ctx = cvs.getContext('2d');
-                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);  
-                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);   
+                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
+                    ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
                     var newImageData = cvs.toDataURL(fileType, 0.9);
                     that.$set(item, 'src', newImageData);
+                }
+            },
+            lookBigImg(src,index){
+                if(!src) {
+                  this.updatePic(index);
+                  return;
+                };
+                this.bigImg = src;
+                this.showBigImg = true;
+            },
+            closeImg(){
+                this.showBigImg = false;
+            },
+            init(){
+                this.initData = this.uploadData;
+                if("imgArr" in this.uploadData){
+                    var img = this.uploadData.imgArr;
+                    if(img.length == 0) return;
+                    this.files = [];
+                    var that = this;
+                    img.forEach(function(value,index){
+                        var obj = {};
+                        obj.src = value;
+                        obj.percent = 100;
+                        that.files.push(obj);
+                    })
                 }
             }
         },
         mounted(){
-            this.initData = this.uploadData;
-            
+            this.init();
         },
-        components:{
-
+        watch:{
+            'uploadData.imgArr'(){
+                this.init();
+            }
         }
     }
 </script>
@@ -283,4 +316,36 @@
     .img-button{
         text-align:center;
     }
+
+    .bigImg-back{
+        position:fixed;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        background:rgba(0,0,0,0.85);
+        z-index:99;
+    }
+    .bigImg-back img{
+        width:100%;
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+    }
+
+  .submit-back{
+    position:absolute;
+    top:0;
+    left:0;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+  }
+    .submit-back span{
+      font-size:0.35rem;
+      color:#FFF;
+      line-height:0.85rem;
+      margin-left:0.25rem;
+    }
 </style>
+

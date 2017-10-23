@@ -4,11 +4,11 @@
     <!--首页-订单确认-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="goback"></i>
-        <strong class="brand-list-title">全款购车确认</strong>
+        <strong class="brand-list-title">购车确认</strong>
     </header>
     <!--购车确认-->
     <!--购车确认-地址-姓名-->
-    <section class="order-confirmation-address" @click="goAdressList">
+    <section class="order-confirmation-address">
         <div class="order-name-phone clearfix">
             <div class="order-name">
                 收货人：<span>{{address.name}}</span>
@@ -17,7 +17,6 @@
         </div>
         <div class="order-address">
             地址：<strong>{{address.address}}</strong>
-            <i class="white-rt"></i>
         </div>
     </section>
     <!--购车确认-车型信息-->
@@ -26,14 +25,17 @@
         <span class="order-car-color">{{car.color}}/{{car.inColor}}</span>
         <div class="order-price-count clearfix">
             <div class="order-car-price">
-                总价：<span>{{car.price|getMoney}}元</span>
+                订单总价：<span>{{car.price|getMoney}}元</span>
             </div>
             <div class="order-car-count">X <span>1</span></div>
         </div>
         <div class="order-message">
             <span>买家留言：</span>
-            <input type="text" v-model="remark" placeholder="选填（对此展车的相关说明）"/>
+            <input type="text" v-model="remark" placeholder="选填 (对此订单的相关说明)"/>
         </div>
+    </section>
+    <section class="deposit-con">
+        已支付保证金： <span>-￥{{deposit|getMoney}}</span>
     </section>
     <!--购车确认-劵信息-->
     <section class="order-coupon-info">
@@ -49,33 +51,32 @@
 
         <div class="order-support-fee clearfix">
             <div class="order-support-title">营销支持费：</div>
-            <div class="order-support-con" v-if="chooseMarket&&!checkMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
+            <div class="order-support-con" v-if="chooseMarket&&!updateMarket">可用￥<strong>{{marketingSupport.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseMarket">无可用</div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&!updateMarket">使用￥<strong>{{marketingSupport.usable}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseMarket&&checkMarket&&updateMarket">-￥<strong>{{updateMarketData}}</strong><span @click="showMarketDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseMarket">
-                <input type="checkbox"  v-model="checkMarket" @click="changeMarket">
+            <div class="order-support-con" v-if="chooseMarket&&updateMarket">-￥<strong>{{updateMarketData|getMoney}}</strong><span @click="showMarketDialog">调整</span></div>
+            <div class="order-suport-switch">
+                <input type="checkbox"  v-model="checkMarket">
             </div>
         </div>
+
         <div class="order-support-fee clearfix">
             <div class="order-support-title">返利：</div>
-            <div class="order-support-con" v-if="chooseRebate&&!checkRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
+            <div class="order-support-con" v-if="chooseRebate&&!updateRebate">可用￥<strong>{{rebate.usable}}</strong></div>
             <div class="order-support-con" v-if="!chooseRebate">无可用</div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&!updateRebate">使用￥<strong>{{rebate.usable}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-support-con" v-if="chooseRebate&&checkRebate&&updateRebate">-￥<strong>{{updateRebateData}}</strong><span @click="showRebateDialog">调整</span></div>
-            <div class="order-suport-switch" v-if="chooseRebate">
-                <input type="checkbox"  v-model="checkRebate" @click="changeRebate">
+            <div class="order-support-con" v-if="chooseRebate&&updateRebate">-￥<strong>{{updateRebateData|getMoney}}</strong><span @click="showRebateDialog">调整</span></div>
+            <div class="order-suport-switch">
+                <input type="checkbox"  v-model="checkRebate">
             </div>
         </div>
     </section>
     <!--购车确认-总额-->
     <section class="order-rental">
         <div class="order-rental-info">
-            <span>应付金额</span>
+            <span>订单总价</span>
             <p><strong>￥{{car.price|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
-            <span>保证金</span>
+            <span>已付保证金</span>
             <p><i>-</i><strong>￥{{deposit|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
@@ -91,20 +92,20 @@
             <p><i>-</i><strong>￥{{updateRebateData|getMoney}}</strong></p>
         </div>
         <div class="order-rental-info">
-            <span>还需支付</span>
-            <p><strong>￥{{totalData|getMoney}}</strong></p>
+            <span>应付金额</span>
+            <p><strong><em>￥{{totalData|getMoney}}</em></strong></p>
         </div>
     </section>
-
+    <p class="footer-bt"></p>
     <!--确认提交-->
     <section class="order-present-info">
-        <div class="order-present" @click="showAgreementDialog">确认提交</div>
+        <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">
-            需支付：
+            应付金额：
             <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
-    
+
     <!-- 选择优惠券 -->
 	<section class="coupon-popup"  :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
@@ -114,12 +115,11 @@
             </div>
             <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(index,item.id)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
                         <dl class="clearfix">
-                            <dt>¥ {{item.price}}</dt>
+                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
-                                <p class="coupon-info">{{item.detail}}</p>
                                 <p class="coupon-date">有效期：<span>{{item.startDate}} - {{item.endDate}}</span></p>
                             </dd>
                         </dl>
@@ -139,7 +139,7 @@
                     <input type="number" v-model="marketData"  :max=marketingSupport.usable  min=0>
                     <span>元</span>
                 </div>
-                <p class="use-coupon-info">共 <span>{{marketingSupport.total}}</span>元，本次最多可用 <span>{{marketingSupport.usable}}</span>元</p>
+                <p class="use-coupon-info">共 <span>{{marketingSupport.total|getMoney}}</span>元，本次最多可用 <span>{{marketingSupport.usable|getMoney}}</span>元</p>
             </div>
             <p class="use-coupon-choose">
                 <span @click.stop="closeMarketDialog">取消</span>
@@ -166,11 +166,10 @@
             </p>
         </div>
     </section>
-    
+
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
-            <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
                 <p class="buy-agreement-con">
                     <iframe src="//tcmapi.emao.com/app_html/agreement/full" class="agreemenIframe"></iframe>
@@ -183,57 +182,24 @@
         </div>
     </section>
 
-    <div class="dialog-content" v-if="showSuccessResult" :class="{dialogAnimateStyle:showSuccessResult}">
-        <!--首页-订单确认-头部-->
-        <header class="brand-list-header">
-            <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
-        </header>
-        <!--订购成功-->
-        <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>订购成功 <i class="order-succeed-logo"></i></p>
-            <div class="order-second-out">
-                <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
-                <div class="order-succeed-info">
-                    <p class="clearfix"><span>汇款银行：</span><strong>{{successData.bankName}}</strong></p>
-                    <p class="clearfix"><span>公司名称：</span><strong>{{successData.companyName}}</strong></p>
-                    <p class="clearfix"><span>账号：</span><strong>{{successData.account}}</strong></p>
-                    <p class="order-send" @click="sendMessage" :class='{"color-disabled":disabled}'>{{codeText}}</p>
-                </div>
-                <ul class="order-secceed-explain">
-                    <li>汇款说明：</li>
-                    <li>1.汇款后请上传汇款凭证</li>
-                    <li>2.未按时间付款的订单系统将自动取消</li>
-                </ul>
-            </div>
-            <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
-        </section>
-        <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply" @click="goIndex">返回订车页</div>
-            <div class="order-to-check" @click="goDetail(successData.orderNum)">查看详情</div>
-        </section>
-    </div>
-
-    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
 </div>
 
 </template>
 
 <script>
 import BScroll from 'better-scroll';
-import alertTip from '../../components/common/alertTip/alertTip'
 export default {
 	  name: 'orderConfrim',
 	  data () {
 	    return {
             orderId:null, //订单号
-            deposit:null, //保证金
-	    	initData:{}, //初始化路由带过来的数据
-	    	address:{}, //地址信息
-	    	car:{},     //购车信息
-	    	coupon:[],  //优惠券
-	    	marketingSupport:{}, //营销支持费
-	    	rebate:{},            //返利
+            deposit:0, //保证金
+            initData:{}, //初始化路由带过来的数据
+            address:{}, //地址信息
+            car:{},     //购车信息
+            coupon:[],  //优惠券
+            marketingSupport:{}, //营销支持费
+            rebate:{},            //返利
             showCoupon:false,     //优惠券弹出窗
             couponData:{},        //选中的优惠券初始数据
             checkCoupun:false,    //判断是否选择了优惠券
@@ -241,43 +207,25 @@ export default {
             checkMarket:false,    //营销支持费复选框
             chooseMarket:false,   //未选择营销支持费 营销支持费不为空
             showMarket:false,     //营销支持费弹窗
-            marketData:null,      //初始营销支持费值 
-            updateMarket:false,    //修改过营销支持费 
+            marketData:null,      //初始营销支持费值
+            updateMarket:false,    //修改过营销支持费
             updateMarketData:0.00, //获取修改过的营销支持费值
-            showRebate:false,       //返利逻辑开始 
+            showRebate:false,       //返利逻辑开始
             chooseRebate:false,    //判断返利是否为空
             checkRebate:false,     //返利复选框
             updateRebate:false,     //修改过返利值
             rebateData:null,        //初始化返利
             updateRebateData:0.00,   //获取修改过的返利值
             formData:{
-          
+
             },
             remark:null,             //备注信息
-            showAgreement:false,
-            showSuccessResult:false,
-            successData:null,
-            showAlert:false,
-            alertText:"",
-            messageData:{},
-            codeText:"发送到手机", //下单成功后发送短信到手机
-            num:60, //下单成功后倒计时
-            disabled:false,
-            routerAddress:false
+            showAgreement:false
  	    }
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.serieId);
-        },
-        goIndex(){
-            this.$router.push("/index");
-        },
-        goDetail(id){
-            this.$router.push("/orderDetail/" + id);
-        },
-        goAdressList(){
-            this.$router.push("/profile/info/address");
+            this.$router.go(-1);
         },
 	  	getData(){
 			this.$http({
@@ -286,22 +234,16 @@ export default {
 		          params:this.initData
 		      }).then(function (response) {
 		      	   var data = response.body.data;
-                   if(this.routerAddress){
-                        this.address = {
-                            "address":sessionStorage.addresstxt,
-                            "id":sessionStorage.addressId,
-                            "name":sessionStorage.addressName,
-                            "phone":sessionStorage.addressPhone
-                        }
-                   }else{
-                        this.address = data.address;
-                   }
-		           this.car = data.car;
+                   this.address = data.address;
+		              this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
                         ele.check = false;
                    })
-		           this.coupon = coupon;
+                   this.coupon = coupon; //单次初始化
+                   if(coupon.length>0){
+                        this.initIscroll("couponList",this.scrollWrap);
+                   }
 		           this.marketingSupport = data.marketingSupport;
                    if(data.marketingSupport.usable){ //判断是否有可用营销支持费
                         this.chooseMarket = true
@@ -324,7 +266,6 @@ export default {
 	  	},
         showCouponDialog(){ //显示优惠券弹窗
             this.showCoupon = !this.showCoupon;
-            this.initIscroll("couponList",this.scrollWrap);
         },
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
@@ -332,7 +273,7 @@ export default {
         chooseCoupon(index,id){  //选择优惠券
             this.coupon.forEach(function(ele,ind){
                 if(index!=ind){
-                  ele.check = false;   
+                  ele.check = false;
                 }
             })
             this.coupon[index].check = !this.coupon[index].check;
@@ -343,17 +284,6 @@ export default {
                 this.couponData = {};
                 this.checkCoupun = false;
             }
-        },  
-        changeMarket(){ //切换营销支持费checkbox
-            var check = this.checkMarket; //点击获取的时候是基础值
-            if(check){
-                this.checkMarket = false ;
-                this.updateMarket = false ;
-                this.updateMarketData = 0;
-            }else{
-                this.checkMarket = true; 
-                this.updateMarketData = parseInt(this.marketingSupport.usable);
-            }
         },
         showMarketDialog(){ //营销支持费弹出窗
             this.showMarket = !this.showMarket;
@@ -362,9 +292,22 @@ export default {
             this.showMarket = !this.showMarket;
         },
         marketConfrim(){   //营销支持费弹出窗确认按钮
-            if(parseInt(this.marketData)>parseInt(this.marketingSupport.usable)){
-                this.showAlert = true;
-                this.alertText="营销支持费不能大于" + this.marketingSupport.usable;
+            if(this.marketData == null||this.marketData == ""){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"金额不能为空"
+                  }
+                 );
+                 return false;
+            }
+            if(parseFloat(this.marketData)>parseFloat(this.marketingSupport.usable)){
+                this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"本次最多可用" + parseFloat(this.marketingSupport.usable).toLocaleString() + ".00元"
+                  }
+                 );
                 return false;
             }
             this.showMarket = !this.showMarket;
@@ -378,25 +321,27 @@ export default {
             this.showRebate = false
         },
         rebateConfrim(){
-             if(parseInt(this.rebateData)>parseInt(this.rebate.usable)){
-                this.showAlert = true;
-                this.alertText="返利不能大于" + this.rebate.usable;
-                return false;
+            if(this.rebateData == null||this.rebateData == ""){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"金额不能为空"
+                  }
+                 );
+                 return false;
+            }
+            if(parseFloat(this.rebateData)>parseFloat(this.rebate.usable)){
+                 this.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:true,
+                    text:"本次最多可用" + parseFloat(this.rebate.usable).toLocaleString() + ".00元"
+                  }
+                 );
+                 return false;
             }
             this.showRebate = !this.showRebate;
             this.updateRebate = true;
             this.updateRebateData = this.rebateData;
-        },
-        changeRebate(){ //切换营销支持费checkbox
-            var check = this.checkRebate; //点击获取的时候是基础值
-            if(check){
-                this.checkRebate = false ;
-                this.updateRebate = false ;
-                this.updateRebateData = 0;
-            }else{
-                this.checkRebate = true; 
-                this.updateRebateData = parseInt(this.rebate.usable);
-            }
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
@@ -426,8 +371,14 @@ export default {
             this.$http.post(
                 "order/show/balance?token="+sessionStorage.token,
                 this.formData).then(function (response) {
-                    this.showSuccessResult = true;
-                    this.successData = response.body.data;
+                    var data = response.body.data;
+                    data["flag"] = true;
+                    data["addressFlag"] = "balanceConfrim";
+                    data["telephone"] = this.address.phone;
+                    this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                      data
+                     )
+                    this.$router.push("/resultSuccess");
               },function(){
 
             });
@@ -438,48 +389,13 @@ export default {
                    probeType: 3,
                    click:true
                 });
-            },1000) 
-        },
-        sendMessage(){  //发送成功短信
-            if(this.disabled){
-                return false;
-            }
-            this.messageData["token"] = sessionStorage.token;
-            this.messageData["phone"] = this.address.phone;
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
-                this.successData.bankName+ ",账号：" + 
-                this.successData.account + ",公司名称：" + 
-                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
-            this.$http.post(
-                  "message/send",
-                  this.messageData,
-              ).then(function (response) {
-                this.setCode();
-            },function(){
-
-            })
-        }, 
-        setCode(){ //验证码效果
-            this.codeText = this.num+"s";
-            this.disabled = true;
-            var that = this;
-            window.timer = window.setInterval(()=>{
-                that.num--;
-                that.codeText = this.num+"s";
-                this.disabled = true;
-                if(!this.num){
-                    this.codeText = "发送到手机";
-                    this.num = 60;
-                    this.disabled = false;
-                    window.clearInterval(window.timer);
-                    return false;
-                }
-            },1000);
+            },1000)
         },
 	  },
 	  mounted(){
-         this.orderId = this.$route.params.id;
-         this.deposit = this.$route.query.deposit;
+         var spareData = this.$store.getters.getSpareData;
+         this.orderId = spareData.orderNum;
+         this.deposit = spareData.deposit.replace(",","");
          this.initData["token"] = sessionStorage.token;
          this.initData["orderNum"] = this.orderId;
          this.getData();
@@ -489,11 +405,40 @@ export default {
             if(isNaN(num)){
                 num = 0;
             }
-            return parseInt(num).toFixed(2);
+            var arr = num.toString().split(".");
+            var tagNum = arr.length>1?parseInt(arr[0]).toLocaleString() + "." + arr[1]:parseInt(arr[0]).toLocaleString() +".00"
+            return tagNum;
         }
       },
-      components:{
-        alertTip
+      watch:{
+        checkMarket(){
+            if(!this.chooseMarket){
+                this.checkMarket = false;
+                return false;
+            }else{
+                if(this.checkMarket){
+                    this.updateMarket = true
+                    this.updateMarketData = parseInt(this.marketingSupport.usable);
+                }else{
+                    this.updateMarket = false;
+                    this.updateMarketData = "0.00";
+                }
+            }
+        },
+        checkRebate(){
+            if(!this.chooseRebate){
+                this.checkRebate = false;
+                return false;
+            }else{
+                if(this.checkRebate){
+                    this.updateRebate = true
+                    this.updateRebateData = parseInt(this.rebate.usable);
+                }else{
+                    this.updateRebate = false;
+                    this.updateRebateData = "0.00";
+                }
+            }
+        }
       },
       computed:{
         totalData:function(){
@@ -503,35 +448,29 @@ export default {
             return this.car.price - couponPrice - marketPrice - rebatePrice - this.deposit;
         }
       },
-      beforeRouteEnter(to, from, next){
-            next(vm => {
-                if(from.name=='address'){
-                    vm.routerAddress = true;
-                }else{
-                    vm.routerAddress = false;
-                }
-              });
-        },
+    beforeRouteEnter(to, from, next){
+        next(vm => {
+
+        });
+    }
 }
 </script>
 
 <style>
 
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-.brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 	/*订单确认*/
-.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;}
+.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;position:relative;}
 .order-name{float:left;}
 .order-phone{float:right;margin-right:.7733rem;}
-.order-address{position:relative;margin-top:.4rem;padding-right:.4rem;}
-.order-address i{position:absolute;top:0;right:.1333rem;}
-.order-car-info{background-color:#fff;padding:.5333rem .4rem;margin-bottom:.4rem;}
-.order-car-name{font-size: .42667rem;color: #000;font-weight:600;}
-.order-car-color{display:block;margin-top:.1333rem;font-size: .3467rem;color: #999;}
-.order-price-count{margin-top:.4667rem;margin-bottom:.4rem;font-size:.3733rem;}
+.order-address{margin-top:.4rem;padding-right:.4rem;}
+.order-confirmation-address i{position:absolute;top:0;left:auto;right:0.4rem;bottom:0;margin:auto;}
+.order-car-info{background-color:#fff;padding:.5333rem .4rem 0;margin-bottom:.4rem;}
+.order-car-name{font-size: .4rem;color: #000;font-weight:600;}
+.order-car-color{display:block;margin-top:.1833rem;font-size: .3467rem;color: #999;}
+.order-price-count{margin-top:.3667rem;margin-bottom:.4rem;font-size:.3733rem;}
 .order-car-price{float:left;color:#2c2c2c;}
 .order-car-price span{color:#fc3036;}
 .order-car-count{float:right;color:#999;}
@@ -549,40 +488,40 @@ export default {
 .order-support-con{float:left;color:#999;font-size:.3733rem;}
 .order-support-con span{margin-left:.4rem;color:#d5aa5c;font-size:.3733rem;font-weight:600;}
 /*checkbox按钮开始*/
-.order-suport-switch{float:right;margin-right:0;width: .6933rem;font-size:0;}
-.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width: .6933rem;height: .4267rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 16px; box-sizing: border-box;
+.order-suport-switch{float:right;margin-right:0;font-size:0;line-height:1;margin-top:0.273rem;}
+.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width:1.4rem;height: 0.9rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 0.45rem; box-sizing: content-box;
      background-color: #dfdfdf;  -webkit-transition: background-color .1s,border .1s;  transition: background-color .1s,border .1s;-webkit-tap-highlight-color: rgba(0,0,0,0);}
 .order-suport-switch input:checked{border-color: #04be02;background-color: #04be02;}
 .order-suport-switch input:after,.order-suport-switch input:before{content: " ";position: absolute;top: 0;left: 0;height:.4rem;border-radius:.2rem;-webkit-transition: -webkit-transform .3s;}
-.order-suport-switch input:before{width: .667rem; background-color: #fdfdfd;}
+.order-suport-switch input:before{width:100%; background-color: #fdfdfd;height:0.9rem;border-radius: 0.45rem; }
 .order-suport-switch input:checked:before{transform: scale(0);}
-.order-suport-switch input:after{width: .4rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);}
-.order-suport-switch input:checked:after{transform: translateX(.2667rem);}
+.order-suport-switch input:after{width: .9rem;height:0.9rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);border-radius:50%;box-shadow:0 1px 3px rgba(0, 0, 0, 0.4);}
+.order-suport-switch input:checked:after{transform: translateX(.5rem);}
 /*checkbox按钮结束*/
 .order-rental{margin-bottom:1.667rem;padding:.533rem .4rem;font-size:.3467rem;background-color:#fff;}
 .order-rental-info{height:.8667rem;line-height:.8667rem;}
 .order-rental-info span{display:block;float:left;color:#999;}
 .order-rental-info p{float:right;}
 .order-rental-info strong{color:#2c2c2c;}
+.order-rental-info em{color:#fc3036;}
 .order-present-info{position:fixed;bottom:0;width:10rem;background-color:#fff;}
-.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:.3467rem;color:#fff;background-color:#d5aa5c;}
+.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:0.4rem;color:#fff;background-color:#d5aa5c;}
 .order-price{float:right;height:1.2667rem;margin-right: .4rem;line-height: 1.2667rem;font-size:.3467rem;color:#2c2c2c;}
 .order-price strong{font-size:.4267rem;color:#fc3036;}
 
-
 /*选择优惠券-浮层*/
 .coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
-.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:65%}
+.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
 .coupon-con{padding: 0 .533rem .5333rem .533rem;}
-.coupon-con li{position:relative;width:9.1467rem;height:2.9467rem;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
+.coupon-con li{position:relative;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
 .coupon-con dt{float:left;width:2.7733rem;height:2.7733rem;text-align:center;line-height:2.7733rem;font-size:.533rem;color:#d5aa5c;}
 .coupon-con  dd{margin-left:2.7733rem;padding:.4rem;}
 .coupon-name{font-size:.4rem;color:#2c2c2c;}
 .coupon-info{font-size:.32rem;color:#999;}
-.coupon-date{font-size:.32rem;color:#999;}
-.coupon-chose-logo{position:absolute;top:-.1333rem;left:-.1333rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
+.coupon-date{font-size:.32rem;color:#999;margin-top:0.25rem}
+.coupon-chose-logo{position:absolute;top:0.1rem;left:0.1rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
 
 /*营销支持费，返利*/
 .use-coupon-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
@@ -667,7 +606,7 @@ export default {
     left:0;
     height:100%;
     width:100%;
-    transform:translateX(100%); 
+    transform:translateX(100%);
 }
 
 
@@ -690,6 +629,18 @@ export default {
     width:100%;
     height:10rem;
     border:none;
+}
+
+.deposit-con{
+    padding:0 0.4rem;
+    background:#FFF;
+    line-height:1.467rem;
+    margin-bottom:0.4rem;
+    font-size:0.4rem;
+}
+
+.deposit-con span{
+    float:right;
 }
 </style>
 

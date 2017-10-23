@@ -79,7 +79,8 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 		            this.deleted_at = response.body.data.deleted_at;
 		            this.updated_at = response.body.data.updated_at;
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		            this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
 		        });
             },
             saveEdit(){
@@ -120,10 +121,27 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
             		"dealer/updateById?token="+token,
             		data
 		        ).then(function (response) {
-		        	alert('保存成功！');
-		        	this.$router.push({ name: 'address'});
+		        	this.showAlert = true;
+          			this.alertText = "保存成功";
+          			//this.$router.push({ name: 'address'});
+	            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值 如果有异步操作放到action里面
+				        {
+				          id:response.body.data.id,
+				          address:data.address,
+				          phone:data.phone,
+				          name:data.name
+				        }
+				    );
+				    if(this.$store.getters.getAddress!=""){
+				    	var addressFlag=this.$store.getters.getAddress;
+				    	this.$router.push({ path: "/" + addressFlag.tag + "/" + addressFlag.serieId });
+				    }else{
+              
+				    	//this.$router.push({ path: '/address'});
+				    }
 		        }).catch(function (error) {
-		            console.log("请求失败了");		            
+		            this.showAlert = true;
+          			 this.alertText = error.body.msg||"请求失败了";	            
 		        });
             }
         },
@@ -139,10 +157,10 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 .address-edit{}
 .address-edit-out{padding:0 .4rem 0 .4rem;background-color:#fff;}
 .address-edit-in{}
-.address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;}
+.address-edit-in li{font-size:.4rem;color:#2c2c2c;border-bottom:1px solid #eee;line-height:1.333rem;}
 .address-edit-in li:last-child{border-bottom:none;}
-.address-edit-in li span{display:block;float:left;width:2rem;height:1.333rem;line-height:1.333rem;}
-.address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;line-height:1.333rem;border:none;}
+.address-edit-in li span{display:block;float:left;width:2.3rem;height:1.333rem;}
+.address-edit-in li input{display:block;margin-left:1.667rem;height:1.333rem;border:none;}
 .address-save{display:block;margin:1.0667rem auto 0;padding:.36rem 1rem .36rem 1rem;font-size:.4533rem;color:#fff;text-align:center;border:none;border-radius:.8rem;background-color:#d5aa5c;}
 
 </style>

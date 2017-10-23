@@ -1,0 +1,41 @@
+# 注意：请误删除注释内容，以下配置中
+#	1、必须把此文件放到项目根目录下
+#	2、请在项目根目录下创建 onlineScript 目录，onlineScript目录下创建sql、script目录，
+#		sql目录存放sql文件，script目录存放生产环境上要执行的脚本。
+#	3、"="(等号)两边不能有空格
+#	4、不能用中文括号
+#	5、括号中每个文名件占一行，文件的路径写相对路径【相对于项目根目录】
+#	6、sql文件不需要加路径信息
+#		格式：
+#			sql=(
+#				ymqc:ym_abc.sql
+#   			ymqc:ym_def.sql
+#   			ymqc:abc.sql
+#				)
+#	7、onlineScript 格式：
+#			onlineScript=(
+#				onlineScript/script/update_Composer.sh
+#				onlineScript/script/get_Html.py
+#				onlineScript/script/register_User.php
+#				)
+#	8、若没有要更新的sql文件或script脚本，请删除相应区域括号中的内容，保留为空括号即可。
+#		如：	sql=()
+#				buildScript=()
+#				onlineScript=()
+#
+
+# 版本号
+version=0.0.3
+
+# 要更新的数据库和sql文件及执行顺序。冒号前为数据库名，后为sql文件名，冒号与点之间的为表名
+# 【此为示例内容，请根据实际进行填写文件名称】
+sql=()
+
+#非生产环境要执行的脚本文件及顺序【此为示例内容，请根据实际进行填写文件名称】
+buildScript=(
+	script/build.sh
+	script/after-build.sh
+)
+
+#生产环境要执行的脚本文件及顺序【此为示例内容，请根据实际进行填写文件名称】
+onlineScript=()

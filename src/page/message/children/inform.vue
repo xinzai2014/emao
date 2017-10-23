@@ -1,18 +1,34 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
-			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>通知
+			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>通知提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="notice" v-scroll="getMore">
+	    <section class="notice" v-scroll="getMore" ref="load">
 	        <div class="notice-item" v-for="(item,index) in infoData">
-	            <div class="notice-tit">{{item.created_at}}</div>
-	            <div class="notice-ct">
-	                <div class="notice-tp">{{item.content_header}}</div>
-	                <div class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
-	            </div>
+	        	<div v-if="item.content_body !='通知'">
+		            <div class="notice-tit">{{item.created_at}}</div>
+			            <div class="notice-ct" @click=refresh(item.url)>
+			                <div class="notice-tp">{{item.content_header}}</div>
+			                <div v-if="item.content_body" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+			            </div>
+		        </div>
+		        <div v-else>
+		            <div class="notice-tit">{{item.created_at}}</div>
+		            <div class="notice-ct">
+		                <div class="notice-tp">{{item.content_header}}</div>
+		            </div>
+		        </div>
 	        </div>
+	        <div  class="frameCon translateY" v-show="showFrame">
+				<div class="user-tit">
+					<i class="white-lt" @click="closeFrame"></i>
+				</div>
+				<div class="buy-agreement-con">
+			 		<iframe :src = "frameURL"  class="frame" scrolling="auto"></iframe>
+			 	</div>
+		 	</div>
 	    </section>
     </div>
 </template>
@@ -29,7 +45,10 @@
 	           	perPage : 10, //每页条数，默认10
 	            nowPage : 1, //第几页
 	            lastPage : 0,
-	            loadingData : false
+	            loadingData : false,
+	            showFrame:false,
+	      		frameURL:"",
+				scrollTimer: null
                 
             }
         },
@@ -38,6 +57,17 @@
             resetIndex(){
                 this.$router.push({name:'message'});
             },
+            refresh(url){
+		  		this.showFrame = true;
+		  		this.frameURL = url;
+		  		document.body.style.overflow = 'hidden';
+		  		document.body.style.position = 'fixed';
+		  	},
+		  	closeFrame(){
+		  		this.showFrame = false;
+		  		document.body.style.overflow = 'inherit';
+		  		document.body.style.position = 'initial';
+		  	},
             moreFn(itemIndex){
 		        var data = {
 		            token:this.token, 
@@ -50,7 +80,7 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
+		        	console.log(response)
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.loadingData = !this.loadingData;
@@ -59,16 +89,23 @@
 		            console.log("请求失败了");
 		        });
             },
-            getMore: function () {
-				if(this.nowPage >= this.lastPage){
-				}else{
-					if(this.loadingData){
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+            getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 100);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
@@ -80,21 +117,23 @@
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }   
 </script>
 
 <style>
 /*通知*/
+.notice-item{
+	background:#f5f5f5;
+}
 .notice-tit{
 	padding-top:0.4rem;
 	color:#999;
@@ -115,10 +154,9 @@
 	padding:0.533333rem 0.4rem;
 	font-size:0.4rem;
 	color:#2c2c2c;
-	line-height:0.4rem;
 }
 .notice-bt i{
-	float:right;
+	float:right !important;
 }
 .notice-bt span{
 	color:#fc3036;
@@ -129,4 +167,30 @@
 	line-height:1.0rem;
 	font-size:0.266667rem;
 }
+.frameCon{
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	width:100%;
+	height:100%;
+	background:#FFF;
+	z-index:20;
+	transform:translateX(100%);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    height:94%;
+}
+.frame{
+    width:100%;
+    border:none;
+    height:100%;
+}
 </style>
+

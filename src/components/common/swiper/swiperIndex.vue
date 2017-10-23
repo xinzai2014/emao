@@ -1,5 +1,5 @@
 <template>
-        
+
 	<section class="index-slider">
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
@@ -14,8 +14,10 @@
 			<div class="user-tit">
 				<i class="white-lt" @click="closeFrame"></i>
 			</div>
-		 	<iframe :src = "frameURL"  class="frame"></iframe> 
-		</div> 
+			<div class="buy-agreement-con">
+		 		<iframe :src = "frameURL"  class="frame" scrolling="auto"></iframe>
+		 	</div>
+		</div>
 	 </section>
 </template>
 
@@ -35,23 +37,23 @@ export default {
 	  	refresh(url){
 	  		this.showFrame = true;
 	  		this.frameURL = url;
+	  		document.body.style.overflow = 'hidden';
+		  	document.body.style.position = 'fixed';
 	  	},
 	  	closeFrame(){
 	  		this.showFrame = false;
+	  		document.body.style.overflow = 'inherit';
+		  	document.body.style.position = 'initial';
 	  	}
 	  },
 	  mounted(){
-	  	console.log("数据取到了");
+
 		var mySwiper = new Swiper('.swiper-container', {
 			autoplay: 5000,//可选选项，自动滑动
 			pagination : '.index-icon',
+      loop:true,
 			paginationElement:"li"
 		});
-	  },
-	  watch:{
-	   circular(){
-	   		
-	   }
 	  }
 }
 </script>
@@ -61,7 +63,7 @@ export default {
 .index-slider{position:relative;height:4.5333rem;}
 .index-slider img{width:100%;height:4.5333rem;}
 .index-icon{position:absolute;left:.4rem !important;bottom:.24rem !important;z-index:1;}
-.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:red;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;}
+.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:#fff;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;opacity:1 !important}
 .index-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;}
 
 .news_title h3{
@@ -71,17 +73,26 @@ export default {
 	position:fixed;
 	top:0;
 	left:0;
+	right:0;
+	bottom:0;
 	width:100%;
 	height:100%;
 	background:#FFF;
 	z-index:20;
 	transform:translateX(100%);
+	-webkit-user-select: none;
+	-moz-user-select: none;
 }
 
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    height:94%;
+}
 .frame{
-	height:100%;
-	width:100%;
-	border:none;
+    width:100%;
+    border:none;
+    height:100%;
 }
 
 </style>

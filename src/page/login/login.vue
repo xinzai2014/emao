@@ -8,7 +8,7 @@
           <div class="login-info">
               <div class="login-phone">
                   <input type="text"  v-model="telephone" maxlength="11" placeholder="手机号" ref="telephone">
-                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入11位手机号码</span>
+                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入正确的电话号码</span>
               </div>
               <transition name="fade">
                   <router-view></router-view>
@@ -40,7 +40,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
+html,body{
+  height:100%;
+}
 /*登录-注册样式*/
 .login-bg{width:10rem;height:100%;background:url("../../assets/login-bg.jpg") no-repeat;background-size:100% 100%;}
 .login-in{padding-top:1.2rem;}
@@ -49,11 +51,11 @@ export default {
 .login-logo i{display:inline-block;width:.96rem;height:.6113rem;background:url("../../assets/login-logo.png") no-repeat;background-size:.96rem .6113rem;}
 .login-logo span{display:inline-block;}
 .login-info{margin-left:1.333rem;margin-right:1.333rem;}
-.login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:1px solid #fff;}
-.login-phone input{display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
+.login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:2px solid #fff;}
+.login-phone input{color:#FFF;display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background:none;}
 .login-errror{display:block;position:absolute;bottom:-.8rem;left:0;width:7.333rem;height:.8rem;line-height:.8rem;text-align:center;font-size:.373rem;color:#fff;background-color:#e94545;}
 .login-code{position:relative;height:.933rem;margin:.797rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #fff;}
-.login-code input{display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
+.login-code input{color:#FFF;display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;}
 .login-code i{display:block;float:right;font-size:.453rem;color:#ffdb7d;}
 .login-code .color-disabled{color:#999}
 .login-btn{display:block;width:5.867rem;height:1.1733rem;margin:.93rem auto 0;text-align:center;font-size:.453rem;color:#fff;line-height:1.17333rem;border:none;Border-radius:.667rem;background-color:#d5aa5c;}

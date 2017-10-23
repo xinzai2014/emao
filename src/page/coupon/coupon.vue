@@ -2,7 +2,7 @@
   <div>
         <!--头部-->
         <header class="user-tit">
-            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>我的优惠券
+            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>优惠券
         </header>
         <!--我的优惠券-->
         <section class="coupon-wrap">
@@ -26,12 +26,11 @@
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
                                     <h4>{{item.name}}</h4>
-                                    <p>{{item.note}}</p>
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -53,13 +52,13 @@
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
-                                    <h4>已使用</h4>
-                                    <p>{{item.note}}</p>
+                                    <h4>{{item.name}}</h4>
+                                    <!--<p>{{item.note}}</p>-->
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -80,13 +79,13 @@
                             <dl>
                                 <dt>¥ {{item.price}}</dt>
                                 <dd>
-                                    <h4>已失效</h4>
-                                    <p>{{item.note}}</p>
+                                    <h4>{{item.name}}</h4>
+                                    <!--<p>{{item.note}}</p>-->
                                     <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
                                 </dd>
                             </dl>
                             <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">展开详情<i class="white-rt"></i></span>
+                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
                                 <p>
                                     <b>适用车型</b>
                                     <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
@@ -100,12 +99,16 @@
                     </div>
                     
                 </transition>
+                
+                <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
             </div>
         </section>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -115,9 +118,14 @@ export default {
         disableNum:0,
         used:[],
         usedNum:0,
-        categoryType:'use'
+        categoryType:'use',
+        showAlert: false, //弹出框
+      alertText: null, //弹出信息
     }
   },
+   components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
@@ -149,18 +157,27 @@ export default {
             this.usedNum = this.used.length;   
 
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     bActive(arr){
         for(var i=0;i<arr.length;i++){
             arr[i].active=false;
+            arr[i].status='展开详情';
+            arr[i].price=Number(arr[i].price).toLocaleString();
         }
         return arr;
     },
     slideDown(item){
         item.active = !item.active;
-    }
+        if(item.status == '收起'){
+            item.status = '展开详情';
+        }else{
+            item.status = '收起';
+        }
+        
+    },
   },
   mounted(){
     //组件初始完成需要做什么
@@ -190,15 +207,14 @@ export default {
     transform: translate3d(2rem, 0, 0);
     opacity: 0;
 }
-.no-auto{background-color: #fff;
+.no-auto{
     text-align: center;
     font-size: 0.453333rem;
     padding: 4.0rem 0;
     position: absolute;
     width: 100%;
     left: 0;
-    top: 3rem;
-    height: 100%;}
+    top: 2.28rem;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 .no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
@@ -212,14 +228,14 @@ export default {
 .coupon-li li{
     width: 2rem;
     text-align: center;
-    border-bottom: 2px solid #fff;
+    /*border-bottom: 2px solid #fff;*/
     margin: 0 0.633333rem;
     float: left;
     font-size: 0.4rem;
 }
 .coupon-li li.active{
     color:#d5aa5c;
-    border-color:#d5aa5c;
+    border-bottom:2px solid #d5aa5c;
 }
 .coupon-ct{
     padding:0 0.533333rem;
@@ -268,6 +284,7 @@ export default {
     width:5.44rem;
     height:2.2rem;
     border-bottom:1px solid #eee;
+    position:relative;
 }
 .coupon-item dd h4{
     font-size:0.373333rem;
@@ -277,6 +294,9 @@ export default {
     font-size:0.32rem;
     color:#999;
     margin-top:0.2rem;
+    position:absolute;
+    left:0;
+    bottom:0.2rem;
 }
 .coupon-prompt{
     background:#eee;
