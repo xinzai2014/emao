@@ -54,7 +54,6 @@
                 this.$router.push({name:'message'});
             },
             moreFn(itemIndex){
-            	console.log(itemIndex);
 		        var data = {
 		            token:this.token,
 		            typeId:this.typeId,
@@ -67,7 +66,6 @@
 		            params:data
 		        }).then(function (response) {
 		            this.infoData = this.infoData.concat(response.body.data.list);
-		            console.log(this.infoData);
 		            this.nowPage = response.body.data.page.current_page;
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
@@ -80,20 +78,19 @@
 				clearTimeout(this.scrollTimer);
 				this.scrollTimer = setTimeout(() => {
 					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight) {
 		                if(this.nowPage >= this.lastPage){
 		                  this.switchShow=this.switchShow;
 		                }else{
 		                  if(this.loadingData){
 		                    this.switchShow=!this.switchShow;
 		                    this.nowPage = parseInt(this.nowPage)+1;
-		                    console.log(this.nowPage);
 		                    this.moreFn(this.nowPage);
 		                    this.loadingData = !this.loadingData;
 		                  }
 		                }
 					}
-				}, 0);
+				}, 100);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);

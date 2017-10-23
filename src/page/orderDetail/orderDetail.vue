@@ -496,7 +496,7 @@ export default {
 /*      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
         sessionStorage.orderDetailUrl=from.name;
       }*/
-      if(from.name != 'paymentSubmit'){
+      if(from.name != 'paymentSubmit' && from.name != 'payment'){
         sessionStorage.orderDetailUrl = from.path;
       }
       

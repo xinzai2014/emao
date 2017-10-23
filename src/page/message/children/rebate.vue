@@ -49,6 +49,7 @@
 	           	perPage : 10, //每页条数，默认10
 	            nowPage : 1, //第几页
 	            lastPage : 0,
+	            switchShow:false,
 	            loadingData : false,
 				scrollTimer: null
                 
@@ -109,20 +110,19 @@
 				clearTimeout(this.scrollTimer);
 				this.scrollTimer = setTimeout(() => {
 					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight) {
 		                if(this.nowPage >= this.lastPage){
 		                  this.switchShow=this.switchShow;
 		                }else{
 		                  if(this.loadingData){
 		                    this.switchShow=!this.switchShow;
 		                    this.nowPage = parseInt(this.nowPage)+1;
-		                    console.log(this.nowPage);
 		                    this.moreFn(this.nowPage);
 		                    this.loadingData = !this.loadingData;
 		                  }
 		                }
 					}
-				}, 0);
+				}, 100);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
