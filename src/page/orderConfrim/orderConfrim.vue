@@ -412,7 +412,7 @@ export default {
                    probeType: 3,
                    click:true
                 });
-            },1000)
+            },0)
         }
 	  },
 	  mounted(){

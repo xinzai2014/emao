@@ -10,7 +10,7 @@
 				<div class="addres-item" v-for="(item,index) in addressList">
 					<label :for="item.id" @click="orderAddress(item)">
 						<div class="weui-cell__hd" v-if="radio">
-		                    <input type="radio" class="weui-check" :id="item.id" name="radio" :checked="$store.state.defaultAdress.id==item.id">
+		                    <input type="radio" class="weui-check" :id="item.id" name="radio" :checked="$store.getters.getDefaultAddress.id==item.id">
 		                    <i class="weui-icon-checked"></i>
 		                </div>
 		            </label>
@@ -59,9 +59,10 @@
               radio:false,
               url:'',
               showAlert: false, //弹出框
-	          alertText: null, //弹出信息
-	          title:'收货地址管理',
-	          loading:false
+              alertText: null, //弹出信息
+              title:'收货地址管理',
+              loading:false,
+              defaultID:null
             }
         },
         components:{
@@ -70,14 +71,8 @@
         methods:{
             //组件方法
             resetIndex(){
-            	if(sessionStorage.infos == 'info'){
-            		this.$router.push({ name: 'info'});
-            	}else{
-            		if(this.$store.getters.getAddress){
-	                    var addressFlag=this.$store.getters.getAddress;
-	                    this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
-	                }
-            	}
+                var addressFlag=this.$store.getters.getAddress;
+                this.$router.push({path:"/" + addressFlag.tag + "/" + addressFlag.serieId});
             },
             orderAddress(item){
             	  var addressFlag = this.$store.getters.getAddress;
@@ -141,6 +136,19 @@
         mounted(){
         //组件初始完成需要做什么
         	this.fillData();
+
+          var addressFlag=this.$store.getters.getAddress["tag"];
+          if(addressFlag=='orderConfrim'||addressFlag=='displayConfrim'){
+            this.radio=true;
+            this.title='选择收货地址';
+          }else{
+            this.radio=false;
+            this.title='收货地址管理';
+            this.url='';
+          }
+
+          this.defaultID = this.$store.getters.getDefaultAddress;
+          console.log(this.defaultID);
         },
         watch:{
         	addressList(curVal,oldVal){
@@ -154,24 +162,6 @@
         	$route(){
         		this.fillData();
         	}
-        },
-        beforeRouteEnter(to, from, next){
-        	next(vm => {
-			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
-	        		vm.radio=true;
-	        		vm.title='选择收货地址';
-	        		vm.url=from.fullPath;
-	        		sessionStorage.infos = '';
-	        	}else{
-	        		vm.radio=false;
-	        		vm.title='收货地址管理';
-	        		vm.url='';
-	        		sessionStorage.infos = from.name;
-	        	}
-			  });
-        },
-        created(){
-        	//this.fillData();
         }
    	 }
 </script>

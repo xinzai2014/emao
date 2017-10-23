@@ -25,8 +25,8 @@
             <router-link to="/profile/info/remit">
                 <div><i class="yellow-rt"></i>汇款账户管理</div>
             </router-link>
-            <router-link to="/profile/info/address">
-                <div><i class="yellow-rt"></i>收货地址管理</div>
+            <router-link to="/profile/info/address" >
+                <div @click="setDefaultAdress"><i class="yellow-rt"></i>收货地址管理</div>
             </router-link>
             <router-link to="/profile/info/password">
                 <div><i class="yellow-rt"></i>设置密码</div>
@@ -81,7 +81,15 @@
                 }).catch(function (error) {
                     console.log("请求失败了");
                 });
-            }
+            },
+            setDefaultAdress(){
+                this.$store.dispatch("ADDRESS_FLAG", // 通过store传值
+                  {
+                    tag:"profile/info",
+                    serieId:""
+                  }
+                );
+          }
         },
         mounted(){
                 //组件初始完成需要做什么
