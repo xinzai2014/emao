@@ -800,6 +800,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	border:1px solid #d5aa5c;
 	margin:0.533333rem 0;
 }
+.ayment-info a{
+	display:block;
+}
 .ayment-info p {
     color: #2c2c2c;
     font-size: 0.4rem;

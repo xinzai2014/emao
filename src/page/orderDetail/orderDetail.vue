@@ -673,6 +673,9 @@ export default {
   border:1px solid #d5aa5c;
   margin:0.533333rem auto;
 }
+.send-to{
+  display:block;
+}
 .send-to p{
   overflow:hidden;
   font-size:0.4rem;
