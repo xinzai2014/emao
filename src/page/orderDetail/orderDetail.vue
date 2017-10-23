@@ -287,7 +287,7 @@ export default {
                 let timer = setInterval(()=>{
                   num--;
                   this.huang = false;
-                  this.sendText = num+"s后重新获取";
+                  this.sendText = num+"s";
                   if(!num){
                     this.sendText = "发送到手机";
                     this.huang = true;
@@ -502,7 +502,7 @@ export default {
 /*      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
         sessionStorage.orderDetailUrl=from.name;
       }*/
-      if(from.name != 'paymentSubmit'){
+      if(from.name != 'paymentSubmit' && from.name != 'payment'){
         sessionStorage.orderDetailUrl = from.path;
       }
 
