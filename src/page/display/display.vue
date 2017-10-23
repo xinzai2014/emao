@@ -132,6 +132,12 @@
 			                orderId:item.id
 			            }
 		            );
+                this.$store.dispatch("PAYMENT_URL", // 通过store传值
+                  {
+                    tag:"display",
+                    id:""
+                  }
+                );
 	            }
 	            if(item.status=='5'){
 	            	this.$router.push({name:'balanceConfrim',params:{id:item.orderNum}});
