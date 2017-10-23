@@ -126,14 +126,19 @@ Vue.directive('load-more',{
 		    }
 		}
 		//loadMore(el,binding.value);
-		window.addEventListener('scroll', function () {
+		window.onscroll  = function () {
       var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       if(scrollTop + window.innerHeight >= (el.clientHeight)) {
 				var fnc = binding.value;
 				fnc();
 			}
-		})
-      }
+		}
+      },
+  unbind(){
+    console.log(window.onscroll);
+    window.onscroll = null;
+    console.log(window.onscroll);
+  }
 })
 
 Vue.http.interceptors.push(function(request,next){
