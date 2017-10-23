@@ -481,7 +481,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			            let timer = setInterval(()=>{
 			              	num--;
 			              	this.huang = false;
-			              	this.sendText = num+"s后重新获取";
+			              	this.sendText = num+"s";
 			              	if(!num){
 				                this.sendText = "发送到手机";
 				                clearInterval(timer);
