@@ -1,5 +1,5 @@
 <template>
-    <div class="rating_page" v-if="loading">
+    <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
 			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>{{title}}
@@ -55,13 +55,13 @@
             return {
               //初始数据结构
               addressList:[],
-              show:true,
+              show:false,
               radio:false,
               url:'',
               showAlert: false, //弹出框
-          alertText: null, //弹出信息
-          title:'收货地址管理',
-          loading:false
+	          alertText: null, //弹出信息
+	          title:'收货地址管理',
+	          loading:false
             }
         },
         components:{
@@ -70,7 +70,7 @@
         methods:{
             //组件方法
             resetIndex(){
-            	if(sessionStorage.infos = 'info'){
+            	if(sessionStorage.infos == 'info'){
             		this.$router.push({ name: 'info'});
             	}else{
             		if(this.$store.getters.getAddress){
@@ -130,7 +130,7 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	this.loading=true;
+		        	//this.loading=true;
 		            this.addressList = response.body.data;
 		        }).catch(function (error) {
 		            this.showAlert = true;

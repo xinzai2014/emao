@@ -123,22 +123,22 @@ import alertTip from '../../../../../../components/common/alertTip/alertTip'
 		        ).then(function (response) {
 		        	this.showAlert = true;
           			this.alertText = "保存成功";
-          			this.$router.push({ name: 'address'});
-		        	/*if(this.$store.addressFlag!=""){
-				    	var addressFlag=this.$store.state.addressFlag;
-				    	this.$store.dispatch("ADDRESS_FLAG","");
-				    	this.$router.push({ name: addressFlag});				    	
+          			//this.$router.push({ name: 'address'});
+	            	this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值 如果有异步操作放到action里面
+				        {
+				          id:response.body.data.id,
+				          address:data.address,
+				          phone:data.phone,
+				          name:data.name
+				        }
+				    );
+				    if(this.$store.getters.getAddress!=""){
+				    	var addressFlag=this.$store.getters.getAddress;
+				    	this.$router.push({ path: "/" + addressFlag.tag + "/" + addressFlag.serieId });
 				    }else{
-				    	this.$router.push({ name: 'address'});
-				    }*/
-				    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
-			        {
-			          id:this.id,
-			          address:this.address,
-			          phone:this.phone,
-			          name:this.name
-			        }
-			    );
+              
+				    	//this.$router.push({ path: '/address'});
+				    }
 		        }).catch(function (error) {
 		            this.showAlert = true;
           			 this.alertText = error.body.msg||"请求失败了";	            
