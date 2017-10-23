@@ -156,7 +156,7 @@
 	color:#2c2c2c;
 }
 .notice-bt i{
-	float:right;
+	float:right !important;
 }
 .notice-bt span{
 	color:#fc3036;

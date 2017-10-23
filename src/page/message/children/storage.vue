@@ -132,7 +132,7 @@
 	line-height:0.4rem;
 }
 .notice-bt i{
-	float:right;
+	float:right !important;
 }
 .notice-bt span{
 	color:#fc3036;
