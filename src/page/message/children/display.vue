@@ -163,12 +163,13 @@
 		font-size:0.4rem;
 		color:#999;
 		margin-top:0.4rem;
+		width:100%;
 	}
 	.remind-stat span{
 		color:#fc3036;
 	}
 	.remind-stat i{
-		float:right;
+		float:right !important;
 	}
 	.remind-red{
 		border-color:#ff6469;
