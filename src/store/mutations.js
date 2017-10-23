@@ -12,7 +12,8 @@ import {
 	SPARE_DATA,
 	MESSAGE_FLAG,
 	SUCCESS_DATA,
-  SUCCESS_URL
+  SUCCESS_URL,
+  PAYMENT_URL
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -50,6 +51,7 @@ export default {
 
 	[RETURN_DATA](state,obj){ //获取选中车型;
 		state.returnData = obj;
+    setStore('returnData',obj);
 	},
 
 	[ALERT](state,obj){ //提示信息
@@ -83,6 +85,11 @@ export default {
   [SUCCESS_URL](state,obj){ //成功结果页面传值
     state.successURL = obj;
     setStore('successURL',obj);
+  },
+
+  [PAYMENT_URL](state,obj){ //进入汇款凭证页面标识，做回退使用
+    state.paymentURL = obj;
+    setStore('paymentURL',obj);
   }
 
 }

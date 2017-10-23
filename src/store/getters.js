@@ -26,5 +26,11 @@ export default {
   },
   getDefaultBrand(state){ //默认地址
     return state.defaultBrand || getStore("defaultBrand");
+  },
+  getReturnData(state){
+    return state.returnData || getStore("returnData");
+  },
+  getPaymentURL(state){ //汇款凭证页面进入标识
+    return state.paymentURL || getStore("paymentURL");
   }
 }

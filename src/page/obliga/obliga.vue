@@ -4,7 +4,7 @@
         <header class="user-tit">
           <a href="javascript:;" class="white-lt" @click="resetIndex"></a>待付款
         </header>
-        
+
         <section v-if="orderList.length">
           <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
               <div class="full-item" v-for="(item,index) in orderList" v-if="item.status=='7'|| item.status=='27'">
@@ -68,7 +68,7 @@ export default {
         var data = {
             token:dataToken,
             perPage:this.perPage,
-            page:this.currentPage,            
+            page:this.currentPage,
         }
         this.$http({
             url:"order/full/pendingPayment",
@@ -90,7 +90,7 @@ export default {
             }
         }).catch(function (error) {
              this.showAlert = true;
-          this.alertText = error.body.msg||"请求失败了"; 
+          this.alertText = error.body.msg||"请求失败了";
         });
     },
     paymentSubmit(item){
@@ -101,11 +101,17 @@ export default {
             orderId:item.id
         }
       );
+      this.$store.dispatch("PAYMENT_URL", // 通过store传值
+        {
+          tag:"obliga",
+          id:""
+        }
+      );
     },
     stateAdd(arr){
       for(var i=0;i<arr.length;i++){
           switch (arr[i].status){
-            case '7' : 
+            case '7' :
                 arr[i].state='待付款';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime==''){
                     //arr[i].status=6;
@@ -114,23 +120,23 @@ export default {
                     this.countNum=arr[i].remainingTime||0;
                     arr[i].remaining=this.remaining;
                     this.remainingTime(arr[i]);
-                }     
+                }
             break;
-            case '27' : 
+            case '27' :
                 arr[i].state='请重新提交';
                 if (arr[i].remainingTime=='0' || arr[i].remainingTime=='') {
                     //arr[i].status=6;
                     //arr[i].state='已取消';
                 }else{
                     this.countNum=arr[i].remainingTime;
-                    arr[i].remaining=this.remaining;  
-                    this.remainingTime(arr[i]); 
-                }         
-            break;                       
+                    arr[i].remaining=this.remaining;
+                    this.remainingTime(arr[i]);
+                }
+            break;
           }
-          
+
       }
-    },   
+    },
     remainingTime(item){
         clearInterval(item.timer);
         item.timer = setInterval(() => {
@@ -142,10 +148,10 @@ export default {
                   item.state='已取消';
               }
               this.countNum=item.remainingTime;
-              item.remaining=this.remaining;  
+              item.remaining=this.remaining;
             }
         }, 60000);
-    },   
+    },
     /*返回顶部
     backTop(){
       animate(document.body, {scrollTop: '0'}, 400,'ease-out');
@@ -159,13 +165,13 @@ export default {
       }
       //防止重复请求
       if (this.preventRepeatReuqest) {
-        return 
+        return
       }
       this.showLoading = true;
       this.preventRepeatReuqest = true;
 
       this.currentPage=parseInt(this.currentPage)+1;
-      this.fillData();   
+      this.fillData();
     }
   },
   mounted(){
@@ -184,9 +190,9 @@ export default {
               minutes = '0' + minutes;
           }
           return hours + '小时' + minutes + '分钟';
-      }        
+      }
   },
-  watch:{ 
+  watch:{
     $route(){
         this.fillData();
     }

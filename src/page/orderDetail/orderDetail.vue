@@ -49,8 +49,8 @@
               <p class="remit-tit" v-if="orderInfo.status=='7'||orderInfo.status=='27'">汇款信息</p>
               <p class="remit-tit" v-else>付款信息</p>
               <div class="send-to" v-if="bankInfo.accountType!=2 && bankInfo.accountType">
-                      
-                       
+
+
                        <p>
                           <label>汇款单位：</label>
                           <span>{{bankInfo.companyName}}</span>
@@ -204,6 +204,12 @@ export default {
             orderId:this.orderInfo.id
         }
       );
+      this.$store.dispatch("PAYMENT_URL", // 通过store传值
+        {
+          tag:"orderDetail",
+          id:this.orderInfo.orderNum
+        }
+      );
     },
     confirmCar(){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;
@@ -268,7 +274,7 @@ export default {
           this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
       });
-      
+
     },
     sendMes(){
         if(this.huang){
@@ -296,9 +302,9 @@ export default {
         }
     },
     remainingTime(item){
-        clearInterval(item.timer);        
-        item.timer = setInterval(() => {           
-            if(item.remainingTime != 0) {              
+        clearInterval(item.timer);
+        item.timer = setInterval(() => {
+            if(item.remainingTime != 0) {
               item.remainingTime = parseInt(item.remainingTime)-60;
               if (item.remainingTime <=0) {
                   clearInterval(item.timer);
@@ -306,10 +312,10 @@ export default {
                   item.state='已取消';
               }
               this.countNum=item.remainingTime;
-              item.remaining=this.remaining;  
+              item.remaining=this.remaining;
             }
         }, 60000);
-    } ,   
+    } ,
     fillData(){
         var order_num=this.$route.params.id;
         var dataToken = sessionStorage.token;
@@ -323,7 +329,7 @@ export default {
             params:data
         }).then(function (response) {
             if(this.getQuery()){
-              this.setAddress(this.getQuery()); 
+              this.setAddress(this.getQuery());
             }else{
               this.address=response.body.data.address;
             }
@@ -343,21 +349,21 @@ export default {
                 arr[1]='00';
               }
               response.body.data.capitalInfo[i]=arr.join('.');
-            } 
+            }
             this.capitalInfo=response.body.data.capitalInfo;
             var orderInfo=response.body.data.orderInfo;
-            this.stateAdd(orderInfo);  
+            this.stateAdd(orderInfo);
             this.orderInfo=orderInfo;
             this.countTime=this.orderInfo.orderTime;
-            
+
         }).catch(function (error) {
             this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
-        }); 
+        });
     },
     stateAdd(obj){
         switch (obj.status){
-          case '7' : 
+          case '7' :
               obj.state='等待付款';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=6;
@@ -368,7 +374,7 @@ export default {
                   this.remainingTime(obj);
               }
           break;
-          case '27' : 
+          case '27' :
               obj.state='请重新提交';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=6;
@@ -377,23 +383,23 @@ export default {
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
                   this.remainingTime(obj);
-              }        
+              }
           break;
-          case '8' : 
+          case '8' :
               obj.state='付款审核中,请耐心等待';
-          break; 
-          case '6' : 
+          break;
+          case '6' :
               obj.state='已取消';
-          break; 
-          case '5' : 
+          break;
+          case '5' :
               obj.state='交易完成';
               this.vinActive="已收货";
           break;
-          case '3' : 
+          case '3' :
               obj.state='车辆出库中';
               this.vinActive="出库中";
           break;
-          case '4' : 
+          case '4' :
               obj.state='车辆在途';
               this.vinActive="已发货";
               if (obj.remainingTime=='0' || obj.remainingTime==''){
@@ -405,8 +411,8 @@ export default {
               }
           break;
         }
-          
-    },   
+
+    },
     // 返回顶部
     backTop(){
       document.body.scrollTop=0;
@@ -446,12 +452,12 @@ export default {
   mounted(){
     //组件初始完成需要做什么
     this.fillData();
-    this.backTop();  
-    
+    this.backTop();
+
   },
-  watch:{ 
+  watch:{
     $route(){
-        this.fillData();   
+        this.fillData();
     }
   },
   computed: {
@@ -475,7 +481,7 @@ export default {
           }else{
             return hours + '小时' + minutes + '分钟';
           }
-          
+
       },
       time:function(){
         var that=this;
@@ -488,7 +494,7 @@ export default {
 
   },
   beforeRouteEnter(to, from, next){
-    
+
     next(vm => {
       if(from.name=='declare'){
         vm.success=true;
@@ -499,7 +505,7 @@ export default {
       if(from.name != 'paymentSubmit'){
         sessionStorage.orderDetailUrl = from.path;
       }
-      
+
     });
   }
 
@@ -508,7 +514,7 @@ export default {
 
 <style>
 .send-to .send-phone.huang{
-  background:#d5aa5c; 
+  background:#d5aa5c;
 }
 .fixed_box{
   position:fixed;
@@ -808,7 +814,7 @@ export default {
 }
 .options b{
   display:block;
-  
+
 }
 .receipt-btn{
   font-size:0.453333rem;

@@ -25,3 +25,5 @@ export const MESSAGE_FLAG = "MESSAGE_FLAG"
 export const SUCCESS_DATA = "SUCCESS_DATA" //成功页数据
 
 export const SUCCESS_URL = "SUCCESS_URL" //成功页跳转标示
+
+export const PAYMENT_URL = "PAYMENT_URL" //汇款页跳转URL标示

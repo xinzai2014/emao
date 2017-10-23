@@ -13,7 +13,7 @@
                   </router-link>
               </div>
             </div>
-            <router-link to="/profile/info/remit" v-else>  
+            <router-link to="/profile/info/remit" v-else>
               <div class="voucher-item item-bor" v-if="type == 1">
                   <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
                   <p><span>{{editData.pay_company}}</span>汇款单位：</p>
@@ -87,11 +87,13 @@ export default {
   methods:{
       //组件方法
       resetIndex(){
-          if(sessionStorage.nameId){
-            this.$router.push({name:sessionStorage.goName,params:{id:this.returnData.orderNum}});
-          }else{
-            this.$router.push({name:sessionStorage.goName});
-          } 
+          var paymentURL = this.$store.getters.getPaymentURL;
+//          if(sessionStorage.nameId){
+//            this.$router.push({name:sessionStorage.goName,params:{id:this.returnData.orderNum}});
+//          }else{
+//            this.$router.push({name:sessionStorage.goName});
+//          }
+          this.$router.push({path:"/" + paymentURL["tag"] + "/" + paymentURL["id"] });
           sessionStorage.paymentPrice = '';
           sessionStorage.remark = '';
       },
@@ -114,7 +116,7 @@ export default {
             this.showType();
         }).catch(function (error) {
            //this.showAlert = true;
-          //this.alertText = error.body.msg||"请求失败了";    
+          //this.alertText = error.body.msg||"请求失败了";
         });
       },
       showType(){
@@ -137,16 +139,16 @@ export default {
         }).then(function (response) {
           //console.log(response);
             this.infoData = response.body.data;
-            this.dataLength();            
+            this.dataLength();
         }).catch(function (error) {
             //this.showAlert = true;
-          //this.alertText = error.body.msg||"请求失败了"; 
+          //this.alertText = error.body.msg||"请求失败了";
         });
-     
+
       },
       dataLength(){
         //是否添加账户，默认账户
-        if(this.infoData.length > 0){ 
+        if(this.infoData.length > 0){
           this.showRemit = true;
           if(this.$route.query.id){
             this.acountEdit();
@@ -162,7 +164,7 @@ export default {
       },
       returnDataF(){
         //订单页数据
-        this.returnData=this.$store.state.returnData;
+        this.returnData=this.$store.getters.getReturnData;
       },
       submit(){
          //提交
@@ -197,7 +199,7 @@ export default {
                 data['payimg']=this.dataURL.payment[i];
             }else{
               data['payimg'+(i+1)]=this.dataURL.payment[i];
-            }   
+            }
         }
         if(sessionStorage.submitFlag){
           this.$http.post("order/full/payment",data)
@@ -208,11 +210,11 @@ export default {
                 this.alertText = "提交成功,请等待审核";
                 var that=this;
                 setTimeout(function(){
-                  that.resetIndex(); 
+                  that.resetIndex();
                 },1000);
             }).catch(function (error) {
                 //this.showAlert = true;
-               // this.alertText = error.body.msg||"请求失败了"; 
+               // this.alertText = error.body.msg||"请求失败了";
             });
           }else{
             this.$http.post("order/show/payment",data)
@@ -220,16 +222,16 @@ export default {
               console.log(data);
                 //this.success=true;
                 this.showAlert = true;
-                this.alertText = "提交成功,请等待审核"; 
+                this.alertText = "提交成功,请等待审核";
                 var that=this;
                 setTimeout(function(){
-                  that.resetIndex(); 
+                  that.resetIndex();
                 },1000);
             }).catch(function (error) {
                 //this.showAlert = true;
-          //this.alertText = error.body.msg||"请求失败了"; 
+          //this.alertText = error.body.msg||"请求失败了";
             });
-          }   
+          }
       }
   },
   watch:{
@@ -241,29 +243,27 @@ export default {
     },
     price(){
       sessionStorage.paymentPrice=this.price;
-    },
+  },
     remark(){
       sessionStorage.remark=this.remark;
     }
   },
   beforeRouteEnter(to, from, next){
     next(vm => {
-      if(from.name=='orderDetail'){
-          sessionStorage.submitFlag=true;
-          sessionStorage.nameId = true;
-        }
-      if(from.name=='displayDetail' || from.name=='display'){
-          sessionStorage.submitFlag=false;
-          sessionStorage.nameId = true;
-      }
-      if(from.name=='remit'){
-          vm.price=sessionStorage.paymentPrice;
-          vm.remark=sessionStorage.remark;
-      }else{
-          sessionStorage.goName = from.name
-      }
-      
-      
+//      if(from.name=='orderDetail'){
+//          sessionStorage.submitFlag=true;
+//          sessionStorage.nameId = true;
+//        }
+//      if(from.name=='displayDetail' || from.name=='display'){
+//          sessionStorage.submitFlag=false;
+//          sessionStorage.nameId = true;
+//      }
+//      if(from.name=='remit'){
+//          vm.price=sessionStorage.paymentPrice;
+//          vm.remark=sessionStorage.remark;
+//      }else{
+//          sessionStorage.goName = from.name
+//      }
     });
   }
 }

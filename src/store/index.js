@@ -23,7 +23,8 @@ const state = {
 	spareData:null, //补余款传值
 	messageFlag:"",//消息页标识
 	successData:null, //成功页数据
-  successURL:null
+  successURL:null, //成功页会跳标识
+  paymentURL:null  //提交汇款凭证页面跳转标识
 }
 
 export default new Vuex.Store({
