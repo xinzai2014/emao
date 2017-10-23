@@ -85,7 +85,6 @@ export default {
       //this.acountEdit();
       this.returnDataF();
       var payData = this.$store.getters.getPaymentData;
-      console.log(payData);
       this.price = payData.paymentPrice;
       this.remark = payData.remark;
       var paymentURLTag = this.$store.getters.getPaymentURL["tag"];
