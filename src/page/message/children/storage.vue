@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>中转库变动提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="notice" v-scroll="getMore">
+	    <section class="notice" v-scroll="getMore" ref="load">
 	        <div class="notice-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/storage/'">
 		            <div class="notice-tit">{{item.created_at}}</div>
@@ -63,18 +63,24 @@
 		            console.log("请求失败了");
 		        });
             },
-            getMore: function () {
-				if(this.nowPage >= this.lastPage){
-					this.switchShow=this.switchShow;
-				}else{
-					if(this.loadingData){
-						this.switchShow=!this.switchShow;
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+            getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    console.log(this.nowPage);
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 0);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
@@ -86,20 +92,15 @@
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						clearTimeout(this.scrollTimer);
-						this.scrollTimer = setTimeout(function(){
-							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-							if(scrollTop + window.innerHeight >= el.clientHeight ) {
-								var fnc = binding.value;
-								fnc();
-							}
-						}, 1000);
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }   
 </script>
 

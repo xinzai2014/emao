@@ -77,23 +77,23 @@
 		        });
             },
 			getMore: function (el) {
-						clearTimeout(this.scrollTimer);
-						this.scrollTimer = setTimeout(() => {
-							var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-							if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
-                if(this.nowPage >= this.lastPage){
-                  this.switchShow=this.switchShow;
-                }else{
-                  if(this.loadingData){
-                    this.switchShow=!this.switchShow;
-                    this.nowPage = parseInt(this.nowPage)+1;
-                    console.log(this.nowPage);
-                    this.moreFn(this.nowPage);
-                    this.loadingData = !this.loadingData;
-                  }
-                }
-							}
-						}, 0);
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    console.log(this.nowPage);
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
+					}
+				}, 0);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
@@ -105,15 +105,15 @@
         },
         directives: {// 自定义指令
 			scroll: {
-        inserted: function (el, binding){
-          window.addEventListener('scroll',binding.value,false);
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
 		},
-    beforeRouteLeave(to,form,next){
-      window.removeEventListener('scroll',this.getMore,false);
-      next();
-    }
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }
 </script>
 
