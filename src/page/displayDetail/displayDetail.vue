@@ -86,7 +86,7 @@
 			                    <label>开户行：</label>
 			                    <span>{{bankInfo.bankName}}</span>
 			                </p>
-			                <p:class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+			                <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
 	                  		<router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'||orderInfo.status=='28' ||orderInfo.status=='9'">
 	                    		<p class="ayment-details">查看详情</p>
 	                  		</router-link>
