@@ -40,7 +40,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
+html,body{
+  height:100%;
+}
 /*登录-注册样式*/
 .login-bg{width:10rem;height:100%;background:url("../../assets/login-bg.jpg") no-repeat;background-size:100% 100%;}
 .login-in{padding-top:1.2rem;}

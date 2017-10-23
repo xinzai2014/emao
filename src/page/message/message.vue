@@ -126,6 +126,9 @@ export default {
 </script>
 
 <style>
+html,body{
+  height:auto;
+}
 .rating_pages{
     position: absolute;
     top: 0;

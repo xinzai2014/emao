@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>账户资金变动提醒
 		</header>
 	    <!--账户资金变动提醒-->
-	    <section class="change" v-scroll="getMore">
+	    <section class="change" v-scroll="getMore" ref="load">
 	        <div class="change-item" v-for="(item,index) in infoData">
 	        	<div v-if="item.order_num">
 	        		<router-link  :to="'/orderDetail/'+item.url">
@@ -33,6 +33,7 @@
 	            </div>
 	        </div>
 	    </section>
+	    <p class="loading" v-show="switchShow">数据已加载完</p>
     </div>
 </template>
 
@@ -104,16 +105,24 @@
 			          
 			    } 
             },
-            getMore: function () {
-				if(this.nowPage >= this.lastPage){
-				}else{
-					if(this.loadingData){
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+            getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    console.log(this.nowPage);
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 0);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
@@ -125,20 +134,15 @@
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						clearTimeout(this.scrollTimer);
-						this.scrollTimer = setTimeout(function(){
-							var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
-							if(scrollTop + window.innerHeight >= el.clientHeight ) {
-								var fnc = binding.value;
-								fnc();
-							}
-						}, 1000);
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }   
 </script>
 
