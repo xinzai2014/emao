@@ -79,14 +79,16 @@ export default {
     uploader,
     alertTip
   },
-  created:function(){
+  mounted:function(){
       //初始化
       this.mountedData();
       //this.acountEdit();
       this.returnDataF();
       var payData = this.$store.getters.getPaymentData;
-      this.price = payData.paymentPrice;
-      this.remark = payData.remark;
+      if(!!payData){
+        this.price = payData.paymentPrice;
+        this.remark = payData.remark;
+      }
       var paymentURLTag = this.$store.getters.getPaymentURL["tag"];
       if( paymentURLTag == 'displayDetail' || paymentURLTag == 'display'){
         this.submitFlag = false;
@@ -208,7 +210,7 @@ export default {
               data['payimg'+(i+1)]=this.dataURL.payment[i];
             }
         }
-        if(sessionStorage.submitFlag){
+        if(this.submitFlag){
           this.$http.post("order/full/payment",data)
             .then(function (response) {
                 console.log(data);
