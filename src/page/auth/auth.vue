@@ -409,7 +409,7 @@
 
                 var activeIndex = this.authTag.findIndex(function(ele,index,arr){
                   return ele.tag;
-                })
+                });
 
                 if(activeIndex < 0){
                   this.$store.dispatch("ALERT", // 通过store传值
@@ -419,6 +419,28 @@
                     }
                   );
                   return false
+                }
+
+                if(this.conditionsIndex == 0){
+                  if((this.road_license == "")||(this.road_license == null)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传道路经营许可证"
+                      }
+                    );
+                    return false
+                  }
+                }else if(this.conditionsIndex == 1){
+                  if((this.repair_place == "")||(this.repair_place == null)){
+                    this.$store.dispatch("ALERT", // 通过store传值
+                      {
+                        flag:true,
+                        text:"请上传维修场地"
+                      }
+                    );
+                    return false
+                  }
                 }
 
                 if((this.booth_out_img == "")||(this.booth_out_img == null)){

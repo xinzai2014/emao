@@ -224,6 +224,12 @@ import alertTip from '../../components/common/alertTip/alertTip'
                       orderId:this.orderInfo.id
                   }
                 );
+              this.$store.dispatch("PAYMENT_URL", // 通过store传值
+                {
+                  tag:"displayDetail",
+                  id:this.orderInfo.orderNum
+                }
+              );
               },
               balanceConfrim(){
                 this.$router.push({name:'balanceConfrim'});
@@ -829,7 +835,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	background: #dbdbdb;
 }
 .ayment-info p.send-phone.huang{
-  background:#d5aa5c; 
+  background:#d5aa5c;
 }
 /*退订展车*/
 .website{
