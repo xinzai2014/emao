@@ -364,6 +364,7 @@ export default {
     width:1.306667rem;
     height:1.386667rem;
     display:inline-block;
+    z-index:203;
 }
 .rebate-no {
     text-align: center;
