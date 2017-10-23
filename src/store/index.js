@@ -10,7 +10,7 @@ Vue.use(Vuex)
 const state = {
 	fullPaymentData:{}, //全款购车传参
 	displayData:{}, //申请展车传参
-	defaultAdress:{},
+	defaultAdress:null,
 	chooseCar:false,
 	carData:{
 		carName:"选择车型"
