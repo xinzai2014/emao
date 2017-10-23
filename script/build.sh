@@ -11,10 +11,10 @@ app_path='/data/www/project-taochemao-wap'
 main()
 {
     cd ${app_path}
-     	npm install
-    	npm run build
-    # /usr/local/nodejs6/bin/npm install
-    # /usr/local/nodejs6/bin/npm run build
+    # npm install
+    #	npm run build
+    /usr/local/nodejs6/bin/npm install
+    /usr/local/nodejs6/bin/npm run build
 }
 
 main
