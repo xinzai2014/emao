@@ -13,8 +13,8 @@ main()
     cd ${app_path}
     # npm install
     #	npm run build
-    /usr/local/nodejs6/bin/npm install
-    /usr/local/nodejs6/bin/npm run build
+    /bin/npm install
+    /bin/npm run build
 }
 
 main
