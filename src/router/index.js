@@ -444,6 +444,8 @@ var router=new Router({
 
 router.beforeEach((to, from, next) => {
     var token = sessionStorage.getItem('token');
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     //如何做登录完了回到某个页面去呢
     if(to.name=="loading"||to.name=='account'||to.name=='code'){ //不需要登录可以直接跳转的
         next();
@@ -455,5 +457,6 @@ router.beforeEach((to, from, next) => {
         next('/');
     }
 })
+
 
 export default router;

@@ -29,10 +29,12 @@ export default {
 	  			console.log(response);
 	  			var myMessage = response.body.data;
 	  			var that = this;
-	  			myMessage.forEach(function(e,index){
-	  				var num = e.num?parseInt(e.num):0;
-	  				that.myMessage += num;
-	  			})
+          if(myMessage.length>0){
+            myMessage.forEach(function(e,index){
+              var num = e.num?parseInt(e.num):0;
+              that.myMessage += num;
+            })
+          }
 	  		},function(){
 
 	  		})
@@ -42,7 +44,7 @@ export default {
 		this.getMessList();
 	  },
 	  watch:{
-	   
+
 	  }
 }
 </script>

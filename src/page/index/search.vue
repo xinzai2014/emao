@@ -44,8 +44,8 @@ export default {
             );
         },
         submitForm(){
-          console.log(this.carMess);
-          if(!this.carMess){
+          console.log()
+          if(this.carMess["carName"] == "选择车型"){
             this.$store.dispatch("ALERT", // 通过store传值
               {
                 flag:true,

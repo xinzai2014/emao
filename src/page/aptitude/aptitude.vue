@@ -22,7 +22,7 @@
             </p>
             <p>
                 <label>纳税识别号：</label>
-                <input type="tel"  v-model="revenue" ref="revenue" placeholder="请输入纳税识别号" maxlength="20">
+                <input type="text"  v-model="revenue" ref="revenue" placeholder="请输入纳税识别号" maxlength="20">
             </p>
         </div>
         <div class="clear20"></div>
@@ -214,6 +214,7 @@
                   .then(function (response) {
                     console.log(response);
                     this.iframeCon = response.bodyText;
+                    this.showAgreement = true;
                   }).catch(function (error) {
 
                   });
@@ -239,7 +240,7 @@
                     this.$refs.bank.focus();
                     return false
                 }
-                var numRepExp = /^\d{1,20}$/; //企业账号以及纳税号规则
+                var numRepExp = /^[a-zA-Z0-9]{1,20}$/; //企业账号以及纳税号规则
                 if((this.account == "")||(this.account == null)||(!numRepExp.test(this.account))){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
@@ -320,7 +321,7 @@
                     );
                     return false
                 }
-                this.showAgreement = true;
+                this.getAgreement();
             },
             submitFormData(){
                 this.$http.post(
@@ -391,7 +392,7 @@
             },
         },
         mounted(){
-            this.getAgreement();
+            //this.getAgreement();
             this.passportMessage();
         },
         components:{

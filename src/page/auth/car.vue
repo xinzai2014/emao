@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+
   <div class="brand" :class='{anmiteStatus:showBrand}'>
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
@@ -30,7 +30,7 @@
                 <li v-for="(item,index) in brandList" @click.stop="srcllToIndex(index)">{{item.name}}</li>
             </ul>
         </section>
-        
+
         <section class="brand-submit">
           <span class="btn-primary" @click="subBrand">完成</span>
         </section>
@@ -51,7 +51,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     </div>
 </div>
@@ -135,7 +134,7 @@
                    probeType: 3,
                    click:true
                 });
-            },100) 
+            },100)
         },
         countHeight(){ //记录初始楼层高度
             const brandContainer = this.$refs.brandWrapper;
@@ -148,6 +147,15 @@
             this.brandScroll.scrollTo(0, -this.brandHeight[index],500);
         },
         openMarkDialog(item){
+          if(this.authBrand.length>=10){
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:"请如实选择授权品牌"
+              }
+            );
+            return false;
+          }
           this.currentItem = item;
           this.showMark = !this.showMark;
         },
@@ -179,7 +187,8 @@
                 e.tagName = "";
               })
           })
-          this.$emit("subBrandList",null);
+          this.authBrand = [];
+          this.$emit("subBrandList");
         },
         subBrand(){ //向上提交选取的品牌
           this.$emit("subBrandList",this.authBrand);
@@ -201,7 +210,7 @@
 .brand{
     position: fixed;
     top:0;
-    transform:translateX(100%); 
+    transform:translateX(100%);
     width: 100%;
     z-index:100;
     height:100%;

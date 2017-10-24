@@ -168,18 +168,21 @@
 	                account:this.editData.account,
 	                explan_path:this.editData.explan_path
 	            }
+                var that = this;
 	            this.$http.post("dealerBank/updatePerson",data
 	            ).then(function (response) {
-	                if(sessionStorage.remitName == 'paymentSubmit'){
-                        this.$router.push({
-                            path:sessionStorage.url,
-                            query:{
-                                'id':this.id
-                            }
-                        });
-                    }else{
-                        this.resetIndex();
-                    }
+                    setTimeout(function(){
+    	                if(sessionStorage.remitName == 'paymentSubmit'){
+                            that.$router.push({
+                                path:sessionStorage.url,
+                                query:{
+                                    'id':that.id
+                                }
+                            });
+                        }else{
+                            that.resetIndex();
+                        }
+                    },300)
 	            }).catch(function (error) {
 	                this.showAlert = true;
                     this.alertText = error.body.msg

@@ -194,19 +194,7 @@ export default {
 </script>
 
 <style>
-.router-fade-enter-active, .router-fade-leave-active {
-        transition: opacity .3s;
-    }
-    .router-fade-enter, .router-fade-leave-active {
-        opacity: 0;
-    }
-.router-slid-enter-active, .router-slid-leave-active {
-    transition: all .4s;
-}
-.router-slid-enter, .router-slid-leave-active {
-    transform: translate3d(2rem, 0, 0);
-    opacity: 0;
-}
+
 .no-auto{
     text-align: center;
     font-size: 0.453333rem;
@@ -364,6 +352,7 @@ export default {
     width:1.306667rem;
     height:1.386667rem;
     display:inline-block;
+    z-index:203;
 }
 .rebate-no {
     text-align: center;

@@ -26,7 +26,7 @@
                     </div>
                </div>
                <div class="book-car-action clearfix">
-                   <span @click="goConfiguration(item.id)">配置参数</span>
+                   <router-link :to="'/configuration?id=' + item.id" tag="span">配置参数</router-link>
                    <input class="book-car-buy" @click="showFullpay(item.id,index)" type="button" name="" value="全款购车" v-if="item.sale==1">
                    <input class="book-car-apply" @click="showExhibpay(item.id,index)" type="button" name="" value="申请展车" v-if="item.show==1">
                    <input class="book-car-remind" @click="showTipsDialog(item.id)" type="button" name="" value="到货提醒" v-if="(item.sale==2)&&(item.show==2)">
@@ -408,7 +408,7 @@ export default {
 .book-guide-price strong{display:block;float:left;margin-left:.1rem;font-weight:normal;}
 .book-guide-price em{display:block;float:left;}
 .book-car-action{margin-top:.5333rem;font-size:.3733rem;}
-.book-car-action span{display:block;float:left;margin-top:0.333rem;border-bottom:1px solid #000;}
+.book-car-action span{display:block;float:left;margin-top:0.333rem;border-bottom:1px solid #000;cursor:pointer;}
 .book-car-action input{width:2.6666rem;height:1.0667rem;float:right;text-align:center;line-height:1.0667rem;border-radius:.5333rem;background:none;}
 .book-car-apply{margin-right:.4rem;border:1px solid #666;}
 .book-car-buy{border:1px solid #d5aa5c;color:#d5aa5c;}
