@@ -357,6 +357,16 @@
                     this.$refs.managerName.focus();
                     return false
                 }
+                if(this.managerName.length<2){
+                  this.$store.dispatch("ALERT", // 通过store传值
+                    {
+                      flag:true,
+                      text:"请输入真实姓名"
+                    }
+                  );
+                  this.$refs.managerName.focus();
+                  return false
+                }
                 if((this.managerTelephone == "")||(this.managerTelephone == null)){
                     this.$store.dispatch("ALERT", // 通过store传值
                       {
@@ -523,14 +533,18 @@
                 this.checkAuthTag(this.authTag[1],1);
             },
             subBrandList(brandList){
-                this.authBrandList = brandList;
-                if(this.authBrandList) {
+                console.log(brandList);
+                if(arguments.length>0){
+                  console.log(1);
+                  this.authBrandList = brandList;
                   this.showAuthBrandList = true;
                 }else{
+                  console.log(2);
                   this.authTag.forEach(function(item){
                     item.tag = false;
                   });
                   this.authTag[1].tag = true;
+                  this.authBrandList =  [];
                 }
                 this.showBrand = false;
             },
@@ -903,6 +917,7 @@
 }
 
 .authen-info input:disabled{
+  -webkit-appearance:none;
   background:none;
   color:#333;
 }

@@ -254,13 +254,13 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = this.$store.getters.getDefaultAddress;
-                   }else{
-                        this.address = data.address;
-                        this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
-                            data.address
-                        );
-                   }
+                    this.address = this.$store.getters.getDefaultAddress;
+               }else{
+                    this.address = data.address;
+                    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                        data.address
+                    );
+               }
 		           this.car = data.car;
                    var coupon = data.coupon;
                    coupon.forEach(function(ele,index){ //初始化优惠券选中值
@@ -474,18 +474,19 @@ export default {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
             vm.initData = vm.$store.getters.getFullData; //从vuex中获取
-            vm.address = vm.$store.getters.getDefaultAddress; //从vuex中获取
+            //vm.address = vm.$store.getters.getDefaultAddress; //从vuex中获取
 		        vm.initData.token = sessionStorage.token;
 		        vm.getData();
             //保存提交信息
             vm.formData.auto_id =  vm.initData.autoId;         //车型ID
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
+            console.log(from.name);
             if((from.name=='address')||(from.name=="addressAdd")){
                     vm.routerAddress = true;
                 }else{
                     vm.routerAddress = false;
-                }
+            }
 		  })
 		}
 }

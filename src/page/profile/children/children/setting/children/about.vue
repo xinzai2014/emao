@@ -7,7 +7,7 @@
 		<section class="about-wrap">
 			<div class="about-tp">
 				<i class="about-logo"></i>
-				<span>version 1.0</span>
+				<span>version 1.1</span>
 			</div>
 			<div class="about-ct">
 				<p>淘车猫是"一猫汽车网"为综合经销商提供优质自营车源的服务平台，使用平台可方便快速的完成订车、安全高效的管理车辆。淘车猫还提供店内展车服务，减少经销商资金压力。
@@ -23,7 +23,7 @@
 	export default {
         data () {
             return {
-            	
+
             }
         },
         methods:{
