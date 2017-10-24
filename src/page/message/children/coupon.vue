@@ -12,7 +12,7 @@
 		            <div class="remind-cts">
 		                <div class="remind-tp">{{item.content_header}}</div>
 		                <div class="remind-bt">
-		                    <p class="remind-auto">{{item.content}}：<span>{{item.content1}}</span></p>
+		                    <p class="remind-autos">{{item.content}}：<span>{{item.content1}}</span></p>
 		                    <p class="remind-stat">
 		                        <i class="white-rt"></i>
 		                        {{item.content_footer}}
@@ -145,16 +145,16 @@
 .remind-bt{
 	padding:0.533333rem 0.2rem;
 }
-.remind-auto{
+.remind-autos{
 	width:7.333333rem;
-	height:0.4rem;
-	line-height:0.4rem;
+	height:0.6rem;
+	line-height:0.6rem;
 	font-size:0.4rem;
 	overflow:hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-.remind-auto span{
+.remind-autos span{
 	color:#d5aa5c;
 }
 .remind-stat{

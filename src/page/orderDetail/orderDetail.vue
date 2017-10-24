@@ -190,7 +190,12 @@ export default {
       }else{
         this.$router.push({name:sessionStorage.orderDetailUrl});
       }*/
-      this.$router.push({path:sessionStorage.orderDetailUrl});
+      if(sessionStorage.infoUrl == 'displayDetail'){
+        this.$router.go(-1);
+      }else{
+        this.$router.push({path:sessionStorage.orderDetailUrl});
+      }
+      
     },
     hide_success(){
       this.success=false;
@@ -502,8 +507,14 @@ export default {
 /*      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
         sessionStorage.orderDetailUrl=from.name;
       }*/
+
       if(from.name != 'paymentSubmit' && from.name != 'payment'){
-        sessionStorage.orderDetailUrl = from.path;
+          if(from.name=='displayDetail'){
+            sessionStorage.infoUrl = from.name;
+          }else{
+            sessionStorage.infoUrl = '';
+            sessionStorage.orderDetailUrl = from.path;
+          }
       }
 
     });

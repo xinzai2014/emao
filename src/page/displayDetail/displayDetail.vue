@@ -539,7 +539,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			    }else{
 			    	sessionStorage.displayName = ''
 			    }*/
-			    if(from.name != 'paymentSubmit' && from.name != 'payment'){
+			    if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail'){
 			        sessionStorage.orderDetailUrl = from.path;
 			    }
 		    });
