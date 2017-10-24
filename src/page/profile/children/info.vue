@@ -10,8 +10,8 @@
             <div class="user-bt"><span>{{infoData.link_phone}}</span>手机号：</div>
             <div><span>{{infoData.city_name}}</span>所在城市：</div>
             <template v-if="data_status == 1">
-              <router-link to="/profile/info/companyInfo">
-                  <div><i class="yellow-rt"></i><span class="red">{{data_msg}}</span>公司信息</div>
+              <router-link to="/profile/info/companyInfo" tag="div">
+                  <i class="yellow-rt"></i><span class="red">{{data_msg}}</span>公司信息
               </router-link>
             </template>
             <template v-if="data_status == 2">
@@ -172,7 +172,11 @@
     color:#2c2c2c;
     overflow:hidden;
     margin-bottom:0.4rem;
+    cursor:pointer;
 
+}
+.user-ct a{
+    display:block;width:100%;height:100%;
 }
 .user-ct div span{
     float:right;
