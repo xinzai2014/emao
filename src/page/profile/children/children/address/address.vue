@@ -72,7 +72,6 @@
             //组件方法
             resetIndex(){
                 var addressFlag=this.$store.getters.getAddress;
-                console.log(addressFlag);
                 this.$router.push({path:"/" + addressFlag.tag + "/" + addressFlag.serieId});
             },
             orderAddress(item){
@@ -229,7 +228,7 @@
 	position: absolute;
     width: 10rem;
     top: 1.173333rem;
-    bottom: 1.306667rem;
+    bottom: 0;
     overflow-y: auto;
     background-color: #f5f5f5;
 }
