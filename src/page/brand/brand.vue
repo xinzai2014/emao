@@ -7,7 +7,7 @@
         <span class="brand-switch" @click="showBrandDialog">切换品牌</span>
         <div class="brand-list-open" v-if="showBrandSlide">
             <ul class="index-brand-list clearfix">
-                <li v-for="(item,index) in brandData" @click="changeBrand(index,item.name)">
+                <li v-for="(item,index) in brandData" @click="changeBrand(item.id,item.name)">
                     <img :src = item.logoUrl >
                     <span>{{item.name}}</span>
                 </li>
@@ -99,9 +99,12 @@ import car from '../index/car'
             },
             changeBrand(index,name){
                 this.showBrandDialog();
-                this.$store.dispatch("DEFAULT_BRAND",name);
-                this.initData.brandId = this.brandData[index].id;
-                this.brandName = this.brandData[index].name;
+                this.$store.dispatch("DEFAULT_BRAND",{ // 通过store传值
+                  brandName: name,
+                  brandId: index
+                });
+                this.initData.brandId = index;
+                this.brandName = name;
                 this.getDataByBrandID();
             },
             getCar(carBoolean){ //自组件选车型控制显示隐藏
@@ -123,8 +126,8 @@ import car from '../index/car'
             },
         },
         mounted(){
-           this.brandName = this.$store.getters.getDefaultBrand;
-           this.initData.brandId = this.$router.currentRoute.params.id; //获取路由当前品牌ID
+           this.brandName = this.$store.getters.getDefaultBrand.brandName;
+           this.initData.brandId = this.$store.getters.getDefaultBrand.brandId; //获取路由当前品牌ID
            this.getAllBrand();
            this.getDataByBrandID();
         },

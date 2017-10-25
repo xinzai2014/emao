@@ -4,13 +4,13 @@ export default {
 		return state.carData || getStore("carData");
 	},
   getFullData(state){ //getters也可以作为参数传递
-    return getStore("fullPaymentData") || state.fullPaymentData;
+    return state.fullPaymentData  || getStore("fullPaymentData");
   },
   getDisplayData(state){ //展车下单表示
-    return getStore("displayData") || state.displayData;
+    return state.displayData || getStore("displayData") ;
   },
   getAddress(state){ //跳转到选地址页的标示
-    return getStore("addressFlag") || state.addressFlag;
+    return state.addressFlag || getStore("addressFlag");
   },
   getDefaultAddress(state){ //默认地址
     return state.defaultAdress || getStore("defaultAdress");

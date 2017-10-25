@@ -19,87 +19,77 @@
             </ul>
             <div class="coupon-ct">
                 <!-- 可用 -->
-                <transition name="router-fade">
-                    <div class="coupon-info" v-if="categoryType === 'use'">
-                        <div class="coupon-item available" v-for="(item,index) in use" v-if="useNum">
-                            <dl>
-                                <dt>¥ {{item.price}}</dt>
-                                <dd>
-                                    <h4>{{item.name}}</h4>
-                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
-                                </dd>
-                            </dl>
-                            <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
-                                <p>
-                                    <b>适用车型</b>
-                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
-                                </p>
-                            </div>
+                <div class="coupon-info" v-if="categoryType === 'use'">
+                    <div class="coupon-item available" v-for="(item,index) in use" v-if="useNum">
+                        <dl>
+                            <dt>¥ {{item.price}}</dt>
+                            <dd>
+                                <h4>{{item.name}}</h4>
+                                <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                            </dd>
+                        </dl>
+                        <div class="coupon-prompt" :class="{active:item.active}">
+                            <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
+                            <p>
+                                <b>适用车型</b>
+                                <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                            </p>
                         </div>
-                        <section class="no-auto server-no-response" v-if="!useNum">
-                            <img src="../../assets/no-coupon.png" alt="">
-                            <p>暂无此类优惠券</p>
-                        </section>
                     </div>
-                    
-                </transition>
+                    <section class="no-auto server-no-response" v-if="!useNum">
+                        <img src="../../assets/no-coupon.png" alt="">
+                        <p>暂无此类优惠券</p>
+                    </section>
+                </div>
                 <!--已使用 -->
-                <transition name="router-fade">
-                    <div class="coupon-info" v-if="categoryType === 'used'">
-                        <div class="coupon-item" v-for="(item,index) in used" v-if="usedNum">
-                            <i class="use-icon"></i>
-                            <dl>
-                                <dt>¥ {{item.price}}</dt>
-                                <dd>
-                                    <h4>{{item.name}}</h4>
-                                    <!--<p>{{item.note}}</p>-->
-                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
-                                </dd>
-                            </dl>
-                            <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
-                                <p>
-                                    <b>适用车型</b>
-                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
-                                </p>
-                            </div>
+                <div class="coupon-info" v-if="categoryType === 'used'">
+                    <div class="coupon-item" v-for="(item,index) in used" v-if="usedNum">
+                        <i class="use-icon"></i>
+                        <dl>
+                            <dt>¥ {{item.price}}</dt>
+                            <dd>
+                                <h4>{{item.name}}</h4>
+                                <!--<p>{{item.note}}</p>-->
+                                <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                            </dd>
+                        </dl>
+                        <div class="coupon-prompt" :class="{active:item.active}">
+                            <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
+                            <p>
+                                <b>适用车型</b>
+                                <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                            </p>
                         </div>
-                        <section class="no-auto server-no-response" v-if="!usedNum">
-                            <img src="../../assets/no-coupon.png" alt="">
-                            <p>暂无此类优惠券</p>
-                        </section>
                     </div>
-                    
-                </transition>
+                    <section class="no-auto server-no-response" v-if="!usedNum">
+                        <img src="../../assets/no-coupon.png" alt="">
+                        <p>暂无此类优惠券</p>
+                    </section>
+                </div>
                 <!--已失效 -->
-                <transition name="router-fade">
-                    <div class="coupon-info" v-if="categoryType === 'choosed'">
-                        <div class="coupon-item" v-for="(item,index) in disable" v-if="disableNum">
-                            <dl>
-                                <dt>¥ {{item.price}}</dt>
-                                <dd>
-                                    <h4>{{item.name}}</h4>
-                                    <!--<p>{{item.note}}</p>-->
-                                    <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
-                                </dd>
-                            </dl>
-                            <div class="coupon-prompt" :class="{active:item.active}">
-                                <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
-                                <p>
-                                    <b>适用车型</b>
-                                    <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
-                                </p>
-                            </div>
+                <div class="coupon-info" v-if="categoryType === 'choosed'">
+                    <div class="coupon-item" v-for="(item,index) in disable" v-if="disableNum">
+                        <dl>
+                            <dt>¥ {{item.price}}</dt>
+                            <dd>
+                                <h4>{{item.name}}</h4>
+                                <!--<p>{{item.note}}</p>-->
+                                <p>有效期：{{item.startDate}} - {{item.endDate}}</p>
+                            </dd>
+                        </dl>
+                        <div class="coupon-prompt" :class="{active:item.active}">
+                            <span @click="slideDown(item)">{{item.status}}<i class="white-rt"></i></span>
+                            <p>
+                                <b>适用车型</b>
+                                <em v-for="(item_apply,index_apply) in item.apply">{{item_apply.name}}</em>
+                            </p>
                         </div>
-                        <section class="no-auto server-no-response" v-if="!disableNum">
-                            <img src="../../assets/no-coupon.png" alt="">
-                            <p>暂无此类优惠券</p>
-                        </section>
                     </div>
-                    
-                </transition>
-                
+                    <section class="no-auto server-no-response" v-if="!disableNum">
+                        <img src="../../assets/no-coupon.png" alt="">
+                        <p>暂无此类优惠券</p>
+                    </section>
+                </div>
                 <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
             </div>
