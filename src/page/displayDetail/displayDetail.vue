@@ -21,7 +21,7 @@
 		                <h3>{{orderInfo.name}}</h3>
 		                <p class="interior">{{orderInfo.color}}</p>
 		                <p class="payment"><em> &times;{{orderInfo.num}}</em>指导价：<span>{{orderInfo.price}}元</span></p>
-		                <p class="car-vin" v-if="orderInfo.vinNumber"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
+		                <p class="car-vin" v-if="orderInfo.vinNumber && orderInfo.status !='8'"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
 		            </div>
 		            <p class="leave" v-show="orderInfo.remark">
 		                <span>买家留言：</span>{{orderInfo.remark}}
@@ -583,7 +583,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	margin-top:0.533333rem;
 }
 .details-addres{
-	padding:0.533rem 0.4rem;
+	padding:0 0.4rem 0.533rem 0.4rem;
 	background:#fff;
 	margin-bottom:0.4rem;
 	font-size:0.4rem;

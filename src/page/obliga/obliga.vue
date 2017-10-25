@@ -253,11 +253,11 @@ export default {
 .state-lt{
   float:left;
   width:6.266667rem;
-  line-height:0.533333rem;
   font-size:0.373333rem;
 }
 .state-time{
   font-size:0.32rem;
+  line-height:0.533333rem;
   color:#999;
 }
 .state-rt{
