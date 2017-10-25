@@ -192,6 +192,8 @@ export default {
       }*/
       if(sessionStorage.infoUrl == 'displayDetail'){
         this.$router.go(-1);
+      }else if(sessionStorage.infoUrl == 'resultSuccess'){
+         this.$router.push({name:'resultSuccess'});
       }else{
         this.$router.push({path:sessionStorage.orderDetailUrl});
       }
@@ -509,7 +511,7 @@ export default {
       }*/
 
       if(from.name != 'paymentSubmit' && from.name != 'payment'){
-          if(from.name=='displayDetail'){
+          if(from.name=='displayDetail' || from.name == 'resultSuccess'){
             sessionStorage.infoUrl = from.name;
           }else{
             sessionStorage.infoUrl = '';
