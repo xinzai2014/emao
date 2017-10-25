@@ -197,7 +197,7 @@ export default {
       this.$router.push("/configuration?id=" + id);
     },
     goBack(){
-      this.$router.push("/index");
+      this.$router.go(-1);
     },
     showFullpay(id,index){
 //      this.serieData.forEach(function(ele,ind){
