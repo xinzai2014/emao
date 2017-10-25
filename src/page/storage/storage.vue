@@ -293,7 +293,7 @@
                     this.showOutPopupStatus = !this.showOutPopupStatus;
                     this.showAlert = true;
                     this.alertText = '车辆出库成功';
-                    setTimeout(this.flushOutData,3000);
+                    setTimeout(this.flushOutData,1500);
                 }).catch(function(error){
                     this.outErrorTips = error.body.msg;
                 });
@@ -313,7 +313,7 @@
                     this.showInPopupStatus = !this.showInPopupStatus;
                     this.showAlert = true;
                     this.alertText = '车辆已入库';
-                    setTimeout(this.flushIndata,3000);
+                    setTimeout(this.flushIndata,1500);
                 }).catch(function(error){
                     this.inErrorTips = error.body.msg;
                 })
