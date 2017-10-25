@@ -8,8 +8,8 @@ Vue.use(Vuex)
 
 
 const state = {
-	fullPaymentData:{}, //全款购车传参
-	displayData:{}, //申请展车传参
+	fullPaymentData:null, //全款购车传参
+	displayData:null, //申请展车传参
 	defaultAdress:null,
 	chooseCar:false,
 	carData:{

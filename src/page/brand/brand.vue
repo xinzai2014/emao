@@ -7,7 +7,7 @@
         <span class="brand-switch" @click="showBrandDialog">切换品牌</span>
         <div class="brand-list-open" v-if="showBrandSlide">
             <ul class="index-brand-list clearfix">
-                <li v-for="(item,index) in brandData" @click="changeBrand(index,item.name)">
+                <li v-for="(item,index) in brandData" @click="changeBrand(item.id,item.name)">
                     <img :src = item.logoUrl >
                     <span>{{item.name}}</span>
                 </li>
@@ -103,8 +103,8 @@ import car from '../index/car'
                   brandName: name,
                   brandId: index
                 });
-                this.initData.brandId = this.brandData[index].id;
-                this.brandName = this.brandData[index].name;
+                this.initData.brandId = index;
+                this.brandName = name;
                 this.getDataByBrandID();
             },
             getCar(carBoolean){ //自组件选车型控制显示隐藏
