@@ -92,7 +92,7 @@ import car from '../index/car'
                   });
             },
             goBack(){
-                this.$router.go(-1);
+                this.$router.push({name:'index'});
             },
             showBrandDialog(){
                 this.showBrandSlide = !this.showBrandSlide;
