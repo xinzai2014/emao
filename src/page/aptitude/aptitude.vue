@@ -111,8 +111,8 @@
                 openingPermit:null, //开户许可证
                 legalPersonIDCard:null, //法人身份证正面照片
                 legalPersonIDCardBack:null, //法人身份证反面照片
-                generalTaxpayer:null, //一般纳税人证明
-                billingInfomation:null,//开票信息
+                generalTaxpayer:"", //一般纳税人证明
+                billingInfomation:"",//开票信息
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
@@ -324,20 +324,23 @@
                 this.getAgreement();
             },
             submitFormData(){
+                var subData = {
+                  legalPerson:this.username,
+                  bankName:this.bank,
+                  bankNumber:this.account,
+                  TIN:this.revenue,
+                  businessLicense:this.businessLicense,
+                  legalPersonIDCard:this.legalPersonIDCard,
+                  legalPersonIDCardBack:this.legalPersonIDCardBack,
+                  generalTaxpayer:this.generalTaxpayer,
+                  billingInfomation:this.billingInfomation,
+                }
+                if(this.openingPermit){  //许可证不用必填
+                      subData.openingPermit = this.openingPermit;
+                  }
                 this.$http.post(
                     "dealer/qualification?token=" + sessionStorage.token,
-                    {
-                        legalPerson:this.username,
-                        bankName:this.bank,
-                        bankNumber:this.account,
-                        TIN:this.revenue,
-                        businessLicense:this.businessLicense,
-                        openingPermit:this.openingPermit,
-                        legalPersonIDCard:this.legalPersonIDCard,
-                        legalPersonIDCardBack:this.legalPersonIDCardBack,
-                        generalTaxpayer:this.generalTaxpayer,
-                        billingInfomation:this.billingInfomation,
-                    }
+                    subData
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
                         this.$router.push('/authResult');

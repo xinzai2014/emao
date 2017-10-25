@@ -151,14 +151,23 @@
                 xhr.send(formData)
                 xhr.onload = () => {
                     this.uploading = false
-                    if (xhr.status === 200 || xhr.status === 304) {
+                    if (xhr.status === 200) {
                         var ajaxResponse = eval('(' + xhr.responseText + ')');
                         that.imgURL[index] = ajaxResponse.data.url;
                         that.sendData();
+                        setTimeout(() => {
+                          that.files[that.activeIndex].showPercent = false;
+                        },300)
                         this.status = 'finished'
                         //console.log('upload success!');
                     } else {
-                        console.log(`error：error code ${xhr.status}`)
+                        this.$store.dispatch("ALERT", // 通过store传值
+                          {
+                            flag:true,
+                            text:"上传失败,请重新上传"
+                          }
+                        );
+                        that.files[that.activeIndex] = 0;
                     }
                 }
             },
@@ -169,7 +178,6 @@
                     this.files[this.activeIndex].percent = percentComplete;
                     if(percentComplete == 100){
                         setTimeout(function(){
-                            that.files[that.activeIndex].showPercent = false;
                             if(that.files.length < 2){
                                 that.continueUp = true;
                             }
