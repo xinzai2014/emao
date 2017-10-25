@@ -72,6 +72,7 @@
             //组件方法
             resetIndex(){
                 var addressFlag=this.$store.getters.getAddress;
+                console.log(addressFlag);
                 this.$router.push({path:"/" + addressFlag.tag + "/" + addressFlag.serieId});
             },
             orderAddress(item){

@@ -26,15 +26,17 @@ export default {
       collect:false
     }
   },
-  methods:{  
+  methods:{
   	seeMore(){ //查看更多 一个变量怎么做呢
   		this.look = !this.look;
   		this.collect = !this.collect
   	},
   	goBrand(index,name){ //去品牌列表页
   		this.$router.push('brand/' + index); //车系路由跳转
-      this.$store.dispatch("DEFAULT_BRAND", // 通过store传值
-        name
+      this.$store.dispatch("DEFAULT_BRAND", { // 通过store传值
+          brandName: name,
+          brandId: index
+        }
       );
   	}
   },

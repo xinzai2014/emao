@@ -521,8 +521,8 @@
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
-                        this.$router.push('/aptitude');
-                        sessionStorage.mangerName = this.managerName;
+                       sessionStorage.mangerName = this.managerName;
+                       this.$router.push('/aptitude');
                     }
                 },function(err){
                     console.log(err);

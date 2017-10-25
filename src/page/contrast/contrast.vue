@@ -42,7 +42,7 @@
             <div class="config-right">
                  <div class="config-param-list">
                     <div class="config-wrap">
-                        <ul v-drag="drag" ref="dragContent">
+                        <ul v-drag="drag" ref="dragContent" class="drag">
                             <li class="config-list config-con" v-for = "(itemWrap,indexWrap) in dataList">
                                 <template v-for = "(item,index) in itemWrap.param" v-if = item.diff >
                                     <div class="config-list-t2" :style="{width:styleData,zIndex:dataList.length-indexWrap}" :class="{'head-fixed':scrollIndex == index}">
@@ -87,7 +87,7 @@
                 scrollIndex:0,
                 carScrollHeight:[],
                 checkALl:false,
-                styleWidth:5,
+                styleWidth:4.5,
                 styleData:0,
                 drags:[],
                 initData:[],
@@ -135,7 +135,6 @@
                     this.$refs.dragContent.style.width = this.styleWidth*data.length + "rem";
                     this.$refs.dragCompare.style.width = this.styleWidth*data.length + "rem";
                     this.styleData = this.styleWidth*data.length + "rem";
-                    console.log(this.$refs.carText);
                     //this.$refs.carText.style.width = this.styleWidth*data.length + "rem";
                     this.serieName = reponse.body.data.name;
 
@@ -237,10 +236,13 @@
         },
         directives:{
             drag:{
-                bind:function (el, binding) {
+                inserted:function (el, binding) {
                     var that=this;
                     function Drag(ele){
                       this.ele=ele;
+                      this.elWidth = ele.style.width;
+                      //console.log(ele);
+
                     }
                     Drag.prototype={
                        fndown:function(event){
@@ -248,6 +250,8 @@
                            let touch = event.touches[0]; //获取第一个触点
                            let startX = Number(touch.pageX); //页面触点X坐标
                            let startY = Number(touch.pageY); //页面触点Y坐标
+                           //console.log(startX+"---"+startY);
+                           //console.log(this.ele.offsetLeft+"---"+this.ele.offsetTop);
                            this.disP={
                                x:startX-this.ele.offsetLeft,
                                y:startY-this.ele.offsetTop
@@ -262,6 +266,10 @@
                            document.addEventListener('touchend',_this.bindup,false);
                        },
                        fnmove:function(event){
+                             var wrapWidth = this.ele.clientWidth;
+                             var leftConWidth = document.querySelectorAll(".config-left")[0].clientWidth;
+                             var windowWidth = window.innerWidth;
+                             var maxValue = wrapWidth-(windowWidth-leftConWidth); //计算最大可滚动距离
                             let touch = event.touches[0]; //获取第一个触点
                             let x = Number(touch.pageX); //页面触点X坐标
                             let y = Number(touch.pageY); //页面触点Y坐标
@@ -269,21 +277,20 @@
                                 x:x-this.disP.x,
                                 y:y-this.disP.y
                             };
-                            var sizePx=parseInt(document.getElementsByTagName('html')[0].style.fontSize);
-                            var sizeRem=this.move.x/sizePx;
-                            if(this.move.x>0){
-                                this.move.x=0;
-                                this.ele.style.left=this.move.x+'px';
-                            }else if(sizeRem<'-5'){
-                                this.ele.style.left='-5rem';
-                            }else{
-                                this.ele.style.left=this.move.x+'px';
-                            }
+                             if(-this.move.x>maxValue){ //达到最右边就不让滚动了
+                               this.ele.style.left= -maxValue + 'px';
+                             }else if(this.move.x>0){ //如果是向左移动，最左边滚动不可能大于0
+                               this.move.x=0;
+                               this.ele.style.left=this.move.x+'px';
+                              } else{  //其它没超过最大距离
+                                    this.ele.style.left=this.move.x+'px';
+                             }
                             this.ele.style.top=this.ele.offsetTop+'px';
                             var style={
                                 left:this.ele.style.left,
                                 top:this.ele.style.top
                             }
+                            //console.log(style);
                             binding.value(style);
                        },
 
@@ -354,6 +361,10 @@
     position:fixed;
     top:2.906rem;;
     background:#f5f5f5;
+}
+
+.config-right .head-fixed{
+  left:2.133rem;
 }
 
 .config-list{width:4.5rem;float:left;}

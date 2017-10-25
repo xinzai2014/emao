@@ -123,6 +123,7 @@ export default {
 	},
     beforeRouteLeave (to, from, next) {
         window.clearInterval(window.timer);
+        this.$store.dispatch("ADDRESS_FLAG",null);//一旦离开成功页，就清楚下单跳地址页的标示位
         next();
     }
 }

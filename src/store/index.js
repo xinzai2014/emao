@@ -8,14 +8,14 @@ Vue.use(Vuex)
 
 
 const state = {
-	fullPaymentData:{}, //全款购车传参
-	displayData:{}, //申请展车传参
+	fullPaymentData:null, //全款购车传参
+	displayData:null, //申请展车传参
 	defaultAdress:null,
 	chooseCar:false,
 	carData:{
 		carName:"选择车型"
 	},
-	defaultBrand:"", //首页跳转品牌页面传默认品牌
+	defaultBrand:null, //首页跳转品牌页面传默认品牌
 	ajaxLoading:false, //ajax加载Loading
 	returnData:{}, //汇款凭证
 	alert:{},
