@@ -27,6 +27,7 @@
 
 				</div>
 			</div>
+            <p class="visib-98"></p>
 		</section>
 
 		<section class="no-auto server-no-response" v-if="show">
@@ -34,7 +35,6 @@
 	        <p>尚未添加收货地址</p>
 	    </section>
 
-	    <p class="visib-98"></p>
 		<router-link to="/profile/info/address/add">
 			<div class="addres-fixed">新增收货地址</div>
 		</router-link>
