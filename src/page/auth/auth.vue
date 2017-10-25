@@ -38,7 +38,7 @@
         <div class="authen-info">
             <p @click="getDialogCity">
                 <i class="yellow-rt"></i><label>所在区域：</label>
-                <input type="text"  v-model="location" ref="location" disabled="disabled" placeholder="请选择地区">
+                <em  v-text="location"></em>
             </p>
             <p>
                 <label>详细地址：</label>

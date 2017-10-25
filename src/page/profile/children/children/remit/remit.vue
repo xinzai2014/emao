@@ -160,6 +160,14 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
     transform: translate3d(2rem, 0, 0);
     opacity: 0;
 }
+.remits-wrap{
+	position: absolute;
+    width: 10rem;
+    top: 1.173333rem;
+    bottom: 0;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
 /*汇款账户管理*/
 .remits-item{
 	background:#fff;
