@@ -15,7 +15,7 @@ const state = {
 	carData:{
 		carName:"选择车型"
 	},
-	defaultBrand:"", //首页跳转品牌页面传默认品牌
+	defaultBrand:null, //首页跳转品牌页面传默认品牌
 	ajaxLoading:false, //ajax加载Loading
 	returnData:{}, //汇款凭证
 	alert:{},

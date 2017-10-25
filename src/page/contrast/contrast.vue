@@ -87,7 +87,7 @@
                 scrollIndex:0,
                 carScrollHeight:[],
                 checkALl:false,
-                styleWidth:5,
+                styleWidth:4.5,
                 styleData:0,
                 drags:[],
                 initData:[],
@@ -132,6 +132,7 @@
                 }).then(function(reponse){
 
                     var data = reponse.body.data.list;
+                    var data = data.concat(data);
                     this.$refs.dragContent.style.width = this.styleWidth*data.length + "rem";
                     this.$refs.dragCompare.style.width = this.styleWidth*data.length + "rem";
                     this.styleData = this.styleWidth*data.length + "rem";
@@ -241,6 +242,8 @@
                     var that=this;
                     function Drag(ele){
                       this.ele=ele;
+                      this.elWidth = el.offsetWidth;
+                      console.log(ele.offsetWidth);
                     }
                     Drag.prototype={
                        fndown:function(event){
@@ -248,6 +251,8 @@
                            let touch = event.touches[0]; //获取第一个触点
                            let startX = Number(touch.pageX); //页面触点X坐标
                            let startY = Number(touch.pageY); //页面触点Y坐标
+                           console.log(startX+"---"+startY);
+                           console.log(this.ele.offsetLeft+"---"+this.ele.offsetTop);
                            this.disP={
                                x:startX-this.ele.offsetLeft,
                                y:startY-this.ele.offsetTop
@@ -269,13 +274,16 @@
                                 x:x-this.disP.x,
                                 y:y-this.disP.y
                             };
+                            console.log(this.move);
                             var sizePx=parseInt(document.getElementsByTagName('html')[0].style.fontSize);
+                            console.log(sizePx);
                             var sizeRem=this.move.x/sizePx;
-                            if(this.move.x>0){
+                            console.log(sizeRem);
+                            if(this.move.x>0){ //如果是向左移动
                                 this.move.x=0;
                                 this.ele.style.left=this.move.x+'px';
-                            }else if(sizeRem<'-5'){
-                                this.ele.style.left='-5rem';
+                            }else if(sizeRem<'-18'){
+                                this.ele.style.left='-18rem';
                             }else{
                                 this.ele.style.left=this.move.x+'px';
                             }
@@ -284,6 +292,7 @@
                                 left:this.ele.style.left,
                                 top:this.ele.style.top
                             }
+                            console.log(style);
                             binding.value(style);
                        },
 

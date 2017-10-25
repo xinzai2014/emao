@@ -99,7 +99,10 @@ import car from '../index/car'
             },
             changeBrand(index,name){
                 this.showBrandDialog();
-                this.$store.dispatch("DEFAULT_BRAND",name);
+                this.$store.dispatch("DEFAULT_BRAND",{ // 通过store传值
+                  brandName: name,
+                  brandId: index
+                });
                 this.initData.brandId = this.brandData[index].id;
                 this.brandName = this.brandData[index].name;
                 this.getDataByBrandID();
@@ -123,8 +126,8 @@ import car from '../index/car'
             },
         },
         mounted(){
-           this.brandName = this.$store.getters.getDefaultBrand;
-           this.initData.brandId = this.$router.currentRoute.params.id; //获取路由当前品牌ID
+           this.brandName = this.$store.getters.getDefaultBrand.brandName;
+           this.initData.brandId = this.$store.getters.getDefaultBrand.brandId; //获取路由当前品牌ID
            this.getAllBrand();
            this.getDataByBrandID();
         },
