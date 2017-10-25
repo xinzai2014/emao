@@ -197,7 +197,10 @@ export default {
       this.$router.push("/configuration?id=" + id);
     },
     goBack(){
-      this.$router.go(-1);
+      var leaveURL = this.$store.getters.getSerieURL;
+      this.$router.push({
+        path:"/" + leaveURL.tag + "/" + leaveURL.id
+      })
     },
     showFullpay(id,index){
 //      this.serieData.forEach(function(ele,ind){

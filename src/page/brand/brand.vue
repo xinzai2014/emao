@@ -121,7 +121,12 @@ import car from '../index/car'
                 this.showbrand = false;
             },
             goSerie(index){ //点击车系跳转
-                console.log(index);
+                this.$store.dispatch("SERIE_URL", // 通过store传值
+                  {
+                    tag:"brand",
+                    id:index
+                  }
+                )
                 this.$router.push('/serie/'+index); //车系路由跳转
             },
         },
