@@ -469,6 +469,9 @@
 .branch.default{
 	position:static;
 }
+.branch a{
+	display:block;
+}
 .branch p{
 	padding:0.533333rem 0.4rem;
 	border-bottom:1px solid #eee;
