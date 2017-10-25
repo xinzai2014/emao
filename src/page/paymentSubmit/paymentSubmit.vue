@@ -210,7 +210,7 @@ export default {
               data['payimg'+(i+1)]=this.dataURL.payment[i];
             }
         }
-        if(this.submitFlag){
+        /*if(this.submitFlag){*/
           this.$http.post("order/full/payment",data)
             .then(function (response) {
                 console.log(data);
@@ -225,11 +225,10 @@ export default {
                 //this.showAlert = true;
                // this.alertText = error.body.msg||"请求失败了";
             });
-          }else{
+          /*}else{
             this.$http.post("order/show/payment",data)
             .then(function (response) {
               console.log(data);
-                //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核";
                 var that=this;
@@ -237,10 +236,8 @@ export default {
                   that.resetIndex();
                 },1000);
             }).catch(function (error) {
-                //this.showAlert = true;
-          //this.alertText = error.body.msg||"请求失败了";
             });
-          }
+          }*/
       },
      subData(){
       this.$store.dispatch("PAYMENT_DATA", // 通过store传值

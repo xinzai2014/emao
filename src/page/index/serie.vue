@@ -3,7 +3,7 @@
 	<section class="index-car-source">
         <p class="index-car-title">本地车源</p>
         <ul class="index-car-con">
-        	<router-link v-for="(item,index) in serieList" :to="'/serie/' + item.id" tag="li" :serieID = item.id >
+        	<router-link v-for="(item,index) in serieList" :to="'/serie/' + item.id" tag="li" :serieID = item.id @click.native="goSerie(index)">
                 <img :src= item.imgUrl alt="">
                 <div class="index-car-back">
 	                <p class="index-car-name">{{item.name}}</p>
@@ -45,12 +45,17 @@ export default {
 	          });
 	    },
 	   	goSerie(index){ //点击车系跳转
-
-	        this.$router.push('/serie/'+index); //车系路由跳转
+        this.$store.dispatch("SERIE_URL", // 通过store传值
+          {
+            tag:"index",
+            id:""
+          }
+        )
+	        //this.$router.push('/serie/'+index); //车系路由跳转
 	    },
 	  },
 	  mounted(){
-		
+
 	  }
 }
 </script>

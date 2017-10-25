@@ -15,7 +15,7 @@
                 <p class="submit-number">VIN：{{saleInfo.vin_num}}</p>
             </div>
 
-            <div class="submit-info">
+            <div class="submit-info-list">
                 <div class="user-info">
                     <div class="left">客户姓名：</div>
                     <div class="right">
@@ -45,28 +45,28 @@
                 </div>
 
             </div>
-            <div class="submit-info">
-                <div class="user-info">
+            <div class="submit-info-list">
+                <div class="user-info-form">
                     <p class="user-info-tit">身份证正面照片</p>
                    <div class="user-info-pic" @click=showPopUp(saleInfo.idcard_img_front)>
                        <img :src="saleInfo.idcard_img_front" alt="">
                    </div>
                 </div>
-                <div class="user-info">
+                <div class="user-info-form">
                     <p class="user-info-tit">身份证背面照片</p>
                     <div class="user-info-pic"  @click=showPopUp(saleInfo.idcard_img_reverse)>
                         <img :src="saleInfo.idcard_img_reverse" alt="">
                     </div>
 
                 </div>
-                <div class="user-info">
+                <div class="user-info-form">
                     <p class="user-info-tit">购车发票</p>
                     <div class="user-info-pic"  @click=showPopUp(saleInfo.invoice_img)>
                         <img :src="saleInfo.invoice_img" alt="">
                     </div>
 
                 </div>
-                <div class="user-info">
+                <div class="user-info-form">
                     <p class="user-info-tit">行驶证照片</p>
                     <div class="user-info-pic"  @click=showPopUp(saleInfo.driving_license_img)>
                         <img :src="saleInfo.driving_license_img" alt="">
@@ -163,7 +163,7 @@
     }
 
     /*信息*/
-    .submit-info{
+    .submit-info-list{
         background:#fff;
         overflow:hidden;
         margin-top:0.4rem;
@@ -192,10 +192,6 @@
     }
     .submit-tit{
         font-size:0.506667rem;
-    }
-    .user-info img{
-        width:100%;
-        height:100%;
     }
     .sample-ct{
         overflow:hidden;
@@ -270,4 +266,13 @@
         background:#d6ab55;
         color:#fff;
     }
+    .user-info-form{
+        padding: 0.533333rem 0;
+        margin: 0 0.4rem;
+        border-bottom: 1px solid #eee;
+        font-size: 0.4rem;
+        color: #2c2c2c;  overflow: hidden;
+    }
+    .user-info-form .user-info-pic{margin-top:.5333rem;width:3.667rem;height:2.773rem;}
+    .user-info-form .user-info-pic img{width:100%;height:100%;}
 </style>

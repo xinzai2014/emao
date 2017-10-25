@@ -35,5 +35,8 @@ export default {
   },
   getPaymentData(state){ //汇款凭证页面进入标识
     return state.paymentData || getStore("paymentData");
+  },
+  getSerieURL(state){ //
+    return state.serieURL || getStore("serieURL");
   }
 }

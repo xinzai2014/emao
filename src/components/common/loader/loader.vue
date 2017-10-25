@@ -31,8 +31,8 @@
 }
 @supports (animation:animationFrames linear 2s){
     .loader-box{
-        width: 1.613333rem;
-        height: 1.573333rem;
+        width: 1.8rem;
+        height: 1.8rem;
     }
     .loader{
         position: absolute;
