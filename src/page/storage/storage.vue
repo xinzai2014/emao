@@ -58,8 +58,8 @@
                                         <p class="transit-depot-color">{{item.ext_color}}/{{item.int_color}}</p>
                                         <div class="transit-depot-state">
                                             <input v-if="item.checkOutStatus == 1 "class="transit-depot-stock-removal transit-depot-btn" type="button" name="" value="确认出库" @click="showOutPopup(item.vin_num,index)">
-                                            <input v-else-if="item.checkOutStatus == 2 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待订单审核" @click="showOutPopup(item.vin_num,index)">
-                                            <input v-else="item.checkOutStatus == 3 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待物流费用审核" @click="showOutPopup(item.vin_num,index)">
+                                            <input v-else-if="item.checkOutStatus == 2 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待订单审核" >
+                                            <input v-else="item.checkOutStatus == 3 "class="transit-depot-stock-wait transit-depot-btn" type="button" name="" value="等待物流费用审核" >
                                         </div>
                                     </div>
                                 </li>

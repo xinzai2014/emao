@@ -17,7 +17,7 @@ const state = {
 	},
 	defaultBrand:null, //首页跳转品牌页面传默认品牌
 	ajaxLoading:false, //ajax加载Loading
-	returnData:{}, //汇款凭证
+	returnData:"", //汇款凭证
 	alert:{},
 	addressFlag:"", //跳转选地址页面的标识
 	spareData:null, //补余款传值
