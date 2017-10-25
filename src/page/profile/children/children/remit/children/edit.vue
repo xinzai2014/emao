@@ -50,7 +50,7 @@
                        <div class="voucher-lt">
                         <img :src="editData.explan_path">
                     </div>
-                  </div>-->                
+                  </div>-->
                 </div>
 			</div>
 			<button class="close-bt" @click="personEdit">保存并使用</button>
@@ -169,7 +169,7 @@
 	                explan_path:this.editData.explan_path
 	            }
                 var that = this;
-                setTimeout(function(){
+                setTimeout(() => {
     	            this.$http.post("dealerBank/updatePerson",data
     	            ).then(function (response) {
         	                if(sessionStorage.remitName == 'paymentSubmit'){
@@ -182,7 +182,7 @@
                             }else{
                                 that.resetIndex();
                             }
-                        
+
     	            }).catch(function (error) {
     	                this.showAlert = true;
                         this.alertText = error.body.msg
@@ -219,7 +219,7 @@
             alertTip,
             uploader,
         }
-    }   
+    }
 </script>
 
 <style>
