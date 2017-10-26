@@ -476,7 +476,7 @@ export default {
 .order-car-count{float:right;color:#999;}
 .order-car-count span{}
 .order-message{padding:.4rem 0;color:#2c2c2c;font-size:.3733rem;border-top:1px solid #e0e0e0;}
-.order-message input{display: inline-block;height: 0.75rem;width: 7rem;line-height: 0.75rem;color: #999;border: none;}
+.order-message input{display: inline-block;height: 0.75rem;width: 7rem;line-height: 0.75rem;border: none;}
 .order-coupon-info{padding:0 .4rem;margin-bottom:.4rem;background-color:#fff;}
 .order-coupon-title{float:left;color:#2c2c2c;font-size:.4rem;}
 .order-coupon-con{float:right;color:#999;font-size:.3733rem;}

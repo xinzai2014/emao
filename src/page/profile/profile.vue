@@ -128,7 +128,7 @@ export default {
       messageNum:0, //消息数
       name:'',  //公司名称
       auth_status:'',   //认证状态
-      level:'', //等级
+      level:0, //等级
       rebate:'', //返利金额
       capital:'',    //营销支持费
       coupon_num:'', //优惠券
@@ -204,7 +204,7 @@ export default {
     }).then(function (response) {
         this.name = response.body.data.name;     //公司名称
         this.auth_status = response.body.data.auth_status;   //认证状态
-        this.level = response.body.data.level;    //等级
+        this.level = Number(response.body.data.level);    //等级
         this.rebate = this.priceG(response.body.data.rebate);    //返利金额
         this.capital = this.priceG(response.body.data.capital);    //营销支持费
         this.coupon_num = response.body.data.coupon_num;   //优惠券
