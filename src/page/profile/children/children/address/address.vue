@@ -233,16 +233,14 @@
     background-color: #f5f5f5;
 }
 .rating_page{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    /* height: 110%; */
+    /* height: 100%; */
+    overflow-y: auto;
     background-color: #f5f5f5;
-    width:10.0rem;
+    width: 10.0rem;
     z-index: 203;
-    overflow:initial;
 }
 /*收货地址管理*/
 .addres-item{

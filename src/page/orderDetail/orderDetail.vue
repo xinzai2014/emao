@@ -605,7 +605,7 @@ export default {
   top:1.306667rem;
 }
 .order-ct{
-  padding:0.533333rem 0.4rem;
+  padding:0.533333rem 0.4rem 0;
   background:#fff;
 }
 .order-number{
@@ -673,13 +673,14 @@ export default {
   color:#fc3036;
 }
 .request-ct{
-  padding:0.533333rem 0.4rem;
+  padding:0 0.4rem;
   background:#fff;
   margin-top:0.4rem;
+  overflow:hidden;
 }
 .remit-tit{
   font-size:0.453333rem;
-  padding-bottom:0.533333rem;
+  padding:0.533333rem 0;
   border-bottom:1px solid #e0e0e0;
 }
 .send-to{

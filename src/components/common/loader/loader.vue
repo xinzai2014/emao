@@ -80,8 +80,16 @@
         border-left-color: hsl(216,87%,52%);
         border-bottom-color: hsl(8,66%,50%);
         border-right-color: hsl(42,100%,51%);
-        border-radius: 50%;
+        border-radius: 100%;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        -o-border-radius: 100%;
+        -ms-border-radius: 100%;
         transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
     }
     .circle-box {
         position: absolute;

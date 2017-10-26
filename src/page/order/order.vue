@@ -408,19 +408,19 @@ export default {
   color:#fc3036;
 }
 .full-state{
-  height:1.066667rem;
+  height:1.187rem;
   overflow:hidden;
   /*margin-top:0.533333rem;*/
 }
 .state-lt{
   float:left;
   width:6.266667rem;
-  line-height:0.533333rem;
   font-size:0.373333rem;
 }
 .state-time{
   font-size:0.32rem;
   color:#999;
+  line-height:0.533333rem;
 }
 .state-rt{
   float:left;

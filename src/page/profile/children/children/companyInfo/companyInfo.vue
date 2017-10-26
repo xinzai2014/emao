@@ -14,10 +14,12 @@
 
             <div class="user-bt"><span>{{info.auth_data.activities}}</span>经营类型：</div>
             <div class="user-bt">
-            	<span v-if="!info.auth_data.brand_auth.length">无</span>
-            	<ul v-else v-for="(item,index) in info.auth_data.brand_auth">
-		            <li><em>{{item.brand_name}}</em>{{item.level}}</li>
-	            </ul>
+              <p class="userAuth-list">
+                <span v-if="!info.auth_data.brand_auth.length">无</span>
+                <ul v-else v-for="(item,index) in info.auth_data.brand_auth">
+                  <li><em>{{item.brand_name}}</em><em>{{item.level}}</em></li>
+                </ul>
+              </p>
 	            厂家授权品牌及级别：
             </div>
             <div><span>{{info.auth_data.repair_place}}</span>维修许可：</div>
@@ -58,7 +60,7 @@
 		     }).then(function (response) {
 		     	this.oneInfo=response.body.data;
 		     	var info=response.body.data;
-		     	info.auth_data.activities=info.auth_data.activities.replace('1','合资').replace('2','自主').replace('3','豪华');	
+		     	info.auth_data.activities=info.auth_data.activities.replace('1','合资').replace('2','自主').replace('3','豪华');
 		     	if(info.auth_data.brand_auth){
 		     		for(var i=0;i<info.auth_data.brand_auth.length;i++){
 			     		if(info.auth_data.brand_auth[i].level=='1'){
@@ -91,15 +93,15 @@
 		        params:data
 		     }).then(function (response) {
 		        if(response.body.data.data_status=="3"){
-		            this.data_status=true; 
-		        }   
+		            this.data_status=true;
+		        }
 		      }).catch(function (error) {
 		        //this.showAlert = true;
 		        //this.alertText = error.body.msg||"请求失败了";
 		      });
 
         }
-    }   
+    }
 </script>
 
 <style>
@@ -112,12 +114,28 @@
     color: #fff;
     line-height: 0.533333rem;
 }
+
+.userAuth-list{
+  float:right;
+  width: 40%;
+}
+
+.userAuth-list li{
+  padding-bottom:0.2667rem;
+}
 	.user-bt ul{
-		float: right;
 		color: #999;
 		font-size: 0.346667rem;
 	}
 	.user-bt ul li em{
-		margin-right:0.2rem;
+		width:50%;
+    display: inline-block;
 	}
+.user-bt ul li em:nth-of-type(2){
+  text-align:right;
+}
+
+.user-bt ul:last-of-type li{
+  padding-bottom:0;
+}
 </style>
