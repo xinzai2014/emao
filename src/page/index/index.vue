@@ -108,7 +108,7 @@ export default {
             this.showAuthMess = true;
           }
           if(data.data.data_status == 4){
-            this.authData = data.msg;
+            this.authData = "您填写的公司信息未通过审核，点击查看详情";
             this.showAuthMess = true;
           }
       },function(){
