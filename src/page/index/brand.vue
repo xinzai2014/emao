@@ -32,7 +32,9 @@ export default {
   		this.collect = !this.collect
   	},
   	goBrand(index,name){ //去品牌列表页
-  		this.$router.push('brand/' + index); //车系路由跳转
+  		this.$router.push({
+        path:"/" + 'brand/' + index
+      }); //车系路由跳转
       this.$store.dispatch("DEFAULT_BRAND", { // 通过store传值
           brandName: name,
           brandId: index

@@ -265,8 +265,17 @@
                 var activeIndex = this.authTag.findIndex(function(ele,index,arr){
                     return ele.tag;
                 })
+                if(activeIndex<0){
+                  this.$store.dispatch("ALERT", // 通过store传值
+                    {
+                      flag:true,
+                      text:"请勾选是否为一般纳税人"
+                    }
+                  );
+                  return false;
+                }
                 if(activeIndex == 0){
-                    if(this.generalTaxpayer == null){
+                    if(!this.generalTaxpayer){
                         this.$store.dispatch("ALERT", // 通过store传值
                           {
                             flag:true,
@@ -275,7 +284,7 @@
                         );
                         return false
                     }
-                    if(this.billingInfomation == null){
+                    if(!this.billingInfomation){
                         this.$store.dispatch("ALERT", // 通过store传值
                           {
                             flag:true,
