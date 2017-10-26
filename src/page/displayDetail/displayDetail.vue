@@ -35,14 +35,14 @@
 	            </div>
 	            <p>收货地址：{{address.address}}</p>
 	        </div>
-	        <div class="request-ct">
+	        <div class="request-ct ">
 	            <p class="remit-tit">保证金</p>
 	            <p :class="paymentActive ? 'bond active':'bond'"><span>{{payment}}</span>支付状态：</p>
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9&& orderInfo.status != 11"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
-	            <p class="bond" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
+	            <p class="bond active bond-bt" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9&& orderInfo.status != 11"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond bond-bt" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div class="ayment-info" v-if="bankInfo.accountType == 2">
 			            <p>
@@ -675,6 +675,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	color:#999;
 	margin-top:0.533333rem;
 }
+.bond-bt{
+	padding-bottom:0.533333rem;
+}
 .bond span{
 	float:right;
 }
@@ -692,7 +695,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 }
 .send-to{
 	border:1px solid #d5aa5c;
-	margin:0.533333rem auto;
+	margin:0 auto 0.533333rem;
 }
 .send-to p{
 	overflow:hidden;
@@ -798,7 +801,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 /*第二种状态*/
 .ayment-info{
 	border:1px solid #d5aa5c;
-	margin:0.533333rem 0;
+	margin:0 0 0.533333rem 0;
 }
 .ayment-info a{
 	display:block;

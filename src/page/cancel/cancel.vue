@@ -8,7 +8,7 @@
 	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load">
 	        <div class="bought-item" v-for="(item,index) in infoData">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
-		            <div class="bought-ct">
+		            <div class="bought-ct bought-bt">
 		                <p class="bought-tit">{{item.name}}</p>
 		                <p class="bought-color">{{item.color}}</p>
 		            </div>
@@ -47,7 +47,7 @@
             cancelTime(item){ //毫秒数转换成时间
 				var unixTimestamp = new Date(parseInt(item.time)*1000) ;
 				Date.prototype.toLocaleString = function() {
-			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+			        return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
 			    };
 			    var commonTime = unixTimestamp.toLocaleString();
 			    return commonTime;
@@ -118,7 +118,7 @@
 	padding:0.533333rem 0.4rem;
 	background:#fff;
 	overflow:hidden;
-	border-bottom:1px solid #2c2c2c;
+	border-bottom:1px solid #c0c0c0;
 }
 .bought-item:last-child{
 	border-bottom:none;
@@ -135,6 +135,9 @@
 .bought-ct{
 	padding-bottom:0.533333rem;
 	border-bottom:1px solid #e0e0e0;
+}
+.bought-bt{
+	border-bottom:none;
 }
 .bought-state{
 	padding-top:0.533333rem;
