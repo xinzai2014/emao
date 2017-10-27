@@ -1,7 +1,7 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header">
+    <header class="brand-list-header fixed-header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" v-if="dataList">{{dataList.name}}</strong>
         <!-- <span class="brand-switch">全部配置</span> -->
@@ -112,7 +112,7 @@
 </script>
 <style>
 *{box-sizing:border-box;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;font-size:0.4rem}
+.fixed-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;font-size:0.4rem}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
 .config{padding-top:1.1733rem;}
