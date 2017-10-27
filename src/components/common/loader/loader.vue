@@ -182,4 +182,7 @@
     0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
     100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
 }
+.mask-loader *{
+    box-sizing:content-box;
+}
 </style>
