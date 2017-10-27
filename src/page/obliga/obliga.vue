@@ -6,7 +6,7 @@
         </header>
 
         <section v-if="orderList.length">
-          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10" @click="obligaData">
               <div class="full-item" v-for="(item,index) in orderList" v-if="item.status=='7'|| item.status=='27'">
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
@@ -62,6 +62,12 @@ export default {
     //组件方法
     resetIndex(){
         this.$router.push({name:'profile'});
+    },
+    obligaData(){
+      this.$store.dispatch("ORDER_URL",{
+        tag:"obliga",
+        id:""
+      });
     },
     fillData(){
         var dataToken =sessionStorage.token;

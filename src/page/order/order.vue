@@ -6,7 +6,7 @@
         </header>
         <!--全部订单-->
         <section v-if="orderList.length">
-          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10" @click="orderData">
               <div class="full-item" v-for="(item,index) in orderList">
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
@@ -178,6 +178,12 @@ export default {
       }).catch(function (error) {
           this.showAlert = true;
            this.alertText = error.body.msg||"请求失败了";
+      });
+    },
+    orderData(){
+      this.$store.dispatch("ORDER_URL",{
+        tag:"order",
+        id:""
       });
     },
     receiptStatus(){

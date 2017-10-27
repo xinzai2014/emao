@@ -25,7 +25,8 @@ const state = {
 	successData:null, //成功页数据
   successURL:null, //成功页会跳标识
   paymentURL:null,  //提交汇款凭证页面跳转标识
-  paymentData:null //汇款页面跳转汇款账户页面前保存数据
+  paymentData:null, //汇款页面跳转汇款账户页面前保存数据
+  orderURL:null //订单/展车详情跳转
 }
 
 export default new Vuex.Store({

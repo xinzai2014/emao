@@ -38,5 +38,8 @@ export default {
   },
   getSerieURL(state){ //
     return state.serieURL || getStore("serieURL");
+  },
+  getOrderURL(state){ //订单/展车详情返回
+    return state.orderURL || getStore("orderURL");
   }
 }

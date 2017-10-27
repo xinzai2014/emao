@@ -15,7 +15,8 @@ import {
   SUCCESS_URL,
   PAYMENT_URL,
   PAYMENT_DATA,
-  SERIE_URL
+  SERIE_URL,
+  ORDER_URL
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -102,6 +103,11 @@ export default {
   [SERIE_URL](state,obj){
     state.serieURL = obj;
     setStore('serieURL',obj);
+  },
+
+  [ORDER_URL](state,obj){
+    state.orderURL = obj;
+    setStore('orderURL',obj);
   }
 
 }

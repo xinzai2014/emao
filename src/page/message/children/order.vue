@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>订单提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="remind" v-scroll="getMore" ref="load">
+	    <section class="remind" v-scroll="getMore" ref="load" @click="orderData">
 	        <div class="remind-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/orderDetail/'+item.order_num">
 		            <div class="remind-tit">{{item.created_at}}</div>
@@ -53,6 +53,12 @@
             resetIndex(){
                 this.$router.push({name:'message'});
             },
+            orderData(){
+			    this.$store.dispatch("ORDER_URL",{
+			        tag:"message/order",
+			        id:""
+			    });
+		    },
             moreFn(itemIndex){
 		        var data = {
 		            token:this.token,
