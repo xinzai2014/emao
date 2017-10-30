@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>已退展车
 		</header>
 		<!--退订展车-->
-	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load">
+	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load" @click="cancelUrl">
 	        <div class="bought-item" v-for="(item,index) in infoData">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 		            <div class="bought-ct bought-bt">
@@ -92,7 +92,13 @@
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
-			}
+			},
+            cancelUrl(){
+            	this.$store.dispatch("ORDER_URL",{
+                  tag:"cancel",
+                  id:""
+                });
+            }
         },
         mounted(){
         //组件初始完成需要做什么

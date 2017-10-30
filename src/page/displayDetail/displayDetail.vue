@@ -209,12 +209,11 @@ import alertTip from '../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-            	/*if(sessionStorage.displayName){
-            		this.$router.push({name:sessionStorage.displayName});
-            	}else{
-            		this.$router.go(-1);
-            	}*/
-            	this.$router.push({path:sessionStorage.orderDetailUrl});
+            	var data = this.$store.getters.getOrderURL;
+	            this.$router.push({
+	                path:"/" + data.tag +"/"+ data.id
+	            });
+
             },
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
@@ -539,9 +538,9 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			    }else{
 			    	sessionStorage.displayName = ''
 			    }*/
-			    if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail' && from.name !='balanceConfrim' && from.name !='resultSuccess'){
+			    /*if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail' && from.name !='balanceConfrim' && from.name !='resultSuccess'){
 			        sessionStorage.orderDetailUrl = from.path;
-			    }
+			    }*/
 		    });
 		}
 

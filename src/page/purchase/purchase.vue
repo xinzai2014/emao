@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>已购展车
 		</header>
 		<!--退订展车-->
-	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load">
+	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load" @click="purchaseUrl">
 	        <div class="bought-item" v-for="(item,index) in infoData">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 		            <div class="bought-ct bought-bt">
@@ -83,7 +83,13 @@
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
-			}
+			},
+			purchaseUrl(){
+            	this.$store.dispatch("ORDER_URL",{
+                  tag:"purchase",
+                  id:""
+                });
+            }
 
         },
         mounted(){
