@@ -131,7 +131,7 @@ export default {
 <style>
 /*订购成功页面*/
 .order-succeed{height:100%;padding:.5333rem .4rem 0 .4rem;background-color:#fff;}
-.order-succeed-first{margin-bottom:1.067rem;font-size:.4rem;color:#2ac26e;font-weight:600;}
+.order-succeed-first{margin-bottom:0.9rem;font-size:.4rem;color:#2ac26e;font-weight:600;}
 .order-first-logo{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;vertical-align:bottom;background:url("../../../assets/first-icon.png");background-size:100% 100%;}
 .order-succeed-logo{display:inline-block;width:.4rem;height:.4rem;margin-left:.2133rem;vertical-align:bottom;background:url("../../../assets/complete-icon.png");background-size:100% 100%;}
 .order-succeed-second i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;vertical-align: bottom;background:url("../../../assets/second-icon.png");background-size:100% 100%;}
@@ -148,7 +148,7 @@ export default {
 .order-succeed-third{font-size:.4rem;color:#2c2c2c;}
 .order-succeed-third i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;background:url("../../../assets/third-icon.png");background-size:100% 100%;}
 .order-succeed-bottom{position:fixed;bottom:.533rem;left:.4rem;right:.4rem;}
-.order-succeed-third{margin-top:1.0667rem;}
+.order-succeed-third{margin-top:0.9rem;}
 .order-succeed-bottom div{float:left;width:4.4rem;height:1.067rem;font-size:.4267rem;line-height:1.067rem;text-align:center;border-radius:.4rem;}
 .order-to-apply{margin-right:.4rem;color:#2c2c2c;background-color:#f6f5fa;}
 .order-to-check{color:#fff;background-color:#d5aa5c;}
