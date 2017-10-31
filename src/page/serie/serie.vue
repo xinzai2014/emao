@@ -39,6 +39,17 @@
         <div @click="goContrast"><span>{{serieData.length}}</span>款车型对比</div>
         <i class="white-rt"></i>
     </section>
+
+    <!--商品详情图片-->
+      <section class="good-detail-pic-wrap">
+          <p class="good-detail-pic-title">商品详情</p>
+          <ul class="good-detail-pic-list">
+              <li v-for="(item,index) in goodsPicData"  @click="showFullScreen(item)">
+                  <img :src=item alt="">
+              </li>
+          </ul>
+
+      </section>
     <!--首页-订车-详情页-订车保障-->
     <section class="book-car-guarantee">
         <p>下单流程</p>
@@ -99,6 +110,7 @@
                         <strong v-if="fullData.fallPrice>0">( 下 <i>{{fullData.fallPrice}}万</i> )</strong>
                     </div>
                 </div>
+                <p class="book-car-repertory" v-if="!fullCount">有库存</p>
                 <p class="book-car-repertory" v-if="fullCount>10">库存充足</p>
                 <p class="book-car-repertory" v-if="fullCount>0&&fullCount<=10">库存{{fullCount}}台</p>
             </div>
@@ -132,7 +144,8 @@
                           <em>{{ExhibData.guidePrice}}万</em>
                       </div>
                   </div>
-                  <p class="book-car-repertory">{{exhibCount}}</p>
+                  <p class="book-car-repertory" v-if="!exhibCount">有库存</p>
+                  <p class="book-car-repertory" v-else>{{exhibCount}}</p>
               </div>
               <div class="book-order-colors">
                   <p>可选颜色</p>
@@ -142,12 +155,18 @@
               </div>
               <section class="book-buy-now">
                   <!--立即申请展车-->
-                  <input type="button" class="active" @click="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请">
+                  <input type="button" class="active" @click.stop="applyExhib" v-if="ExhibData.apply>=0" name="" value="立即申请">
                   <!--您已申请此展车-->
                   <input type="button" class="unavailable" name="" v-else value="您已申请此展车">
               </section>
           </div>
       </section>
+    <!--全屏显示商品图片-->
+   <div class="good-pic-full-screen" v-if="showfullStatus" @click="closeFullScreen">
+      <img :src="showFullData" alt="" >
+   </div>
+  <!--错误提示框-->
+  <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 </div>
 </template>
 
@@ -155,6 +174,7 @@
 import { mapState } from 'vuex' //计算属性映射
 import { mapMutations } from 'vuex' //方法映射
 import swiper from '../../components/common/swiper/swiper'
+import alertTip from '../../components/common/alertTip/alertTip';
 
 export default {
   name: 'index',
@@ -180,9 +200,15 @@ export default {
         circular:[    //轮播图数据
 
         ],
+        goodsPicData:[],//商品详情图片
         showTips:false,  //到货提醒
         showExhib:false, //申请展车弹出层
         ajaxLoading:false,
+        showfullStatus:false,  //商品详情图片全屏默认不显示
+        showFullData:'',  //显示全屏的商品详情图片默认为空
+        showAlert:false, //提示框显示与否
+        alertText:null //提示内容
+
     }
   },
   methods:{
@@ -216,6 +242,8 @@ export default {
     },
     closeFullpay(){
       this.showMoney = !this.showMoney;
+      this.ActiveIndex = null;
+      this.fullCount = null;
     },
     updateFullIndex(index,sum){
       if(this.disabledFullIndex == index){
@@ -238,6 +266,8 @@ export default {
     },
     closeExhibPay(){
       this.showExhib = !this.showExhib;
+      this.ActiveExhibIndex = null;
+      this.exhibCount = null;
     },
     updateExhibIndex(index,sum){
       if(this.disabledExhibIndex == index){
@@ -264,11 +294,11 @@ export default {
               return value.sum <= 0
           });
           this.disabledFullIndex = (disabledFullIndex == -1)? null:disabledFullIndex
-          var ActiveIndex = this.fullData.stock.findIndex(function(value,index,arr){
-              return value.sum > 0
-          });
-          this.ActiveIndex = (ActiveIndex == -1)? null:ActiveIndex
-          this.fullCount = (ActiveIndex == -1)?null:this.fullData.stock[this.ActiveIndex].sum;
+//          var ActiveIndex = this.fullData.stock.findIndex(function(value,index,arr){
+//              return value.sum > 0
+//          });
+          //this.ActiveIndex = (ActiveIndex == -1)? null:ActiveIndex
+          //this.fullCount = (ActiveIndex == -1)?null:this.fullData.stock[this.ActiveIndex].sum;
         },function(){
 
         })
@@ -290,11 +320,11 @@ export default {
               return !value.sum;
            });
            this.disabledExhibIndex = (disabledExhibIndex == -1)? null:disabledExhibIndex
-           var ActiveExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
-              return value.sum
-           });
-           this.ActiveExhibIndex = (ActiveExhibIndex == -1)? null:ActiveExhibIndex
-           this.exhibCount = (ActiveExhibIndex == -1)?null:this.ExhibData.stock[this.ActiveExhibIndex].sum
+//           var ActiveExhibIndex = this.ExhibData.stock.findIndex(function(value,index,arr){
+//              return value.sum
+//           });
+//           this.ActiveExhibIndex = (ActiveExhibIndex == -1)? null:ActiveExhibIndex
+//           this.exhibCount = (ActiveExhibIndex == -1)?null:this.ExhibData.stock[this.ActiveExhibIndex].sum
         },function(){
 
         })
@@ -311,6 +341,8 @@ export default {
       }).then(function (response) {
           this.serieTitle = response.body.data.series.title;
           this.serieData = response.body.data.series.list;
+          this.goodsPicData = response.body.data.series.serie_imgs;
+          /*商品详情图片全屏显示*/
           this.serieData.forEach(function(ele,index){
             ele.flag = false;
             ele.exhibFlag = false;
@@ -323,6 +355,11 @@ export default {
         });
    },
    fullBay(){ //提交全款购车
+      if (this.ActiveIndex == null) {
+          this.showAlert = true;
+          this.alertText = '请选择颜色';
+          return;
+      }
       var activeData = this.fullData.stock[this.ActiveIndex];
       this.$store.dispatch("FULL_PAYMENT", // 通过store传值
         {
@@ -335,6 +372,11 @@ export default {
       this.$router.push({name:"orderConfrim",params:{id:activeData.autoId}});
    },
    applyExhib(){
+      if (this.ActiveExhibIndex == null) {
+          this.showAlert = true;
+          this.alertText = '请选择颜色';
+         return ;
+      }
       var activeData = this.ExhibData.stock[this.ActiveExhibIndex];
       this.$store.dispatch("DISPLAY_CAR", // 通过store传值
         {
@@ -367,6 +409,16 @@ export default {
    closeTipsDialog(){
       this.showTips = false;
    },
+   /*获取图片地址，显示遮罩弹窗和图片*/
+   showFullScreen(srcData){
+      this.showFullData = srcData;
+      this.showfullStatus = true;
+  },
+   /*关闭遮罩弹窗和图片*/
+   closeFullScreen(){
+          this.showfullStatus = false;
+   }
+
   },
   mounted(){
     //组件初始完成需要做什么
@@ -380,7 +432,8 @@ export default {
     this.getData();
   },
   components:{
-    swiper
+    swiper,
+    alertTip
   },
   beforeRouteEnter (to, from, next) {
     next();
@@ -421,6 +474,17 @@ export default {
 .book-car-guarantee{padding-left:.4rem;padding-top:.5333rem;background-color:#fff;}
 .book-car-guarantee>p{padding-left:.4rem;font-size:0.5067rem;color:#000;border-left:1px solid #000;}
 .book-car-guarantee .book-car-pic{width:9.2rem;height:11.7467rem;background:url("../../assets/book-car.jpg") no-repeat;background-size:100% 100%;}
+
+
+/*商品详情图片*/
+.good-detail-pic-wrap{margin-bottom:.4rem;}
+.good-detail-pic-title{height: 1.4667rem;padding-left: .4rem;line-height: 1.4667rem;font-size: .4266rem;background-color: #fff;}
+.good-detail-pic-list{}
+.good-detail-pic-list li{width:100%;}
+.good-detail-pic-list li img{width:100%;}
+/*全屏展示*/
+.good-pic-full-screen{position: fixed;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0,0,0,0.95);}
+.good-pic-full-screen img{position:fixed;transform:translateY(50%);width:100%;height:auto;}
 
 
 /*首页-订车-详情页-订车弹窗*/
