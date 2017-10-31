@@ -1,12 +1,12 @@
 <template>
 	<div>
 		<div class="login-code clearfix">
-            <input type="text" v-model="code"  name="code"  ref="code">
+            <input type="text" v-model="code" placeholder="验证码"  name="code"  ref="code">
             <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
             <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
         </div>
-	    <input class="login-btn" type="button" name="" value="登录" @click="login">
-        <p class="login-another" @click="checkNav"><span>账号登录</span></p>
+	    <input class="login-btn" type="button" name="" value="登录 / 注册" @click="login">
+        <p class="login-another" @click="checkNav"><span>账号密码登录</span></p>
 	</div>
 </template>
 <script>

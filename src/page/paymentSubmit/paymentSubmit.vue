@@ -14,26 +14,31 @@
                     </router-link>
                 </div>
               </div>
-              <router-link to="/profile/info/remit" v-else>
+              <template v-else>
                 <div class="voucher-item item-bor" v-if="type == 1">
                     <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
                     <p><span>{{editData.pay_company}}</span>汇款单位：</p>
-                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.bank_name}}</span>银行：</p>
                     <p><span>{{editData.account}}</span>汇款账户：</p>
                 </div>
                 <div class="voucher-item item-bor" v-else>
                     <p><span>{{editData.account_type}}</span>汇款账户类型：</p>
                     <p><span>{{editData.name}}</span>姓名：</p>
-                    <p><span>{{editData.bank_name}}<i class="white-rt"></i></span>银行：</p>
+                    <p><span>{{editData.bank_name}}</span>银行：</p>
                     <p><span>{{editData.account}}</span>汇款账户：</p>
                 </div>
-              </router-link>
+                <router-link to="/profile/info/remit" tag="div" class="item-link">选择其他汇款账户<i class="yellow-rt"></i></router-link>
+              </template>
               <div class="voucher-item voucher-gray">
                   <p><span>汇款金额：<input type="number" name="" v-model="price" placeholder=""><i>元</i></span></p>
-                  <p><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
+                  <p class="voucher-gray-bt"><span>备注：<input type="text" name="" v-model="remark" placeholder=""></span></p>
               </div>
             </div>
-            <div class="voucher-item">
+            <div v-if="type == 2" class="voucher-item voucher-img">
+                <p>待付款说明</p>
+                <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
+            </div>
+            <div class="voucher-item voucher-img voucher-with">
                 <p>汇款底单</p>
                 <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
             </div>
@@ -60,9 +65,17 @@ export default {
       showRemit:false,//是否有汇款账户
       returnData:{},//订单页面返回
       type:null,//账户类型
+      obj:[],
+      url:{},
+      uploadData2:{
+          url:"https://tcmapi.emao.com/upload",
+          count:1,
+          flag:"door",
+          image:'static/sample3.jpg'
+      },
       uploadData1:{
           url:"https://tcmapi.emao.com/upload",
-          count:2,
+          count:20,
           flag:"payment",
           image:'static/payment.jpg'
       },
@@ -187,12 +200,25 @@ export default {
           this.alertText = '请填写汇款金额！';
           return;
         }
+        if(this.type == 2){
+          if(!this.dataURL.door){
+            this.showAlert = true;
+            this.alertText = '请上传代付款证明!';
+            return;
+          }
+          this.editData.explan_path = this.dataURL.door[0];
+        }
         if(!this.dataURL.payment){
           this.showAlert = true;
           this.alertText = '请上传汇款底单！';
           return;
         }else{
           var length=this.dataURL.payment.length;
+        }
+        for(var i=0;i<length;i++){
+            this.url = {};
+            this.url.url=this.dataURL.payment[i];
+            this.obj.push(this.url);
         }
         var data = {
             token:sessionStorage.getItem('token'),
@@ -201,15 +227,10 @@ export default {
             order_num:this.returnData.orderNum,
             message:this.remark,
             bank_id:this.editData.id,
+            payimg:JSON.stringify(this.obj),
             anotherpay:this.editData.explan_path,
         }
-        for(var i=0;i<length;i++){
-            if(i==0){
-                data['payimg']=this.dataURL.payment[i];
-            }else{
-              data['payimg'+(i+1)]=this.dataURL.payment[i];
-            }
-        }
+        
         /*if(this.submitFlag){*/
           this.$http.post("order/full/payment",data)
             .then(function (response) {
@@ -295,6 +316,7 @@ export default {
 }
 .item-bor{
   padding:0.25rem 0;
+  margin-bottom:0 !important;
 }
 .voucher-item.item-bor p{
 border-bottom: 0;
@@ -320,9 +342,9 @@ padding: 0.15rem 0;
     margin-left:0.5rem;
 }
 .voucher-item{
-  margin-bottom:0.4rem;
   background:#fff;
   overflow:hidden;
+  margin-bottom:0;
 }
 .voucher-item p{
   max-height:9999px;
@@ -348,6 +370,9 @@ padding: 0.15rem 0;
 }
 .voucher-img{
   overflow:hidden;
+}
+.voucher-img .sample-ct{
+  margin-top:0;
   padding:0 0.4rem 0.533333rem 0.4rem;
 }
 .voucher-lt{
@@ -404,10 +429,62 @@ padding: 0.15rem 0;
      transform:translateX(-50%) translateY(-50%);
 
 }
+.item-link{
+  cursor:pointer;
+  font-size:0.373333rem;
+  height:1.173333rem;
+  line-height:1.173333rem;
+  color:#f6b32e;
+  text-align:center;
+  margin-bottom:0.4rem;
+  border-top:1px solid #e0e0e0;
+  background:#fff;
+  font-weight:bold;
+}
+.item-link i{
+  float:inherit;
+  vertical-align: middle;
+  margin-left:0.133333rem;
+}
+.voucher-img p{
+  border-bottom:none;
+  border-top:1px solid #eee;
+  font-size:0.4rem;
+}
+.voucher-item p.voucher-gray-bt{
+  border-bottom:none;
+}
 .close-bt{
   cursor: pointer;
 }
-.white-rt{
-  position: absolute;
+/*汇款底单样式*/
+.voucher-with{
+  overflow:hidden;
+  position:relative;
+}
+.voucher-with .submit-lt{
+  width:100%;
+  padding-top:4.68rem;
+}
+.voucher-with .pic-box{
+  width:3.68rem;
+  float:left;
+  margin-right:1.0rem;
+}
+.voucher-with .pic-box:nth-child(1){
+  position:absolute;
+  top:-4.68rem;
+  left:0;
+}
+.voucher-with .submit-rt{
+  position:absolute;
+  top:1.55rem;
+  right:0.75rem;
+}
+.voucher-with .pic-box:nth-child(odd){
+  margin-right:0;
+}
+.voucher-with .submit-lt .submit-img{
+  width:100%;
 }
 </style>

@@ -3,7 +3,6 @@
     <section class="login-in">
         <p class="login-logo">
             <i></i>
-            <span>淘车猫</span>
         </p>
           <div class="login-info">
               <div class="login-phone">
@@ -48,7 +47,7 @@ html,body{
 .login-in{padding-top:1.2rem;}
 .login-logo-wrap{height:}
 .login-logo{height:.6113rem;line-height:.6113rem;margin:1.133rem auto 0;text-align:center;font-size:.6133rem;color:#fff;}
-.login-logo i{display:inline-block;width:.96rem;height:.6113rem;background:url("../../assets/login-logo.png") no-repeat;background-size:.96rem .6113rem;}
+.login-logo i{display:inline-block;width:2.586667rem;height:0.906667rem;background:url("../../assets/logos.png") no-repeat;background-size:contain;}
 .login-logo span{display:inline-block;}
 .login-info{margin-left:1.333rem;margin-right:1.333rem;}
 .login-phone{position:relative;width:7.333rem;height:.933rem;margin:.797rem auto 0;border-bottom:2px solid #fff;}
