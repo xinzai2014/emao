@@ -135,7 +135,6 @@ Vue.directive('load-more',{
 		}
       },
   unbind(){
-    console.log(window.onscroll);
     window.onscroll = null;
   }
 })
