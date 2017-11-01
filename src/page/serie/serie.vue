@@ -41,7 +41,7 @@
     </section>
 
     <!--商品详情图片-->
-      <section class="good-detail-pic-wrap">
+      <section class="good-detail-pic-wrap" v-if="goodsPicData.length>0">
           <p class="good-detail-pic-title">商品详情</p>
           <ul class="good-detail-pic-list">
               <li v-for="(item,index) in goodsPicData"  @click="showFullScreen(item)">
