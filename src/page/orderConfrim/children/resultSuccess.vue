@@ -63,10 +63,7 @@ export default {
             }
             this.messageData["token"] = sessionStorage.token;
             this.messageData["phone"] = this.$store.getters.getSuccessData["phone"];
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" +
-                this.successData.bankName+ ",账号：" +
-                this.successData.account + ",公司名称：" +
-                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
+            this.messageData["content"] = '汇款信息：'+'\n'+'汇款银行：'+this.successData.bankName+'\n'+'公司名称:'+this.successData.companyName+'\n'+'汇款账户:'+this.successData.account
             this.$http.post(
                   "message/send",
                   this.messageData,

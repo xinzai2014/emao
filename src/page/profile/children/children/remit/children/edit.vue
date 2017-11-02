@@ -261,23 +261,6 @@
     border-color:#2c2c2c;
     color:#2c2c2c;
 }
-.voucher-img{
-  overflow:hidden;
-  padding:0 0.4rem 0.533333rem 0.4rem;
-}
-.voucher-lt{
-
-  width:3.666667rem;
-  height:2.8rem;
-  overflow:hidden;
-  float:left;
-  margin:0 0.466667rem;
-  margin-bottom: 0.4rem;
-}
-.voucher-lt img{
-  width:100%;
-  height:100%;
-}
 .payment-up-tit{
     padding: 0.4rem 0.4rem 0 0.4rem;
     font-size: 0.4rem;
