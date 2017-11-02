@@ -107,7 +107,7 @@
     </section>
 
     <!-- 选择优惠券 -->
-	<section class="coupon-popup"  :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
+	<section class="coupon-popup" v-show="showCoupon"  :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
             <div class="coupon-title">
                 <p>请选择1张优惠券</p>

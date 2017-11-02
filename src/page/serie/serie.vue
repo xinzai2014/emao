@@ -224,6 +224,7 @@ export default {
     },
     goBack(){
       var leaveURL = this.$store.getters.getSerieURL;
+      console.log(leaveURL);
       this.$router.push({
         path:"/" + leaveURL.tag + "/" + leaveURL.id
       });

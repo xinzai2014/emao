@@ -18,10 +18,10 @@
 						<p class="addres-info">{{item.name}}<span>{{item.phone}}</span></p>
 						<p class="addres-add">地址：{{item.address}}</p>
 						<p class="addres-btn">
-							<router-link :to="{name:'addressEdit',params:{id:item.id}}">
-								<i class="edit">编辑</i>
+                            <i class="del" @click="remove(item,index)">删除</i>
+							<router-link class="edit" tag="i" :to="{name:'addressEdit',params:{id:item.id}}">
+								编辑
 							</router-link>
-					        <i class="del" @click="remove(item,index)">删除</i>
 						</p>
 					</div>
 
@@ -264,9 +264,11 @@
 .addres-btn{
 	text-align:right;
 	margin-top:0.8rem;
+    overflow:hidden;
 }
 .addres-btn i{
-	display:inline-block;
+	display:block;
+    float:right;
 	width:1.573333rem;
 	height:0.773333rem;
 	line-height:0.773333rem;
