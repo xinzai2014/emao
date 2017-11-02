@@ -326,9 +326,13 @@ export default {
     float:right;
     display:block;
     width:6.133333rem;
-    text-align:right;
+    text-align:left;
     margin-top:0.346667rem;
     line-height:0.373333rem; 
+    height:0.373333rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .available dt{
     color:#d5aa5c;
