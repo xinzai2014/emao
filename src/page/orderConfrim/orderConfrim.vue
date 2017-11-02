@@ -106,7 +106,6 @@
     </section>
     <p class="footer-bt"></p>
     <!--确认提交-->
-    <p class="footer-bt"></p>
     <section class="order-present-info">
         <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">

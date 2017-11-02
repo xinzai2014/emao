@@ -71,7 +71,7 @@ export default {
           url:"https://tcmapi.emao.com/upload",
           count:1,
           flag:"door",
-          image:'static/sample3.jpg'
+          image:'static/sample17.jpg'
       },
       uploadData1:{
           url:"https://tcmapi.emao.com/upload",

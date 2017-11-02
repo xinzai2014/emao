@@ -198,18 +198,18 @@
         margin-top:0.533333rem;
 
     }
-    .submit-lt{
+    .user-info-form .submit-lt{
         width:3.68rem;
         height:4.333333rem;
         float:left;
         margin:0 1.066667rem 0 0.4rem;
     }
-    .submit-img{
+    .user-info-form .submit-img{
         width:3.666667rem;
         height:2.773333rem;
         /*overflow:hidden;*/
     }
-    .up-btn {
+    .user-info-form .up-btn {
         border: 1px solid #d6ab55;
         border-radius: 0.533333rem;
         color: #bb8800;
