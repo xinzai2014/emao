@@ -414,12 +414,13 @@
         color:#2c2c2c;
         overflow:hidden;
     }
-    .user-info .left{float:left;width:2.1333rem;}
-    .user-info .right{position:relative;float:left;width:7.0667rem;}
+    .user-info .left{float:left;width:2.1333rem;height:.4rem;line-height:.4rem;}
+    .user-info .right{position:relative;float:left;width:7.0667rem;height:.4rem;line-height:.4rem;}
     .user-info .right span{position:absolute;bottom:-.5333rem;left: 0.266667rem;color:red;font-size:.2933rem;}
     .user-info input{
-        display:inline-block;
+        display:block;
         width:6.866667rem;
+        height:.4rem;
         border:none;
         line-height:0.4rem;
         margin-left:0.266667rem;
