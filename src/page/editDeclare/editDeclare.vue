@@ -430,10 +430,10 @@
     .submit-tit{
         font-size:0.506667rem;
     }
-    .user-info img{
-        width:100%;
-        height:100%;
-    }
+    /*.user-info img{*/
+        /*width:100%;*/
+        /*height:100%;*/
+    /*}*/
     .sample-ct{
         overflow:hidden;
         margin-top:0.533333rem;

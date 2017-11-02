@@ -484,7 +484,7 @@ export default {
 .good-detail-pic-list li{width:100%;}
 .good-detail-pic-list li img{width:100%;}
 /*全屏展示*/
-.good-pic-full-screen{position: fixed;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0,0,0,0.95);}
+.good-pic-full-screen{position: fixed;z-index:7;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0,0,0,0.95);}
 .good-pic-full-screen img{position:fixed;transform:translateY(50%);width:100%;height:auto;}
 
 

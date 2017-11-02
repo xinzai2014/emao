@@ -182,6 +182,14 @@
         </div>
     </section>
 
+    <!--是否使用优惠券弹窗-->
+    <div class="balance-coupon-mask" v-if="showBalanceCouponMask">
+        <div class="balance-coupon-cancel-car">
+            <p class="balance-coupon-prompt-tit">您有{{coupon.length}}张优惠券可以使用，是否使用</p>
+            <p class="balance-coupon-prompt-btn"><span @click.stop="balanceCouponDisuse">不用</span><span class="balance-coupon-confirm" @click.stop="backToUseBalanceCoupon">使用</span></p>
+        </div>
+    </div>
+
 </div>
 
 </template>
@@ -220,7 +228,8 @@ export default {
 
             },
             remark:null,             //备注信息
-            showAgreement:false
+            showAgreement:false,
+            showBalanceCouponMask:false //是否显示使用优惠券弹窗
  	    }
 	  },
 	  methods:{
@@ -358,30 +367,49 @@ export default {
               },function(response){
             });
         },
+        /*不用优惠券*/
+        balanceCouponDisuse(){
+            this.showBalanceCouponMask = false;
+            setTimeout(this.sumbitOrderData,1000);
+        },
+        /*使用优惠券*/
+        backToUseBalanceCoupon(){
+            this.showBalanceCouponMask = false;
+            this.showCouponDialog();
+        },
+        /*提交展车数据函数*/
+        sumbitOrderData(){
+          this.closeAgreementDialog();
+          this.formData.order_num = this.orderId;
+          this.formData.deduction = this.totalData;
+          //this.formData.remark = this.remark;
+
+          this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
+          this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
+          this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
+          this.formData.rebate_price = this.updateRebateData>0?this.updateRebateData:0;
+          this.$http.post(
+                  "order/show/balance?token="+sessionStorage.token,
+                  this.formData).then(function (response) {
+                      var data = response.body.data;
+                      data["flag"] = true;
+                      data["addressFlag"] = "balanceConfrim";
+                      data["telephone"] = this.address.phone;
+                      this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                              data
+                      )
+                      this.$router.push("/resultSuccess");
+                  },function(){
+
+                  });
+        },
         sumbitOrder(){ //提交表单
-            this.closeAgreementDialog();
-            this.formData.order_num = this.orderId;
-            this.formData.deduction = this.totalData;
-            //this.formData.remark = this.remark;
-
-            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;//优惠券减免
-            this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
-            this.formData.capital_price = this.updateMarketData>0?this.updateMarketData:0;
-            this.formData.rebate_price = this.updateRebateData>0?this.updateRebateData:0;
-            this.$http.post(
-                "order/show/balance?token="+sessionStorage.token,
-                this.formData).then(function (response) {
-                    var data = response.body.data;
-                    data["flag"] = true;
-                    data["addressFlag"] = "balanceConfrim";
-                    data["telephone"] = this.address.phone;
-                    this.$store.dispatch("SUCCESS_DATA", // 通过store传值
-                      data
-                     )
-                    this.$router.push("/resultSuccess");
-              },function(){
-
-            });
+           if (this.coupon.length>0&&!this.checkCoupun) {
+               this.showBalanceCouponMask = true;
+               return
+           }
+              alert(1);
+           //this.sumbitOrderData();
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             setTimeout(function(){
@@ -641,6 +669,52 @@ export default {
 
 .deposit-con span{
     float:right;
+}
+
+/*是否使用弹窗样式*/
+.balance-coupon-mask{
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:203;
+}
+.balance-coupon-cancel-car{
+    position:fixed;
+    width:7.2rem;
+    height:3.65rem;
+    background:#fff;
+    border-radius:0.133333rem;
+    overflow:hidden;
+    left:50%;
+    top:50%;
+    margin-top:-1.866667rem;
+    margin-left:-3.6rem;
+}
+.balance-coupon-prompt-tit{
+    text-align:center;
+    font-size:0.4rem;
+    color:#2c2c2c;
+    margin:0.986667rem 0;
+}
+.balance-coupon-prompt-btn{
+    background:#f5f5f5;
+    overflow:hidden;
+    height:1.173333rem;
+    line-height:1.173333rem;
+}
+.balance-coupon-prompt-btn span{
+    display:block;
+    width:50%;
+    float:left;
+    text-align:center;
+    font-size:0.453333rem;
+}
+.balance-coupon-prompt-btn span.balance-coupon-confirm{
+    background:#d6ab55;
+    color:#fff;
 }
 </style>
 
