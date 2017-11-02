@@ -18,10 +18,10 @@
 						<p class="remits-add"  v-if="item.account_type == 1">开户行：{{item.bank_name}}</p>
 						<p class="remits-add"  v-else>银行：{{item.bank_name}}</p>
 						<p class="remits-btn">
-							<router-link :to="{name:'remitEdit',params:{id:item.id}}">
-								<i class="edit">编辑</i>
-							</router-link>
 							<i class="del" @click="remitDel(index,item.id)" >删除</i>
+							<router-link tag="i" class="edit" :to="{name:'remitEdit',params:{id:item.id}}">
+								编辑
+							</router-link>
 						</p>
 					</div>
 				</div>
@@ -185,11 +185,12 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 	margin-top:0.266667rem;
 }
 .remits-btn{
-	text-align:right;
 	margin-top:0.8rem;
+	overflow:hidden;
 }
 .remits-btn i{
-	display:inline-block;
+	display:block;
+	float:right;
 	width:1.573333rem;
 	height:0.773333rem;
 	line-height:0.773333rem;
@@ -199,6 +200,7 @@ import alertTip from '../../../../../components/common/alertTip/alertTip'
 	text-align:center;
 	border-radius:0.066667rem;
 	margin-left:0.4rem;
+	cursor:pointer;
 }
 .remits-fixed{
 	width:10.0rem;
