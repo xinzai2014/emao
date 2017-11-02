@@ -321,6 +321,7 @@ export default {
     display:block;
     float:left;
     width:1.866667rem;
+    font-weight:normal;
 }
 .coupon-prompt p em{
     float:right;
