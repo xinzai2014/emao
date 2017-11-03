@@ -208,7 +208,7 @@
                     var ctx = cvs.getContext('2d');
                     ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
                     ctx.drawImage(this, 0, 0, cvs.width, cvs.height);
-                    var newImageData = cvs.toDataURL(fileType, 0.9);
+                    var newImageData = cvs.toDataURL(fileType, 0.2);
                     that.$set(item, 'src', newImageData);
                 }
             },
