@@ -537,14 +537,11 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		},
 		beforeRouteEnter(to, from, next){
 		    next(vm => {
-			    /*if(from.name=='display' || from.name == 'messageRebate' || from.name == 'cancel' || from.name == 'purchase'){
-			        sessionStorage.displayName = from.name
-			    }else{
-			    	sessionStorage.displayName = ''
-			    }*/
-			    /*if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail' && from.name !='balanceConfrim' && from.name !='resultSuccess'){
-			        sessionStorage.orderDetailUrl = from.path;
-			    }*/
+			    if(from.name == 'resultSuccess' || from.name == 'paymentSubmit'){
+		            sessionStorage.infoUrl = 'resultSuccess';
+		        }else{
+		            sessionStorage.infoUrl = '';
+		        }
 		    });
 		}
 
