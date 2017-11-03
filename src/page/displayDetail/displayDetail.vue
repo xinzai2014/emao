@@ -209,10 +209,14 @@ import alertTip from '../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-            	var data = this.$store.getters.getOrderURL;
-	            this.$router.push({
-	                path:"/" + data.tag +"/"+ data.id
-	            });
+	            if(sessionStorage.infoUrl == 'resultSuccess'){
+			        this.$router.push({name:'resultSuccess'});
+			    }else{
+			        var data = this.$store.getters.getOrderURL;
+		            this.$router.push({
+		                path:"/" + data.tag +"/"+ data.id
+		            });
+			    }
 
             },
             paymentSubmit(){
