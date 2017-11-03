@@ -6,7 +6,7 @@
         <strong class="brand-list-title" v-if="dataList">{{dataList.name}}</strong>
         <!-- <span class="brand-switch">全部配置</span> -->
     </header>
-    <section>
+    <section class="configuration-wrap">
         <div class="config" ref="carWrap">
             <div class="config-left-con">
 <!--                 <div class="config-nothing"></div> -->
@@ -111,7 +111,7 @@
     }
 </script>
 <style>
-*{box-sizing:border-box;}
+.configuration-wrap *{box-sizing:border-box;}
 .fixed-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;font-size:0.4rem}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
