@@ -209,10 +209,14 @@ import alertTip from '../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-            	var data = this.$store.getters.getOrderURL;
-	            this.$router.push({
-	                path:"/" + data.tag +"/"+ data.id
-	            });
+	            if(sessionStorage.infoUrl == 'resultSuccess'){
+			        this.$router.push({name:'resultSuccess'});
+			    }else{
+			        var data = this.$store.getters.getOrderURL;
+		            this.$router.push({
+		                path:"/" + data.tag +"/"+ data.id
+		            });
+			    }
 
             },
             paymentSubmit(){
@@ -533,14 +537,11 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		},
 		beforeRouteEnter(to, from, next){
 		    next(vm => {
-			    /*if(from.name=='display' || from.name == 'messageRebate' || from.name == 'cancel' || from.name == 'purchase'){
-			        sessionStorage.displayName = from.name
-			    }else{
-			    	sessionStorage.displayName = ''
-			    }*/
-			    /*if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail' && from.name !='balanceConfrim' && from.name !='resultSuccess'){
-			        sessionStorage.orderDetailUrl = from.path;
-			    }*/
+			    if(from.name == 'resultSuccess' || from.name == 'paymentSubmit'){
+		            sessionStorage.infoUrl = 'resultSuccess';
+		        }else{
+		            sessionStorage.infoUrl = '';
+		        }
 		    });
 		}
 
