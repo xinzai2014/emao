@@ -405,7 +405,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                order_num:this.orderInfo.orderNum
 	            }
 	            this.$http.post(
-	                "order/show/cancel",data
+	                "order/full/cancel",data
 	            ).then(function (response) {
 	            	this.statusText = '已取消';
             		this.payment = '未支付';
