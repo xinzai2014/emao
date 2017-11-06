@@ -485,7 +485,7 @@
     }
     .prompt-tit{
         text-align:center;
-        font-size:0.453333rem;
+        font-size:0.4rem;
         color:#2c2c2c;
         margin:0.986667rem 0;
     }
