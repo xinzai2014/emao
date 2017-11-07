@@ -5,7 +5,7 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>账户资金变动提醒
 		</header>
 	    <!--账户资金变动提醒-->
-	    <section class="change" v-scroll="getMore" ref="load">
+	    <section class="change" v-scroll="getMore" ref="load" @click="orderData">
 	        <div class="change-item" v-for="(item,index) in infoData">
 	        	<div v-if="item.order_num">
 	        		<router-link  :to="'/orderDetail/'+item.url">
@@ -60,6 +60,12 @@
             resetIndex(){
                 this.$router.push({name:'message'});
             },
+            orderData(){
+			    this.$store.dispatch("ORDER_URL",{
+			        tag:"message/rebate",
+			        id:""
+			    });
+		    },
             moreFn(itemIndex){
 		        var data = {
 		            token:this.token, 

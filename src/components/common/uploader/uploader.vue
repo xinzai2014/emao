@@ -4,7 +4,9 @@
         <div class="submit-lt">
             <div class="submit-img">
                 <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src,index)">
-                    <img :src = item.src >
+                    <div class="pic-wrap">
+                      <img :src = item.src v-if="item.src">
+                    </div>
                     <div class="img-percent" v-if="item.showPercent">
                         <p>{{item.percent + "%"}}</p>
                     </div>
@@ -57,14 +59,7 @@
                 }
             },
             deletePic(index){ //删除重新上传
-                var that = this;
-                var tagFile = [];
-                this.files.forEach(function(ele,ind){
-                    if(index != ind){
-                        tagFile.push(ele);
-                    }
-                })
-                this.files = tagFile;
+                this.files.splice(index,1);
                 this.continueUp = true;
                 this.imgURL.splice(index,1);
                 this.sendData();
@@ -317,9 +312,13 @@
         border-color: #999;
         color:#666;
     }
-    .submit-img img{
+    .submit-img .pic-wrap{
         width:100%;
         height:2.773333rem;
+    }
+    .submit-img img{
+      width:100%;
+      height:100%;
     }
     .img-button{
         text-align:center;
