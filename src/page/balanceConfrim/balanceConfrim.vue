@@ -408,8 +408,7 @@ export default {
                this.showBalanceCouponMask = true;
                return
            }
-              alert(1);
-           //this.sumbitOrderData();
+           this.sumbitOrderData();
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             setTimeout(function(){
