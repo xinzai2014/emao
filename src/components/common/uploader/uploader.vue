@@ -306,6 +306,8 @@
     }
     .submit-rt{
         float:left;
+        height:2.773333rem;
+        overflow:hidden;
     }
     .continue-btn{
         width:100%;
