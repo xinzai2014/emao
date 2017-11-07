@@ -537,7 +537,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		},
 		beforeRouteEnter(to, from, next){
 		    next(vm => {
-			    if(from.name == 'resultSuccess' || from.name == 'paymentSubmit'){
+			    if(/*from.name == 'resultSuccess' || */from.name == 'paymentSubmit'){
 		            sessionStorage.infoUrl = 'resultSuccess';
 		        }else{
 		            sessionStorage.infoUrl = '';
