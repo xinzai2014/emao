@@ -113,6 +113,17 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
+
+
+
+
+
+
+//后期淘车猫加入专题
+const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
+
+
+
 Vue.use(Router)
 
 var router=new Router({
@@ -437,6 +448,11 @@ var router=new Router({
             path: '/paymentSubmit',  //提交汇款凭证
             name: 'paymentSubmit',
             component: paymentSubmit,
+        },
+        {
+          path: '/zt/201711/auction',  //提交汇款凭证
+          name: 'auction',
+          component: auction,
         }
     ]
 })
