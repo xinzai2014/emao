@@ -25,7 +25,7 @@
                 <span>指导价：{{item.guide_price}}万</span>
               </div>
               <div class="ac-t3-btn" v-if="item.auction_status == 3">
-                <input type="button" @click="showAuction(item.id)" value="我要出价"/>
+                <input type="button" @click="showAuction(index)" value="我要出价"/>
               </div>
               <div class="ac-t3-tips" v-if="item.auction_status == 1&&item.auction_data.length>0">
                 <template>
@@ -44,7 +44,7 @@
                 <dt>竞拍价</dt>
               </dl>
               <dl v-for="(e,ind) in item.auction_data">
-                <dd>{{e.link_name}}</dd>
+                <dd>{{e.link_name|nameFormat}}</dd>
                 <dd>{{e.link_phone|phoneFormat}}</dd>
                 <dd>{{e.auction_price}}万</dd>
               </dl>
@@ -74,7 +74,7 @@
     <!-- 弹窗2---->
     <div class="auction-dialog" v-show="tipsDialog">
       <div class="auction-dialog-con">
-        <div class="dialog-t1">很抱歉，当前价有更新请重新出价</div>
+        <div class="dialog-t1">很抱歉，当前价有更新<br/>请重新出价</div>
         <div class="dialog-t4">当前价：{{newPrice}}万</div>
         <div class="dialog-t3" @click="againPrice">重新出价</div>
       </div>
@@ -88,7 +88,15 @@
         <div class="dialog-t4">温馨提示：请密切关注竞拍信息</div>
         <div class="dialog-t3">好的</div>
       </div>
-      <div class="dialog-close"  @click.stop="sucessDialog = !sucessDialog"><span>×</span></div>
+      <!--<div class="dialog-close"  @click.stop="sucessDialog = !sucessDialog"><span>×</span></div>-->
+    </div>
+
+    <div class="auction-dialog" v-if="sorryDialog">
+      <div class="auction-dialog-con">
+        <div class="dialog-t6">对不起，您还没有完成<br/>诚意金支付，暂无出价资格</div>
+        <div class="dialog-t3" @click.stop="sorryDialog = !sorryDialog">知道了</div>
+      </div>
+      <!--<div class="dialog-close"  @click.stop="sorryDialog = !sorryDialog"><span>×</span></div>-->
     </div>
 
   </div>
@@ -119,14 +127,17 @@
         auctionDialog:false, //提交报价弹出窗
         sucessDialog:false, //报价成功弹出窗
         tipsDialog:false,    //报价更新提示
+        sorryDialog:false, //还没完成诚意金支付
         startTime:"2017-11-11",
         endTime:"2017-11-14",
         curIndex:null, //当前日期索引
         curDate:"2017-11-06", //当前日期
-        subData:{}, //提交竞价接口数据
         selectAucitonData:100, //竞价默认初始值
         selectAuciton:[100,500,1000], // 竞价区间
-        newPrice:null
+        newPrice:null,
+        token:null,//保存token
+        aitivityIndex:null,//活动索引，用于标识点击了哪个
+        timeCount:null
       }
    },
    methods:{
@@ -135,7 +146,7 @@
          url:"auction/index",
          method:"GET",
          params:{
-           token:sessionStorage.token,
+           token:this.token,
            date:strTime
          }
        }).then(function(res){
@@ -143,15 +154,18 @@
          var that = this;
          ajaxData.forEach(function(ele,index){
            ele.timer = null;
-           if(ele.auction_status == 3){
+           if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
              that.newPrice = ele.auction_data.length?ele.auction_data[0]["auction_price"]:ele.start_price;
              var timeEnd = new Date(ele.auction_end_at).getTime();
+             var serverTime = new Date(ele.now).getTime();
+             that.timeCount  = timeEnd - serverTime;
              ele.timer = window.setInterval(()=>{
                  var str = "";
-                 var curDateTime = new Date().getTime();
-                 var counts = timeEnd - curDateTime;
+                 var counts = that.timeCount;
                  if(counts<=0){
+                   window.clearInterval(ele.timer);
+                   ele.timer = null;
                    console.log("本次竞拍马上结束了");
                    that.getData(that.curDate);
                  }
@@ -168,7 +182,18 @@
                    str += second + "秒"
                  }
                  ele.auction_end_at = str;
+                 that.timeCount = that.timeCount - 1000;
              },1000)
+
+             ele.realTimerData = window.setInterval(()=>{
+                  that.liveData(index);
+             },1000*60);
+           }
+           var timeRefresh = new Date(ele.auction_start_at).getTime() - new Date(ele.now).getTime();
+           if(timeRefresh>0){
+             seTtimeout(()=>{
+               that.getData(that.curDate);
+             },timeRefresh)
            }
          })
          this.carData = ajaxData;
@@ -176,22 +201,28 @@
      },
      auctionData(){  //提交竞价数据
         var that = this;
-        this.subData["auctionPrice"] = (+this.newPrice) + this.selectAucitonData/10000;
-        //this.subData["auctionPrice"] = 8.2;
+        var auctionPrice  = (+this.newPrice) + this.selectAucitonData/10000;
         this.$http({
           url:"auction/enterAuction",
-          params:this.subData,
+          params:{
+            id:this.carData[this.aitivityIndex].id,
+            auctionPrice:auctionPrice,
+            token:this.token
+          },
           method:"GET"
         }).then(function(res){
           console.log(res);
           this.auctionDialog = false;
           if(res.body.code == 200){
+              alert("报价成功");
+              this.sucessDialog = true;
+          }
+          if(res.body.code == 300){
+            alert("有最新报价");
             this.newPrice = res.body.msg;
             this.tipsDialog = true;
-            return false;
           }
-          this.liveData(tagIndex);
-
+          //this.liveData(this.aitivityIndex);
         },function(error){
            console.log(error);
         })
@@ -200,8 +231,8 @@
        this.$http({
          url:"auction/realTimeDetail",
          params:{
-          token:this.subData["token"],
-          auctionId:this.subData["id"],
+          token:this.token,
+          auctionId:this.carData[tagIndex]["id"],
           date:this.curDate
          },
          method:"GET"
@@ -217,14 +248,29 @@
          this.curentDate[index].flag = true;
         this.getData(str);
      },
-     showAuction(id,price){
-       this.subData["id"] = id;
-       this.subData["token"] = sessionStorage.token;
-       this.auctionDialog = true;
+     showAuction(index){
+       this.$http({
+         url:"auction/checkAuctionAuth",
+         params:{
+           token:this.token,
+         },
+         method:"GET"
+       }).then(function(res){
+          var authFlag = res.body.data.auction_auth;
+          if(authFlag){
+            this.aitivityIndex = index;
+            this.auctionDialog = true;
+          }else{
+            this.sorryDialog = true;
+          }
+       })
      },
     againPrice(){
         this.tipsDialog = false;
         this.auctionDialog = true;
+    },
+    getToken(){
+        this.token =  this.$route.query.token;
     }
    },
    filters:{
@@ -233,6 +279,14 @@
         //return phone.replace(/(\d{3})\d{4}(\d{4})/,'$1****$2');
       },
       nameFormat:function(name){
+        if(name.length<2){
+          return name;
+        }
+        if(name.length == 2){
+          return name.substr(0,1) + "*"
+        }else{
+          return name.substr(0,1) + "*" + name.substr(-1,1)
+        }
 
       },
       timeFormat:function(time){
@@ -246,6 +300,7 @@
    },
    mounted(){
      //this.getData();
+     this.getToken();
      var date = new Date();
      var startTime = new Date(this.startTime).getTime();
      var endTime = new Date(this.endTime).getTime();
@@ -345,6 +400,7 @@
   .auction-dialog-con .dialog-t3{padding-top:1rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
   .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.6rem}
   .auction-dialog-con .dialog-t5{font-size:0.48rem;padding:2.5rem 1.5rem 0;text-align:center;}
+  .auction-dialog-con .dialog-t6{font-size:0.48rem;padding:2.5rem 0 0.5rem;text-align:center;}
   .dialog-close{position:fixed;top:72%;left:50%;font-size:0.85rem;color:#FFF;}
   .dialog-close span{border:1px solid #FFF;display:inline-block;width:1.067rem;height:1.067rem;transform:translateX(-35%);line-height:1.067rem;text-align:center;border-radius:50%;}
 </style>
