@@ -37,7 +37,6 @@ export default {
 	  	refresh(url){
 	  		this.showFrame = true;
 	  		this.frameURL = url+"&token=" + sessionStorage.token;
-        console.log(this.frameURL);
 	  		document.body.style.overflow = 'hidden';
 		  	document.body.style.position = 'fixed';
 	  	},
