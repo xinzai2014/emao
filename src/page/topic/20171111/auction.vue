@@ -174,7 +174,20 @@
          var noStartData = []; //未开始数据
          var hasfinishData = []; //已结束
          var inhandData = [];  //进行中
+         var tagData = [];
          ajaxData.forEach(function(ele,index){
+           if(ele.auction_status == 1){
+             hasfinishData.push(ele);
+           }
+           if(ele.auction_status == 2){
+             noStartData.push(ele);
+           }
+           if(ele.auction_status == 3){
+             inhandData.push(ele);
+           }
+         })
+         tagData = inhandData.concat(noStartData).concat(hasfinishData);
+         tagData.forEach(function(ele,index){
            ele.timer = null;
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
@@ -219,18 +232,8 @@
                that.getData(that.curDate);
              },timeRefresh)
            }
-
-           if(ele.auction_status == 1){
-             hasfinishData.push(ele);
-           }
-           if(ele.auction_status == 2){
-             noStartData.push(ele);
-           }
-           if(ele.auction_status == 3){
-             inhandData.push(ele);
-           }
          })
-         this.carData = inhandData.concat(noStartData).concat(hasfinishData);
+         this.carData = tagData;
        })
      },
      auctionData(){  //提交竞价数据
