@@ -192,6 +192,8 @@
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
              that.newPrice = ele.auction_data.length>0?ele.auction_data[0]["auction_price"]:ele.start_price;
+             alert(ele.auction_end_at.replace(/\-/g,"/")+"---结束时间");
+             alert(ele.now.replace(/\-/g,"/")+"服务器时间");
              var timeEnd = new Date(ele.auction_end_at.replace(/\-/g,"/")).getTime();
              var serverTime = new Date(ele.now.replace(/\-/g,"/")).getTime();
              that.timeCount  = timeEnd - serverTime;
