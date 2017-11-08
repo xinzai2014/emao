@@ -414,12 +414,13 @@
         color:#2c2c2c;
         overflow:hidden;
     }
-    .user-info .left{float:left;width:2.1333rem;}
-    .user-info .right{position:relative;float:left;width:7.0667rem;}
+    .user-info .left{float:left;width:2.1333rem;height:.4rem;line-height:.4rem;}
+    .user-info .right{position:relative;float:left;width:7.0667rem;height:.4rem;line-height:.4rem;}
     .user-info .right span{position:absolute;bottom:-.5333rem;left: 0.266667rem;color:red;font-size:.2933rem;}
     .user-info input{
-        display:inline-block;
+        display:block;
         width:6.866667rem;
+        height:.4rem;
         border:none;
         line-height:0.4rem;
         margin-left:0.266667rem;
@@ -430,27 +431,27 @@
     .submit-tit{
         font-size:0.506667rem;
     }
-    .user-info img{
-        width:100%;
-        height:100%;
-    }
+    /*.user-info img{*/
+        /*width:100%;*/
+        /*height:100%;*/
+    /*}*/
     .sample-ct{
         overflow:hidden;
         margin-top:0.533333rem;
 
     }
-    .submit-lt{
+    .user-info .submit-lt{
         width:3.68rem;
         height:4.333333rem;
         float:left;
         margin:0 1.066667rem 0 0.4rem;
     }
-    .submit-img{
+    .user-info .submit-img{
         width:3.666667rem;
         height:2.773333rem;
         /*overflow:hidden;*/
     }
-    .up-btn {
+    .user-info .up-btn {
         border: 1px solid #d6ab55;
         border-radius: 0.533333rem;
         color: #bb8800;
@@ -484,7 +485,7 @@
     }
     .prompt-tit{
         text-align:center;
-        font-size:0.453333rem;
+        font-size:0.4rem;
         color:#2c2c2c;
         margin:0.986667rem 0;
     }

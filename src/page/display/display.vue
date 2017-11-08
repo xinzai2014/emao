@@ -6,7 +6,7 @@
 		</header>
 		<!--我的展车-->
 	    <section class="full-wrap">
-	        <div class="condition" ref="carWrap" v-show="showGame">
+	        <div class="condition" ref="carWrap" v-show="showGame" @click="displayUrl">
 	        	<div class="condition-ct" v-if="games.length">
 		            <div class="condition-tit">
 		            	<p :class="{'head-fixed':scrollIndex == 0}">
@@ -308,7 +308,14 @@
 			            }
 			    }, 60000);
 
+            },
+            displayUrl(){
+            	this.$store.dispatch("ORDER_URL",{
+                  tag:"display",
+                  id:""
+                });
             }
+            
         },
         mounted(){
         //组件初始完成需要做什么

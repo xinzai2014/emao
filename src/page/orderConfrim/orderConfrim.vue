@@ -106,7 +106,6 @@
     </section>
     <p class="footer-bt"></p>
     <!--确认提交-->
-    <p class="footer-bt"></p>
     <section class="order-present-info">
         <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">
@@ -116,7 +115,7 @@
     </section>
 
     <!-- 选择优惠券 -->
-	<section class="coupon-popup"  :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
+	<section class="coupon-popup" v-show="showCoupon" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
             <div class="coupon-title">
                 <p>请选择1张优惠券</p>
@@ -194,6 +193,13 @@
     <transition name="fade">
         <router-view></router-view>
     </transition>
+    <!--是否使用优惠券弹窗-->
+    <div class="coupon-mask" v-if="showCouponMask">
+        <div class="coupon-cancel-car">
+            <p class="coupon-prompt-tit">您有{{coupon.length}}张优惠券可以使用，是否使用</p>
+            <p class="coupon-prompt-btn"><span @click.stop="couponDisuse">不用</span><span class="coupon-confirm" @click.stop="backToUseCoupon">使用</span></p>
+        </div>
+    </div>
 </div>
 
 </template>
@@ -233,7 +239,8 @@ export default {
             remark:null,             //备注信息
             showAgreement:false,
             financial:false,
-            routerAddress:false
+            routerAddress:false,
+            showCouponMask:false
  	    }
 	  },
 	  methods:{
@@ -377,13 +384,24 @@ export default {
             this.showAgreement = false;
             return false;
         },
+        /*使用优惠券按钮*/
+        backToUseCoupon(){
+            this.showCouponMask = false;
+            this.showCouponDialog();
+        },
+        /*不使用优惠券按钮*/
+        couponDisuse(){
+            this.showCouponMask = false;
+            setTimeout(this.sumbitOrderData,1000);
+        },
         getAgreementData(){
             this.$http.get(
                 "order/full/agreement?token="+sessionStorage.token).then(function (response) {
               },function(response){
             });
         },
-        sumbitOrder(){ //提交表单
+        /*提交全款购车数据函数*/
+        sumbitOrderData(){
             this.closeAgreementDialog();
             this.formData.buy_finance = this.financial?1:0;
             this.formData.deduction = this.totalData;
@@ -405,6 +423,14 @@ export default {
                     this.$router.push("/resultSuccess");
               },function(){
             });
+        },
+        sumbitOrder(){ //提交表单
+            if (this.coupon.length>0&&!this.checkCoupun) {
+                this.showCouponMask = true;
+                return;
+            }
+            /*调用提交数据函数*/
+            this.sumbitOrderData();
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             setTimeout(function(){
@@ -512,7 +538,7 @@ export default {
 .order-car-price span{color:#fc3036;}
 .order-car-count{float:right;color:#999;}
 .order-car-count span{}
-.order-message{padding:.4rem 0;color:#2c2c2c;font-size:.3733rem;border-top:1px solid #e0e0e0;}
+.order-message{padding:.4rem 0;color:#2c2c2c;font-size:.3733rem;border-top:1px solid #e0e0e0;overflow:hidden;}
 .order-message input{display: inline-block;height: 0.75rem;width: 7rem;line-height: 0.75rem;border: none;}
 .order-coupon-info{padding:0 .4rem;margin-bottom:.4rem;background-color:#fff;}
 .order-coupon-title{float:left;color:#2c2c2c;font-size:.4rem;}
@@ -626,6 +652,52 @@ export default {
     width:100%;
     border:none;
     height:100%;
+}
+
+/*是否使用弹窗样式*/
+.coupon-mask{
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:203;
+}
+.coupon-cancel-car{
+    position:fixed;
+    width:7.2rem;
+    height:3.65rem;
+    background:#fff;
+    border-radius:0.133333rem;
+    overflow:hidden;
+    left:50%;
+    top:50%;
+    margin-top:-1.866667rem;
+    margin-left:-3.6rem;
+}
+.coupon-prompt-tit{
+    text-align:center;
+    font-size:0.4rem;
+    color:#2c2c2c;
+    margin:0.986667rem 0;
+}
+.coupon-prompt-btn{
+    background:#f5f5f5;
+    overflow:hidden;
+    height:1.173333rem;
+    line-height:1.173333rem;
+}
+.coupon-prompt-btn span{
+    display:block;
+    width:50%;
+    float:left;
+    text-align:center;
+    font-size:0.453333rem;
+}
+.coupon-prompt-btn span.coupon-confirm{
+    background:#d6ab55;
+    color:#fff;
 }
 
 </style>

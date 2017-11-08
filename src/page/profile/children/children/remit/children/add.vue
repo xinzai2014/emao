@@ -41,10 +41,10 @@
                         <label>汇款账户：</label>
                         <input type="text" v-model="personData.account">
                     </div>
-                    <div class="payment-up">
+                    <!-- <div class="payment-up">
                         <p class="payment-up-tit">代付款说明</p>
                         <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>              
-                    </div>
+                    </div> -->
                     <button class="close-bt" @click="submitPerson">保存并使用</button>
                 </div>
             </div>
@@ -71,8 +71,8 @@
                     token:sessionStorage.getItem('token'),
                     name:'',//个人名称
                     bank_name:'',//账户名称
-                    account:'',//账号
-                    explan_path:'' //待付款说明图片
+                    account:''//账号
+                    //explan_path:'' //待付款说明图片
                 },
                 accountType:true, //切换显示
                 uploadData1:{
@@ -139,10 +139,10 @@
                 });
                 
             },
-            getUpload(data,flag){
+            /*getUpload(data,flag){
                 this.dataURL[flag] = data;
                 this.personData.explan_path = data[0];
-            },
+            },*/
             submitPerson(){//个人账户
                 var reg = /^[0-9]*$/;
                 if(!this.personData.name){
@@ -165,11 +165,11 @@
                     this.alertText = '汇款账户只能是数字';
                     return;
                 }
-                if(!this.personData.explan_path){
+                /*if(!this.personData.explan_path){
                     this.showAlert = true;
-                    this.alertText = '请先上传代付款说明照片';
+                    this.alertText = '请上传代付款说明照片';
                     return;
-                }
+                }*/
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
                     this.$set(this.personData,{});

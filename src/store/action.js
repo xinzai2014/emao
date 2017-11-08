@@ -15,7 +15,8 @@ import {
   SUCCESS_URL,
   PAYMENT_URL,
   PAYMENT_DATA,
-  SERIE_URL
+  SERIE_URL,
+  ORDER_URL
 } from './mutations-types.js'
 
 
@@ -88,5 +89,9 @@ export default {
 
   [SERIE_URL](context,obj){
     context.commit(SERIE_URL,obj);
+  },
+
+  [ORDER_URL](context,obj){
+    context.commit(ORDER_URL,obj);
   }
 }

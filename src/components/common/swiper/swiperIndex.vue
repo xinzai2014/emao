@@ -35,13 +35,14 @@ export default {
 	  },
 	  methods:{
 	  	refresh(url){
+	  		this.frameURL = url+"&token=" + sessionStorage.token;
 	  		this.showFrame = true;
-	  		this.frameURL = url;
 	  		document.body.style.overflow = 'hidden';
 		  	document.body.style.position = 'fixed';
 	  	},
 	  	closeFrame(){
 	  		this.showFrame = false;
+	  		this.frameURL ='';
 	  		document.body.style.overflow = 'inherit';
 		  	document.body.style.position = 'initial';
 	  	}

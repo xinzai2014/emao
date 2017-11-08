@@ -76,7 +76,7 @@
     </section>
 
     <!-- 选择优惠券 -->
-	<section class="coupon-popup" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
+	<section class="coupon-popup" v-how="showCoupon" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
             <div class="coupon-title">
                 <p>请选择1张优惠券</p>
@@ -112,6 +112,13 @@
             </ul>
         </div>
     </section>
+    <!--是否使用优惠券弹窗-->
+    <div class="display-coupon-mask" v-if="showDisplayCouponMask">
+        <div class="display-coupon-cancel-car">
+            <p class="display-coupon-prompt-tit">您有{{coupon.length}}张优惠券可以使用，是否使用</p>
+            <p class="display-coupon-prompt-btn"><span @click.stop="displayCouponDisuse">不用</span><span class="display-coupon-confirm" @click.stop="backToUseDisplayCoupon">使用</span></p>
+        </div>
+    </div>
 
 </div>
 
@@ -136,7 +143,8 @@ export default {
             },
             remark:null,             //备注信息
             showAgreement:false,
-            routerAddress:false
+            routerAddress:false,
+            showDisplayCouponMask:false
  	    }
 	  },
 	  methods:{
@@ -208,32 +216,51 @@ export default {
             this.showAgreement = false;
             return false;
         },
+          /*使用优惠券按钮*/
+          backToUseDisplayCoupon(){
+              this.showDisplayCouponMask = false;
+              this.showCouponDialog();
+          },
+          /*不使用优惠券按钮*/
+          displayCouponDisuse(){
+              this.showDisplayCouponMask = false;
+              setTimeout(this.sumbitOrderData,1000);
+          },
         getAgreementData(){
             this.$http.get(
                 "order/show/agreement?token="+sessionStorage.token).then(function (response) {
               },function(response){
             });
         },
+          /*提交展车数据函数*/
+        sumbitOrderData(){
+              this.closeAgreementDialog();
+              this.formData.deduction = this.totalData;
+              this.formData.address_id = this.address.id;
+              this.formData.remark = this.remark;
+              this.formData.coupon_price = this.couponData.price?this.couponData.price:0;
+              this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
+              this.$http.post(
+                      "order/show/create?token="+sessionStorage.token,
+                      this.formData).then(function (response) {
+                          var data = response.body.data;
+                          data["flag"] = true;
+                          data["addressFlag"] = "displayConfrim";
+                          data["telephone"] = this.address.phone;
+                          this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                                  data
+                          )
+                          this.$router.push("/resultSuccess");
+                      },function(){
+                      });
+        },
         sumbitOrder(){ //提交表单
-            this.closeAgreementDialog();
-            this.formData.deduction = this.totalData;
-            this.formData.address_id = this.address.id;
-            this.formData.remark = this.remark;
-            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;
-            this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
-            this.$http.post(
-                "order/show/create?token="+sessionStorage.token,
-                this.formData).then(function (response) {
-                    var data = response.body.data;
-                    data["flag"] = true;
-                    data["addressFlag"] = "displayConfrim";
-                    data["telephone"] = this.address.phone;
-                    this.$store.dispatch("SUCCESS_DATA", // 通过store传值
-                      data
-                     )
-                    this.$router.push("/resultSuccess");
-              },function(){
-            });
+          if (this.coupon.length>0&&!this.checkCoupun) {
+              this.showDisplayCouponMask = true;
+              return;
+          }
+          /*调用提交数据函数*/
+          this.sumbitOrderData();
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             setTimeout(function(){
@@ -471,6 +498,52 @@ export default {
     width:100%;
     border:none;
     height:100%;
+}
+
+/*是否使用弹窗样式*/
+.display-coupon-mask{
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:203;
+}
+.display-coupon-cancel-car{
+    position:fixed;
+    width:7.2rem;
+    height:3.65rem;
+    background:#fff;
+    border-radius:0.133333rem;
+    overflow:hidden;
+    left:50%;
+    top:50%;
+    margin-top:-1.866667rem;
+    margin-left:-3.6rem;
+}
+.display-coupon-prompt-tit{
+    text-align:center;
+    font-size:0.4rem;
+    color:#2c2c2c;
+    margin:0.986667rem 0;
+}
+.display-coupon-prompt-btn{
+    background:#f5f5f5;
+    overflow:hidden;
+    height:1.173333rem;
+    line-height:1.173333rem;
+}
+.display-coupon-prompt-btn span{
+    display:block;
+    width:50%;
+    float:left;
+    text-align:center;
+    font-size:0.453333rem;
+}
+.display-coupon-prompt-btn span.display-coupon-confirm{
+    background:#d6ab55;
+    color:#fff;
 }
 </style>
 

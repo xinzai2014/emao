@@ -41,7 +41,7 @@
 	            <p class="bond"><span>￥{{capitalInfo.totalPrice}}</span>金额：</p>
 	            <p class="bond"><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣(不可开票)：</p>
 	            <!--<p class="bond"><span>-{{capitalInfo.deposit}}</span>保证金：</p>-->
-	            <p class="bond active bond-bt" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9&& orderInfo.status != 11"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+	            <p class="bond active bond-bt" v-if="orderInfo.status != 5 && orderInfo.status != 28 && orderInfo.status != 10 && orderInfo.status != 4 && orderInfo.status != 3 && orderInfo.status != 9&& orderInfo.status != 11 && orderInfo.status != 8"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
 	            <p class="bond bond-bt" v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
 	            <div v-if="orderInfo.status != 6 && orderInfo.status != 11 && orderInfo.status != 10">
 		            <div class="ayment-info" v-if="bankInfo.accountType == 2">
@@ -209,12 +209,15 @@ import alertTip from '../../components/common/alertTip/alertTip'
         methods:{
             //组件方法
             resetIndex(){
-            	/*if(sessionStorage.displayName){
-            		this.$router.push({name:sessionStorage.displayName});
-            	}else{
-            		this.$router.go(-1);
-            	}*/
-            	this.$router.push({path:sessionStorage.orderDetailUrl});
+	            if(sessionStorage.infoUrl == 'resultSuccess'){
+			        this.$router.push({name:'resultSuccess'});
+			    }else{
+			        var data = this.$store.getters.getOrderURL;
+		            this.$router.push({
+		                path:"/" + data.tag +"/"+ data.id
+		            });
+			    }
+
             },
             paymentSubmit(){
             	this.$router.push({name:'paymentSubmit'});
@@ -317,7 +320,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             		this.btmBtn = !this.btmBtn;
             		this.carCancel = !this.carCancel;
             	}else if(item.status == 8){
-            		this.statusText = '待付款审核中,请耐心等候';
+            		this.statusText = '付款审核中，请耐心等待';
             		this.payment = '等待审核';
             		this.btmBtn = !this.btmBtn;
             	}else if(item.status == 3){
@@ -406,7 +409,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 	                order_num:this.orderInfo.orderNum
 	            }
 	            this.$http.post(
-	                "order/show/cancel",data
+	                "order/full/cancel",data
 	            ).then(function (response) {
 	            	this.statusText = '已取消';
             		this.payment = '未支付';
@@ -490,6 +493,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 			              	this.sendText = num+"s";
 			              	if(!num){
 				                this.sendText = "发送到手机";
+				                this.huang = true;
 				                clearInterval(timer);
 				                return false;
 			              	}
@@ -534,14 +538,11 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		},
 		beforeRouteEnter(to, from, next){
 		    next(vm => {
-			    /*if(from.name=='display' || from.name == 'messageRebate' || from.name == 'cancel' || from.name == 'purchase'){
-			        sessionStorage.displayName = from.name
-			    }else{
-			    	sessionStorage.displayName = ''
-			    }*/
-			    if(from.name != 'paymentSubmit' && from.name != 'payment' && from.name !='orderDetail' && from.name !='balanceConfrim' && from.name !='resultSuccess'){
-			        sessionStorage.orderDetailUrl = from.path;
-			    }
+			    if(/*from.name == 'resultSuccess' || */from.name == 'paymentSubmit'){
+		            sessionStorage.infoUrl = 'resultSuccess';
+		        }else{
+		            sessionStorage.infoUrl = '';
+		        }
 		    });
 		}
 

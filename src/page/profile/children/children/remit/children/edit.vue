@@ -40,18 +40,10 @@
 				<div class="remits-edit-item">
 					汇款账户：<input type="text" v-model="editData.account">
 				</div>
-                <div class="payment-up">
+                <!-- <div class="payment-up">
                     <p class="payment-up-tit">代付款说明</p>
                     <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
-                    <!--<div class="voucher-img">
-                       <div class="voucher-lt">
-                      <img :src="editData.explan_path">
-                      </div>
-                       <div class="voucher-lt">
-                        <img :src="editData.explan_path">
-                    </div>
-                  </div>-->
-                </div>
+                </div> -->
 			</div>
 			<button class="close-bt" @click="personEdit">保存并使用</button>
 		</section>
@@ -72,14 +64,14 @@
 	            type:null, //账户类型
 	            showAlert: false, //弹出框
 	            alertText: null, //弹出信息
-                uploadData1:{
+                /*uploadData1:{
                       url:"https://tcmapi.emao.com/upload",
                       count:1,
                       flag:"dai",
                       image:'static/sample17.jpg'
                   },
                   dataURL:{
-                  },//图片地址
+                  },//图片地址*/
             }
         },
         methods:{
@@ -87,10 +79,10 @@
             resetIndex(){
                 this.$router.push({name:'remit'});
             },
-              getUpload(data,flag){
+              /*getUpload(data,flag){
                   this.dataURL[flag] = data;
                   this.editData.explan_path=this.dataURL[flag][0];
-              },
+              },*/
             acountEdit(){ //保存并使用公司
             	var reg = /^[0-9]*$/;
                 if(!this.editData.pay_company){
@@ -165,8 +157,7 @@
 	                account_type:this.type,
 	                name:this.editData.name,
 	                bank_name:this.editData.bank_name,
-	                account:this.editData.account,
-	                explan_path:this.editData.explan_path
+	                account:this.editData.account
 	            }
                 var that = this;
                 setTimeout(() => {
@@ -203,7 +194,7 @@
             }).then(function (response) {
                 this.editData = response.body.data;
                 this.type = response.body.data.account_type;
-                this.$set(this.uploadData1,"imgArr",[response.body.data.explan_path]);
+                /*this.$set(this.uploadData1,"imgArr",[response.body.data.explan_path]);*/
                 if(this.editData.account_type == 1){
                 	this.editData.account_type = '公司账户'
                 }else{
@@ -269,23 +260,6 @@
 .account-tit span.active{
     border-color:#2c2c2c;
     color:#2c2c2c;
-}
-.voucher-img{
-  overflow:hidden;
-  padding:0 0.4rem 0.533333rem 0.4rem;
-}
-.voucher-lt{
-
-  width:3.666667rem;
-  height:2.8rem;
-  overflow:hidden;
-  float:left;
-  margin:0 0.466667rem;
-  margin-bottom: 0.4rem;
-}
-.voucher-lt img{
-  width:100%;
-  height:100%;
 }
 .payment-up-tit{
     padding: 0.4rem 0.4rem 0 0.4rem;

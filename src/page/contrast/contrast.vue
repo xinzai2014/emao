@@ -7,7 +7,7 @@
         <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
         <span class="brand-switch" v-if="checkALl" @click="looALl">不同配置</span>
     </header>
-    <section>
+    <section class="contrast-wrap">
         <div class="config marb" ref="nav">
             <div class="config-left">
                 <div class="config-nothing"></div>
@@ -325,7 +325,7 @@
 }
 .heads{position:fixed;left:0;top:0;width:100%;}
 .color3{color:#333;}
-*{box-sizing:border-box;}
+.contrast-wrap *{box-sizing:border-box;}
 .brand-switch{position:absolute;right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
 .marb{padding-top:1.1733rem;}

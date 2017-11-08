@@ -195,7 +195,10 @@ export default {
       }else if(sessionStorage.infoUrl == 'resultSuccess'){
          this.$router.push({name:'resultSuccess'});
       }else{
-        this.$router.push({path:sessionStorage.orderDetailUrl});
+          var data = this.$store.getters.getOrderURL;
+          this.$router.push({
+              path:"/" + data.tag +"/"+ data.id
+          });
       }
       
     },
@@ -515,7 +518,6 @@ export default {
             sessionStorage.infoUrl = from.name;
           }else{
             sessionStorage.infoUrl = '';
-            sessionStorage.orderDetailUrl = from.path;
           }
       }
 

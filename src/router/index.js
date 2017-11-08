@@ -113,6 +113,17 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
+
+
+
+
+
+
+//后期淘车猫加入专题
+const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
+
+
+
 Vue.use(Router)
 
 var router=new Router({
@@ -437,6 +448,11 @@ var router=new Router({
             path: '/paymentSubmit',  //提交汇款凭证
             name: 'paymentSubmit',
             component: paymentSubmit,
+        },
+        {
+          path: '/zt/201711/auction',  //提交汇款凭证
+          name: 'auction',
+          component: auction,
         }
     ]
 })
@@ -447,7 +463,7 @@ router.beforeEach((to, from, next) => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     //如何做登录完了回到某个页面去呢
-    if(to.name=="loading"||to.name=='account'||to.name=='code'){ //不需要登录可以直接跳转的
+    if(to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
         next();
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
         next();
