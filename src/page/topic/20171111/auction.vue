@@ -223,7 +223,6 @@
           },
           method:"GET"
         }).then(function(res){
-          console.log(res);
           this.auctionDialog = false;
           if(res.body.code == 200){
               this.sucessDialog = true;
@@ -233,8 +232,6 @@
             this.tipsDialog = true;
           }
           //this.liveData(this.aitivityIndex);
-        },function(error){
-           console.log(error+"-----------");
         })
      },
      liveData(tagIndex){ //实时数据

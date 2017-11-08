@@ -146,7 +146,7 @@ Vue.http.interceptors.push(function(request,next){
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;
-	    	if(code != 200){
+	    	if(/^[3-5]/.test(code)){
 	    		this.$store.dispatch("ALERT", // 通过store传值
 			      {
 			      	flag:true,
