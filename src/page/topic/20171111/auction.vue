@@ -1,7 +1,9 @@
 <template>
   <div class="auction-Wrap">
     <header class="auction-header"></header>
-    <div class="auction-banner"></div>
+    <div class="auction-banner">
+      <div class="lookRule" @click.stop="ruleDialog = !ruleDialog"></div>
+    </div>
     <div class="auction-content">
       <nav class="ac-nav">
          <dl>
@@ -99,6 +101,13 @@
       <!--<div class="dialog-close"  @click.stop="sorryDialog = !sorryDialog"><span>×</span></div>-->
     </div>
 
+    <!-- 规则 -->
+    <div class="auction-dialog" v-if="ruleDialog">
+      <div class="auction-dialog-con2">
+        <div class="auction-dialog-wrap"><span @click.stop="ruleDialog = !ruleDialog"></span></div>
+      </div>
+    </div>
+
   </div>
 </template>
 <script>
@@ -128,10 +137,11 @@
         sucessDialog:false, //报价成功弹出窗
         tipsDialog:false,    //报价更新提示
         sorryDialog:false, //还没完成诚意金支付
+        ruleDialog:false, //规则弹窗
         startTime:"2017-11-11",
         endTime:"2017-11-14",
         curIndex:null, //当前日期索引
-        curDate:"2017-11-06", //当前日期
+        curDate:"", //当前日期
         selectAucitonData:100, //竞价默认初始值
         selectAuciton:[100,500,1000], // 竞价区间
         newPrice:null,
@@ -156,7 +166,7 @@
            ele.timer = null;
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
-             that.newPrice = ele.auction_data.length?ele.auction_data[0]["auction_price"]:ele.start_price;
+             that.newPrice = ele.auction_data?ele.auction_data[0]["auction_price"]:ele.start_price;
              var timeEnd = new Date(ele.auction_end_at).getTime();
              var serverTime = new Date(ele.now).getTime();
              that.timeCount  = timeEnd - serverTime;
@@ -191,7 +201,7 @@
            }
            var timeRefresh = new Date(ele.auction_start_at).getTime() - new Date(ele.now).getTime();
            if(timeRefresh>0){
-             seTtimeout(()=>{
+             setTimeout(()=>{
                that.getData(that.curDate);
              },timeRefresh)
            }
@@ -342,7 +352,8 @@
   .auction-Wrap{height:100%;background:#372563;}
   .auction-header{height:1.2rem;background:#27282f;line-height:1.2rem;text-align:center;position:relative}
   .auction-header::before{display:block;content:"";width:0.186rem;height:0.347rem;background:url(../../../assets/lt-icon.png) no-repeat 0 0;background-size:100%;position:absolute;top:50%;left:0.333rem;transform:translateY(-50%);}
-  .auction-banner{background:url(../../../assets/topic-banner1.png) no-repeat 0 0;background-size:100%;height:17.73rem;}
+  .auction-banner{background:url(../../../assets/topic-banner1.png) no-repeat 0 0;background-size:100%;height:18.1rem;position:relative;}
+  .lookRule{height:1rem;position:absolute;left:50%;bottom:0.8rem;width:61%;transform:translateX(-50%)}
   .ac-nav{background:#fff003;text-align:center;font-size:0.4267rem;padding:0.16rem 0;}
   .ac-nav::after{clear:both;display:block;content:""}
   .ac-nav dd{width:33.33%;float:left;line-height:0.853rem;}
@@ -393,6 +404,9 @@
   .ac-nodata span{position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;background:url(../../../assets/topic-pic1.png) no-repeat 0 0;width:4.8rem;height:1.4rem;background-size:100%;}
   .auction-dialog{position:fixed;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.75)}
   .auction-dialog-con{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:10.82rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-wrap{height:100%;position:relative;}
+  .auction-dialog-wrap span{position:absolute;bottom:0.4rem;left:0;width:100%;height:1rem;}
   .auction-dialog-con .dialog-t1{font-size:0.48rem;padding:1.9rem 1.5rem 0;text-align:center;}
   .auction-dialog-con .dialog-t2{text-align:center;padding-top:0.77rem;font-size:0.4rem;position:relative;}
   .auction-dialog-con .dialog-t2 select{display:inline-block;-webkit-appearance:none;border:none;background:#FFF;width:4.18rem;height:1rem;border-radius:0.25rem;color:#d300fc;margin-left:0.13rem;text-indent:0.4rem;}
