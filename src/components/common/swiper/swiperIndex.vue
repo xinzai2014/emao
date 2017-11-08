@@ -36,7 +36,7 @@ export default {
 	  methods:{
 	  	refresh(url){
 	  		this.showFrame = true;
-	  		this.frameURL = url;
+	  		this.frameURL = url+"&token=" + sessionStorage.token;
 	  		document.body.style.overflow = 'hidden';
 		  	document.body.style.position = 'fixed';
 	  	},
