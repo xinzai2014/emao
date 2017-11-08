@@ -171,6 +171,9 @@
        }).then(function(res){
          var ajaxData = res.body.data;
          var that = this;
+         var noStartData = []; //未开始数据
+         var hasfinishData = []; //已结束
+         var inhandData = [];  //进行中
          ajaxData.forEach(function(ele,index){
            ele.timer = null;
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
@@ -216,8 +219,18 @@
                that.getData(that.curDate);
              },timeRefresh)
            }
+
+           if(ele.auction_status == 1){
+             hasfinishData.push(ele);
+           }
+           if(ele.auction_status == 2){
+             noStartData.push(ele);
+           }
+           if(ele.auction_status == 3){
+             inhandData.push(ele);
+           }
          })
-         this.carData = ajaxData;
+         this.carData = inhandData.concat(noStartData).concat(hasfinishData);
        })
      },
      auctionData(){  //提交竞价数据
@@ -327,30 +340,31 @@
        console.log("竞拍还没开始呢");
      }else if(currentTime>endTime){
        console.log("竞拍结束了");
-     }else{
-       var curentYear = date.getFullYear();
-       var curentMonth = date.getMonth() + 1;
-       var curentDate = date.getDate();
-       switch (curentDate){
-         case 11:
-               this.curIndex = 0;
-               break;
-         case 12:
-               this.curIndex = 1;
-               break;
-         case 13:
-               this.curIndex = 2;
-               break;
-       }
+     }
+     var curentYear = date.getFullYear();
+     var curentMonth = date.getMonth() + 1;
+     var curentDate = date.getDate();
+     switch (curentDate){
+       case 11:
+             this.curIndex = 0;
+             break;
+       case 12:
+             this.curIndex = 1;
+             break;
+       case 13:
+             this.curIndex = 2;
+             break;
+       default:
+             this.curIndex = null;
+             break;
+     }
+     if(this.curIndex !== null){
        this.curentDate.forEach(function(ele,index){
          ele.flag = false;
        });
        this.curentDate[this.curIndex].flag = true;
-       this.getData(curentYear+"-"+curentMonth+"-"+curentDate);
      }
-     var curentYear = date.getFullYear();
-     var curentMonth = date.getMonth() + 1;
-     var curentDate = date.getDate()<10?"0"+date.getDate():date.getDate();
+     curentDate = curentDate<10?"0"+curentDate:curentDate;
      this.curDate = curentYear+"-"+curentMonth+"-"+curentDate;
      this.getData(this.curDate);
    }
