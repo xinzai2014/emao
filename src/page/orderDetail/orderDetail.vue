@@ -232,9 +232,7 @@ export default {
           method:"GET",
           params:data
       }).then(function (response) {
-        console.log(response)
         this.receiptData = response.body.data;
-          console.log(this.receiptData)
       }).catch(function (error) {
           this.showAlert = true;
            this.alertText = error.body.msg||"请求失败了";

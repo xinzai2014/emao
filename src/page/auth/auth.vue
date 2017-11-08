@@ -525,7 +525,7 @@
                        this.$router.push('/aptitude');
                     }
                 },function(err){
-                    console.log(err);
+                   
                 })
             },
             closeCar(){
@@ -533,13 +533,10 @@
                 this.checkAuthTag(this.authTag[1],1);
             },
             subBrandList(brandList){
-                console.log(brandList);
                 if(arguments.length>0){
-                  console.log(1);
                   this.authBrandList = brandList;
                   this.showAuthBrandList = true;
                 }else{
-                  console.log(2);
                   this.authTag.forEach(function(item){
                     item.tag = false;
                   });

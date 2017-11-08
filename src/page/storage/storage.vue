@@ -271,8 +271,6 @@
 
             //刷新等待出库数据
             flushOutData(){
-                // this.$router.go(0);
-                console.log(this.currentOutIndex);
                 this.waitOut.splice(this.currentOutIndex,1);
             },
 

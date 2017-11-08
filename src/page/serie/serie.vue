@@ -224,7 +224,6 @@ export default {
     },
     goBack(){
       var leaveURL = this.$store.getters.getSerieURL;
-      console.log(leaveURL);
       this.$router.push({
         path:"/" + leaveURL.tag + "/" + leaveURL.id
       });
@@ -399,9 +398,8 @@ export default {
             }
         ).then(function (response) {
           this.showTips = true;
-          console.log(response);
         },function (error) {
-          console.log(error);
+          
         });
    },
    showTipsDialog(id){   //到货提醒

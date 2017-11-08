@@ -31,8 +31,7 @@ export default {
 
   },
   mounted(){
-    //this.login();
-   console.log(this);
+  
   }
 }
 </script>

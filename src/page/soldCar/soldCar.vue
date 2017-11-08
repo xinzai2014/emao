@@ -122,8 +122,6 @@
                     return;
                 }
             }).catch(function(error){
-                console.log("请求失败");
-                console.log(error);
                 this.showAlert = true;
                 this.alertText = error.body.msg;
             })
