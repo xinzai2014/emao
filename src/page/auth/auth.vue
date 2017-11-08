@@ -656,10 +656,10 @@
 
                    if(data.auth_data.length > 0){
                        this.$set(this.uploadData1,"imgArr",[data.auth_data[0].imgsrc])
-                       this.booth_in_img = data.auth_data[0].imgsrc;
+                       this.booth_out_img = data.auth_data[0].imgsrc;
 
                        this.$set(this.uploadData2,"imgArr",[data.auth_data[1].imgsrc])
-                       this.booth_out_img = data.auth_data[1].imgsrc;
+                       this.booth_in_img = data.auth_data[1].imgsrc;
                    }
                    this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
                 },function(){
