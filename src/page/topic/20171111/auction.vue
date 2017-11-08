@@ -176,7 +176,7 @@
                  if(counts<=0){
                    window.clearInterval(ele.timer);
                    ele.timer = null;
-                   indow.clearInterval(ele.realTimerData);
+                   window.clearInterval(ele.realTimerData);
                    ele.realTimerData = null;
                    console.log("本次竞拍马上结束了");
                    that.getData(that.curDate);
@@ -226,6 +226,7 @@
           this.auctionDialog = false;
           if(res.body.code == 200){
               this.sucessDialog = true;
+              this.liveData(this.aitivityIndex);
           }
           if(res.body.code == 210){
             this.newPrice = res.body.msg;
