@@ -278,6 +278,7 @@
     },
     getToken(){
         this.token =  this.$route.query.token||sessionStorage.token;
+        alert(this.token);
     }
    },
    filters:{
