@@ -1,6 +1,6 @@
 <template>
   <div class="auction-Wrap">
-    <header class="auction-header"></header>
+    <!--<header class="auction-header"></header>-->
     <div class="auction-banner">
       <div class="lookRule" @click.stop="ruleDialog = !ruleDialog"></div>
     </div>
@@ -23,7 +23,7 @@
             <div class="ac-t3">
               <div class="ac-t3-price">
                 <span v-if="item.auction_status == 2">起拍价：<em>{{item.start_price}}</em>万</span>
-                <span v-else>当前价：<em>{{item.auction_data.length?item.auction_data[0]["auction_price"]:item.start_price}}</em>万</span>
+                <span v-else>当前价：<em>{{item.auction_data.length>0?item.auction_data[0]["auction_price"]:item.start_price}}</em>万</span>
                 <span>指导价：{{item.guide_price}}万</span>
               </div>
               <div class="ac-t3-btn" v-if="item.auction_status == 3">
@@ -88,7 +88,7 @@
       <div class="auction-dialog-con">
         <div class="dialog-t5">恭喜您，出价成功</div>
         <div class="dialog-t4">温馨提示：请密切关注竞拍信息</div>
-        <div class="dialog-t3">好的</div>
+        <div class="dialog-t3" @click.stop="sucessDialog = !sucessDialog">好的</div>
       </div>
       <!--<div class="dialog-close"  @click.stop="sucessDialog = !sucessDialog"><span>×</span></div>-->
     </div>
@@ -166,7 +166,7 @@
            ele.timer = null;
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
-             that.newPrice = ele.auction_data?ele.auction_data[0]["auction_price"]:ele.start_price;
+             that.newPrice = ele.auction_data.length>0?ele.auction_data[0]["auction_price"]:ele.start_price;
              var timeEnd = new Date(ele.auction_end_at).getTime();
              var serverTime = new Date(ele.now).getTime();
              that.timeCount  = timeEnd - serverTime;
@@ -176,6 +176,8 @@
                  if(counts<=0){
                    window.clearInterval(ele.timer);
                    ele.timer = null;
+                   indow.clearInterval(ele.realTimerData);
+                   ele.realTimerData = null;
                    console.log("本次竞拍马上结束了");
                    that.getData(that.curDate);
                  }
@@ -224,17 +226,15 @@
           console.log(res);
           this.auctionDialog = false;
           if(res.body.code == 200){
-              alert("报价成功");
               this.sucessDialog = true;
           }
-          if(res.body.code == 300){
-            alert("有最新报价");
+          if(res.body.code == 210){
             this.newPrice = res.body.msg;
             this.tipsDialog = true;
           }
           //this.liveData(this.aitivityIndex);
         },function(error){
-           console.log(error);
+           console.log(error+"-----------");
         })
      },
      liveData(tagIndex){ //实时数据
@@ -280,7 +280,7 @@
         this.auctionDialog = true;
     },
     getToken(){
-        this.token =  this.$route.query.token;
+        this.token =  this.$route.query.token||sessionStorage.token;
     }
    },
    filters:{
@@ -397,7 +397,7 @@
   .ac-item .ac-t4 dl:after{display:block;clear:both;content:"";}
   .ac-item .ac-t4 dl dt,.ac-item .ac-t4 dl dd{float:left;}
   .ac-item .ac-t4 dl:first-of-type{}
-  .ac-item .ac-t4 dl dt:nth-child(1),.ac-item .ac-t4 dl dd:nth-child(1){width:25%;}
+  .ac-item .ac-t4 dl dt:nth-child(1),.ac-item .ac-t4 dl dd:nth-child(1){width:25%;text-align:left;text-indent:8%}
   .ac-item .ac-t4 dl dt:nth-child(2),.ac-item .ac-t4 dl dd:nth-child(2){width:50%;}
   .ac-item .ac-t4 dl dt:nth-child(3),.ac-item .ac-t4 dl dd:nth-child(3){width:25%;}
   .ac-nodata{padding:1.5rem 0;position:relative}
