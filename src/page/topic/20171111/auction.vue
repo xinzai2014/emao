@@ -57,8 +57,10 @@
           </div>
         </div>
       </div>
+      <div class="auction-tel">
+        <a href="tel:400-825-2368">活动咨询：400-825-2368</a>
+      </div>
     </div>
-
     <!-- 弹窗1---->
     <div class="auction-dialog" v-show="auctionDialog">
       <div class="auction-dialog-con">
@@ -152,6 +154,13 @@
    },
    methods:{
      getData(strTime){  //获取页面初始数据
+       if(this.carData){
+         this.carData.forEach(function(ele,index){
+           window.clearInterval(ele.timer);
+           window.clearInterval(ele.realTimerData);
+           window.clearTimeout(ele.timeoutData);
+         })
+       }
        this.$http({
          url:"auction/index",
          method:"GET",
@@ -203,7 +212,7 @@
            }
            var timeRefresh = new Date(ele.auction_start_at).getTime() - new Date(ele.now).getTime();
            if(timeRefresh>0){
-             setTimeout(()=>{
+             ele.timeoutData = window.setTimeout(()=>{
                that.getData(that.curDate);
              },timeRefresh)
            }
@@ -360,8 +369,12 @@
     background: -o-linear-gradient(right, #f7286c, #f9d210); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #f7286c, #f9d210); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #f7286c , #f9d210); /* 标准的语法 */}
+  .auction-tel{text-align:center;font-size:0.4rem;}
+  .auction-tel a{color:#7779ff;}
   .ac-con{padding:0.467rem 0.333rem}
+  .auction-content{padding-bottom:0.4rem;}
   .ac-item{background:#9205cb;color:#FFF;border-radius:0.133rem;margin-bottom:0.4rem;}
+  .ac-item:last-of-type{margin-bottom:0;}
   .ac-item .ac-top{background:#b506fb;padding:0.433rem 0.367rem;border-radius:0.133rem;}
   .ac-item .ac-bottom{padding:0.333rem 0;}
   .ac-item .ac-t1{font-size:0.48rem;line-height:1.5;}
