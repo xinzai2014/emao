@@ -256,6 +256,7 @@
        }).then(function(res){
          console.log(res);
          this.carData[tagIndex]["auction_data"] = res.body.data["real_time_detail"];
+         this.newPrice = this.carData[tagIndex]["auction_data"][0]["auction_price"];
        })
      },
      getTimeData(index,str){
