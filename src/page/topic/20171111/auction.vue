@@ -70,7 +70,7 @@
             <option v-for="option in selectAuciton" :value="option">{{option}}</option>
           </select>
         </div>
-        <div class="dialog-t3" @click="auctionData">立即出价</div>
+        <div class="dialog-t3" @click="liveData(aitivityIndex,true)">立即出价</div>
       </div>
       <div class="dialog-close" @click.stop="auctionDialog = !auctionDialog"><span>×</span></div>
     </div>
@@ -235,7 +235,7 @@
      },
      auctionData(){  //提交竞价数据
         var that = this;
-        var auctionPrice  = (+this.newPrice) + this.selectAucitonData/10000;
+        var auctionPrice  = ((+this.newPrice*10000) + this.selectAucitonData)/10000;
         this.$http({
           url:"auction/enterAuction",
           params:{
@@ -257,7 +257,9 @@
           //this.liveData(this.aitivityIndex);
         })
      },
-     liveData(tagIndex){ //实时数据
+     liveData(tagIndex,flag){ //实时数据
+       var auctionPrice  = this.newPrice;
+       console.log(tagIndex);
        this.$http({
          url:"auction/realTimeDetail",
          params:{
@@ -269,7 +271,16 @@
        }).then(function(res){
          console.log(res);
          this.carData[tagIndex]["auction_data"] = res.body.data["real_time_detail"];
-         this.newPrice = this.carData[tagIndex]["auction_data"][0]["auction_price"];
+         var newPrice = this.carData[tagIndex]["auction_data"][0]["auction_price"];
+         this.newPrice = newPrice;
+         if(flag){
+           if(auctionPrice != newPrice){
+             this.auctionDialog = false;
+             this.tipsDialog = true;
+           }else{
+             this.auctionData();
+           }
+         }
        })
      },
      getTimeData(index,str){
