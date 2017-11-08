@@ -148,7 +148,6 @@
           }
 
           this.defaultID = this.$store.getters.getDefaultAddress;
-          console.log(this.defaultID);
         },
         watch:{
         	addressList(curVal,oldVal){

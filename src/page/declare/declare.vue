@@ -74,8 +74,6 @@
         methods:{
             //回到上一级
             resetIndex(){
-                console.log(sessionStorage.getItem("prePath"));
-               // this.$router.push({"path":"/"+sessionStorage.getItem("prePath")})
                 this.$router.push({"name":sessionStorage.getItem("prePath")})
             },
             //组件方法

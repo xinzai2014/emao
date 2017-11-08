@@ -154,7 +154,6 @@
                           that.files[that.activeIndex].showPercent = false;
                         },300)
                         this.status = 'finished'
-                        //console.log('upload success!');
                     } else {
                         this.$store.dispatch("ALERT", // 通过store传值
                           {
@@ -181,7 +180,6 @@
                 } else {
                     console.warn('upload progress unable to compute')
                 }
-                //console.log(tag.percent);
             },
             toCanvasClip(data,fileType,item){
                 var that = this;

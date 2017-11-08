@@ -96,7 +96,7 @@
         },
         created:function(){
             this.$nextTick(()=>{
-                //console.log(this.$refs.drag);
+                
             })
         },
         methods:{
@@ -187,9 +187,6 @@
                             if (typeof(dataArray[num]) == 'undefined') {
                                 dataArray[num] = [];
                             }
-                            //dataArray[index][i][ind] = it.name + "---" + it.value;
-                            // console.log(dataArray);
-                            // console.log(dataArray.length);
                             var flag = dataArray[num].find(function(value, index, arr) {
                               return value == it.value;
                             })
@@ -225,7 +222,6 @@
         },
         mounted(){
             var autoId = this.$router.currentRoute.query.id;
-            //console.log(autoId);
             //获取数据
             this.autoId = autoId;
             this.getData();
@@ -241,7 +237,6 @@
                     function Drag(ele){
                       this.ele=ele;
                       this.elWidth = ele.style.width;
-                      //console.log(ele);
 
                     }
                     Drag.prototype={
@@ -250,8 +245,6 @@
                            let touch = event.touches[0]; //获取第一个触点
                            let startX = Number(touch.pageX); //页面触点X坐标
                            let startY = Number(touch.pageY); //页面触点Y坐标
-                           //console.log(startX+"---"+startY);
-                           //console.log(this.ele.offsetLeft+"---"+this.ele.offsetTop);
                            this.disP={
                                x:startX-this.ele.offsetLeft,
                                y:startY-this.ele.offsetTop
@@ -290,7 +283,6 @@
                                 left:this.ele.style.left,
                                 top:this.ele.style.top
                             }
-                            //console.log(style);
                             binding.value(style);
                        },
 

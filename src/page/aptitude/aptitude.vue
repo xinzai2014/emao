@@ -212,7 +212,6 @@
             getAgreement(){
                 this.$http.get("dealer/agreement?token=" + sessionStorage.token)
                   .then(function (response) {
-                    console.log(response);
                     this.iframeCon = response.bodyText;
                     this.showAgreement = true;
                   }).catch(function (error) {
@@ -355,7 +354,6 @@
                         this.$router.push('/authResult');
                     }
                 },function(err){
-                    console.log(err);
                 }).finally(function(){
                     this.showAgreement = false;
                 })

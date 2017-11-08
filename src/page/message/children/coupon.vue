@@ -72,7 +72,7 @@
 	                this.loadingData = !this.loadingData;
 
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		           
 		        });
             },
             getMore: function (el) {

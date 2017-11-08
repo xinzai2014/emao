@@ -127,7 +127,7 @@
                 	this.nodata = false
                 }
             }).catch(function (error) {
-                console.log("请求失败了");
+                
             });
 
         }
