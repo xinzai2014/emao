@@ -35,7 +35,7 @@
               </div>
             </div>
             <div v-if="type == 2" class="voucher-item voucher-img">
-                <p>待付款说明</p>
+                <p>代付款说明</p>
                 <uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
             </div>
             <div class="voucher-item voucher-img voucher-with">
