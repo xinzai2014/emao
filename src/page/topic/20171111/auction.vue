@@ -251,13 +251,20 @@
           this.auctionDialog = false;
           if(res.body.code == 200){
               this.sucessDialog = true;
-              this.liveData(this.aitivityIndex);
+              //this.liveData(this.aitivityIndex);
           }
           if(res.body.code == 210){
             this.newPrice = res.body.msg;
             this.tipsDialog = true;
+          }else{
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:res.body.msg
+              }
+            );
           }
-          //this.liveData(this.aitivityIndex);
+          this.liveData(this.aitivityIndex);
         })
      },
      liveData(tagIndex,flag){ //实时数据
@@ -276,6 +283,8 @@
          this.carData[tagIndex]["auction_data"] = res.body.data["real_time_detail"];
          console.log(this.carData[tagIndex]["auction_data"].length);
          var newPrice = this.carData[tagIndex]["auction_data"].length>0?this.carData[tagIndex]["auction_data"][0]["auction_price"]:this.carData[tagIndex]["start_price"];
+         console.log("原始价" + auctionPrice);
+         console.log("最新价" + newPrice);
          this.newPrice = newPrice;
          if(flag){
            if(auctionPrice != newPrice){
@@ -295,21 +304,23 @@
         this.getData(str);
      },
      showAuction(index){
-       this.$http({
-         url:"auction/checkAuctionAuth",
-         params:{
-           token:this.token,
-         },
-         method:"GET"
-       }).then(function(res){
-          var authFlag = res.body.data.auction_auth;
-          if(authFlag){
-            this.aitivityIndex = index;
-            this.auctionDialog = true;
-          }else{
-            this.sorryDialog = true;
-          }
-       })
+       this.aitivityIndex = index;
+       this.auctionDialog = true;
+//       this.$http({ //暂不控制权限
+//         url:"auction/checkAuctionAuth",
+//         params:{
+//           token:this.token,
+//         },
+//         method:"GET"
+//       }).then(function(res){
+//          var authFlag = res.body.data.auction_auth;
+//          if(authFlag){
+//            this.aitivityIndex = index;
+//            this.auctionDialog = true;
+//          }else{
+//            this.sorryDialog = true;
+//          }
+//       })
      },
     againPrice(){
         this.tipsDialog = false;
