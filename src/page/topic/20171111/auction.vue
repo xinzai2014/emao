@@ -226,7 +226,7 @@
                   that.liveData(index);
              },1000*60);
            }
-           var timeRefresh = new Date(ele.auction_start_at.replace(/\-/g,"/")).getTime() - new Date(ele.now.replace(/\-/g,"/")).getTime() + 3000;
+           var timeRefresh = new Date(ele.auction_start_at.replace(/\-/g,"/")).getTime() - new Date(ele.now.replace(/\-/g,"/")).getTime() + 1000;
            if(timeRefresh>0){
              ele.timeoutData = window.setTimeout(()=>{
                that.getData(that.curDate);
