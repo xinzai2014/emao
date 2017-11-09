@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="auction-tel">
-        <a href="tel:400-825-2368">活动咨询：400-825-2368</a>
+        <span>活动咨询：400-825-2368</span>
       </div>
     </div>
     <!-- 弹窗1---->
@@ -411,7 +411,7 @@
     background: -moz-linear-gradient(right, #f7286c, #f9d210); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #f7286c , #f9d210); /* 标准的语法 */}
   .auction-tel{text-align:center;font-size:0.4rem;}
-  .auction-tel a{color:#7779ff;}
+  .auction-tel span{color:#7779ff;}
   .ac-con{padding:0.467rem 0.333rem}
   .auction-content{padding-bottom:0.4rem;}
   .ac-item{background:#9205cb;color:#FFF;border-radius:0.133rem;margin-bottom:0.4rem;}
@@ -456,14 +456,14 @@
   .ac-nodata span{position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;background:url(../../../assets/topic-pic1.png) no-repeat 0 0;width:4.8rem;height:1.4rem;background-size:100%;}
   .auction-dialog{position:fixed;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.75)}
   .auction-dialog-con{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
-  .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:10.82rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:13.53rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
   .auction-dialog-wrap{height:100%;position:relative;}
   .auction-dialog-wrap span{position:absolute;bottom:0.4rem;left:0;width:100%;height:1rem;}
-  .auction-dialog-con .dialog-t1{font-size:0.48rem;padding:1.9rem 1.5rem 0;text-align:center;}
+  .auction-dialog-con .dialog-t1{font-size:0.48rem;padding:1.9rem 1.5rem 0;text-align:center;line-height:1.4;}
   .auction-dialog-con .dialog-t2{text-align:center;padding-top:0.77rem;font-size:0.4rem;position:relative;}
   .auction-dialog-con .dialog-t2 select{display:inline-block;-webkit-appearance:none;border:none;background:#FFF;width:4.18rem;height:1rem;border-radius:0.25rem;color:#d300fc;margin-left:0.13rem;text-indent:0.4rem;}
   .auction-dialog-con .dialog-t2::after{position:absolute;top:1.05rem;right:1.2rem;content:"";display:block;width:0;height:0;border-left:0.2rem solid transparent;border-right:0.2rem solid transparent;border-top:0.3rem solid #9008fa;}
-  .auction-dialog-con .dialog-t3{padding-top:1rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
+  .auction-dialog-con .dialog-t3{padding-top:1.05rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
   .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.6rem}
   .auction-dialog-con .dialog-t5{font-size:0.48rem;padding:2.5rem 1.5rem 0;text-align:center;}
   .auction-dialog-con .dialog-t6{font-size:0.48rem;padding:2.5rem 0 0.5rem;text-align:center;}
