@@ -252,8 +252,7 @@
           if(res.body.code == 200){
               this.sucessDialog = true;
               //this.liveData(this.aitivityIndex);
-          }
-          if(res.body.code == 210){
+          }else if(res.body.code == 210){
             this.newPrice = res.body.msg;
             this.tipsDialog = true;
           }else{
