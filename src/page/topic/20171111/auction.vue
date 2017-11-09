@@ -226,7 +226,7 @@
                   that.liveData(index);
              },1000*60);
            }
-           var timeRefresh = new Date(ele.auction_start_at).getTime() - new Date(ele.now).getTime();
+           var timeRefresh = new Date(ele.auction_start_at.replace(/\-/g,"/")).getTime() - new Date(ele.now.replace(/\-/g,"/")).getTime() + 3000;
            if(timeRefresh>0){
              ele.timeoutData = window.setTimeout(()=>{
                that.getData(that.curDate);
@@ -274,7 +274,8 @@
        }).then(function(res){
          console.log(res);
          this.carData[tagIndex]["auction_data"] = res.body.data["real_time_detail"];
-         var newPrice = this.carData[tagIndex]["auction_data"][0]["auction_price"];
+         console.log(this.carData[tagIndex]["auction_data"].length);
+         var newPrice = this.carData[tagIndex]["auction_data"].length>0?this.carData[tagIndex]["auction_data"][0]["auction_price"]:this.carData[tagIndex]["start_price"];
          this.newPrice = newPrice;
          if(flag){
            if(auctionPrice != newPrice){
