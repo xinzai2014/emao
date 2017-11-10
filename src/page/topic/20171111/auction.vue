@@ -90,7 +90,7 @@
       <div class="auction-dialog-con">
         <div class="dialog-t5">恭喜您，出价成功</div>
         <div class="dialog-t4">温馨提示：请密切关注竞拍信息</div>
-        <div class="dialog-t3" @click.stop="sucessDialog = !sucessDialog">好的</div>
+        <div class="dialog-t7" @click.stop="sucessDialog = !sucessDialog">好的</div>
       </div>
       <!--<div class="dialog-close"  @click.stop="sucessDialog = !sucessDialog"><span>×</span></div>-->
     </div>
@@ -454,7 +454,7 @@
   .ac-nodata{padding:1.5rem 0;position:relative}
   .ac-nodata span{position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;background:url(../../../assets/topic-pic1.png) no-repeat 0 0;width:4.8rem;height:1.4rem;background-size:100%;}
   .auction-dialog{position:fixed;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.75)}
-  .auction-dialog-con{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-con{line-height:1;color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
   .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:13.53rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
   .auction-dialog-wrap{height:100%;position:relative;}
   .auction-dialog-wrap span{position:absolute;bottom:0.4rem;left:0;width:100%;height:1rem;}
@@ -462,11 +462,12 @@
   .auction-dialog-con .dialog-t2{text-align:center;padding-top:0.77rem;font-size:0.4rem;position:relative;}
   .auction-dialog-con .dialog-t2 select{display:inline-block;-webkit-appearance:none;border:none;background:#FFF;width:4.18rem;height:1rem;border-radius:0.25rem;color:#d300fc;margin-left:0.13rem;text-indent:0.4rem;}
   .auction-dialog-con .dialog-t2::after{position:absolute;top:1.05rem;right:1.2rem;content:"";display:block;width:0;height:0;border-left:0.2rem solid transparent;border-right:0.2rem solid transparent;border-top:0.3rem solid #9008fa;}
-  .auction-dialog-con .dialog-t3{padding-top:1.05rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
-  .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.6rem}
+  .auction-dialog-con .dialog-t3{padding-top:1.1rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
+  .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.7rem}
   .auction-dialog-con .dialog-t5{font-size:0.48rem;padding:2.5rem 1.5rem 0;text-align:center;}
   .auction-dialog-con .dialog-t6{font-size:0.48rem;padding:2.5rem 0 0.5rem;text-align:center;}
-  .dialog-close{position:fixed;top:72%;left:50%;font-size:0.85rem;color:#FFF;}
+  .auction-dialog-con .dialog-t7{padding-top:1.35rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
+  .dialog-close{position:fixed;top:75%;left:50%;font-size:0.85rem;color:#FFF;}
   .dialog-close span{border:1px solid #FFF;display:inline-block;width:1.067rem;height:1.067rem;transform:translateX(-35%);line-height:1.067rem;text-align:center;border-radius:50%;}
 </style>
 
