@@ -68,7 +68,7 @@
 	                this.switchShow=!this.switchShow;
 	                this.loadingData = !this.loadingData;
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	               
             	});
 			},
 			getMore: function (el) {
@@ -82,7 +82,6 @@
 		                  if(this.loadingData){
 		                    this.switchShow=!this.switchShow;
 		                    this.nowPage = parseInt(this.nowPage)+1;
-		                    console.log(this.nowPage);
 		                    this.moreFn(this.nowPage);
 		                    this.loadingData = !this.loadingData;
 		                  }

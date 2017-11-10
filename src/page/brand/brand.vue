@@ -71,11 +71,9 @@ import car from '../index/car'
                         token:sessionStorage.token,
                     }
                 }).then(function (response) {
-                    console.log(response);
                     this.brandData = response.body.data;
 
                   }).catch(function (error) {
-                    console.log("请求失败了");
                   });
             },
             getDataByBrandID(){  //根据品牌获取车系
@@ -84,11 +82,9 @@ import car from '../index/car'
                     method:"GET",
                     params:this.initData
                 }).then(function (response) {
-                    console.log(response);
                     this.serieData = response.body.data;
 
                   }).catch(function (error) {
-                    console.log("请求失败了");
                   });
             },
             goBack(){

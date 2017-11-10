@@ -26,7 +26,6 @@ export default {
 	  			url:"dealerMessage/messageList?token=" + sessionStorage.token,
 	  			type:"GET"
 	  		}).then(function(response){
-	  			console.log(response);
 	  			var myMessage = response.body.data;
 	  			var that = this;
           if(myMessage.length>0){

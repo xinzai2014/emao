@@ -53,7 +53,6 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.lastPage;
 	                this.switchShow=!this.switchShow;
@@ -73,7 +72,6 @@
 		                  if(this.loadingData){
 		                    this.switchShow=!this.switchShow;
 		                    this.nowPage = parseInt(this.nowPage)+1;
-		                    console.log(this.nowPage);
 		                    this.moreFn(this.nowPage);
 		                    this.loadingData = !this.loadingData;
 		                  }

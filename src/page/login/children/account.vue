@@ -95,7 +95,6 @@ import Base64 from 'crypto-js/enc-base64';
 		            sessionStorage.telephone = this.$parent.telephone;
 		            this.passportCheck();
 		          },function(error){
-		          	console.log(error);
 		          	if(error.body.code == 4011){
 		          		this.errorPasswordCount++;
 		          	}
@@ -140,8 +139,6 @@ import Base64 from 'crypto-js/enc-base64';
 		        }).then(function (response) {
 		            sessionStorage.dataToken = response.body.data.dataToken;
 		          }).catch(function (error) {
-		          	console.log(error);
-		            console.log("登录失败了");
 		          });
 		    }
 	    }

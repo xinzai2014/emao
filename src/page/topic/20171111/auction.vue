@@ -57,8 +57,10 @@
           </div>
         </div>
       </div>
+      <div class="auction-tel">
+        <span>活动咨询：400-825-2368</span>
+      </div>
     </div>
-
     <!-- 弹窗1---->
     <div class="auction-dialog" v-show="auctionDialog">
       <div class="auction-dialog-con">
@@ -68,7 +70,7 @@
             <option v-for="option in selectAuciton" :value="option">{{option}}</option>
           </select>
         </div>
-        <div class="dialog-t3" @click="auctionData">立即出价</div>
+        <div class="dialog-t3" @click="liveData(aitivityIndex,true)">立即出价</div>
       </div>
       <div class="dialog-close" @click.stop="auctionDialog = !auctionDialog"><span>×</span></div>
     </div>
@@ -88,7 +90,7 @@
       <div class="auction-dialog-con">
         <div class="dialog-t5">恭喜您，出价成功</div>
         <div class="dialog-t4">温馨提示：请密切关注竞拍信息</div>
-        <div class="dialog-t3" @click.stop="sucessDialog = !sucessDialog">好的</div>
+        <div class="dialog-t7" @click.stop="sucessDialog = !sucessDialog">好的</div>
       </div>
       <!--<div class="dialog-close"  @click.stop="sucessDialog = !sucessDialog"><span>×</span></div>-->
     </div>
@@ -152,6 +154,13 @@
    },
    methods:{
      getData(strTime){  //获取页面初始数据
+       if(this.carData){
+         this.carData.forEach(function(ele,index){
+           window.clearInterval(ele.timer);
+           window.clearInterval(ele.realTimerData);
+           window.clearTimeout(ele.timeoutData);
+         })
+       }
        this.$http({
          url:"auction/index",
          method:"GET",
@@ -162,13 +171,29 @@
        }).then(function(res){
          var ajaxData = res.body.data;
          var that = this;
+         var noStartData = []; //未开始数据
+         var hasfinishData = []; //已结束
+         var inhandData = [];  //进行中
+         var tagData = [];
          ajaxData.forEach(function(ele,index){
+           if(ele.auction_status == 1){
+             hasfinishData.push(ele);
+           }
+           if(ele.auction_status == 2){
+             noStartData.push(ele);
+           }
+           if(ele.auction_status == 3){
+             inhandData.push(ele);
+           }
+         })
+         tagData = inhandData.concat(noStartData).concat(hasfinishData);
+         tagData.forEach(function(ele,index){
            ele.timer = null;
            if(ele.auction_status == 3){ //正在进行中的车需要倒计时并且一分钟刷一次竞拍数据
              //求最新价，如果已经有竞拍数据，就取第一条，没有的话，就取起拍价
              that.newPrice = ele.auction_data.length>0?ele.auction_data[0]["auction_price"]:ele.start_price;
-             var timeEnd = new Date(ele.auction_end_at).getTime();
-             var serverTime = new Date(ele.now).getTime();
+             var timeEnd = new Date(ele.auction_end_at.replace(/\-/g,"/")).getTime();
+             var serverTime = new Date(ele.now.replace(/\-/g,"/")).getTime();
              that.timeCount  = timeEnd - serverTime;
              ele.timer = window.setInterval(()=>{
                  var str = "";
@@ -201,19 +226,19 @@
                   that.liveData(index);
              },1000*60);
            }
-           var timeRefresh = new Date(ele.auction_start_at).getTime() - new Date(ele.now).getTime();
+           var timeRefresh = new Date(ele.auction_start_at.replace(/\-/g,"/")).getTime() - new Date(ele.now.replace(/\-/g,"/")).getTime() + 1000;
            if(timeRefresh>0){
-             setTimeout(()=>{
+             ele.timeoutData = window.setTimeout(()=>{
                that.getData(that.curDate);
              },timeRefresh)
            }
          })
-         this.carData = ajaxData;
+         this.carData = tagData;
        })
      },
      auctionData(){  //提交竞价数据
         var that = this;
-        var auctionPrice  = (+this.newPrice) + this.selectAucitonData/10000;
+        var auctionPrice  = ((+this.newPrice*10000) + this.selectAucitonData)/10000;
         this.$http({
           url:"auction/enterAuction",
           params:{
@@ -226,16 +251,24 @@
           this.auctionDialog = false;
           if(res.body.code == 200){
               this.sucessDialog = true;
-              this.liveData(this.aitivityIndex);
-          }
-          if(res.body.code == 210){
+              //this.liveData(this.aitivityIndex);
+          }else if(res.body.code == 210){
             this.newPrice = res.body.msg;
             this.tipsDialog = true;
+          }else{
+            this.$store.dispatch("ALERT", // 通过store传值
+              {
+                flag:true,
+                text:res.body.msg
+              }
+            );
           }
-          //this.liveData(this.aitivityIndex);
+          this.liveData(this.aitivityIndex);
         })
      },
-     liveData(tagIndex){ //实时数据
+     liveData(tagIndex,flag){ //实时数据
+       var auctionPrice  = this.newPrice;
+       console.log(tagIndex);
        this.$http({
          url:"auction/realTimeDetail",
          params:{
@@ -247,6 +280,19 @@
        }).then(function(res){
          console.log(res);
          this.carData[tagIndex]["auction_data"] = res.body.data["real_time_detail"];
+         console.log(this.carData[tagIndex]["auction_data"].length);
+         var newPrice = this.carData[tagIndex]["auction_data"].length>0?this.carData[tagIndex]["auction_data"][0]["auction_price"]:this.carData[tagIndex]["start_price"];
+         console.log("原始价" + auctionPrice);
+         console.log("最新价" + newPrice);
+         this.newPrice = newPrice;
+         if(flag){
+           if(auctionPrice != newPrice){
+             this.auctionDialog = false;
+             this.tipsDialog = true;
+           }else{
+             this.auctionData();
+           }
+         }
        })
      },
      getTimeData(index,str){
@@ -257,21 +303,23 @@
         this.getData(str);
      },
      showAuction(index){
-       this.$http({
-         url:"auction/checkAuctionAuth",
-         params:{
-           token:this.token,
-         },
-         method:"GET"
-       }).then(function(res){
-          var authFlag = res.body.data.auction_auth;
-          if(authFlag){
-            this.aitivityIndex = index;
-            this.auctionDialog = true;
-          }else{
-            this.sorryDialog = true;
-          }
-       })
+       this.aitivityIndex = index;
+       this.auctionDialog = true;
+//       this.$http({ //暂不控制权限
+//         url:"auction/checkAuctionAuth",
+//         params:{
+//           token:this.token,
+//         },
+//         method:"GET"
+//       }).then(function(res){
+//          var authFlag = res.body.data.auction_auth;
+//          if(authFlag){
+//            this.aitivityIndex = index;
+//            this.auctionDialog = true;
+//          }else{
+//            this.sorryDialog = true;
+//          }
+//       })
      },
     againPrice(){
         this.tipsDialog = false;
@@ -317,30 +365,31 @@
        console.log("竞拍还没开始呢");
      }else if(currentTime>endTime){
        console.log("竞拍结束了");
-     }else{
-       var curentYear = date.getFullYear();
-       var curentMonth = date.getMonth() + 1;
-       var curentDate = date.getDate();
-       switch (curentDate){
-         case 11:
-               this.curIndex = 0;
-               break;
-         case 12:
-               this.curIndex = 1;
-               break;
-         case 13:
-               this.curIndex = 2;
-               break;
-       }
+     }
+     var curentYear = date.getFullYear();
+     var curentMonth = date.getMonth() + 1;
+     var curentDate = date.getDate();
+     switch (curentDate){
+       case 11:
+             this.curIndex = 0;
+             break;
+       case 12:
+             this.curIndex = 1;
+             break;
+       case 13:
+             this.curIndex = 2;
+             break;
+       default:
+             this.curIndex = null;
+             break;
+     }
+     if(this.curIndex !== null){
        this.curentDate.forEach(function(ele,index){
          ele.flag = false;
        });
        this.curentDate[this.curIndex].flag = true;
-       this.getData(curentYear+"-"+curentMonth+"-"+curentDate);
      }
-     var curentYear = date.getFullYear();
-     var curentMonth = date.getMonth() + 1;
-     var curentDate = date.getDate()<10?"0"+date.getDate():date.getDate();
+     curentDate = curentDate<10?"0"+curentDate:curentDate;
      this.curDate = curentYear+"-"+curentMonth+"-"+curentDate;
      this.getData(this.curDate);
    }
@@ -360,8 +409,12 @@
     background: -o-linear-gradient(right, #f7286c, #f9d210); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(right, #f7286c, #f9d210); /* Firefox 3.6 - 15 */
     background: linear-gradient(to right, #f7286c , #f9d210); /* 标准的语法 */}
+  .auction-tel{text-align:center;font-size:0.4rem;}
+  .auction-tel span{color:#7779ff;}
   .ac-con{padding:0.467rem 0.333rem}
+  .auction-content{padding-bottom:0.4rem;}
   .ac-item{background:#9205cb;color:#FFF;border-radius:0.133rem;margin-bottom:0.4rem;}
+  .ac-item:last-of-type{margin-bottom:0;}
   .ac-item .ac-top{background:#b506fb;padding:0.433rem 0.367rem;border-radius:0.133rem;}
   .ac-item .ac-bottom{padding:0.333rem 0;}
   .ac-item .ac-t1{font-size:0.48rem;line-height:1.5;}
@@ -401,19 +454,20 @@
   .ac-nodata{padding:1.5rem 0;position:relative}
   .ac-nodata span{position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;background:url(../../../assets/topic-pic1.png) no-repeat 0 0;width:4.8rem;height:1.4rem;background-size:100%;}
   .auction-dialog{position:fixed;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.75)}
-  .auction-dialog-con{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
-  .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:10.82rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-con{line-height:1;color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:6.49rem;background:url(../../../assets/topic-banner2.png) no-repeat 0 0;background-size:100%;}
+  .auction-dialog-con2{color:#FFF;position:fixed;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:7.853rem;height:13.53rem;background:url(../../../assets/topic-banner3.png) no-repeat 0 0;background-size:100%;}
   .auction-dialog-wrap{height:100%;position:relative;}
   .auction-dialog-wrap span{position:absolute;bottom:0.4rem;left:0;width:100%;height:1rem;}
-  .auction-dialog-con .dialog-t1{font-size:0.48rem;padding:1.9rem 1.5rem 0;text-align:center;}
+  .auction-dialog-con .dialog-t1{font-size:0.48rem;padding:1.9rem 1.5rem 0;text-align:center;line-height:1.4;}
   .auction-dialog-con .dialog-t2{text-align:center;padding-top:0.77rem;font-size:0.4rem;position:relative;}
   .auction-dialog-con .dialog-t2 select{display:inline-block;-webkit-appearance:none;border:none;background:#FFF;width:4.18rem;height:1rem;border-radius:0.25rem;color:#d300fc;margin-left:0.13rem;text-indent:0.4rem;}
   .auction-dialog-con .dialog-t2::after{position:absolute;top:1.05rem;right:1.2rem;content:"";display:block;width:0;height:0;border-left:0.2rem solid transparent;border-right:0.2rem solid transparent;border-top:0.3rem solid #9008fa;}
-  .auction-dialog-con .dialog-t3{padding-top:1rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
-  .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.6rem}
+  .auction-dialog-con .dialog-t3{padding-top:1.1rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
+  .auction-dialog-con .dialog-t4{text-align:center;font-size:0.4rem;padding-top:0.7rem}
   .auction-dialog-con .dialog-t5{font-size:0.48rem;padding:2.5rem 1.5rem 0;text-align:center;}
   .auction-dialog-con .dialog-t6{font-size:0.48rem;padding:2.5rem 0 0.5rem;text-align:center;}
-  .dialog-close{position:fixed;top:72%;left:50%;font-size:0.85rem;color:#FFF;}
+  .auction-dialog-con .dialog-t7{padding-top:1.35rem;text-align:center;font-size:0.427rem;text-indent:0.4267rem;}
+  .dialog-close{position:fixed;top:75%;left:50%;font-size:0.85rem;color:#FFF;}
   .dialog-close span{border:1px solid #FFF;display:inline-block;width:1.067rem;height:1.067rem;transform:translateX(-35%);line-height:1.067rem;text-align:center;border-radius:50%;}
 </style>
 

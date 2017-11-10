@@ -97,7 +97,6 @@ export default {
           params:data
         })
         .then(function (response) {
-          console.log(response);
             var editData=response.body.data;
             this.imgs=editData.payimg;
             var type = response.body.data.bank_info.account_type;

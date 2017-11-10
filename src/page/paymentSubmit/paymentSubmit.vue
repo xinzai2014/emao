@@ -159,7 +159,6 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
-          //console.log(response);
             this.infoData = response.body.data;
             this.dataLength();
         }).catch(function (error) {
@@ -234,7 +233,6 @@ export default {
         /*if(this.submitFlag){*/
           this.$http.post("order/full/payment",data)
             .then(function (response) {
-                console.log(data);
                 //this.success=true;
                 this.showAlert = true;
                 this.alertText = "提交成功,请等待审核";
