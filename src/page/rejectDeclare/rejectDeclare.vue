@@ -9,6 +9,12 @@
         </header>
         <!--提交申报资料-->
         <section class="submit-wrap">
+            <div class="details-tit">
+                <h4>
+                    申报审核未通过
+                </h4>
+                <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
+            </div>
             <div class="sales-item">
                 <h3>{{orderInfo.name}}</h3>
                 <p class="sales-color">{{orderInfo.color}}</p>
@@ -169,8 +175,7 @@
         }
     },
     methods:{
-        //初始化拿数据
-        //初始化拿数据
+        //初始化拿头部车辆数据
         getData(){
             var token = sessionStorage.token;
             this.$http({
@@ -184,12 +189,28 @@
                 var arr = response.body.data.orderInfo.name.split(' ');
                 arr.shift();//删除数组最后一个元素
                 response.body.data.orderInfo.name = arr.join(' ');//在拼接成字符串
-                
+
                 this.orderInfo = response.body.data.orderInfo;
 
                 this.vinNum = this.orderInfo.vinNumber;
             })
         },
+
+        //初始化拿申报资料数据
+        getData(){
+            var token = sessionStorage.token;
+            this.$http({
+                url:"order/sale/detail",
+                method:"GET",
+                params:{
+                    token:token,
+                    id:this.id
+                }
+            }).then(function(response){
+                this.saleInfo = response.body.data;
+            })
+        },
+
 
         getUpload(data,flag){
             this.dataURL[flag] = data;
@@ -367,7 +388,7 @@
     },
     components:{
         uploader,
-        alertTip
+                alertTip
     }
 
 
@@ -432,8 +453,8 @@
         font-size:0.506667rem;
     }
     /*.user-info img{*/
-        /*width:100%;*/
-        /*height:100%;*/
+    /*width:100%;*/
+    /*height:100%;*/
     /*}*/
     .sample-ct{
         overflow:hidden;
@@ -505,5 +526,23 @@
     .prompt-btn span.confirm{
         background:#d6ab55;
         color:#fff;
+    }
+    .details-tit{
+        padding:0.533333rem 0.4rem;
+        background:#d5aa5c;
+    }
+    .details-tit h4{
+        font-size:0.506667rem;
+        color:#fff;
+        line-height:0.533333rem;
+    }
+    .details-tit h4 span{
+        float:right;
+        font-size:0.346667rem;
+    }
+    .details-tit p{
+        font-size:0.346667rem;
+        color:#fff;
+        margin-top:0.533333rem;
     }
 </style>

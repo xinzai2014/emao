@@ -96,6 +96,12 @@ const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar
 //售车申报资料提交组件
 const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
+//售车申报资料审核中组件
+const auditDeclare = r => require.ensure([],() => r(require('../page/auditDeclare/auditDeclare')),'auditDeclare')
+
+//售车申报资料审核未通过组件
+const rejectDeclare = r => require.ensure([],() => r(require('../page/rejectDeclare/rejectDeclare')),'rejectDeclare')
+
 //已售车申报资料详情页组件
 const soldCarDetail = r => require.ensure([],() => r(require('../page/soldCarDetail/soldCarDetail')),'soldCarDetail')
 
@@ -358,18 +364,6 @@ var router=new Router({
             name: 'displayDetail',
             component: displayDetail
         },
-        // {
-        //   path: '/declare',  //我的售车申报列表
-        //   name: 'declare',
-        //   component: declare,
-        //   children: [
-        //     {
-        //       path: '/edit/:id',   //提交申报资料
-        //       name: 'editDeclare',
-        //       component: editDeclare
-        //     }
-        //   ]
-        // },
         {
             path: '/message',  //我的消息列表
             name: 'message',
@@ -416,18 +410,21 @@ var router=new Router({
             path: '/declare',  //我的售车申报列表
             name: 'declare',
             component: declare
-            //children: [
-            //  {
-            //    path: 'edit/:id',   //提交申报资料
-            //    name: 'editDeclare',
-            //    component: editDeclare
-            //  }
-            //]
         },
         {
             path: '/editDeclare/:id',   //提交申报资料
             name: 'editDeclare',
             component: editDeclare
+        },
+        {
+            path: '/auditDeclare/:id',   //提交申报资料审核中
+            name: 'auditDeclare',
+            component: auditDeclare
+        },
+        {
+            path: '/rejectDeclare/:id',   //提交申报资料审核未通过
+            name: 'rejectDeclare',
+            component: rejectDeclare
         },
         {
             path: '/soldCar',  //已售车辆申报列表
