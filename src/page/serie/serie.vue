@@ -17,12 +17,13 @@
                <p class="book-car-name">{{item.name}}</p>
                <div class="book-car-price-info clearfix">
                    <div class="book-car-price">
-                       <strong>{{item.emaoPrice}}万</strong>
+                       <strong v-if="(item.sale==1)||(item.show==1)">{{item.emaoPrice}}万</strong>
+                       <strong v-if="(item.sale==2)&&(item.show==2)">已售馨，正在补货中</strong>
                    </div>
                     <div class="book-guide-price clearfix">
                         <span>指导价：</span>
                         <em>{{item.guidePrice}}万</em>
-                        <strong v-if="item.fallPrice>0">( 下 <i>{{item.fallPrice}}万</i> )</strong>
+                        <strong v-if="(item.fallPrice>0) && ((item.sale==1)||(item.show==1)) ">( 下 <i>{{item.fallPrice}}万</i> )</strong>
                     </div>
                </div>
                <div class="book-car-action clearfix">
