@@ -9,17 +9,28 @@
         </header>
         <!--提交申报资料-->
         <section class="submit-wrap">
-            <div class="details-tit">
-                <h4>
+            <div class="details-tit" v-if="declareType== 1 || declareType== 4 ">
+                <h4 v-if="declareType== 4">
                     申报审核未通过
                 </h4>
-                <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
+                <h4  v-if="declareType== 1">
+                   售车申报审核中，请耐心等待
+                </h4>
+                <p v-if="declareType == 4 ">原因：{{saleInfo.reason}}</p>
             </div>
-            <div class="sales-item">
+
+            <div class="sales-item" v-if="declareType == 2 ">
                 <h3>{{orderInfo.name}}</h3>
                 <p class="sales-color">{{orderInfo.color}}</p>
                 <p class="submit-number">VIN：{{orderInfo.vinNumber}}</p>
             </div>
+
+            <div class="sales-item" v-if="declareType == 1 || declareType== 4 ">
+                <h3>{{saleInfo.auto_name}}</h3>
+                <p class="sales-color">{{saleInfo.ext_color}}/{{saleInfo.int_color}}</p>
+                <p class="submit-number">VIN：{{saleInfo.vin_num}}</p>
+            </div>
+
 
             <div class="submit-info">
                 <div class="user-info">
@@ -57,7 +68,39 @@
 
 
             </div>
-            <div class="submit-info">
+
+            <!--待审核页面-->
+            <div class="submit-info-list" v-if="declareType == 1 ">
+                <div class="user-info-form">
+                    <p class="user-info-tit">身份证正面照片</p>
+                    <div class="user-info-pic" @click=showPopUp(saleInfo.idcard_img_front)>
+                        <img :src="saleInfo.idcard_img_front" alt="">
+                    </div>
+                </div>
+                <div class="user-info-form">
+                    <p class="user-info-tit">身份证背面照片</p>
+                    <div class="user-info-pic"  @click=showPopUp(saleInfo.idcard_img_reverse)>
+                        <img :src="saleInfo.idcard_img_reverse" alt="">
+                    </div>
+
+                </div>
+                <div class="user-info-form">
+                    <p class="user-info-tit">购车发票</p>
+                    <div class="user-info-pic"  @click=showPopUp(saleInfo.invoice_img)>
+                        <img :src="saleInfo.invoice_img" alt="">
+                    </div>
+
+                </div>
+                <div class="user-info-form">
+                    <p class="user-info-tit">行驶证照片</p>
+                    <div class="user-info-pic"  @click=showPopUp(saleInfo.driving_license_img)>
+                        <img :src="saleInfo.driving_license_img" alt="">
+                    </div>
+
+                </div>
+            </div>
+            <!--待提交&&审核未通过页面-->
+            <div class="submit-info"  v-if="declareType== 2 || declareType== 4 ">
                 <div class="user-info">
                     <p class="submit-tit">请上传以下资料</p>
                 </div>
@@ -82,7 +125,7 @@
                 </div>
             </div>
 
-            <div class="close-bt-out">
+            <div class="close-bt-out"  v-if="declareType== 2 || declareType== 4 ">
                 <button class="close-bt" @click="submitData" type="submit">提交</button>
             </div>
         </section>
@@ -122,6 +165,8 @@
             showPopup:false,        //显示弹窗与否
             declareList:[],
             orderInfo : {},         //订单信息
+            saleInfo: {},           //申报资料审核未通过信息
+            declareType:'',                 //申报资料状态
 
             //上传蹄片插件
             //上传身份证正面照片
@@ -175,8 +220,61 @@
         }
     },
     methods:{
-        //初始化拿头部车辆数据
+        //获取待审核，审核驳回数据
         getData(){
+            var token = sessionStorage.token;
+            //初始化拿申报资料数据
+            this.$http({
+                url:"order/sale/detail",
+                method:"GET",
+                params:{
+                    token:token,
+                    id:this.id
+                }
+            }).then(function(response){
+                this.saleInfo = response.body.data;
+                this.dealerNameVal = this.saleInfo.name;
+                this.dealerPhoneVal = this.saleInfo.phone;
+                this.dealerIDNumberVal = this.saleInfo.idcard;
+                this.dealerEmailVal = this.saleInfo.email;
+                this.vinNum = this.saleInfo.vin_num;
+                this.goodsStockId = this.saleInfo.goods_stock_id;
+
+
+                /*设置图片路径*/
+                /*购车发票路径*/
+                if(this.saleInfo.invoice_img){
+                    this.$set(this.uploadData3,"imgArr",[this.saleInfo.invoice_img])
+                    this.formData.driving_license_img = this.saleInfo.invoice_img;
+                }
+
+                /*行驶证照片*/
+                if(this.saleInfo.driving_license_img){
+                    this.$set(this.uploadData4,"imgArr",[this.saleInfo.driving_license_img])
+                    this.formData.invoice_img = this.saleInfo.driving_license_img;
+                }
+
+                /*身份证正面照片*/
+                if(this.saleInfo.idcard_img_front){
+                    this.$set(this.uploadData1,"imgArr",[this.saleInfo.idcard_img_front])
+                    this.formData.idcard_img_front = this.saleInfo.idcard_img_front;
+                }
+
+                /*身份证背面照片*/
+                if(this.saleInfo.idcard_img_reverse){
+                    this.$set(this.uploadData2,"imgArr",[this.saleInfo.idcard_img_reverse])
+                    this.formData.idcard_img_reverse = this.saleInfo.idcard_img_reverse;
+                }
+
+                this.ajaxLoading = true; //图片插件必须要整理了，先这样吧
+
+            })
+
+
+        },
+
+        /*获取待编辑数据*/
+        getEditData(){
             var token = sessionStorage.token;
             this.$http({
                 url:"order/full/detail",
@@ -193,27 +291,32 @@
                 this.orderInfo = response.body.data.orderInfo;
 
                 this.vinNum = this.orderInfo.vinNumber;
+
             })
         },
-
-        //初始化拿申报资料数据
-        getData(){
-            var token = sessionStorage.token;
-            this.$http({
-                url:"order/sale/detail",
-                method:"GET",
-                params:{
-                    token:token,
-                    id:this.id
-                }
-            }).then(function(response){
-                this.saleInfo = response.body.data;
-            })
-        },
-
 
         getUpload(data,flag){
             this.dataURL[flag] = data;
+
+
+            for(flag in this.dataURL){
+                switch (flag)
+                {
+                    case "frontOfIDCard":
+                        this.formData.idcard_img_front = this.dataURL[flag][0];
+                        break;
+                    case "backOfIDCard":
+                        this.formData.idcard_img_reverse = this.dataURL[flag][0]
+                        break;
+                    case "invoiceForCarPurchase":
+                        this.formData.driving_license_img = this.dataURL[flag][0]
+                        break;
+                    case "drivingLicense":
+                        this.formData.invoice_img = this.dataURL[flag][0]
+                        break;
+                }
+            }
+
         },
 
         getFileURL(flag) {
@@ -227,7 +330,8 @@
         //关闭弹窗
         closePopup(){
             this.showPopup = false;
-            this.$router.push('/declare');//跳转到售车申报列表页
+            //this.$router.push('/declare');//跳转到售车申报列表页
+            this.declareType = 1;
         },
 
         //提交表单数据
@@ -257,25 +361,25 @@
                 return ;
             }
 
-            if (!this.dataURL.frontOfIDCard) {
+            if (!this.formData.idcard_img_front) {
                 this.showAlert = true;
                 this.alertText = '请上传身份证正面照片';
                 return ;
             }
 
-            if (!this.dataURL.backOfIDCard) {
+            if (!this.formData.idcard_img_reverse) {
                 this.showAlert = true;
                 this.alertText = '请上传身份证背面照片';
                 return ;
             }
 
-            if (!this.dataURL.invoiceForCarPurchase) {
+            if (!this.formData.driving_license_img) {
                 this.showAlert = true;
                 this.alertText = '请上传购车发票';
                 return ;
             }
 
-            if (!this.dataURL.drivingLicense) {
+            if (!this.formData.invoice_img) {
                 this.showAlert = true;
                 this.alertText = '请上传行驶证照片';
                 return ;
@@ -293,10 +397,10 @@
                     This.formData.email = This.dealerEmailVal;
 
 
-                    This.formData.idcard_img_front = This.getFileURL('frontOfIDCard');
-                    This.formData.idcard_img_reverse = This.getFileURL('backOfIDCard');
-                    This.formData.driving_license_img = This.getFileURL('invoiceForCarPurchase');
-                    This.formData.invoice_img = This.getFileURL('drivingLicense');
+//                    This.formData.idcard_img_front = This.getFileURL('frontOfIDCard');
+//                    This.formData.idcard_img_reverse = This.getFileURL('backOfIDCard');
+//                    This.formData.driving_license_img = This.getFileURL('invoiceForCarPurchase');
+//                    This.formData.invoice_img = This.getFileURL('drivingLicense');
 
 
                     This.$http.post("order/sale/info",This.formData).then(function(response){
@@ -319,9 +423,17 @@
 
     },
     mounted(){
-        this.orderId = this.$route.params.id;
+        this.id = this.$route.query.id;
+        this.declareType = this.$route.query.is_sell;
+        this.orderId = this.$route.query.orderNum;
+        console.log(this.orderId);
         this.goodsStockId = this.$route.query.goods_stock_id;
-        this.getData();
+        if(this.declareType == '2'){
+            this.getEditData();
+        }else{
+            this.getData();
+        }
+        //this.getData();
 
         // 自定义内置规则的错误信息
         const dictionary = {
@@ -545,4 +657,43 @@
         color:#fff;
         margin-top:0.533333rem;
     }
+
+
+
+    .submit-info-list{
+        background:#fff;
+        overflow:hidden;
+        margin-top:0.4rem;
+    }
+    .user-info-form .submit-lt{
+        width:3.68rem;
+        height:4.333333rem;
+        float:left;
+        margin:0 1.066667rem 0 0.4rem;
+    }
+    .user-info-form .submit-img{
+        width:3.666667rem;
+        height:2.773333rem;
+        /*overflow:hidden;*/
+    }
+    .user-info-form .up-btn {
+        border: 1px solid #d6ab55;
+        border-radius: 0.533333rem;
+        color: #bb8800;
+        font-size: 0.373333rem;
+        height: 1.05333rem;
+        line-height: 1.05333rem;
+        margin: 0.4rem auto;
+        text-align: center;
+        width: 2.64rem;
+    }
+    .user-info-form{
+        padding: 0.533333rem 0;
+        margin: 0 0.4rem;
+        border-bottom: 1px solid #eee;
+        font-size: 0.4rem;
+        color: #2c2c2c;  overflow: hidden;
+    }
+    .user-info-form .user-info-pic{margin-top:.5333rem;width:3.667rem;height:2.773rem;}
+    .user-info-form .user-info-pic img{width:100%;height:100%;}
 </style>

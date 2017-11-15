@@ -422,7 +422,7 @@ var router=new Router({
             component: auditDeclare
         },
         {
-            path: '/rejectDeclare/:id',   //提交申报资料审核未通过
+            path: '/rejectDeclare',   //提交申报资料审核未通过
             name: 'rejectDeclare',
             component: rejectDeclare
         },
