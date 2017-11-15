@@ -332,6 +332,7 @@
             this.showPopup = false;
             //this.$router.push('/declare');//跳转到售车申报列表页
             this.declareType = 1;
+            this.getData();
         },
 
         //提交表单数据
@@ -405,6 +406,7 @@
 
                     This.$http.post("order/sale/info",This.formData).then(function(response){
                         This.showPopup = true;
+                        This.id = response.body.data.id;
                     }).catch(function(error){
                         This.showAlert = true;
                         This.alertText = error.body.msg;
