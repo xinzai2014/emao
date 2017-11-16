@@ -9,15 +9,31 @@
 	        <div class="notice-item" v-for="(item,index) in infoData">
 	        	<div v-if="item.content_body !='通知'">
 		            <div class="notice-tit">{{item.created_at}}</div>
-			            <div class="notice-ct" @click=refresh(item.url)>
-			                <div class="notice-tp">{{item.content_header}}</div>
-			                <div v-if="item.content_body" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+			            <div class="notice-ct" @click="refresh(item.url)">
+			                <div v-if="item.content_header" class="notice-tp">{{item.content_header}}</div>
+			                <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 			            </div>
 		        </div>
 		        <div v-else>
-		            <div class="notice-tit">{{item.created_at}}</div>
-		            <div class="notice-ct">
-		                <div class="notice-tp">{{item.content_header}}</div>
+		        	<div v-if="item.type ==603">
+			            <div class="notice-tit">{{item.created_at}}</div>
+			            <div class="notice-ct">
+			                <div class="notice-tp">{{item.content_header}}</div>
+			            </div>
+		            </div>
+		            <div v-else>
+			            <div class="notice-tit">{{item.created_at}}</div>
+			            <div class="notice-ct">
+			            	<router-link v-if="item.type == 607" :to="{name:'soldCarDetail',params:{id:item.order_num}}">
+				                <div class="notice-tp">{{item.content_header}}</div>
+				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
+				            </router-link>
+				            <router-link v-else :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
+				                <div class="notice-tp">{{item.content_header}}</div>
+				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
+				            </router-link>
+				        </div>
+			            
 		            </div>
 		        </div>
 	        </div>
@@ -143,19 +159,33 @@
 	background:#fff;
 	width:8.933333rem;
 	margin:0.4rem auto 0 auto;
+	cursor:pointer;
+	overflow:hidden;
+}
+.notice-ct a{
+	display:block;
 }
 .notice-tp{
 	padding:0.8rem 0.4rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
 }
-.notice-bt{
-	padding:0.533333rem 0.4rem;
+.notice-bts{
+	padding:0.533333rem 0.8rem 0 0.4rem;
 	font-size:0.4rem;
 	color:#2c2c2c;
+	max-height:1.1rem;
+	overflow:hidden;
+	margin-bottom:0.533333rem;
+	position:relative;
 }
-.notice-bt i{
-	float:right !important;
+.notice-bts i{
+	position: absolute;
+	top: 0.533333rem;
+	bottom: 0;
+	right: 0.4rem;
+	margin:auto;
+
 }
 .notice-bt span{
 	color:#fc3036;
