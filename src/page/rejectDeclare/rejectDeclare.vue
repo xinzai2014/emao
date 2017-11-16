@@ -20,13 +20,19 @@
                 <p v-if="declareType == 4 ">原因：{{saleInfo.reason}}</p>
             </div>
 
-            <div class="sales-item" v-if="declareType == 2 ">
-                <h3>{{orderInfo.name}}</h3>
-                <p class="sales-color">{{orderInfo.color}}</p>
-                <p class="submit-number">VIN：{{orderInfo.vinNumber}}</p>
-            </div>
+            <!--<div class="sales-item" v-if="declareType == 2 ">-->
+                <!--<h3>{{orderInfo.name}}</h3>-->
+                <!--<p class="sales-color">{{orderInfo.color}}</p>-->
+                <!--<p class="submit-number">VIN：{{orderInfo.vinNumber}}</p>-->
+            <!--</div>-->
 
-            <div class="sales-item" v-if="declareType == 1 || declareType== 4 ">
+            <!--<div class="sales-item" v-if="declareType == 1 || declareType== 4 ">-->
+                <!--<h3>{{saleInfo.auto_name}}</h3>-->
+                <!--<p class="sales-color">{{saleInfo.ext_color}}/{{saleInfo.int_color}}</p>-->
+                <!--<p class="submit-number">VIN：{{saleInfo.vin_num}}</p>-->
+            <!--</div>-->
+
+            <div class="sales-item">
                 <h3>{{saleInfo.auto_name}}</h3>
                 <p class="sales-color">{{saleInfo.ext_color}}/{{saleInfo.int_color}}</p>
                 <p class="submit-number">VIN：{{saleInfo.vin_num}}</p>
@@ -166,8 +172,14 @@
             showPopup:false,        //显示弹窗与否
             declareList:[],
             orderInfo : {},         //订单信息
-            saleInfo: {},           //申报资料审核未通过信息
-            declareType:'',                 //申报资料状态
+            saleInfo: {
+                'auto_name':null,
+                'ext_color':null,
+                'int_color':null,
+                'vin_num':null
+            },           //申报资料审核未通过信息
+            declareType:'',         //申报资料状态
+            id : '',                //售车申报资料id
 
             //上传蹄片插件
             //上传身份证正面照片
@@ -246,6 +258,12 @@
                 this.goodsStockId = this.saleInfo.goods_stock_id;
 
 
+//                this.formData.auto_name = this.saleInfo.auto_name;
+//                this.formData.ext_color = this.saleInfo.ext_color;
+//                this.formData.int_color = this.saleInfo.int_color;
+//                this.formData.vin_num = this.saleInfo.vin_num;
+
+
                 /*设置图片路径*/
                 /*购车发票路径*/
                 if(this.saleInfo.invoice_img){
@@ -294,8 +312,20 @@
                 response.body.data.orderInfo.name = arr.join(' ');//在拼接成字符串
 
                 this.orderInfo = response.body.data.orderInfo;
+                this.saleInfo.auto_name = this.orderInfo.name;
+                this.saleInfo.ext_color = this.orderInfo.color.split("/")[0];
+                this.saleInfo.int_color = this.orderInfo.color.split("/")[1];
+                this.saleInfo.vin_num = this.orderInfo.vinNumber;
 
                 this.vinNum = this.orderInfo.vinNumber;
+
+
+//                this.formData.auto_name = this.orderInfo.name;
+//                this.formData.ext_color = this.orderInfo.color.split("/")[0];
+//                this.formData.int_color = this.orderInfo.color.split("/")[1];
+//                this.formData.vin_num = this.orderInfo.vinNumber;
+
+
 
             })
         },
@@ -335,9 +365,10 @@
         //关闭弹窗
         closePopup(){
             this.showPopup = false;
-            //this.$router.push('/declare');//跳转到售车申报列表页
             this.declareType = 1;
-            this.getData();
+           Object.assign(this.saleInfo,this.formData);
+
+
         },
 
         //提交表单数据
@@ -410,8 +441,9 @@
 
 
                     This.$http.post("order/sale/info",This.formData).then(function(response){
-                        This.showPopup = true;
                         This.id = response.body.data.id;
+                        This.showPopup = true;
+
                     }).catch(function(error){
                         This.showAlert = true;
                         This.alertText = error.body.msg;
@@ -439,14 +471,12 @@
 
 
         this.orderId = this.$route.query.orderNum;
-        console.log(this.orderId);
         this.goodsStockId = this.$route.query.goods_stock_id;
         if(this.declareType == '2'){
             this.getEditData();
         }else{
             this.getData();
         }
-        //this.getData();
 
         // 自定义内置规则的错误信息
         const dictionary = {
