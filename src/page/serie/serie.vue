@@ -18,7 +18,7 @@
                <div class="book-car-price-info clearfix">
                    <div class="book-car-price">
                        <strong v-if="(item.sale==1)||(item.show==1)">{{item.emaoPrice}}万</strong>
-                       <strong v-if="(item.sale==2)&&(item.show==2)">已售馨，正在补货中</strong>
+                       <span v-if="(item.sale==2)&&(item.show==2)">已售馨，正在补货中</span>
                    </div>
                     <div class="book-guide-price clearfix">
                         <span>指导价：</span>
@@ -459,6 +459,7 @@ export default {
 .book-car-info ul li{padding:.5333rem .4rem;border-top:1px solid #2c2c2c;overflow:hidden;}
 .book-car-name{margin-bottom:.4rem;font-size:.42667rem;font-weight:600;color:#333;}
 .book-car-price{float:left;margin-right:.5rem;font-size:.4533rem;font-weight:bold;color:#fc3d36;}
+.book-car-price span{font-size: .32rem;}
 .book-guide-price{float:left;margin-top:.0667rem;font-size:.3467rem;color:#999;}
 .book-guide-price span{display:block;float:left;}
 .book-guide-price strong{display:block;float:left;margin-left:.1rem;font-weight:normal;}
