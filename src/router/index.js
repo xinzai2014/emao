@@ -94,12 +94,12 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
 //售车申报资料提交组件
-const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
+//const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
 //售车申报资料审核中组件
-const auditDeclare = r => require.ensure([],() => r(require('../page/auditDeclare/auditDeclare')),'auditDeclare')
+//const auditDeclare = r => require.ensure([],() => r(require('../page/auditDeclare/auditDeclare')),'auditDeclare')
 
-//售车申报资料审核未通过组件
+//售车申报资料组件
 const rejectDeclare = r => require.ensure([],() => r(require('../page/rejectDeclare/rejectDeclare')),'rejectDeclare')
 
 //已售车申报资料详情页组件
@@ -411,18 +411,18 @@ var router=new Router({
             name: 'declare',
             component: declare
         },
+        //{
+        //    path: '/editDeclare/:id',   //提交申报资料
+        //    name: 'editDeclare',
+        //    component: editDeclare
+        //},
+        //{
+        //    path: '/auditDeclare/:id',   //提交申报资料审核中
+        //    name: 'auditDeclare',
+        //    component: auditDeclare
+        //},
         {
-            path: '/editDeclare/:id',   //提交申报资料
-            name: 'editDeclare',
-            component: editDeclare
-        },
-        {
-            path: '/auditDeclare/:id',   //提交申报资料审核中
-            name: 'auditDeclare',
-            component: auditDeclare
-        },
-        {
-            path: '/rejectDeclare',   //提交申报资料审核未通过
+            path: '/rejectDeclare',   //提交申报资料三种状态
             name: 'rejectDeclare',
             component: rejectDeclare
         },

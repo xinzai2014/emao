@@ -2,9 +2,10 @@
     <div style="height:100%;">
         <!--头部-->
         <header class="user-tit">
-            <router-link to="/declare">
-                <a href="javascript:;" class="white-lt"></a>
-            </router-link>
+            <!--<router-link to="/declare">-->
+                <!--<a href="javascript:;" class="white-lt"></a>-->
+            <!--</router-link>-->
+            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>
             申报资料
         </header>
         <!--提交申报资料-->
@@ -220,6 +221,10 @@
         }
     },
     methods:{
+        //回到上一级
+        resetIndex(){
+            this.$router.go(-1);
+        },
         //获取待审核，审核驳回数据
         getData(){
             var token = sessionStorage.token;
