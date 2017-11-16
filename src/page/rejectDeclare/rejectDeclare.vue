@@ -426,7 +426,13 @@
     },
     mounted(){
         this.id = this.$route.query.id;
-        this.declareType = this.$route.query.is_sell;
+        if(this.$route.query.is_sell){
+            this.declareType = this.$route.query.is_sell;
+        }else{
+            this.declareType = 4;
+        }
+
+
         this.orderId = this.$route.query.orderNum;
         console.log(this.orderId);
         this.goodsStockId = this.$route.query.goods_stock_id;
