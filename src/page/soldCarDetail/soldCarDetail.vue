@@ -2,9 +2,10 @@
     <div style="height:100%;">
         <!--头部-->
         <header class="user-tit">
-            <router-link to="/soldCar">
-                <a href="javascript:;" class="white-lt"></a>
-            </router-link>
+            <!--<router-link to="/soldCar">-->
+                <!--<a href="javascript:;" class="white-lt" ></a>-->
+            <!--</router-link>-->
+            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>
             车辆申报信息
         </header>
         <!--提交申报资料-->
@@ -100,6 +101,10 @@
         }
     },
     methods:{
+        //回到上一级
+        resetIndex(){
+            this.$router.go(-1);
+        },
         //初始化拿数据
         //初始化拿数据
         getData(){
