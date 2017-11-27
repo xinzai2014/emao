@@ -152,30 +152,23 @@ import car from '../index/car'
 .brand-lt{
     width:1.866667rem;
     float:left;
-   
 }
-.brand-lt{
+.brand-lt ul{
     background:#fff;
+    overflow-y:auto;
     width:1.866667rem;
     position:fixed;
     left:0;
     bottom:0;
     top:1.173333rem;
-     -webkit-overflow-scrolling: touch;
-}
-.brand-lt ul{
-    -webkit-overflow-scrolling: touch;
-    overflow-y:auto;
-    height:100%;
-    width:100%;
 }
 .brand-lt ul li{
     height:1.333333rem;
+    padding:0 0.133333rem;
     font-size:0.373333rem;
     color:#666;
     text-align:center;
     display:table;
-    border-bottom:1px solid #f5f5f5;
 }
 .brand-lt ul li em{
     width:1.866667rem;
