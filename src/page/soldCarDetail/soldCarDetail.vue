@@ -48,13 +48,13 @@
             </div>
             <div class="submit-info-list">
                 <div class="user-info-form">
-                    <p class="user-info-tit">客户身份证正面照片</p>
+                    <p class="user-info-tit">身份证正面照片</p>
                    <div class="user-info-pic" @click=showPopUp(saleInfo.idcard_img_front)>
                        <img :src="saleInfo.idcard_img_front" alt="">
                    </div>
                 </div>
                 <div class="user-info-form">
-                    <p class="user-info-tit">客户身份证背面照片</p>
+                    <p class="user-info-tit">身份证背面照片</p>
                     <div class="user-info-pic"  @click=showPopUp(saleInfo.idcard_img_reverse)>
                         <img :src="saleInfo.idcard_img_reverse" alt="">
                     </div>
