@@ -122,7 +122,7 @@
 .config-param-head{height:1.1733rem;}
 
 .config-param-names .row-head{height:1.4267rem;white-space:nowrap;}
-.config-param-names .row-head .cell-text{display:block;height:1.4267rem;padding-right:.1867rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: left;font-weight: 700;width:6.133rem;padding-left:0.3rem;}
+.config-param-names .row-head .cell-text{display:block;height:1.4267rem;padding-right:.1867rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 .config-left-con .config-param-names .row{width:2.1333rem;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;}
 .config-left-con .config-param-names .row .cell{display:table-cell;height: 1.36rem;width:2.1333rem;vertical-align: middle;text-align: center;}
 .config-left-con .config-param-names .row .cell-text{display:block;font-size:.32rem;color:#666;}
@@ -139,17 +139,10 @@
 .config-param-list .row .cell{display:inline-block;width:100%;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
 
-.config-right-con .head-fixed{
+.config-right-con .head-fixed,.config-left-con .head-fixed{
     position:fixed;
     top:1.173rem;
-    background:#f5f5f5;
-    
-}
-.config-left-con .head-fixed{
-    position:fixed;
-    top:1.173rem;
-    z-index:99;
-    background:#f5f5f5;
+    background:#f5f5f5
 }
 .con-msg{
   line-height: 1.2rem;
