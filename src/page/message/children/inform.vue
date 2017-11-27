@@ -25,11 +25,11 @@
 			            <div class="notice-tit">{{item.created_at}}</div>
 			            <div class="notice-ct">
 			            	<router-link v-if="item.type == 607" :to="{name:'soldCarDetail',params:{id:item.order_num}}">
-				                <div class="notice-tp">{{item.content_header}}</div>
+				                <div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
 				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
 				            </router-link>
 				            <router-link v-else :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
-				                <div class="notice-tp">{{item.content_header}}</div>
+				                <div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
 				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
 				            </router-link>
 				        </div>
@@ -169,6 +169,7 @@
 	padding:0.8rem 0.4rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .notice-bts{
 	padding:0.533333rem 0.8rem 0 0.4rem;
@@ -179,9 +180,13 @@
 	margin-bottom:0.533333rem;
 	position:relative;
 }
-.notice-bts i{
+.notice-tps{
+	position:relative;
+	padding:0.533333rem 0.8rem 0.4rem 0.4rem;
+}
+.notice-bts i,.notice-tps i{
 	position: absolute;
-	top: 0.533333rem;
+	top: 0;
 	bottom: 0;
 	right: 0.4rem;
 	margin:auto;
