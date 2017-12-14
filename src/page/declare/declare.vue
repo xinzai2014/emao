@@ -33,7 +33,7 @@
                         <i>申报审核未通过，请重新提交</i>
                     </p>
                     <p class="sales-time" v-if="item.is_sell==1">
-                        <span :vinNumValue = item.order_num @click=goReject(item)>售车申报</span>
+                        <span :vinNumValue = item.order_num @click=goReject(item)>查看详情</span>
                         <i>申报审核中</i>
                     </p>
                     <p class="sales-time" v-if="item.is_sell==2">
@@ -199,7 +199,7 @@
                 this.showLoading = true;
                 this.preventRepeatReuqest = true;
                 this.currentPage = parseInt(this.currentPage) + 1;
-
+                //this.getDeclaerData();
             }
         },
         mounted(){

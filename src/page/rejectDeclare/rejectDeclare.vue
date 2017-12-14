@@ -140,7 +140,7 @@
         <div class="mask" v-if="showPopup">
             <div class="cancel-car">
                 <p class="prompt-tit">申报已提交，请等待审核。</p>
-                <p class="prompt-btn"><span class="confirm" @click="closePopup">知道了</span></p>
+                <p class="prompt-btn"><span class="confirm" @click="closePopup">好的</span></p>
             </div>
         </div>
 
