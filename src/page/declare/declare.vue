@@ -198,8 +198,8 @@
 
                 this.showLoading = true;
                 this.preventRepeatReuqest = true;
-                this.currentPage = parseInt(this.currentPage) + 1;
-                //this.getDeclaerData();
+                this.current_page = parseInt(this.current_page) + 1;
+                this.getDeclaerData();
             }
         },
         mounted(){

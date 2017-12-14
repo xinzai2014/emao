@@ -137,6 +137,10 @@
             </div>
         </section>
 
+        <div class="user-info-mask" v-if="showPopupStatus">
+            <img :src="popUpData" alt="" @click="closePicPopUp">
+        </div>
+
         <div class="mask" v-if="showPopup">
             <div class="cancel-car">
                 <p class="prompt-tit">申报已提交，请等待审核。</p>
@@ -170,6 +174,7 @@
             showAlert:false,        //显示错误提示与否
             alertText:null,         //错误提示内容
             showPopup:false,        //显示弹窗与否
+            showPopupStatus:false,        //显示图片弹窗与否
             declareList:[],
             orderInfo : {},         //订单信息
             saleInfo: {
@@ -228,7 +233,7 @@
                 idcard_img_reverse:'',             //身份证反面字段
                 driving_license_img:'',            //购车发票字段
                 invoice_img:''                     //行驶证照片字段
-            },
+            }
 
         }
     },
@@ -362,6 +367,17 @@
             }
         },
 
+
+
+        /*获取图片地址，显示遮罩弹窗和图片*/
+        showPopUp (dataSrc){
+            this.showPopupStatus = true;
+            this.popUpData = dataSrc;
+        },
+        /*关闭遮罩弹窗和图片*/
+        closePicPopUp(){
+            this.showPopupStatus = false;
+        },
         //关闭弹窗
         closePopup(){
             this.showPopup = false;
@@ -640,6 +656,8 @@
     }
     .user-info .upfile{display:none;}
 
+    .user-info-mask{position: fixed;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0,0,0,0.85);}
+    .user-info-mask img{position:absolute;top:50%;width:100%;height:100%;-webkit-transform: translateY(-50%);transform: translateY(-50%);}
     .mask{
         width:100%;
         height:100%;
