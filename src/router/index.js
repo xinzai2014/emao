@@ -128,6 +128,8 @@ const storage = r => require.ensure([], () => r(require('../page/storage/storage
 //后期淘车猫加入专题
 const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
 
+//授权店认证
+const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
 
 
 Vue.use(Router)
@@ -450,7 +452,13 @@ var router=new Router({
           path: '/zt/201711/auction',  //提交汇款凭证
           name: 'auction',
           component: auction,
+        },
+        {
+            path: '/empower',  //授权店认证
+            name: 'empower',
+            component: empower
         }
+        
     ]
 })
 

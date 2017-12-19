@@ -3,7 +3,7 @@
 	<section class="index-car-source">
         <p class="index-car-title">本地车源</p>
         <ul class="index-car-con">
-        	<router-link v-for="(item,index) in serieList" :to="'/serie/' + item.id" tag="li" :serieID = item.id @click.native="goSerie(index)">
+        	<router-link v-for="(item,index) in serieList " :key="index" :to="'/serie/' + item.id" tag="li" :serieID = item.id @click.native="goSerie(index)">
                 <img :src= item.imgUrl alt="">
                 <div class="index-car-back">
 	                <p class="index-car-name">{{item.name}}</p>

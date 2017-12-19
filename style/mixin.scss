@@ -1,0 +1,43 @@
+//颜色
+$red:#f00;
+$white:#fff;
+
+//wap背景图片
+@mixin bgPic($url){
+	background: url($url) no-repeat;
+	background-size: 100% 100%;
+}
+
+//圆角
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+//宽高
+@mixin WH($width,$height){
+	width:$width;
+	height:$height;
+}
+
+//字号大小和行高
+@mixin font($size, $line-height) {  
+	font-size:$size;
+	line-height:$line-height;
+}
+//字体不缩放
+@mixin font-dpr($font-size){ 
+	font-size: $font-size/2;
+	[data-dpr="2"] & { 
+		font-size: $font-size;
+	} 
+	[data-dpr="3"] & {
+	 	font-size: $font-size / 2 * 3;
+	} 
+}
+
+
+
