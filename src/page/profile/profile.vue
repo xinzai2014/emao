@@ -16,11 +16,11 @@
                         <span class="white-rt" ></span>
                         <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
                         <p>
-                          星级
-                          <i v-for="n in level"></i>
+                          <i></i>加盟店
                           <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
                       </router-link>
+                      <div class="empower-sata">升级<i></i><em></em></div>
                     </div>
                     <div class="company-bt">
                           <div class="item">
@@ -309,23 +309,52 @@ export default {
 }
 .company-ct p{
     height:0.346667rem;
-    margin:0.533333rem 0;
-    font-size:0.346667rem;
+    margin:0.4rem 0;
+    font-size:0.32rem;
     line-height:0.346667rem;
-    color:#2c2c2c;
+    color:#999;
     padding:0 0.4rem;
 }
 .company-ct p i{
     display:inline-block;
-    width:0.346667rem;
-    height:0.346667rem;
-    background:url(../../assets/stars-icon.png) no-repeat;
+    width:0.24rem;
+    height:0.28rem;
+    background:url(../../assets/icon-s9.png) no-repeat;
     background-size:contain;
     margin-right:14px;
     vertical-align:bottom;
 }
-.company-ct p i:first-child{
-    margin-left:0.2rem;
+.empower-sata{
+  color:#fff;
+  display:inline-block;
+  background:#dbaf61;
+  border-radius:0.4rem;
+  padding:0 0.6rem;
+  font-size:0.32rem;
+  height:0.666667rem;
+  line-height:0.666667rem;
+  margin-left:0.4rem;
+  margin-bottom:0.266667rem;
+  position:relative;
+}
+.empower-sata i{
+  position:absolute;
+  display:inline-block;
+  width:0.4rem;
+  height:0.146667rem;
+  background:url(../../assets/icon-s11.png) no-repeat;
+  background-size:contain;
+  left:0.6rem;
+  top:-0.1rem;
+}
+.company-ct em{
+    display:inline-block;
+    width:0.133333rem;
+    height:0.226667rem;
+    background:url(../../assets/icon-s10.png) no-repeat;
+    background-size:contain;
+    margin-left:0.133333rem;
+    vertical-align:middle;
 }
 .company-bt .item{
     width:3.066667rem;

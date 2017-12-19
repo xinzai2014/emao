@@ -1,6 +1,7 @@
 //颜色
 $orange:#d5aa5c;
 $white:#fff;
+$gray:#999;
 
 //wap背景图片
 @mixin bgPic($url){
@@ -21,6 +22,10 @@ $white:#fff;
 @mixin WH($width,$height){
 	width:$width;
 	height:$height;
+}
+//padding
+@mixin padding($tb,$lr){
+	padding:$tb $lr;
 }
 
 //字号大小和行高
