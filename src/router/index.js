@@ -131,6 +131,20 @@ const auction = r => require.ensure([], () => r(require('../page/topic/20171111/
 //授权店认证
 const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
 
+//授权店升级引导
+const empowerGuide = r => require.ensure([], () => r(require('../page/empowerGuide/empowerGuide')), 'empowerGuide')
+
+//授权店提交成功
+const empowerSuccess = r => require.ensure([], () => r(require('../page/empowerSuccess/empowerSuccess')), 'empowerSuccess')
+
+//授权店审核中
+const empowerAudit = r => require.ensure([], () => r(require('../page/empowerAudit/empowerAudit')), 'empowerAudit')
+
+//授权店审核通过
+const empowerAdopt = r => require.ensure([], () => r(require('../page/empowerAdopt/empowerAdopt')), 'empowerAdopt')
+
+
+
 
 Vue.use(Router)
 
@@ -457,6 +471,26 @@ var router=new Router({
             path: '/empower',  //授权店认证
             name: 'empower',
             component: empower
+        },
+        {
+            path: '/empowerGuide',  //授权店升级引导
+            name: 'empowerGuide',
+            component: empowerGuide
+        },
+        {
+            path: '/empowerSuccess',  //授权店提交成功
+            name: 'empowerSuccess',
+            component: empowerSuccess
+        },
+        {
+            path: '/empowerAudit',  //授权店审核中
+            name: 'empowerAudit',
+            component: empowerAudit
+        },
+        {
+            path: '/empowerAdopt',  //授权店审核通过
+            name: 'empowerAdopt',
+            component: empowerAdopt
         }
         
     ]
