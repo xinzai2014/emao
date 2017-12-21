@@ -20,12 +20,26 @@
 
 </template>
 <script>
+    export default {
+        name: 'empowerGuide',
+        data () {
+        return{
+            token:null
+        }
+    },
+    mounted(){
+        this.token = this.$route.query.token;
+        console.log(this.token);
+    },
+    components:{
 
+    }
+    }
 </script>
 <style>
    body{height:100%;background-color:#fff;}
     .brand-header-out{position:relative;z-index:3;}
-    .empower-guide{padding-bottom:1.1rem;background-color:#fff;}
+    .empower-guide{padding-bottom:1.0rem;background-color:#fff;}
     .empower-guide-succeed{padding-top:1.493rem;}
     .empower-guide img{display:block;width:2.613rem;height:2.573rem;margin:0 auto .4rem;}
     .empower-guide p{color:#2c2c2c;font-size:.4533rem;line-height:.6rem;text-align:center;}
