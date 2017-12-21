@@ -13,36 +13,31 @@
 	        <div class="empower-info">
 	        	<div class="empower-item empower-stall">
 	        		<label>选择意向授权产品档位</label>
-	        		<p class="fl">
-	        			<span>普通档产品</span>
-	        			<em>（16万以内）</em>
+	        		<p v-for="(item,index) in itemsStall" :class="{active:item['flag']}" @click="ActiveStall(item)">
+	        			<span>{{item.name}}</span>
+	        			<em>{{item.value}}</em>
 	        		</p>
-	        		<p class="rt active">
-	        			<span>高档产品</span>
-	        			<em>（16万以上）</em>
-	        		</p>
+	        		
 	        	</div>
 	        	<h3>经营概况</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>店铺月均销量</label>
-	        		<input type="text"  v-model="carNum" ref="carNum">
+	        		<input type="number"  v-model="carNum" ref="carNum" maxlength="5">
 	        		<i>台</i>
 	        	</div>
 	        	<div class="empower-item">
 	        		<div class="item-info">
-	        			<label>用品加装与汽车美容资质<i></i></label>
+	        			<label>用品加装与汽车美容资质<i @click="aptitudeShow(1)"></i></label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>具备</em>
-		        			<em><i></i>不具备</em>
+		        			<em v-for="(item,index) in itemsAptitude" :class="{active:item['flag']}" @click="ActiveAptitude(item)"><i></i>{{item.name}}</em>
 		        		</div>
 	        		</div>
 	        		<div class="item-info">
 	        			<label>用品加装与汽车美容能力</label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>具备</em>
-		        			<em><i></i>不具备</em>
+		        			<em v-for="(item,index) in itemsAbility" :class="{active:item['flag']}" @click="ActiveAbility(item,index)"><i></i>{{item.name}}</em>
 		        		</div>
-		        		<div class="empower-uploader">
+		        		<div class="empower-uploader" v-show="AbilitySelect">
 		        			<div class="empower-text">美容车间照片</div>
                     		<uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>
 		        		</div>
@@ -50,19 +45,17 @@
 	        	</div>
 				<div class="empower-item">
 	        		<div class="item-info">
-	        			<label>二手车经纪资质<i></i></label>
+	        			<label>二手车经纪资质<i @click="aptitudeShow(0)"></i></label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>具备</em>
-		        			<em><i></i>不具备</em>
+		        			<em v-for="(item,index) in itemsBroker" :class="{active:item['flag']}" @click="ActiveBroker(item)"><i></i>{{item.name}}</em>
 		        		</div>
 	        		</div>
 	        		<div class="item-info">
 	        			<label>二手车评估能力</label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>具备</em>
-		        			<em><i></i>不具备</em>
+		        			<em v-for="(item,index) in itemsEvaluating" :class="{active:item['flag']}" @click="ActiveEvaluating(item,index)"><i></i>{{item.name}}</em>
 		        		</div>
-		        		<div class="empower-uploader">
+		        		<div class="empower-uploader" v-show="EvaluatingSelect">
 		        			<div class="empower-text">二手车评估资质证书照片</div>
                     		<uploader :uploadData="uploadData2" @getUpload="getUpload"></uploader>
 		        		</div>
@@ -70,20 +63,18 @@
 	        	</div>
 	        	<div class="empower-item">
 	        		<div class="item-info">
-	        			<label>是否开展汽车金融业务<i></i></label>
+	        			<label>是否开展汽车金融业务</label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>已开展</em>
-		        			<em><i></i>未开展</em>
+		        			<em v-for="(item,index) in itemsFinancing" :class="{active:item['flag']}" @click="ActiveFinancing(item,index)"><i></i>{{item.name}}</em>
 		        		</div>
-		        		<input class="channel" type="text"  v-model="channel" ref="channel" placeholder="请注明金融渠道，例如某银行或第三方">
+		        		<input class="channel" type="text"  v-show="FinancingSelect"  v-model="channel" ref="channel" placeholder="请注明金融渠道，例如某银行或第三方">
 	        		</div>
 	        		<div class="item-info">
 	        			<label>是否开展平行进口车业务</label>
 		        		<div class="empower-limts-con">
-		        			<em class="active"><i></i>已开展</em>
-		        			<em><i></i>未开展</em>
+		        			<em v-for="(item,index) in itemsParallel" :class="{active:item['flag']}" @click="ActiveParallel(item,index)"><i></i>{{item.name}}</em>
 		        		</div>
-		        		<div class="empower-uploader">
+		        		<div class="empower-uploader" v-show="ParallelSelect">
 		        			<div class="empower-text">店内进口展车照片</div>
                     		<uploader :uploadData="uploadData3" @getUpload="getUpload"></uploader>
 		        		</div>
@@ -92,17 +83,16 @@
 	        	<h3>公司信息</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>展厅面积</label>
-	        		<input type="text"  v-model="area" ref="area">
+	        		<input type="number"  v-model="area" ref="area">
 	        		<i>㎡</i>
 	        	</div>
 	        	<div class="empower-item">
 	        		<div class="item-info">
 	        			<label>股权结构</label>
 		        		<div class="empower-limts-con">
-		        			<em><i></i>单一股东</em>
-		        			<em class="active"><i></i>多股东</em>
+		        			<em v-for="(item,index) in itemsStock" :class="{active:item['flag']}" @click="ActiveStock(item,index)"><i></i>{{item.name}}</em>
 		        		</div>
-		        		<div class="empower-tabel">
+		        		<div class="empower-tabel" v-show="StockSelect">
 		        			<div class="empower-text"><i></i>请输入股东姓名和股权占比</div>
                     		<div class="empower-ratio">
                     			<p class="ratio-tit">
@@ -110,24 +100,20 @@
                     				<em>股权占比</em>
                     			</p>
                     			<div class="ratio-info">
-                    				<p>
-	                    				<em><input type="text"/></em>
-	                    				<em><input type="text"/>%</em>
-	                    			</p>
-	                    			<p>
-	                    				<em><input type="text"/></em>
-	                    				<em><input type="text"/>%</em>
+                    				<p v-for="(item,index) in itemsTabel">
+	                    				<em><input type="text" v-model="item.name" /></em>
+	                    				<em><input type="number" v-model="item.percent"/>%</em>
 	                    			</p>
                     			</div>
                     		</div>
                     		<div class="empower-btn">
-                    			<span class="add">添加<em></em></span>
-                    			<span class="del">删除<em></em></span>
+                    			<span class="add" @click="addTable">添加<em></em></span>
+                    			<span class="del" @click="delTable">删除<em></em></span>
                     		</div>
 		        		</div>
 	        		</div>
 	        	</div>
-	        	<a href="javascript:;" class="empower-submit">提交</a>
+	        	<a href="javascript:;" class="empower-submit" @click="checkFormData">提交</a>
 	        </div>
 	    </section>
 	    <!--弹框-->
@@ -137,10 +123,10 @@
 	            <p class="prompt-btn"><span>点错了</span><span class="confirm"><a href="tel:400-825-2368">确定</a></span></p>
 	        </div>
 	    </div>
-	    <div class="prompt">
+	    <div class="prompt" v-show="aptitude_layer">
 	        <div class="cancel-car">
-	            <p class="prompt-tp">不同星级的权益说明不同（视权益提供情况做该提示）</p>
-	            <p class="prompt-bt">知道了</p>
+	            <p class="prompt-tp">{{aptitude_text}}</p>
+	            <p class="prompt-bt" @click="aptitudeHide">知道了</p>
 	        </div>
 	    </div>
 	</div>
@@ -159,7 +145,7 @@
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
                     flag:"plant",
-                    image:"static/sample20.png"
+                    image:"static/sample20.jpg"
                 },
                 uploadData2:{
                     url:"https://tcmapi.emao.com/upload",
@@ -176,10 +162,171 @@
                 dataURL:{},
                 booth_plant_img:'',
                 booth_diploma_img:'',
-                booth_showcar_img:''
+                booth_showcar_img:'',
+                aptitude_layer:false, //美容资质
+                aptitude_text:'',//弹框内容
+                itemsStall:[
+                	{ name: '普通档产品',value:'（16万以内）',type:1,flag:false},
+		            { name: '高档档产品',value:'（16万以以上）',type:2,flag:false}
+                ],
+                itemsAptitude: [
+		            { name: '具备',type:1,flag:false},
+		            { name: '不具备',type:2,flag:false},
+		        ],
+		        itemsAbility: [
+		            { name: '具备', type:1,flag:false},
+		            { name: '不具备',type:2,flag:false},
+		        ],
+		        itemsBroker: [
+		            { name: '具备', type:1,flag:false},
+		            { name: '不具备',type:2,flag:false},
+		        ],
+		        itemsEvaluating: [
+		            { name: '具备', type:1,flag:false},
+		            { name: '不具备',type:2,flag:false},
+		        ],
+		        itemsFinancing: [
+		            { name: '已开展',type:1,flag:false},
+		            { name: '未开展',type:2,flag:false},
+		        ],
+		        itemsParallel: [
+		            { name: '已开展',type:1,flag:false},
+		            { name: '未开展',type:2,flag:false},
+		        ],
+		        itemsStock: [
+		            { name: '单一股东',type:1,flag:false},
+		            { name: '多股东',type:2,flag:false},
+		        ],
+		        itemsTabel: [
+		            { name: '',percent:''},
+		            { name: '',percent:''},
+		        ],
+		        AbilitySelect:false,
+		        EvaluatingSelect:false,
+		        FinancingSelect:false,
+		        ParallelSelect:false,
+		        StockSelect:false,
+		        types:'',
+		        AptitudeType:'',
+		        AbilityType:'',
+		        BrokerType:'',
+		        EvaluatingType:'',
+		        FinancingType:'',
+		        ParallelType:'',
+		        StockType:'',
+		        percentNum:0 //股份百分比
 		    }
 		},
 		methods:{
+			//提示弹框
+			aptitudeShow(type){
+				this.aptitude_layer = !this.aptitude_layer;
+				if(type){
+					this.aptitude_text = '用品家装与汽车美容资质，即在营业执照经营范围中是否涵盖此项'
+				}else{
+					this.aptitude_text = '二手车经纪资质，即在营业执照经营范围中是否涵盖此项'
+				}
+			},
+			aptitudeHide(){
+				this.aptitude_layer = !this.aptitude_layer;
+			},
+			ActiveStall(item){ //产品档位
+				var that = this;
+                item["flag"] = !item["flag"];
+                var type = [];
+                this.itemsStall.forEach(function(item,index){
+                    if(item.flag == true){
+                        type.push(item.type);
+                    }
+                })
+                this.types = type;
+			},
+			ActiveAptitude(item){ //美容资质
+				this.itemsAptitude.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				this.AptitudeType = item.type;
+			},
+			ActiveAbility(item,index){//美容能力
+				this.itemsAbility.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				if(!index){
+					this.AbilitySelect = true;
+				}else{
+					this.AbilitySelect = false;
+				}
+				this.AbilityType = item.type;
+			},
+			ActiveBroker(item){ //经纪资源
+				this.itemsBroker.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				this.BrokerType = item.type;
+			},
+			ActiveEvaluating(item,index){//评估能力
+				this.itemsEvaluating.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				if(!index){
+					this.EvaluatingSelect = true;
+				}else{
+					this.EvaluatingSelect = false;
+				}
+				this.EvaluatingType = item.type;
+			},
+			ActiveFinancing(item,index){//金融业务
+				this.itemsFinancing.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				if(!index){
+					this.FinancingSelect = true;
+				}else{
+					this.FinancingSelect = false;
+				}
+				this.FinancingType = item.type;
+			},
+			ActiveParallel(item,index){//进口车业务
+				this.itemsParallel.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				if(!index){
+					this.ParallelSelect = true;
+				}else{
+					this.ParallelSelect = false;
+				}
+				this.ParallelType = item.type;
+			},
+			ActiveStock(item,index){//股权
+				this.itemsStock.forEach((ele,index)=>{
+                    ele.flag = false;
+                })
+				item["flag"] = !item["flag"];
+				if(index){
+					this.StockSelect = true;
+				}else{
+					this.StockSelect = false;
+				}
+				this.StockType = item.type;
+			},
+			addTable(){ //添加股东
+				var len = this.itemsTabel.length
+				if(len < 5){
+					this.itemsTabel.push({ name: '',percent:''});
+				}
+			},
+			delTable(){ //添加股东
+				var len = this.itemsTabel.length
+				if(len > 2){
+					this.itemsTabel.splice(len-1);
+				}
+			},
 			getUpload(data,flag){
                 this.dataURL[flag] = data;
                 for(flag in this.dataURL){
@@ -197,8 +344,179 @@
                     }
                 }
             },
+            checkFormData(){
+            	if((this.types == "")||(this.types == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择意向授权产品档位"
+                      }
+                    );
+                    return false
+                }
+                if((this.carNum == "")||(this.carNum == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请填写店铺月均销量"
+                      }
+                    );
+                    return false
+                }
+                if((this.AptitudeType == "")||(this.AptitudeType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否具备用品加装与汽车美容资质"
+                      }
+                    );
+                    return false
+                }
+                if((this.AbilityType == "")||(this.AbilityType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否具备用品加装与汽车美容能力"
+                      }
+                    );
+                    return false
+                }
+                if(this.AbilityType == 1){
+                	if((this.booth_plant_img == "") || (this.booth_plant_img == null)){
+                		this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请上传美容车间照片"
+	                      }
+	                    );
+	                    return false
+                	}
+                }
+                if((this.BrokerType == "")||(this.BrokerType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否具备二手车经纪资质"
+                      }
+                    );
+                    return false
+                }
+                if((this.EvaluatingType == "")||(this.EvaluatingType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否具备二手车评估能力"
+                      }
+                    );
+                    return false
+                }
+                if(this.EvaluatingType == 1){
+                	if((this.booth_diploma_img == "") || (this.booth_diploma_img == null)){
+                		this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请上传二手车评估资质证书照片"
+	                      }
+	                    );
+	                    return false
+                	}
+                }
+                if((this.FinancingType == "")||(this.FinancingType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否开展汽车金融业务"
+                      }
+                    );
+                    return false
+                }
+                if(this.FinancingType == 1){
+                	if((this.channel == "") || (this.channel == null)){
+                		this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请填写金融渠道"
+	                      }
+	                    );
+	                    return false
+                	}
+                }
+                if((this.ParallelType == "")||(this.ParallelType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择是否开展平行进口车业务"
+                      }
+                    );
+                    return false
+                }
+                if(this.ParallelType == 1){
+                	if((this.booth_showcar_img == "") || (this.booth_showcar_img == null)){
+                		this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请上传店内进口展车照片"
+	                      }
+	                    );
+	                    return false
+                	}
+                }
+                if((this.area == "")||(this.area == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请填写展厅面积"
+                      }
+                    );
+                    return false
+                }
+                if((this.StockType == "")||(this.StockType == null)){
+                    this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"请选择股权结构"
+                      }
+                    );
+                    return false
+                }
+                this.percentNum = 0;
+                this.itemsTabel.forEach((ele,index)=>{
+                    if(ele.name == ''){
+                    	this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请填写股东姓名"
+	                      }
+	                    );
+	                    return false
+                    }
+                    if(ele.percent == ''){
+                    	this.$store.dispatch("ALERT", 
+	                      {
+	                        flag:true,
+	                        text:"请填写股东占比"
+	                      }
+	                    );
+	                    return false
+                    }
+                    this.percentNum += parseFloat(ele.percent);
+                })
+                if(this.percentNum > 100){
+                	this.$store.dispatch("ALERT", 
+                      {
+                        flag:true,
+                        text:"股东占比总和不能大于100%"
+                      }
+                    );
+                    return false
+                }
+            },
+            AppTcm(){ //app跳转
+
+            }
 		},
 		mounted(){
+			//组件初始化
 
 		},
 		components:{
@@ -213,8 +531,6 @@
 		background:$white;
 		overflow:hidden;
 	}
-	.fl{float:left;}
-	.rt{float:right;}
 	.brand-list-header {
 	    position: relative;
 	    z-index: 25;
@@ -260,8 +576,8 @@
 		line-height:1.5;
 	}
 	.empower-item{
-		@include padding(0.4rem,0);
 		@include font-dpr(32px);
+		padding-top:0.4rem;
 		margin:0 0.4rem;
 		overflow:hidden;
 		border-bottom:1px solid #e0e0e0;
@@ -269,11 +585,15 @@
 	.empower-item label{
 		display:block;
 	}
+	.empower-stall,.empower-sales{
+		padding-bottom:0.4rem;
+	}
 	.empower-stall p{
 		display:inline-block;
 		text-align:center;
 		width:4.373333rem;
     	margin-top:0.533333rem;
+    	float:left;
     	color:$orange;
     	background:$white;
     	@include padding(0.266667rem,0);
@@ -287,6 +607,9 @@
 	.empower-stall p em{
 		@include font-dpr(24px);
 		padding-top:0.133333rem;
+	}
+	.empower-stall p:last-child{
+		float:right;
 	}
 	.empower-stall p.active{
 		color:$white;
@@ -304,6 +627,7 @@
 		border: none;
 		outline: none;
 		line-height: 0.85rem;
+		padding-left:0.4rem;
 		@include WH(5.8rem,0.85rem);
 	}
 	.empower-item label i{
@@ -397,8 +721,9 @@
 	.ratio-info input{
 		border: none;
 		outline: none;
+		text-align:center;
 		line-height: 0.933333rem;
-		@include WH(60%,0.933333rem);
+		@include WH(80%,0.933333rem);
 	}
 	.empower-btn{
 		text-align:center;
@@ -439,6 +764,8 @@
 		left:0;
 		top:0;
 		z-index:99;
+	}
+	.mask{
 		display:none;
 	}
 	.cancel-car{

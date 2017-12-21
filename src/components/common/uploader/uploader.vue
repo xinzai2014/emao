@@ -262,8 +262,6 @@
         position:relative;
     }
     .up-btn {
-        border: 1px solid #d6ab55;
-        border-radius: 0.533333rem;
         color: #bb8800;
         font-size: 0.373333rem;
         height: 0.85333rem;
