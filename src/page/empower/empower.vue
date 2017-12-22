@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<header class="brand-list-header header-fixed">
-			<i class="white-lt brand-left-cion"></i> 
+		<header class="brand-list-header header-fixed" v-show="titHide">
+			<i class="white-lt brand-left-cion" @click="goBack"></i> 
 			<strong class="brand-list-title">授权店认证</strong>
-	        <a href="javascript:;" class="auth-tel"></a>
+	        <a href="javascript:;" @click="authTel" class="auth-tel"></a>
 		</header>
 	    <section class="empower">
 	        <div class="empower-tit">
@@ -83,7 +83,7 @@
 	        	<h3>公司信息</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>展厅面积</label>
-	        		<input type="number"  v-model="area" ref="area">
+	        		<input type="number"  v-model="area" ref="area" maxlength="5">
 	        		<i>㎡</i>
 	        	</div>
 	        	<div class="empower-item">
@@ -107,8 +107,8 @@
                     			</div>
                     		</div>
                     		<div class="empower-btn">
-                    			<span class="add" @click="addTable">添加<em></em></span>
-                    			<span class="del" @click="delTable">删除<em></em></span>
+                    			<p><span v-show="addBtn" class="add" @click="addTable">添加<em></em></span></p>
+                    			<p><span v-show="delBtn" class="del" @click="delTable">删除<em></em></span></p>
                     		</div>
 		        		</div>
 	        		</div>
@@ -117,10 +117,10 @@
 	        </div>
 	    </section>
 	    <!--弹框-->
-	    <div class="mask">
+	    <div class="mask" v-show="Tel">
 	        <div class="cancel-car">
 	            <p class="prompt-tit">拨打客服电话<br/>400-825-2368</p>
-	            <p class="prompt-btn"><span>点错了</span><span class="confirm"><a href="tel:400-825-2368">确定</a></span></p>
+	            <p class="prompt-btn" @click="closeTel"><span>点错了</span><span class="confirm"><a href="tel:400-825-2368">确定</a></span></p>
 	        </div>
 	    </div>
 	    <div class="prompt" v-show="aptitude_layer">
@@ -138,6 +138,7 @@
 		name: 'empower',
 		data () {
 		    return{
+		    	Tel:false,//电话
 		    	carNum:'',//台数
 		    	channel:'',//渠道
 		    	area:'',//展厅面积
@@ -214,10 +215,26 @@
 		        FinancingType:'',
 		        ParallelType:'',
 		        StockType:'',
-		        percentNum:0 //股份百分比
+		        percentNum:0, //股份百分比
+		        addBtn:true, //添加按钮
+		        delBtn:false, //添加按钮
+		        token:'',
+		        titHide:true,//顶部返回是否显示
+		        telephoneButtonFlag:false,//是否显示电话
+		        gobackButtonFlag:true,//是否有弹框
 		    }
 		},
 		methods:{
+			//返回
+			goBack(){
+				this.$route.go(-1);
+			},
+			authTel(){//电话弹框
+				this.Tel = true;
+			},
+			closeTel(){
+				this.Tel = false;
+			},
 			//提示弹框
 			aptitudeShow(type){
 				this.aptitude_layer = !this.aptitude_layer;
@@ -316,15 +333,19 @@
 				this.StockType = item.type;
 			},
 			addTable(){ //添加股东
-				var len = this.itemsTabel.length
-				if(len < 5){
-					this.itemsTabel.push({ name: '',percent:''});
+				var len = this.itemsTabel.length;
+				this.itemsTabel.push({ name: '',percent:''});
+				this.delBtn = true;
+				if(len == 4){
+					this.addBtn = false;
 				}
 			},
 			delTable(){ //添加股东
-				var len = this.itemsTabel.length
-				if(len > 2){
-					this.itemsTabel.splice(len-1);
+				var len = this.itemsTabel.length;
+				this.itemsTabel.splice(len-1);
+				this.addBtn = true;
+				if(len == 3){
+					this.delBtn = false;
 				}
 			},
 			getUpload(data,flag){
@@ -511,13 +532,44 @@
                     return false
                 }
             },
-            AppTcm(){ //app跳转
-
+            tcmApp(obj){ //app跳转
+            	if (navigator.userAgent.indexOf("iPhone") > 0) {
+	            	window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//IOS
+	            }
+	            else {
+	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
+	            }
+            },
+            telephoneButton(){ //电话
+            	var obj = {
+	        		actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+	        		params:{hidden:(this.telephoneButtonFlag ? 0 : 1), phone: "400-825-2368"}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+	    		};
+	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
+            enableGobackButton(){ //禁止返回
+            	var obj = {
+	      			actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+	        		params:{enable:(this.gobackButtonFlag ? 0 : 1), title: "确定退出注册认证？"}//enable=0不允许返回，enable=1允许返回
+	    		};
+	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             }
 		},
 		mounted(){
 			//组件初始化
-
+			this.token = sessionStorage.getItem('token');
+        	if(this.token == null){
+        		this.titHide = false;
+        		document.title='授权店认证';
+        		this.telephoneButton();
+        		this.enableGobackButton();
+		        var href = window.location.href,
+		            str = href.indexOf('=');
+		            this.token = href.substr(str+1);
+		    }
+		    
+            
+			
 		},
 		components:{
 		    uploader
@@ -727,13 +779,18 @@
 	}
 	.empower-btn{
 		text-align:center;
+		overflow:hidden;
 	}
-	.empower-btn span{
-		display:block;
+	.empower-btn p{
 		float:left;
 		width:50%;
 		color:#e6b255;
 		@include font-dpr(28px);
+		padding-bottom:0.4rem;
+	}
+	.empower-btn span{
+		display:block;
+		width:100%;
 	}
 	.empower-btn span em{
 		display:inline-block;
@@ -765,9 +822,6 @@
 		top:0;
 		z-index:99;
 	}
-	.mask{
-		display:none;
-	}
 	.cancel-car{
 		position:fixed;
 		@include WH(7.2rem,auto);
@@ -793,7 +847,7 @@
 		@include padding(0.533333rem,0.6rem);
 	}
 	.prompt-btn{
-		background:#f5f5f5;
+		background:#fff;
 		overflow:hidden;
 		height:1.173333rem;
 		line-height:1.173333rem;
@@ -811,6 +865,7 @@
 		width:50%;
 		float:left;
 		text-align:center;
+		background:#f5f5f5;
 		@include font-dpr(34px);
 	}
 	.prompt-btn span.confirm{
