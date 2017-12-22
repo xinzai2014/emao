@@ -557,16 +557,13 @@
 		},
 		mounted(){
 			//组件初始化
-			this.token = sessionStorage.getItem('token');
-        	if(this.token == null){
-        		this.titHide = false;
+		    if(this.$route.query.token){
+	            this.token = this.$route.query.token;
+	            this.titHide = false;
         		document.title='授权店认证';
         		this.telephoneButton();
         		this.enableGobackButton();
-		        var href = window.location.href,
-		            str = href.indexOf('=');
-		            this.token = href.substr(str+1);
-		    }
+	        }
 		    
             
 			
