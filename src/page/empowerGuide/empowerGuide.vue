@@ -26,7 +26,10 @@
         return{
             token:null,
             showHeadStatus:true,
-            telephoneButtonFlag:false
+            telephoneButtonFlag:false,
+            gobackButtonFlag:false,
+            phone:null,
+            title:null
         }
     },
     methods:{
@@ -45,19 +48,53 @@
         },
 
         //显示/隐藏电话按钮
-        telephoneButton(){
+//        telephoneButton(){
+//            var obj = {
+//                actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+//                params:{hidden:(this.telephoneButtonFlag ? 0 : 1), phone: "400-000-1234"}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+//            };
+//            this.tcmApp(obj);//调用tcmApp 函数，向APP传值
+//
+//
+//        },
+
+        //显示/隐藏电话按钮
+        telephoneButton(telephoneButtonFlag,phone){
             var obj = {
-                actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-                params:{hidden:(this.telephoneButtonFlag ? 0 : 1), phone: "400-000-1234"}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+                actionname:"telephoneButton",
+                params:{hidden:(this.telephoneButtonFlag ? 0 : 1), phone:phone}
             };
             this.tcmApp(obj);//调用tcmApp 函数，向APP传值
-
-            var text = "隐藏电话按钮"
-            if (telephoneButtonFlag) { text = "显示电话按钮" }
-            document.getElementById('telephoneButtonID').innerHTML = text;
-            this.telephoneButtonFlag = !this.telephoneButtonFlag
-
         },
+
+
+        //禁止/启用 返回操作
+//        enableGobackButton() {
+//            var obj = {
+//                actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+//                params:{enable:(gobackButtonFlag ? 0 : 1), title: "确定退出注册认证？"}//enable=0不允许返回，enable=1允许返回
+//            };
+//            tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+//
+//            var text = "禁用返回操作"
+//            if (gobackButtonFlag) { text = "启用返回操作" }
+//            document.getElementById('enableGobackButtonID').innerHTML = text;
+//            gobackButtonFlag = !gobackButtonFlag
+//
+//        }
+
+
+        //禁止/启用 返回操作
+        enableGobackButton(gobackButtonFlag,title){
+            var obj = {
+                actionname:"enableGobackButton",
+                params:{enable:(gobackButtonFlag ? 0 : 1), title: title}//enable=0不允许返回，enable=1允许返回
+            };
+            tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+        },
+
+
+
 
         /*判断是否是App*/
         isTcmApp(){
@@ -73,34 +110,35 @@
         /*返回按钮*/
         goBack(){
             if (this.isTcmApp()) {
-                window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
+                //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
+                window.location = ' http://192.168.60.217:8080/#/empower?token=' + this.token;
+               // http://192.168.60.217:8080/#/empower?token=c73a46056ea9c99acbb7f085561a7e1d
             } else {
                 this.$router.push({name:'profile'});
             }
         },
 
-        /*黑条是否加载*/
-        isLoadHead(){
-            if(this.isTcmApp()){
+        /*去升级函数*/
+        goUpgrade(){
+            this.$router.push({name:'empower'});
+        },
+
+        /*区分app与wap做不同的渲染*/
+        renderDom(){
+            if (this.isTcmApp()){
+                document.title = "授权店升级";
                 this.showHeadStatus = false;
+                this.telephoneButton(this.telephoneButtonFlag,'');
+                this.enableGobackButton(this.gobackButtonFlag,'')
             }else{
                 this.showHeadStatus = true;
             }
-        },
-
-        /*去升级函数*/
-        goUpgrade(){
-            this.$router.push({name:'empoewr'});
         }
 
     },
     mounted(){
-        document.title = "授权店升级";
         this.token = this.$route.query.token;
-        this.isTcmApp();
-        this.isLoadHead();
-        this.telephoneButton();
-        this.goBack();
+        this.renderDom();
     },
     components:{
 
