@@ -3,7 +3,7 @@
         <!--首页-品牌列表-头部-->
         <div class="brand-header-out">
             <header class="brand-list-header">
-                <i class="white-lt brand-left-cion"></i>
+                <i class="white-lt brand-left-cion" @click="backtrack"></i>
                 <strong class="brand-list-title">审核中</strong>
             </header>
         </div>
@@ -11,14 +11,85 @@
             <img src="../../assets/empower-content.png" alt="">
             <p>认证资料正在审核，请耐心等待</p>
             <p class="tips">请保持您的电话畅通，会有区域经理与您联系</p>
-            <input type="text" name="返回" value="返回">
+            <input type="button" name="返回" value="返回" @click="goBack">
             <p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>
         </section>
     </div>
 
 </template>
 <script>
+    export default{
+        name:"empowerAudit",
+        data(){
+            return{
+                token:null,
+                showHeadStatus:true,
+                title:null
+            }
+        },
+        methods:{
+            /*向App传值*/
+            tcmApp(obj){
+                //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+                //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+                //或者由服务器判断响应不同的平台脚本
+                if (navigator.userAgent.indexOf("iPhone") > 0) {
+                    window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
+                }
+                else {
+                    window.tcmAppObject.postMessage(JSON.stringify(obj));//向 Android 发送消息，iOS 无效
+                }
 
+            },
+
+            //关闭当前窗口
+            closeCurrentWindow() {
+                var obj = {
+                    actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                };
+                tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
+
+            /*判断是否是App*/
+            isTcmApp(){
+                // return navigator.userAgent.indexOf("tcm") !== -1;
+
+                if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+
+
+            /*返回按钮*/
+            goBack(){
+                if (this.isTcmApp()) {
+                    //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
+                    this.closeCurrentWindow();
+                } else {
+                    //this.$router.push({name:'profile'});
+                    this.$router.go(-1);
+                }
+            },
+            backtrack(){
+                this.$router.go(-1);
+            },
+            /*区分app与wap做不同的渲染*/
+            renderDom(){
+                if (this.isTcmApp()){
+                    document.title = "审核中";
+                    this.showHeadStatus = false;
+                }else{
+                    this.showHeadStatus = true;
+                }
+            }
+        },
+        mounted(){
+            this.token = this.$route.query.token;
+            this.renderDom();
+        }
+    }
 </script>
 <style>
     body{height:100%;background-color:#fff;}

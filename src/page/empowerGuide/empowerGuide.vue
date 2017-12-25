@@ -3,7 +3,7 @@
         <!--首页-品牌列表-头部-->
         <div class="brand-header-out" v-if="showHeadStatus">
             <header class="brand-list-header">
-                <i class="white-lt brand-left-cion" @click="goBack"></i>
+                <i class="white-lt brand-left-cion" @click="backtrack"></i>
                 <strong class="brand-list-title">授权店升级</strong>
             </header>
         </div>
@@ -23,16 +23,13 @@
     export default {
         name: 'empowerGuide',
         data () {
-        return{
-            token:null,
-            showHeadStatus:true,
-            telephoneButtonFlag:false,
-            gobackButtonFlag:false,
-            phone:null,
-            title:null
-        }
-    },
-    methods:{
+            return{
+                token:null,
+                showHeadStatus:true,
+                title:null
+            }
+        },
+        methods:{
         /*向App传值*/
         tcmApp(obj){
             //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
@@ -77,6 +74,9 @@
                 this.$router.push({name:'profile'});
             }
         },
+        backtrack(){
+                this.$router.push({name:'profile'});
+        },
 
         /*去升级函数*/
         goUpgrade(){
@@ -102,14 +102,13 @@
         }
 
     },
-    mounted(){
-        this.token = this.$route.query.token;
-        console.log(this.token)
-        this.renderDom();
-    },
-    components:{
+        mounted(){
+            this.token = this.$route.query.token;
+            this.renderDom();
+        },
+        components:{
 
-    }
+        }
     }
 </script>
 <style>
