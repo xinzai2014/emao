@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<header class="brand-list-header header-fixed" v-show="titHide">
-			<i class="white-lt brand-left-cion" @click="goBack"></i> 
+			<i class="white-lt brand-left-cion" @click="showLoginDialog"></i> 
 			<strong class="brand-list-title">授权店认证</strong>
 	        <a href="javascript:;" @click="authTel" class="auth-tel"></a>
 		</header>
@@ -129,6 +129,15 @@
 	            <p class="prompt-bt" @click="aptitudeHide">知道了</p>
 	        </div>
 	    </div>
+	    <div class="dialog" v-if="showDialog" @click="closeDialog">
+            <div class="dialog-con">
+                <p>确定退出授权店认证</p>
+                <div class="dialog-btn">
+                    <span>点错了</span>
+                    <span @click.stop="loginOut">确定退出</span>
+                </div>
+            </div>
+        </div>
 	</div>
 </template>
 <script>
@@ -142,6 +151,7 @@
 		    	carNum:'',//台数
 		    	channel:'',//渠道
 		    	area:'',//展厅面积
+		    	showDialog:false,
 		    	uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
@@ -226,9 +236,15 @@
 		},
 		methods:{
 			//返回
-			goBack(){
-				this.$route.go(-1);
-			},
+			closeDialog(){
+                this.showDialog = false;
+            },
+            showLoginDialog(){
+                this.showDialog = !this.showDialog;
+            },
+            loginOut(){
+                this.$router.go(-1);
+            },
 			authTel(){//电话弹框
 				this.Tel = true;
 			},
