@@ -6,9 +6,9 @@
 	        <a href="javascript:;" @click="authTel" class="auth-tel"></a>
 		</header>
 	    <section class="empower">
-	        <div class="empower-tit">
+	        <div class="empower-tit" v-if="grantStatus == 3">
 	            <em>审核未通过</em>
-	            <span>原因：经核对，您提交的审核资料存在以下问题：1.二手车经纪资质与实际不符； 2.用品加装与汽车美容资质与实际不符 ，以上信息请重新填写后上传。</span>
+	            <span>{{grantReason}}</span>
 	        </div>
 	        <div class="empower-info">
 	        	<div class="empower-item empower-stall">
@@ -102,7 +102,7 @@
                     			<div class="ratio-info">
                     				<p v-for="(item,index) in itemsTabel">
 	                    				<em><input type="text" v-model="item.name" /></em>
-	                    				<em><input type="number" v-model="item.percent"/>%</em>
+	                    				<em><input type="number" v-model="item.ratio"/>%</em>
 	                    			</p>
                     			</div>
                     		</div>
@@ -182,35 +182,35 @@
                 ],
                 itemsAptitude: [
 		            { name: '具备',type:1,flag:false},
-		            { name: '不具备',type:2,flag:false},
+		            { name: '不具备',type:0,flag:false},
 		        ],
 		        itemsAbility: [
 		            { name: '具备', type:1,flag:false},
-		            { name: '不具备',type:2,flag:false},
+		            { name: '不具备',type:0,flag:false},
 		        ],
 		        itemsBroker: [
 		            { name: '具备', type:1,flag:false},
-		            { name: '不具备',type:2,flag:false},
+		            { name: '不具备',type:0,flag:false},
 		        ],
 		        itemsEvaluating: [
 		            { name: '具备', type:1,flag:false},
-		            { name: '不具备',type:2,flag:false},
+		            { name: '不具备',type:0,flag:false},
 		        ],
 		        itemsFinancing: [
 		            { name: '已开展',type:1,flag:false},
-		            { name: '未开展',type:2,flag:false},
+		            { name: '未开展',type:0,flag:false},
 		        ],
 		        itemsParallel: [
 		            { name: '已开展',type:1,flag:false},
-		            { name: '未开展',type:2,flag:false},
+		            { name: '未开展',type:0,flag:false},
 		        ],
 		        itemsStock: [
 		            { name: '单一股东',type:1,flag:false},
 		            { name: '多股东',type:2,flag:false},
 		        ],
 		        itemsTabel: [
-		            { name: '',percent:''},
-		            { name: '',percent:''},
+		            { name: '',ratio:''},
+		            { name: '',ratio:''},
 		        ],
 		        AbilitySelect:false,
 		        EvaluatingSelect:false,
@@ -232,6 +232,9 @@
 		        titHide:true,//顶部返回是否显示
 		        telephoneButtonFlag:false,//是否显示电话
 		        gobackButtonFlag:true,//是否有弹框
+		        grantStatus:0,//审核状态
+		        grantReason:'',//驳回理由
+		        APPWap:false //是wap还是App flase是wap
 		    }
 		},
 		methods:{
@@ -272,7 +275,7 @@
                         type.push(item.type);
                     }
                 })
-                this.types = type;
+                this.types = type.join(",");
 			},
 			ActiveAptitude(item){ //美容资质
 				this.itemsAptitude.forEach((ele,index)=>{
@@ -350,7 +353,7 @@
 			},
 			addTable(){ //添加股东
 				var len = this.itemsTabel.length;
-				this.itemsTabel.push({ name: '',percent:''});
+				this.itemsTabel.push({ name: '',ratio:''});
 				this.delBtn = true;
 				if(len == 4){
 					this.addBtn = false;
@@ -384,135 +387,135 @@
             checkFormData(){
             	if((this.types == "")||(this.types == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择意向授权产品档位"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择意向授权产品档位"
+	                    }
                     );
                     return false
                 }
                 if((this.carNum == "")||(this.carNum == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请填写店铺月均销量"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请填写店铺月均销量"
+	                    }
                     );
                     return false
                 }
                 if((this.AptitudeType == "")||(this.AptitudeType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否具备用品加装与汽车美容资质"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否具备用品加装与汽车美容资质"
+	                    }
                     );
                     return false
                 }
                 if((this.AbilityType == "")||(this.AbilityType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否具备用品加装与汽车美容能力"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否具备用品加装与汽车美容能力"
+	                    }
                     );
                     return false
                 }
                 if(this.AbilityType == 1){
                 	if((this.booth_plant_img == "") || (this.booth_plant_img == null)){
                 		this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请上传美容车间照片"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请上传美容车间照片"
+		                    }
 	                    );
 	                    return false
                 	}
                 }
                 if((this.BrokerType == "")||(this.BrokerType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否具备二手车经纪资质"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否具备二手车经纪资质"
+	                    }
                     );
                     return false
                 }
                 if((this.EvaluatingType == "")||(this.EvaluatingType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否具备二手车评估能力"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否具备二手车评估能力"
+	                    }
                     );
                     return false
                 }
                 if(this.EvaluatingType == 1){
                 	if((this.booth_diploma_img == "") || (this.booth_diploma_img == null)){
                 		this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请上传二手车评估资质证书照片"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请上传二手车评估资质证书照片"
+		                    }
 	                    );
 	                    return false
                 	}
                 }
                 if((this.FinancingType == "")||(this.FinancingType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否开展汽车金融业务"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否开展汽车金融业务"
+	                    }
                     );
                     return false
                 }
                 if(this.FinancingType == 1){
                 	if((this.channel == "") || (this.channel == null)){
                 		this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请填写金融渠道"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请填写金融渠道"
+		                    }
 	                    );
 	                    return false
                 	}
                 }
                 if((this.ParallelType == "")||(this.ParallelType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择是否开展平行进口车业务"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择是否开展平行进口车业务"
+	                    }
                     );
                     return false
                 }
                 if(this.ParallelType == 1){
                 	if((this.booth_showcar_img == "") || (this.booth_showcar_img == null)){
                 		this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请上传店内进口展车照片"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请上传店内进口展车照片"
+		                    }
 	                    );
 	                    return false
                 	}
                 }
                 if((this.area == "")||(this.area == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请填写展厅面积"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请填写展厅面积"
+	                    }
                     );
                     return false
                 }
                 if((this.StockType == "")||(this.StockType == null)){
                     this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"请选择股权结构"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"请选择股权结构"
+	                    }
                     );
                     return false
                 }
@@ -520,33 +523,75 @@
                 this.itemsTabel.forEach((ele,index)=>{
                     if(ele.name == ''){
                     	this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请填写股东姓名"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请填写股东姓名"
+		                    }
 	                    );
 	                    return false
                     }
-                    if(ele.percent == ''){
+                    if(ele.ratio == ''){
                     	this.$store.dispatch("ALERT", 
-	                      {
-	                        flag:true,
-	                        text:"请填写股东占比"
-	                      }
+		                    {
+		                        flag:true,
+		                        text:"请填写股东占比"
+		                    }
 	                    );
 	                    return false
                     }
-                    this.percentNum += parseFloat(ele.percent);
+                    this.percentNum += parseFloat(ele.ratio);
                 })
                 if(this.percentNum > 100){
                 	this.$store.dispatch("ALERT", 
-                      {
-                        flag:true,
-                        text:"股东占比总和不能大于100%"
-                      }
+	                    {
+	                        flag:true,
+	                        text:"股东占比总和不能大于100%"
+	                    }
                     );
                     return false
                 }
+                var data = {
+			        token:this.token,
+			        authorizeGrade:this.types,
+			        monthlySales:this.carNum,
+			        carBeautyQualification:this.AptitudeType,
+			        carBeautyAlility:this.this.AbilityType,
+			        carBeautyImage:this.booth_plant_img,
+			        brokeringQualification:this.BrokerType,
+			        evaluationAbility:this.EvaluatingType,
+			        evaluationImage:this.booth_diploma_img,
+			        autoFinance:this.FinancingType,
+			        autoFinanceText:this.channel,
+			        parallelImportCar:this.ParallelType,
+			        parallelImportCarImage:this.booth_showcar_img,
+			        exhibitionHallArea:this.area,
+			        shareholdingStructure:this.StockType,
+			        shareholderRatio:this.itemsTabel,
+			        grantStatus:this.grantStatus
+			    }
+			    
+                //提交信息
+                this.$http.post("dealerInfo/authorizedregist",data)
+                .then(function (response) {
+                	this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"提交成功"
+	                    }
+                    );
+                	if(APPWap){
+                		window.location = ' http://192.168.60.217:8080/#/empowerSuccess?token=' + this.token;
+                	}else{
+                		this.$router.push({name:'empowerSuccess'});
+                	}
+			    }).catch(function (error) {
+			        this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"请求失败了"
+	                    }
+                    );
+			    });
             },
             tcmApp(obj){ //app跳转
             	if (navigator.userAgent.indexOf("iPhone") > 0) {
@@ -559,16 +604,63 @@
             telephoneButton(){ //电话
             	var obj = {
 	        		actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-	        		params:{hidden:(this.telephoneButtonFlag ? 0 : 1), phone: "400-825-2368"}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+	        		params:{hidden:0}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
 	    		};
 	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
             enableGobackButton(){ //禁止返回
             	var obj = {
 	      			actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-	        		params:{enable:(this.gobackButtonFlag ? 0 : 1), title: "确定退出注册认证？"}//enable=0不允许返回，enable=1允许返回
+	        		params:{enable:0, title: "确定退出授权店认证"}//enable=0不允许返回，enable=1允许返回
 	    		};
 	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
+            //数据初始化
+            fullData(){
+            	var data = {
+			        token:this.token
+			    }
+            	this.$http({
+			        url:"dealerInfo/authorizeddetail",
+			        method:"GET",
+			        params:data
+			    }).then(function (response) { 
+			    	var data = response.body;
+			        this.types = data.authorizeGrade;
+			        if(data.authorizeGrade){
+                       var manageTypeList = data.authorizeGrade.split(",");
+                       manageTypeList.forEach((ele,index) => {
+                            var index =  this.itemsStall.findIndex(function(va,ind,arr){
+                                return va.type == ele;
+                            })
+                            this.itemsStall[index].flag = true;
+                       });
+                   }
+			        this.carNum = data.monthlySales;
+			        this.AptitudeType = data.carBeautyQualification;
+			        this.itemsAptitude[Number(this.AptitudeType)-1].flag = true;
+			        this.AbilityType = data.carBeautyAlility;
+			        this.booth_plant_img = data.carBeautyImage;
+			        this.BrokerType = data.brokeringQualification;
+			        this.EvaluatingType = data.evaluationAbility;
+			        this.booth_diploma_img = data.evaluationImage;
+			        this.FinancingType = data.autoFinance;
+			        this.channel = data.autoFinanceText;
+			        this.ParallelType = data.parallelImportCar;
+			        this.booth_showcar_img = data.parallelImportCarImage;
+			        this.area = data.exhibitionHallArea;
+			        this.StockType = data.shareholdingStructure;
+			        this.itemsTabel = data.shareholderRatio;
+			        this.grantStatus = data.grantStatus;
+			        this.grantReason = data.grantReason;
+			    }).catch(function (error) {
+			        this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"请求失败了"
+	                    }
+                    );
+			    });
             }
 		},
 		mounted(){
@@ -579,10 +671,45 @@
         		document.title='授权店认证';
         		this.telephoneButton();
         		this.enableGobackButton();
+        		this.APPWap = true;
+	        }else{
+	        	this.token = sessionStorage.token;
 	        }
-		    
-            
-			
+	        //this.fullData();
+	        this.types = '1,2';
+           	var manageTypeList = this.types.split(",");
+           	manageTypeList.forEach((ele,index) => {
+                var index =  this.itemsStall.findIndex(function(va,ind,arr){
+                    return va.type == ele;
+                })
+                this.itemsStall[index].flag = true;
+           	});
+	        this.carNum = 10;
+	        this.AptitudeType = 1;
+	        this.itemsAptitude[Number(this.AptitudeType)-1].flag = true;
+	        this.AbilityType = 1;
+	        this.booth_plant_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
+	        this.BrokerType = 1;
+	        this.EvaluatingType = 1;
+	        this.booth_diploma_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
+	        this.FinancingType = 1;
+	        this.channel = '很好啊';
+	        this.ParallelType = 1;
+	        this.booth_showcar_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
+	        this.area = 300;
+	        this.StockType = 2;
+	        this.itemsTabel = [
+              {
+                  name: '张三',
+                  ratio: 50
+              },
+              {
+                  name: '张三',
+                  ratio: 50
+              }
+          	];
+	        this.grantStatus = 3;
+	        this.grantReason = '巴拉巴巴拉巴拉巴拉巴拉了巴拉巴拉巴拉巴巴拉巴拉巴拉巴拉巴拉巴拉吧列表里巴拉巴拉巴拉巴拉吧';
 		},
 		components:{
 		    uploader
