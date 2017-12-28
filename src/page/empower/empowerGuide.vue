@@ -84,7 +84,7 @@
 
             if (this.isTcmApp()) {
                 //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
-                window.location = ' http://192.168.60.218:8080/#/empower?token=' + this.token;
+                window.location = ' https://tcm.m.emao.com/#/empower?token=' + this.token;
 
             } else {
                 this.$router.push({name:'empower'});

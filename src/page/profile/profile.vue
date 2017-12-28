@@ -222,13 +222,13 @@ export default {
         //this.type = Number(response.body.data.type);    //授权审核状态
         if(this.grantStatus == 0){
             this.grantText = '升级';
-            this.routerLink = '/empowerGuide'
+            this.routerLink = '/empower/empowerGuide'
         }else if(this.grantStatus == 1){
             this.grantText = '授权店审核中';
-            this.routerLink = '/empowerAudit'
+            this.routerLink = '/empower/empowerAudit'
         }else if(this.grantStatus == 2){
             this.grantText = '审核成功';
-            this.routerLink = ''
+            this.routerLink = '/empower/empowerSuccess'
         }else if(this.grantStatus == 3){
             this.grantText = '升级失败';
             this.routerLink = '/empower'

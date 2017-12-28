@@ -580,9 +580,9 @@
 	                    }
                     );
                 	if(APPWap){
-                		window.location = ' http://192.168.60.217:8080/#/empowerSuccess?token=' + this.token;
+                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
                 	}else{
-                		this.$router.push({name:'empowerSuccess'});
+                		this.$router.push({name:'empower/empowerSuccess'});
                 	}
 			    }).catch(function (error) {
 			        this.$store.dispatch("ALERT", 

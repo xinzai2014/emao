@@ -132,16 +132,16 @@ const auction = r => require.ensure([], () => r(require('../page/topic/20171111/
 const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
 
 //授权店升级引导
-const empowerGuide = r => require.ensure([], () => r(require('../page/empowerGuide/empowerGuide')), 'empowerGuide')
+const empowerGuide = r => require.ensure([], () => r(require('../page/empower/empowerGuide')), 'empowerGuide')
 
 //授权店提交成功
-const empowerSuccess = r => require.ensure([], () => r(require('../page/empowerSuccess/empowerSuccess')), 'empowerSuccess')
+const empowerSuccess = r => require.ensure([], () => r(require('../page/empower/empowerSuccess')), 'empowerSuccess')
 
 //授权店审核中
-const empowerAudit = r => require.ensure([], () => r(require('../page/empowerAudit/empowerAudit')), 'empowerAudit')
+const empowerAudit = r => require.ensure([], () => r(require('../page/empower/empowerAudit')), 'empowerAudit')
 
 //授权店审核通过
-const empowerAdopt = r => require.ensure([], () => r(require('../page/empowerAdopt/empowerAdopt')), 'empowerAdopt')
+const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
 
 
 
@@ -473,22 +473,22 @@ var router=new Router({
             component: empower
         },
         {
-            path: '/empowerGuide',  //授权店升级引导
+            path: '/empower/empowerGuide',  //授权店升级引导
             name: 'empowerGuide',
             component: empowerGuide
         },
         {
-            path: '/empowerSuccess',  //授权店提交成功
+            path: '/empower/empowerSuccess',  //授权店提交成功
             name: 'empowerSuccess',
             component: empowerSuccess
         },
         {
-            path: '/empowerAudit',  //授权店审核中
+            path: '/empower/empowerAudit',  //授权店审核中
             name: 'empowerAudit',
             component: empowerAudit
         },
         {
-            path: '/empowerAdopt',  //授权店审核通过
+            path: '/empower/empowerAdopt',  //授权店审核通过
             name: 'empowerAdopt',
             component: empowerAdopt
         }
