@@ -53,11 +53,16 @@
             <!--</p>-->
             <p>
                 <label>感兴趣的产品定位：</label>
-                <!--<span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>-->
             </p>
-            <p class="product-positioning">
-                <span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
-            </p>
+            <div class="product-positioning">
+                <div @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">
+                    <i>{{item.name}}</i>
+                    <i>{{item.value}}</i>
+                </div>
+            </div>
+
+
+
             <div class="authen-limts">
                 <span>是否经过厂家品牌授权</span>
                 <div class="authen-limts-con">
@@ -209,17 +214,20 @@
                     {
                         sort:2,
                         flag:false,
-                        name:"自主"
+                        name:"高档产品",
+                        value:"（16万以上）"
                     },
                     {
                         sort:1,
                         flag:false,
-                        name:"合资"
+                        name:"普通档产品",
+                        value:"（16万以内）"
                     },
                     {
                         sort:3,
                         flag:false,
-                        name:"豪华"
+                        name:"高档产品",
+                        value:"（16万以上）"
                     }
                 ],
                 showDialog:false,
@@ -607,6 +615,7 @@
                    this.address = data.address;
                    if(data.activities){
                        var manageTypeList = data.activities.split(",");
+
                        manageTypeList.forEach((ele,index) => {
                             var index =  this.manageType.findIndex(function(va,ind,arr){
                                 return va.sort == ele;
@@ -774,17 +783,30 @@
     color:#fff;
 
 }
+
+/*感兴趣的产品定位*/
 .product-positioning{margin-right:-.4rem;}
-.authen-info .product-positioning span{
+
+.authen-info .product-positioning div.active{
+    background:#d6ab55;
+    color:#fff;
+}
+.authen-info .product-positioning div{
+    display:inline-block;
     width:45%;
-    height:1.333rem;
+    height:1.063rem;
+    padding-top:.1335rem;
+    padding-bottom:.1335rem;
     font-size:0.373333rem;
     margin-right:0.4rem;
     text-align:center;
-    line-height:1.333rem;
     border-radius:0.133333rem;
     color:#d6ab55;
     border:1px solid #d6ab55;
+}
+.authen-info .product-positioning div i{
+    display:block;
+    font-style:normal;
 }
 /*资料*/
 .user-info{
