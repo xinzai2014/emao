@@ -21,20 +21,65 @@
 			                <div class="notice-tp">{{item.content_header}}</div>
 			            </div>
 		            </div>
-		            <div v-else>
-			            <div class="notice-tit">{{item.created_at}}</div>
-			            <div class="notice-ct">
-			            	<router-link v-if="item.type == 607" :to="{name:'soldCarDetail',params:{id:item.order_num}}">
-				                <div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
-				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
-				            </router-link>
-				            <router-link v-else :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
-				                <div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
-				                <!-- <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> -->
-				            </router-link>
-				        </div>
-			            
-		            </div>
+		            <!--<div v-else>-->
+			            <!--<div class="notice-tit">{{item.created_at}}</div>-->
+			            <!--<div class="notice-ct">-->
+			            	<!--<router-link v-if="item.type == 607" :to="{name:'soldCarDetail',params:{id:item.order_num}}">-->
+				                <!--<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>-->
+				                <!--&lt;!&ndash; <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> &ndash;&gt;-->
+				            <!--</router-link>-->
+				            <!--<router-link v-else :to="{path:'/rejectDeclare',query:{id:item.order_num}}">-->
+				                <!--<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>-->
+				                <!--&lt;!&ndash; <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> &ndash;&gt;-->
+				            <!--</router-link>-->
+				        <!--</div>-->
+			             <!-- -->
+		            <!--</div>-->
+
+
+					<div v-else-if="item.type ==607">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{name:'soldCarDetail',params:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
+					<div v-else-if="item.type ==608">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+					<div v-else-if="item.type ==617">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{name:'soldCarDetail',params:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
+					<div v-else="item.type ==618">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
 		        </div>
 	        </div>
 	        <div  class="frameCon translateY" v-show="showFrame">

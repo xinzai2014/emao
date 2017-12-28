@@ -47,8 +47,15 @@
         </div>
         <div class="clear20"></div>
         <div class="authen-info">
+            <!--<p>-->
+                <!--<label>主营类型：</label>-->
+                <!--<span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>-->
+            <!--</p>-->
             <p>
-                <label>主营类型：</label>
+                <label>感兴趣的产品定位：</label>
+                <!--<span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>-->
+            </p>
+            <p class="product-positioning">
                 <span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
             </p>
             <div class="authen-limts">
@@ -767,7 +774,18 @@
     color:#fff;
 
 }
-
+.product-positioning{margin-right:-.4rem;}
+.authen-info .product-positioning span{
+    width:45%;
+    height:1.333rem;
+    font-size:0.373333rem;
+    margin-right:0.4rem;
+    text-align:center;
+    line-height:1.333rem;
+    border-radius:0.133333rem;
+    color:#d6ab55;
+    border:1px solid #d6ab55;
+}
 /*资料*/
 .user-info{
     padding:0.533333rem 0;
