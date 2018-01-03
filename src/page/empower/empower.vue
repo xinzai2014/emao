@@ -14,7 +14,7 @@
 	        	<div class="empower-item empower-stall">
 	        		<label>选择意向授权产品档位</label>
 	        		<p v-for="(item,index) in itemsStall" :class="{active:item['flag']}" @click="ActiveStall(item)">
-	        			<span>{{item.name}}</span>
+	        			<span :class="item.value ? '':'leng'">{{item.name}}</span>
 	        			<em>{{item.value}}</em>
 	        		</p>
 	        		
@@ -178,7 +178,8 @@
                 aptitude_text:'',//弹框内容
                 itemsStall:[
                 	{ name: '普通档产品',value:'（16万以内）',type:1,flag:false},
-		            { name: '高档档产品',value:'（16万以上）',type:2,flag:false}
+		            { name: '高档档产品',value:'（16万以上）',type:2,flag:false},
+		            { name: '平行进口车',value:'',type:3,flag:false},
                 ],
                 itemsAptitude: [
 		            { name: '具备',type:1,flag:false},
@@ -403,7 +404,8 @@
                     );
                     return false
                 }
-                if((this.AptitudeType == "")||(this.AptitudeType == null)){
+                
+                if((this.AptitudeType === "")||(this.AptitudeType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -412,7 +414,7 @@
                     );
                     return false
                 }
-                if((this.AbilityType == "")||(this.AbilityType == null)){
+                if((this.AbilityType === "")||(this.AbilityType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -432,7 +434,7 @@
 	                    return false
                 	}
                 }
-                if((this.BrokerType == "")||(this.BrokerType == null)){
+                if((this.BrokerType === "")||(this.BrokerType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -441,7 +443,7 @@
                     );
                     return false
                 }
-                if((this.EvaluatingType == "")||(this.EvaluatingType == null)){
+                if((this.EvaluatingType === "")||(this.EvaluatingType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -461,7 +463,7 @@
 	                    return false
                 	}
                 }
-                if((this.FinancingType == "")||(this.FinancingType == null)){
+                if((this.FinancingType === "")||(this.FinancingType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -481,7 +483,7 @@
 	                    return false
                 	}
                 }
-                if((this.ParallelType == "")||(this.ParallelType == null)){
+                if((this.ParallelType === "")||(this.ParallelType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
@@ -520,42 +522,47 @@
                     return false
                 }
                 this.percentNum = 0;
-                this.itemsTabel.forEach((ele,index)=>{
-                    if(ele.name == ''){
-                    	this.$store.dispatch("ALERT", 
-		                    {
-		                        flag:true,
-		                        text:"请填写股东姓名"
-		                    }
-	                    );
-	                    return false
-                    }
-                    if(ele.ratio == ''){
-                    	this.$store.dispatch("ALERT", 
-		                    {
-		                        flag:true,
-		                        text:"请填写股东占比"
-		                    }
-	                    );
-	                    return false
-                    }
-                    this.percentNum += parseFloat(ele.ratio);
-                })
-                if(this.percentNum > 100){
-                	this.$store.dispatch("ALERT", 
-	                    {
-	                        flag:true,
-	                        text:"股东占比总和不能大于100%"
+                if(this.StockType == 2){
+                	this.itemsTabel.forEach((ele,index)=>{
+	                    if(ele.name == ''){
+	                    	this.$store.dispatch("ALERT", 
+			                    {
+			                        flag:true,
+			                        text:"请填写股东姓名"
+			                    }
+		                    );
+		                    return false
 	                    }
-                    );
-                    return false
+	                    if(ele.ratio == ''){
+	                    	this.$store.dispatch("ALERT", 
+			                    {
+			                        flag:true,
+			                        text:"请填写股东占比"
+			                    }
+		                    );
+		                    return false
+	                    }
+	                    this.percentNum += parseFloat(ele.ratio);
+	                })
+	                if(this.percentNum > 100){
+	                	this.$store.dispatch("ALERT", 
+		                    {
+		                        flag:true,
+		                        text:"股东占比总和不能大于100%"
+		                    }
+	                    );
+	                    return false
+	                }
+                }
+                if(this.StockType == 1){
+                	this.itemsTabel = [];
                 }
                 var data = {
 			        token:this.token,
 			        authorizeGrade:this.types,
 			        monthlySales:this.carNum,
 			        carBeautyQualification:this.AptitudeType,
-			        carBeautyAlility:this.this.AbilityType,
+			        carBeautyAlility:this.AbilityType,
 			        carBeautyImage:this.booth_plant_img,
 			        brokeringQualification:this.BrokerType,
 			        evaluationAbility:this.EvaluatingType,
@@ -571,6 +578,7 @@
 			    }
 			    
                 //提交信息
+                var that = this;
                 this.$http.post("dealerInfo/authorizedregist",data)
                 .then(function (response) {
                 	this.$store.dispatch("ALERT", 
@@ -579,18 +587,20 @@
 	                        text:"提交成功"
 	                    }
                     );
-                	if(APPWap){
-                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
-                	}else{
-                		this.$router.push({name:'empower/empowerSuccess'});
-                	}
+                    setTimeout(function(){
+                    	if(that.APPWap){
+	                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + that.token;
+	                	}else{
+	                		that.$router.push({path:'empower/empowerSuccess'});
+	                	}
+                    },800)
 			    }).catch(function (error) {
-			        this.$store.dispatch("ALERT", 
+			        /*this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
 	                        text:"请求失败了"
 	                    }
-                    );
+                    );*/
 			    });
             },
             tcmApp(obj){ //app跳转
@@ -733,7 +743,7 @@
 	        }else{
 	        	this.token = sessionStorage.token;
 	        }
-	        //this.fullData();
+	        this.fullData();
 		},
 		components:{
 		    uploader
@@ -807,7 +817,7 @@
 	.empower-stall p{
 		display:inline-block;
 		text-align:center;
-		width:4.373333rem;
+		width:2.8rem;
     	margin-top:0.533333rem;
     	float:left;
     	color:$orange;
@@ -815,6 +825,8 @@
     	@include padding(0.266667rem,0);
     	@include borderRadius(0.133333rem);
     	border:1px solid $orange;
+    	margin-right:0.35rem;
+    	height:1rem;
 	}
 	.empower-stall p span,.empower-stall p em{
 		@include font-dpr(28px);
@@ -825,11 +837,14 @@
 		padding-top:0.133333rem;
 	}
 	.empower-stall p:last-child{
-		float:right;
+		margin-right:0
 	}
 	.empower-stall p.active{
 		color:$white;
 		background:$orange;
+	}
+	.empower-stall p span.leng{
+		line-height:1rem;
 	}
 	.empower-info h3{
 		@include font-dpr(34px);
