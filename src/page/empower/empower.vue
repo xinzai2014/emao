@@ -617,7 +617,7 @@
             telephoneButton(){ //电话
             	var obj = {
 	        		actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-	        		params:{hidden:0}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+	        		params:{hidden:0,phone: "400-825-2368"}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
 	    		};
 	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
@@ -828,7 +828,7 @@
     	@include padding(0.266667rem,0);
     	@include borderRadius(0.133333rem);
     	border:1px solid $orange;
-    	margin-right:0.35rem;
+    	margin-right:0.3rem;
     	height:1rem;
 	}
 	.empower-stall p span,.empower-stall p em{
