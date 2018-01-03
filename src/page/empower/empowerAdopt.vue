@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--首页-品牌列表-头部-->
-        <div class="brand-header-out">
+        <div class="brand-header-out" v-if="showHeadStatus">
             <header class="brand-list-header">
                 <i class="white-lt brand-left-cion" @click="backtrack"></i>
                 <strong class="brand-list-title">审核通过</strong>
