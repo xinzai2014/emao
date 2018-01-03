@@ -178,7 +178,7 @@
                 aptitude_text:'',//弹框内容
                 itemsStall:[
                 	{ name: '普通档产品',value:'（16万以内）',type:1,flag:false},
-		            { name: '高档档产品',value:'（16万以以上）',type:2,flag:false}
+		            { name: '高档档产品',value:'（16万以上）',type:2,flag:false}
                 ],
                 itemsAptitude: [
 		            { name: '具备',type:1,flag:false},
@@ -626,33 +626,84 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body;
-			        this.types = data.authorizeGrade;
+			    	this.types = data.authorizeGrade;
 			        if(data.authorizeGrade){
-                       var manageTypeList = data.authorizeGrade.split(",");
-                       manageTypeList.forEach((ele,index) => {
+			        	var manageTypeList = data.authorizeGrade.split(",");
+                       	manageTypeList.forEach((ele,index) => {
                             var index =  this.itemsStall.findIndex(function(va,ind,arr){
                                 return va.type == ele;
                             })
                             this.itemsStall[index].flag = true;
-                       });
-                   }
-			        this.carNum = data.monthlySales;
-			        this.AptitudeType = data.carBeautyQualification;
-			        this.itemsAptitude[Number(this.AptitudeType)-1].flag = true;
-			        this.AbilityType = data.carBeautyAlility;
-			        this.booth_plant_img = data.carBeautyImage;
-			        this.BrokerType = data.brokeringQualification;
-			        this.EvaluatingType = data.evaluationAbility;
-			        this.booth_diploma_img = data.evaluationImage;
-			        this.FinancingType = data.autoFinance;
-			        this.channel = data.autoFinanceText;
-			        this.ParallelType = data.parallelImportCar;
-			        this.booth_showcar_img = data.parallelImportCarImage;
-			        this.area = data.exhibitionHallArea;
-			        this.StockType = data.shareholdingStructure;
-			        this.itemsTabel = data.shareholderRatio;
-			        this.grantStatus = data.grantStatus;
-			        this.grantReason = data.grantReason;
+                       	});
+                   	}
+                   	if(data.monthlySales){
+                   		this.carNum = data.monthlySales;
+                   	}
+			        if(data.carBeautyQualification){
+			        	this.AptitudeType = data.carBeautyQualification;
+			        	this.ratioShow(this.AptitudeType,this.itemsAptitude);
+			        }
+			        if(data.carBeautyAlility){
+			        	this.AbilityType = data.carBeautyAlility;
+				        this.ratioShow(this.AbilityType,this.itemsAbility);
+				        if(data.carBeautyImage.length > 0){
+				        	this.AbilitySelect = true;
+				        	this.$set(this.uploadData1,"imgArr",[data.carBeautyImage])
+	            			this.booth_plant_img = data.carBeautyImage;
+				        }
+			        }
+			        if(data.brokeringQualification){
+			        	this.BrokerType = data.brokeringQualification;
+			        	this.ratioShow(this.BrokerType,this.itemsBroker);
+			        }
+			        if(data.evaluationAbility){
+			        	this.EvaluatingType = data.evaluationAbility;
+				        this.ratioShow(this.EvaluatingType,this.itemsEvaluating);
+				        if(data.evaluationImage.length > 0){
+				        	this.EvaluatingSelect = true;
+				        	this.$set(this.uploadData2,"imgArr",[data.evaluationImage])
+	            			this.booth_diploma_img = data.evaluationImage;
+				        }
+			        }
+			        if(data.autoFinance){
+			        	this.FinancingType = data.autoFinance;
+				        this.ratioShow(this.FinancingType,this.itemsFinancing);
+				        if(this.FinancingType == 1){
+				        	this.FinancingSelect = true;
+				        }
+			        }
+			        if(data.autoFinanceText){
+			        	this.channel = data.autoFinanceText;
+			        	
+			        }
+			        if(data.parallelImportCar){
+			        	this.ParallelType = data.parallelImportCar;
+				        this.ratioShow(this.ParallelType,this.itemsParallel);
+				        if(data.parallelImportCarImage.length > 0){
+				        	this.ParallelSelect = true;
+				        	this.$set(this.uploadData3,"imgArr",[data.parallelImportCarImage])
+	            			this.booth_showcar_img = data.parallelImportCarImage;
+				        }
+			        }
+			        if(data.exhibitionHallArea){
+			        	this.area = data.exhibitionHallArea;
+			        }
+			        if(data.shareholdingStructure){
+			        	this.StockType = data.shareholdingStructure;
+				        this.ratioShow(this.StockType,this.itemsStock);
+				        if(this.StockType == 2){
+				        	this.StockSelect = true;
+				        }
+			        }
+			        if(data.shareholderRatio){
+			        	this.itemsTabel = data.shareholderRatio;
+			        }
+			        if(data.grantStatus){
+			        	this.grantStatus = data.grantStatus;
+			        }
+			        if(data.grantReason){
+			        	this.grantReason = data.grantReason;
+			        }
 			    }).catch(function (error) {
 			        this.$store.dispatch("ALERT", 
 	                    {
@@ -661,6 +712,13 @@
 	                    }
                     );
 			    });
+            },
+            ratioShow(type,item){
+            	if(type == 1){
+	        		item[0].flag = true;
+		        }else{
+		        	item[1].flag = true;
+		        }
             }
 		},
 		mounted(){
@@ -676,40 +734,6 @@
 	        	this.token = sessionStorage.token;
 	        }
 	        //this.fullData();
-	        this.types = '1,2';
-           	var manageTypeList = this.types.split(",");
-           	manageTypeList.forEach((ele,index) => {
-                var index =  this.itemsStall.findIndex(function(va,ind,arr){
-                    return va.type == ele;
-                })
-                this.itemsStall[index].flag = true;
-           	});
-	        this.carNum = 10;
-	        this.AptitudeType = 1;
-	        this.itemsAptitude[Number(this.AptitudeType)-1].flag = true;
-	        this.AbilityType = 1;
-	        this.booth_plant_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
-	        this.BrokerType = 1;
-	        this.EvaluatingType = 1;
-	        this.booth_diploma_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
-	        this.FinancingType = 1;
-	        this.channel = '很好啊';
-	        this.ParallelType = 1;
-	        this.booth_showcar_img = "https://img.emao.net/dealer/material/nd/bdk/mjud-1259x669.png";
-	        this.area = 300;
-	        this.StockType = 2;
-	        this.itemsTabel = [
-              {
-                  name: '张三',
-                  ratio: 50
-              },
-              {
-                  name: '张三',
-                  ratio: 50
-              }
-          	];
-	        this.grantStatus = 3;
-	        this.grantReason = '巴拉巴巴拉巴拉巴拉巴拉了巴拉巴拉巴拉巴巴拉巴拉巴拉巴拉巴拉巴拉吧列表里巴拉巴拉巴拉巴拉吧';
 		},
 		components:{
 		    uploader

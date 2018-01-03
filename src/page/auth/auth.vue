@@ -212,19 +212,13 @@
                 postCityData:null, //城市提交数据
                 manageType:[
                     {
-                        sort:2,
-                        flag:false,
-                        name:"高档产品",
-                        value:"（16万以上）"
-                    },
-                    {
                         sort:1,
                         flag:false,
                         name:"普通档产品",
                         value:"（16万以内）"
                     },
                     {
-                        sort:3,
+                        sort:2,
                         flag:false,
                         name:"高档产品",
                         value:"（16万以上）"
@@ -527,12 +521,13 @@
                         city_id:this.postCityData.cityData.id,
                         district_id:this.postCityData.areaData.id,
                         address:this.address,
-                        activities:this.types,
+                        //activities:this.types,
                         brand_auth:authList,
                         booth_out_img:this.booth_out_img,
                         booth_in_img:this.booth_in_img,
                         road_license:this.road_license,
-                        repair_place:this.repair_place
+                        repair_place:this.repair_place,
+                        authorizeGrade:this.types
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
@@ -611,10 +606,10 @@
                    //      cityData:null,
                    //      areaData:null
                    //  }
-                   this.types = data.activities;
+                   this.types = data.authorizeGrade;
                    this.address = data.address;
-                   if(data.activities){
-                       var manageTypeList = data.activities.split(",");
+                   if(data.authorizeGrade){
+                       var manageTypeList = data.authorizeGrade.split(",");
 
                        manageTypeList.forEach((ele,index) => {
                             var index =  this.manageType.findIndex(function(va,ind,arr){
