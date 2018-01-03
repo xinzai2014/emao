@@ -555,7 +555,10 @@
 	                }
                 }
                 if(this.StockType == 1){
-                	this.itemsTabel = [];
+                	this.itemsTabel = [
+                		{ name: '',ratio:''},
+		            	{ name: '',ratio:''}
+                	];
                 }
                 var data = {
 			        token:this.token,
@@ -635,7 +638,7 @@
 			        method:"GET",
 			        params:data
 			    }).then(function (response) { 
-			    	var data = response.body;
+			    	var data = response.body.data;
 			    	this.types = data.authorizeGrade;
 			        if(data.authorizeGrade){
 			        	var manageTypeList = data.authorizeGrade.split(",");
@@ -649,11 +652,11 @@
                    	if(data.monthlySales){
                    		this.carNum = data.monthlySales;
                    	}
-			        if(data.carBeautyQualification){
+			        if(data.carBeautyQualification !== ''){
 			        	this.AptitudeType = data.carBeautyQualification;
 			        	this.ratioShow(this.AptitudeType,this.itemsAptitude);
 			        }
-			        if(data.carBeautyAlility){
+			        if(data.carBeautyAlility !== ''){
 			        	this.AbilityType = data.carBeautyAlility;
 				        this.ratioShow(this.AbilityType,this.itemsAbility);
 				        if(data.carBeautyImage.length > 0){
@@ -662,11 +665,11 @@
 	            			this.booth_plant_img = data.carBeautyImage;
 				        }
 			        }
-			        if(data.brokeringQualification){
+			        if(data.brokeringQualification !== ''){
 			        	this.BrokerType = data.brokeringQualification;
 			        	this.ratioShow(this.BrokerType,this.itemsBroker);
 			        }
-			        if(data.evaluationAbility){
+			        if(data.evaluationAbility !== ''){
 			        	this.EvaluatingType = data.evaluationAbility;
 				        this.ratioShow(this.EvaluatingType,this.itemsEvaluating);
 				        if(data.evaluationImage.length > 0){
@@ -675,7 +678,7 @@
 	            			this.booth_diploma_img = data.evaluationImage;
 				        }
 			        }
-			        if(data.autoFinance){
+			        if(data.autoFinance !== ''){
 			        	this.FinancingType = data.autoFinance;
 				        this.ratioShow(this.FinancingType,this.itemsFinancing);
 				        if(this.FinancingType == 1){
@@ -686,7 +689,7 @@
 			        	this.channel = data.autoFinanceText;
 			        	
 			        }
-			        if(data.parallelImportCar){
+			        if(data.parallelImportCar !== ''){
 			        	this.ParallelType = data.parallelImportCar;
 				        this.ratioShow(this.ParallelType,this.itemsParallel);
 				        if(data.parallelImportCarImage.length > 0){
