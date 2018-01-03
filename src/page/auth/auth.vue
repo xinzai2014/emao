@@ -222,6 +222,12 @@
                         flag:false,
                         name:"高档产品",
                         value:"（16万以上）"
+                    },
+                    {
+                        sort:3,
+                        flag:false,
+                        name:"平行进口车",
+                        value:""
                     }
                 ],
                 showDialog:false,
@@ -780,20 +786,21 @@
 }
 
 /*感兴趣的产品定位*/
-.product-positioning{margin-right:-.4rem;}
+.product-positioning{margin-right:-.2rem;}
 
 .authen-info .product-positioning div.active{
     background:#d6ab55;
     color:#fff;
 }
 .authen-info .product-positioning div{
-    display:inline-block;
-    width:45%;
+    display:block;
+    float:left;
+    width:30%;
     height:1.063rem;
     padding-top:.1335rem;
     padding-bottom:.1335rem;
     font-size:0.373333rem;
-    margin-right:0.4rem;
+    margin-right:0.2rem;
     text-align:center;
     border-radius:0.133333rem;
     color:#d6ab55;
@@ -802,6 +809,14 @@
 .authen-info .product-positioning div i{
     display:block;
     font-style:normal;
+}
+.authen-info .product-positioning div:nth-child(3){
+    height:1.063rem;
+}
+.authen-info .product-positioning div:nth-child(3) i{
+    display:block;
+    font-style:normal;
+    line-height:1.063rem;
 }
 /*资料*/
 .user-info{
