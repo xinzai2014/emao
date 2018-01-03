@@ -12,7 +12,7 @@
             <p>认证资料正在审核，请耐心等待</p>
             <p class="tips">请保持您的电话畅通，会有区域经理与您联系</p>
             <input type="button" name="返回" value="返回" @click="goBack">
-            <!--<p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>-->
+            <p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>
         </section>
     </div>
 
@@ -44,13 +44,10 @@
 
             //关闭当前窗口
             closeCurrentWindow() {
-                alert(3);
                 var obj = {
                     actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                 };
-                alert(4);
                 this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
-                alert(5);
             },
 
             /*判断是否是App*/
@@ -69,9 +66,7 @@
             goBack(){
                 if (this.isTcmApp()) {
                     //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
-                    alert(1);
                     this.closeCurrentWindow();
-                    alert(2);
                 } else {
                     //this.$router.push({name:'profile'});
                     this.$router.go(-1);
