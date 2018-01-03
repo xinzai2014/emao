@@ -12,7 +12,7 @@
             <p>认证资料正在审核，请耐心等待</p>
             <p class="tips">请保持您的电话畅通，会有区域经理与您联系</p>
             <input type="button" name="返回" value="返回" @click="goBack">
-            <p class="consult-tel">咨询电话 <a href="'tel:' + 400-825-2368 ">400-825-2368</a> </p>
+            <p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>
         </section>
     </div>
 
