@@ -49,7 +49,7 @@
             var obj = {
                 actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
             };
-            tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
         },
 
 
