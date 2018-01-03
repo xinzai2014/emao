@@ -79,7 +79,9 @@
             renderDom(){
                 if (this.isTcmApp()){
                     document.title = "审核中";
+                    alert(1);
                     this.showHeadStatus = false;
+                    alert(2);
                 }else{
                     this.showHeadStatus = true;
                 }
