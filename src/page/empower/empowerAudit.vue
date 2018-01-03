@@ -66,7 +66,9 @@
             goBack(){
                 if (this.isTcmApp()) {
                     //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
+                    alert(1);
                     this.closeCurrentWindow();
+                    alert(2);
                 } else {
                     //this.$router.push({name:'profile'});
                     this.$router.go(-1);
@@ -79,9 +81,7 @@
             renderDom(){
                 if (this.isTcmApp()){
                     document.title = "审核中";
-                    alert(1);
                     this.showHeadStatus = false;
-                    alert(2);
                 }else{
                     this.showHeadStatus = true;
                 }
