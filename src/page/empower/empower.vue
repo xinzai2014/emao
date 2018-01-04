@@ -646,7 +646,6 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
-			    	alert(JSON.stringify(data));
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerAdopt',query:{token:this.token}});
@@ -751,20 +750,14 @@
 		},
 		mounted(){
 			//组件初始化
-			alert(this.$route.query.token);
-			alert(window.location.href);
+			this.token = this.$route.query.token||sessionStorage.token;
+			this.fullData();
 		    if(this.$route.query.token){
-	            this.token = this.$route.query.token;
 	            this.titHide = false;
         		document.title='授权店认证';
-        		this.fullData();
-	       		 alert('弹框');
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
-        		alert(this.token);
-	        }else{
-	        	this.token = sessionStorage.token;
 	        }
 	        
 		},
