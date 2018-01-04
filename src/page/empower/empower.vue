@@ -759,13 +759,15 @@
 		components:{
 		    uploader
 		},
-		beforeRouteLeave(to,form,next){
-			this.showPhone = 1;
-			this.showEnable = 1;
-	      	this.telephoneButton();
-	      	this.enableGobackButton();
+		/*beforeRouteLeave(to,form,next){
+			if(this.$route.query.token){
+				this.showPhone = 1;
+				this.showEnable = 1;
+		      	this.telephoneButton();
+		      	this.enableGobackButton();
+			}
 	      	next();
-	    }
+	    }*/
 	}
 
 </script>
