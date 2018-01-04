@@ -829,7 +829,7 @@
     	@include borderRadius(0.133333rem);
     	border:1px solid $orange;
     	margin-right:0.3rem;
-    	height:1rem;
+    	height:1.063rem;
 	}
 	.empower-stall p span,.empower-stall p em{
 		@include font-dpr(28px);

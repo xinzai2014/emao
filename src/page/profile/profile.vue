@@ -217,11 +217,11 @@ export default {
         this.delivered_num = response.body.data.delivered_num;   //待发货
         this.received_num = response.body.data.received_num;    //待收货
         this.is_transtor = response.body.data.is_transtor;   //是否是中转库管理员
-        this.showFlag = response.body.data.showFlag;    //按钮是否显示
+        this.showFlag = Number(response.body.data.showFlag);    //按钮是否显示
         this.grantStatus = response.body.data.grantStatus;    //授权审核状态
         this.type = response.body.data.type;    //授权审核状态
         if(this.grantStatus == 0){
-            this.grantText = '升级';
+            this.grantText = '升级为授权店';
             this.routerLink = '/empower/empowerGuide'
         }else if(this.grantStatus == 1){
             this.grantText = '授权店审核中';
