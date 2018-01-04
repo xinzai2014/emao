@@ -751,6 +751,8 @@
 		},
 		mounted(){
 			//组件初始化
+			alert('111111');
+			alert(window.location.href);
 		    if(this.$route.query.token){
 	            this.token = this.$route.query.token;
 	            this.titHide = false;
