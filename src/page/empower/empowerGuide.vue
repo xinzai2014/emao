@@ -57,7 +57,6 @@
         /*判断是否是App*/
         isTcmApp(){
             // return navigator.userAgent.indexOf("tcm") !== -1;
-            alert(this.$route.query.token);
             if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
                 return false;
             } else {
@@ -81,11 +80,9 @@
         /*去升级函数*/
         goUpgrade(){
             //this.$router.push({name:'empower'});
-            alert( this.isTcmApp() );
             if (this.isTcmApp()) {
                 //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
                 window.location = ' https://tcm.m.emao.com/#/empower?token=' + this.token;
-                alert(window.location)
 
             } else {
                 this.$router.push({name:'empower'});
@@ -106,6 +103,7 @@
         mounted(){
             alert('1212');
             this.token = this.$route.query.token;
+            alert(this.token);
             this.renderDom();
         },
         components:{
