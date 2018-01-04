@@ -145,7 +145,8 @@
                 this.uploading = true
                 xhr.send(formData)
                 xhr.onload = () => {
-                    this.uploading = false
+                    this.uploading = false;
+                    alert(JSON.stringify(xhr));
                     if (xhr.status === 200) {
                         var ajaxResponse = eval('(' + xhr.responseText + ')');
                         that.imgURL[index] = ajaxResponse.data.url;
