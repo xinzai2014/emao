@@ -643,6 +643,7 @@
             	var data = {
 			        token:this.token
 			    }
+			    alert('ok');
             	this.$http({
 			        url:"dealerInfo/authorizeddetail",
 			        method:"GET",
