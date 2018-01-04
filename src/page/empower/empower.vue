@@ -235,7 +235,9 @@
 		        gobackButtonFlag:true,//是否有弹框
 		        grantStatus:0,//审核状态
 		        grantReason:'',//驳回理由
-		        APPWap:false //是wap还是App flase是wap
+		        APPWap:false, //是wap还是App flase是wap
+		        showPhone:0, //0显示1不显示
+		        showEnable:0 //0有弹框 1没弹框
 		    }
 		},
 		methods:{
@@ -616,14 +618,14 @@
             telephoneButton(){ //电话
             	var obj = {
 	        		actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-	        		params:{hidden:0}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+	        		params:{hidden:this.showPhone}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
 	    		};
 	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
             enableGobackButton(){ //禁止返回
             	var obj = {
 	      			actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-	        		params:{enable:0, title: "确定退出授权店认证"}//enable=0不允许返回，enable=1允许返回
+	        		params:{enable:showEnable, title: "确定退出授权店认证"}//enable=0不允许返回，enable=1允许返回
 	    		};
 	            this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
@@ -640,9 +642,9 @@
 			    	var data = response.body.data;
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
-			    			this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
+			    			this.$router.push({path:'empower/empowerAdopt',query:{token:this.token}});
 			    		}else{
-			    			this.$router.push({path:'empower/empowerSuccess'});
+			    			this.$router.push({path:'empower/empowerAdopt'});
 			    		}
 			    	}
 			    	this.types = data.authorizeGrade;
@@ -715,7 +717,6 @@
 				        }
 			        }
 			        if(data.shareholderRatio.length > 0){
-			        	alert('ok');
 			        	this.itemsTabel = data.shareholderRatio;
 			        }
 			        if(data.grantStatus){
@@ -757,7 +758,14 @@
 		},
 		components:{
 		    uploader
-		}
+		},
+		beforeRouteLeave(to,form,next){
+			this.showPhone = 1;
+			this.showEnable = 1;
+	      	this.telephoneButton();
+	      	this.enableGobackButton();
+	      	next();
+	    }
 	}
 
 </script>
