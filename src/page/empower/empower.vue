@@ -525,25 +525,32 @@
                 }
                 this.percentNum = 0;
                 if(this.StockType == 2){
-                	this.itemsTabel.forEach((ele,index)=>{
-	                    if(ele.name == ''){
-	                    	this.$store.dispatch("ALERT", 
-			                    {
-			                        flag:true,
-			                        text:"请填写股东姓名"
-			                    }
-		                    );
-		                    return false
-	                    }
-	                    if(ele.ratio == ''){
-	                    	this.$store.dispatch("ALERT", 
-			                    {
-			                        flag:true,
-			                        text:"请填写股东占比"
-			                    }
-		                    );
-		                    return false
-	                    }
+                	var index = this.itemsTabel.findIndex(function(ele,index,arr){
+                		return (ele.name == "")||(ele.name == null);
+                	})
+                	var ratioIndex = this.itemsTabel.findIndex(function(ele,index,arr){
+                		return (ele.ratio == "")||(ele.ratio == null);
+                	})
+                	if(index >= 0){
+                		this.$store.dispatch("ALERT", 
+		                    {
+		                        flag:true,
+		                        text:"请填写股东姓名"
+		                    }
+	                    )
+	                    return false
+                	}
+                	if(ratioIndex >= 0){
+                		this.$store.dispatch("ALERT", 
+		                    {
+		                        flag:true,
+		                        text:"请填写股东占比"
+		                    }
+	                    );
+	                    return false
+                	}
+
+	                this.itemsTabel.forEach((ele,index)=>{
 	                    this.percentNum += parseFloat(ele.ratio);
 	                })
 	                if(this.percentNum > 100){
@@ -555,6 +562,7 @@
 	                    );
 	                    return false
 	                }
+	               
                 }
                 if(this.StockType == 1){
                 	this.itemsTabel = [
@@ -582,7 +590,7 @@
 			        grantStatus:this.grantStatus
 			    }
                 //提交信息
-                var that = this;
+                
                 this.$http.post("dealerInfo/authorizedregist",data)
                 .then(function (response) {
                 	this.$store.dispatch("ALERT", 
@@ -591,11 +599,12 @@
 	                        text:"提交成功"
 	                    }
                     );
+                    var that = this;
                     setTimeout(function(){
                     	if(that.APPWap){
 	                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + that.token;
 	                	}else{
-	                		that.$router.push({path:'empower/empowerSuccess'});
+	                		that.$router.push({path:'empowerSuccess'});
 	                	}
                     },800)
 			    }).catch(function (error) {
@@ -759,7 +768,7 @@
 		components:{
 		    uploader
 		},
-		/*beforeRouteLeave(to,form,next){
+		beforeRouteLeave(to,form,next){
 			if(this.$route.query.token){
 				this.showPhone = 1;
 				this.showEnable = 1;
@@ -767,7 +776,7 @@
 		      	this.enableGobackButton();
 			}
 	      	next();
-	    }*/
+	    }
 	}
 
 </script>
