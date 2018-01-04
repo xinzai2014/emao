@@ -639,6 +639,13 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
+			    	if(data.grantStatus == 0){
+			    		if(this.APPWap){
+			    			this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
+			    		}else{
+			    			this.$router.push({path:'empower/empowerSuccess'});
+			    		}
+			    	}
 			    	this.types = data.authorizeGrade;
 			        if(data.authorizeGrade){
 			        	var manageTypeList = data.authorizeGrade.split(",");
