@@ -714,7 +714,8 @@
 				        	this.StockSelect = true;
 				        }
 			        }
-			        if(data.shareholderRatio){
+			        if(data.shareholderRatio.length > 0){
+			        	alert('ok');
 			        	this.itemsTabel = data.shareholderRatio;
 			        }
 			        if(data.grantStatus){
