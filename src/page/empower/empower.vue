@@ -751,12 +751,14 @@
 		},
 		mounted(){
 			//组件初始化
-			alert('111111');
+			alert(this.$route.query.token);
 			alert(window.location.href);
 		    if(this.$route.query.token){
 	            this.token = this.$route.query.token;
 	            this.titHide = false;
         		document.title='授权店认证';
+        		this.fullData();
+	       		 alert('弹框');
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
@@ -764,8 +766,7 @@
 	        }else{
 	        	this.token = sessionStorage.token;
 	        }
-	        this.fullData();
-	        alert('弹框');
+	        
 		},
 		components:{
 		    uploader
