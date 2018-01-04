@@ -579,7 +579,6 @@
 			        shareholderRatio:this.itemsTabel,
 			        grantStatus:this.grantStatus
 			    }
-			    
                 //提交信息
                 var that = this;
                 this.$http.post("dealerInfo/authorizedregist",data)
