@@ -61,7 +61,8 @@
 					<div v-else-if="item.type ==617">
 						<div class="notice-tit">{{item.created_at}}</div>
 						<div class="notice-ct">
-							<router-link :to="{name:'/empower/empowerSuccess'}">
+							<!--<router-link :to="{name:'/empower/empowerSuccess'}">-->
+							<router-link :to="{path:'/empower/empowerSuccess'}">
 								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
 							</router-link>
 						</div>
