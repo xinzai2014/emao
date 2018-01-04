@@ -599,14 +599,11 @@
 	                        text:"提交成功"
 	                    }
                     );
-                    var that = this;
-                    setTimeout(function(){
-                    	if(that.APPWap){
-	                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + that.token;
-	                	}else{
-	                		that.$router.push({path:'empowerSuccess'});
-	                	}
-                    },800)
+                	if(this.APPWap){
+                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
+                	}else{
+                		this.$router.push({path:'empowerSuccess'});
+                	}
 			    }).catch(function (error) {
 			        /*this.$store.dispatch("ALERT", 
 	                    {
@@ -761,7 +758,7 @@
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
-        		this.fullData();
+        		alert(this.token);
 	        }else{
 	        	this.token = sessionStorage.token;
 	        }
