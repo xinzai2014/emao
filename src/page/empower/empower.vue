@@ -639,7 +639,7 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
-			    	if(data.grantStatus == 0){
+			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
 			    		}else{
