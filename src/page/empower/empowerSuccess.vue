@@ -60,12 +60,19 @@
                     return true;
                 }
             },
-
+            enableGobackButton(){ //禁止返回
+                var obj = {
+                    actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    params:{enable:1, title: "确定退出授权店认证"}//enable=0不允许返回，enable=1允许返回
+                };
+                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
 
             /*返回按钮*/
             goBack(){
                 if (this.isTcmApp()) {
                     //window.location = 'emaotaochemao://push/orderdetail?orderNumber=222&token=' + this.token;
+                    this.enableGobackButton();
                     this.closeCurrentWindow();
                 } else {
                     this.$router.push({name:'profile'});
