@@ -102,7 +102,7 @@
     },
         mounted(){
             this.token = this.$route.query.token;
-            alert(this.token);
+            this.renderDom();
         },
         components:{
 
