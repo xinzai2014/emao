@@ -591,9 +591,11 @@
 	                    }
                     );
                     setTimeout(function(){
-                    	
+                    	if(that.APPWap){
+	                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + that.token;
+	                	}else{
 	                		that.$router.push({path:'empower/empowerSuccess'});
-	                	
+	                	}
                     },800)
 			    }).catch(function (error) {
 			        /*this.$store.dispatch("ALERT", 
