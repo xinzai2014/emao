@@ -61,7 +61,7 @@
 					<div v-else-if="item.type ==617">
 						<div class="notice-tit">{{item.created_at}}</div>
 						<div class="notice-ct">
-							<router-link :to="{name:'soldCarDetail',params:{id:item.order_num}}">
+							<router-link :to="{name:'empower/empowerSuccess'}">
 								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
 							</router-link>
 						</div>
@@ -72,7 +72,7 @@
 					<div v-else="item.type ==618">
 						<div class="notice-tit">{{item.created_at}}</div>
 						<div class="notice-ct">
-							<router-link :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
+							<router-link :to="{path:'/empower'}">
 								<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
 							</router-link>
 						</div>
