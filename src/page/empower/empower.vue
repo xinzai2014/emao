@@ -643,7 +643,6 @@
             	var data = {
 			        token:this.token
 			    }
-			    alert('ok');
             	this.$http({
 			        url:"dealerInfo/authorizeddetail",
 			        method:"GET",
@@ -762,10 +761,12 @@
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
+        		this.fullData();
 	        }else{
 	        	this.token = sessionStorage.token;
 	        }
 	        this.fullData();
+	        alert('弹框');
 		},
 		components:{
 		    uploader
