@@ -613,7 +613,8 @@
 	                    }
                     );
                 	if(this.APPWap){
-                		this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
+                		 window.location = 'https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
+                		 alert(window.location.href);
                 	}else{
                 		this.$router.push({path:'empower/empowerSuccess'});
                 	}
