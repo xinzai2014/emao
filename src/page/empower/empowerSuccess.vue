@@ -35,6 +35,7 @@
                 //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
                 //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
                 //或者由服务器判断响应不同的平台脚本
+                alert(2);
                 if (navigator.userAgent.indexOf("iPhone") > 0) {
                     window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
                 }
@@ -44,6 +45,7 @@
 
             },
             telephoneButton(){ //电话
+                alert(1);
                 var obj = {
                     actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     params:{hidden:1}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
