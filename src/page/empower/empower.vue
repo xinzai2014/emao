@@ -618,7 +618,8 @@
 	                    }
                     );
                 	if(this.APPWap){
-                		window.location = ' https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
+                		window.location = 'https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
+                		alert(window.location.href);
                 	}else{
                 		this.$router.push({path:'empowerSuccess'});
                 	}
@@ -664,6 +665,7 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
+			    	alert(JSPN.stringify(data));
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerAdopt',query:{token:this.token}});
@@ -672,6 +674,7 @@
 			    		}
 			    	}
 			    	this.types = data.authorizeGrade;
+			    	alert(this.types);
 			        if(data.authorizeGrade){
 			        	var manageTypeList = data.authorizeGrade.split(",");
                        	manageTypeList.forEach((ele,index) => {
@@ -766,10 +769,10 @@
 			this.fullData();
 		    if(this.$route.query.token){
 	            this.titHide = false;
+	            this.APPWap = true;
         		document.title='授权店认证';
         		this.telephoneButton();
         		this.enableGobackButton();
-        		this.APPWap = true;
 	        }
 	        
 		},
@@ -992,6 +995,7 @@
 		text-align:center;
 		line-height: 0.933333rem;
 		@include WH(80%,0.933333rem);
+		background:none;
 	}
 	.empower-btn{
 		text-align:center;
