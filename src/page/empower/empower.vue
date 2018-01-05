@@ -618,10 +618,9 @@
 	                    }
                     );
                 	if(this.APPWap){
-                		window.location = 'https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
-                		alert(window.location.href);
+                		this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
                 	}else{
-                		this.$router.push({path:'empowerSuccess'});
+                		this.$router.push({path:'empower/empowerSuccess'});
                 	}
 			    }).catch(function (error) {
 			        /*this.$store.dispatch("ALERT", 
