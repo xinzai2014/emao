@@ -655,7 +655,6 @@
             },
             //数据初始化
             fullData(){
-            	alert('111');
             	var data = {
 			        token:this.token
 			    }
@@ -664,7 +663,6 @@
 			        method:"GET",
 			        params:data
 			    }).then(function (response) { 
-			    	alert('ok');
 			    	var data = response.body.data;
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
@@ -752,7 +750,6 @@
 			        	this.grantReason = data.grantReason;
 			        }
 			    },function(){
-			    	alert('失败')
 			    })
             },
             ratioShow(type,item){
@@ -767,14 +764,12 @@
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.fullData();
-			alert(this.token);
 		    if(this.$route.query.token){
 	            this.titHide = false;
         		document.title='授权店认证';
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
-        		alert('app');
 	        }
 	        
 		},
