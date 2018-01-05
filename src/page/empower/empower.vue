@@ -664,7 +664,6 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
-			    	alert(JSON.stringify(data));
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerAdopt',query:{token:this.token}});
@@ -673,15 +672,16 @@
 			    		}
 			    	}
 			    	this.types = data.authorizeGrade;
-			    	alert(this.types);
 			        if(data.authorizeGrade){
 			        	var manageTypeList = data.authorizeGrade.split(",");
-                       	manageTypeList.forEach((ele,index) => {
-                            var index =  this.itemsStall.findIndex(function(va,ind,arr){
-                                return va.type == ele;
-                            })
-                            this.itemsStall[index].flag = true;
-                       	});
+						var that = this;
+                       	manageTypeList.forEach(function(e){
+                       		that.itemsStall.forEach(function(ele,i){
+                       			if(ele.type == e){
+                       				ele.flag = true;
+                       			}
+                       		})
+                       	})
                    	}
                    	if(data.monthlySales){
                    		this.carNum = data.monthlySales;
