@@ -22,7 +22,7 @@
 	        	<h3>经营概况</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>店铺月均销量</label>
-	        		<input type="number"  v-model="carNum" ref="carNum" maxlength="5">
+	        		<input type="number"  v-model="carNum" ref="carNum">
 	        		<i>台</i>
 	        	</div>
 	        	<div class="empower-item">
@@ -83,7 +83,7 @@
 	        	<h3>公司信息</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>展厅面积</label>
-	        		<input type="number"  v-model="area" ref="area" maxlength="5">
+	        		<input type="number"  v-model="area" ref="area">
 	        		<i>㎡</i>
 	        	</div>
 	        	<div class="empower-item">
@@ -406,6 +406,15 @@
                     );
                     return false
                 }
+                if((this.carNum.length > 5)){
+                    this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"店铺月均销量最多填写5位数"
+	                    }
+                    );
+                    return false
+                }
                 
                 if((this.AptitudeType === "")||(this.AptitudeType == null)){
                     this.$store.dispatch("ALERT", 
@@ -510,6 +519,15 @@
 	                    {
 	                        flag:true,
 	                        text:"请填写展厅面积"
+	                    }
+                    );
+                    return false
+                }
+                if((this.area.length > 5)){
+                    this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"展厅面积最多填写5位数"
 	                    }
                     );
                     return false
@@ -637,6 +655,7 @@
             },
             //数据初始化
             fullData(){
+            	alert('111');
             	var data = {
 			        token:this.token
 			    }
@@ -645,6 +664,7 @@
 			        method:"GET",
 			        params:data
 			    }).then(function (response) { 
+			    	alert('ok');
 			    	var data = response.body.data;
 			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
@@ -731,14 +751,9 @@
 			        if(data.grantReason){
 			        	this.grantReason = data.grantReason;
 			        }
-			    }).catch(function (error) {
-			        this.$store.dispatch("ALERT", 
-	                    {
-	                        flag:true,
-	                        text:"请求失败了"
-	                    }
-                    );
-			    });
+			    },function(){
+			    	alert('失败')
+			    })
             },
             ratioShow(type,item){
             	if(type == 1){
@@ -752,12 +767,14 @@
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.fullData();
+			alert(this.token);
 		    if(this.$route.query.token){
 	            this.titHide = false;
         		document.title='授权店认证';
         		this.telephoneButton();
         		this.enableGobackButton();
         		this.APPWap = true;
+        		alert('app');
 	        }
 	        
 		},
