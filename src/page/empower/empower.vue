@@ -630,12 +630,12 @@
                 
                 this.$http.post("dealerInfo/authorizedregist",data)
                 .then(function (response) {
-                	this.$store.dispatch("ALERT", 
+                	/*this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
 	                        text:"提交成功"
 	                    }
-                    );
+                    );*/
                 	if(this.APPWap){
                 		this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
                 	}else{
