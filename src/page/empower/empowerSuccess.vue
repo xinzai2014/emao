@@ -35,7 +35,6 @@
                 //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
                 //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
                 //或者由服务器判断响应不同的平台脚本
-                alert(2);
                 if (navigator.userAgent.indexOf("iPhone") > 0) {
                     window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
                 }
