@@ -22,7 +22,7 @@
 	        	<h3>经营概况</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>店铺月均销量</label>
-	        		<input type="number"  v-model="carNum" ref="carNum">
+	        		<input type="number"  v-model="carNum" ref="carNum" @keyup="InputLength">
 	        		<i>台</i>
 	        	</div>
 	        	<div class="empower-item">
@@ -83,7 +83,7 @@
 	        	<h3>公司信息</h3>
 	        	<div class="empower-item empower-sales">
 	        		<label>展厅面积</label>
-	        		<input type="number"  v-model="area" ref="area">
+	        		<input type="number" v-model="area" ref="area" @keyup='areaLength'>
 	        		<i>㎡</i>
 	        	</div>
 	        	<div class="empower-item">
@@ -102,7 +102,7 @@
                     			<div class="ratio-info">
                     				<p v-for="(item,index) in itemsTabel">
 	                    				<em><input type="text" v-model="item.name" /></em>
-	                    				<em><input type="number" v-model="item.ratio"/>%</em>
+	                    				<em><input type="number" v-model="item.ratio" @keyup="parseFl(item)"/>%</em>
 	                    			</p>
                     			</div>
                     		</div>
@@ -263,9 +263,33 @@
 			aptitudeShow(type){
 				this.aptitude_layer = !this.aptitude_layer;
 				if(type){
-					this.aptitude_text = '用品家装与汽车美容资质，即在营业执照经营范围中是否涵盖此项'
+					this.aptitude_text = '用品加装与汽车美容资质，即在营业执照经营范围中是否涵盖此项'
 				}else{
 					this.aptitude_text = '二手车经纪资质，即在营业执照经营范围中是否涵盖此项'
+				}
+			},
+			areaLength(){
+				var leng = this.area.length;
+				if(leng >= 5){
+					this.area = this.area.substr(0,5);
+				}
+				
+			},
+			InputLength(){
+				var leng = this.carNum.length;
+				if(leng >= 5){
+					this.carNum = this.carNum.substr(0,5);
+				}
+				
+			},
+			parseFl(item){
+				var str = item.ratio.indexOf('.');
+				var val = 0;
+				if(str > 0){
+					val = item.ratio.split('.')[1];
+					if(val.length >= 2){
+						item.ratio = (item.ratio.split('.')[0])+'.'+(val[0])
+					}
 				}
 			},
 			aptitudeHide(){
@@ -571,7 +595,7 @@
 	                	this.$store.dispatch("ALERT", 
 		                    {
 		                        flag:true,
-		                        text:"股东占比总和不能大于100%"
+		                        text:"股东持股比例不能超过100%"
 		                    }
 	                    );
 	                    return false
@@ -617,13 +641,13 @@
                 	}else{
                 		this.$router.push({path:'empower/empowerSuccess'});
                 	}
-			    }).catch(function (error) {
-			        /*this.$store.dispatch("ALERT", 
+			    },function (error) {
+			        this.$store.dispatch("ALERT", 
 	                    {
 	                        flag:true,
-	                        text:"请求失败了"
+	                        text:"网络异常"
 	                    }
-                    );*/
+                    );
 			    });
             },
             tcmApp(obj){ //app跳转
