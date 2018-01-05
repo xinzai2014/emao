@@ -43,14 +43,14 @@
                 }
 
             },
-//            telephoneButton(){ //电话
-//                alert(1);
-//                var obj = {
-//                    actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-//                    params:{hidden:1}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
-//                };
-//                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
-//            },
+            telephoneButton(){ //电话
+                alert(1);
+                var obj = {
+                    actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    params:{hidden:1}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+                };
+                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
             enableGobackButton(){ //禁止返回
                 var obj = {
                     actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
@@ -94,7 +94,7 @@
                 if (this.isTcmApp()){
                     document.title = "提交成功";
                     this.showHeadStatus = false;
-//                    this.telephoneButton();
+                    this.telephoneButton();
                     this.enableGobackButton();
                 }else{
                     this.showHeadStatus = true;
