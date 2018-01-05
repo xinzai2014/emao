@@ -542,35 +542,31 @@
                     return false
                 }
                 this.percentNum = 0;
+                
                 if(this.StockType == 2){
-                	var index = this.itemsTabel.findIndex(function(ele,index,arr){
-                		return (ele.name == "")||(ele.name == null);
-                	})
-                	var ratioIndex = this.itemsTabel.findIndex(function(ele,index,arr){
-                		return (ele.ratio == "")||(ele.ratio == null);
-                	})
-                	if(index >= 0){
-                		this.$store.dispatch("ALERT", 
-		                    {
-		                        flag:true,
-		                        text:"请填写股东姓名"
-		                    }
-	                    )
-	                    return false
-                	}
-                	if(ratioIndex >= 0){
-                		this.$store.dispatch("ALERT", 
-		                    {
-		                        flag:true,
-		                        text:"请填写股东占比"
-		                    }
-	                    );
-	                    return false
-                	}
-
-	                this.itemsTabel.forEach((ele,index)=>{
+                	
+                	this.itemsTabel.forEach((ele,index)=>{
+	                    if((ele.name == "")||(ele.name == null)){
+	                    	this.$store.dispatch("ALERT", 
+			                    {
+			                        flag:true,
+			                        text:"请填写股东姓名"
+			                    }
+		                    )
+	                    	return;
+	                    }
+	                    if((ele.ratio == "")||(ele.ratio == null)){
+	                    	this.$store.dispatch("ALERT", 
+			                    {
+			                        flag:true,
+			                        text:"请填写股东占比"
+			                    }
+		                    );
+		                    return
+	                    }
 	                    this.percentNum += parseFloat(ele.ratio);
 	                })
+
 	                if(this.percentNum > 100){
 	                	this.$store.dispatch("ALERT", 
 		                    {
@@ -580,7 +576,6 @@
 	                    );
 	                    return false
 	                }
-	               
                 }
                 if(this.StockType == 1){
                 	this.itemsTabel = [
@@ -898,7 +893,7 @@
 		outline: none;
 		line-height: 0.85rem;
 		padding-left:0.4rem;
-		@include WH(5.8rem,0.85rem);
+		@include WH(5.3rem,0.85rem);
 	}
 	.empower-item label i{
 		display:inline-block;
@@ -1072,6 +1067,7 @@
 		line-height:1.173333rem;
 	}
 	.prompt-bt{
+		@include font-dpr(34px);
 		background:$orange;
 		color:$white;
 		text-align:center;
