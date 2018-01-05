@@ -11,9 +11,11 @@
             <img src="../../assets/empower-content.png" alt="">
             <p>认证资料已提交，请等待审核</p>
             <p class="tips">请保持您的电话畅通，会有区域经理与您联系。</p>
-            <input type="button" name="返回" value="返回" @click="goBack">
-            <p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>
+            <!--<input type="button" name="返回" value="返回" @click="goBack">-->
+            <!--<p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>-->
         </section>
+        <p class="empower-success-back"><input  type="button" name="返回" value="返回" @click="goBack"></p>
+        <p class="consult-tel">咨询电话 <a href="tel:400-825-2368">400-825-2368</a> </p>
     </div>
 
 </template>
@@ -93,15 +95,21 @@
     }
 </script>
 <style>
-    body{height:100%;background-color:#fff;}
+    html{width:100%;background-color:#fff;}
+    /*body{height:100%;background-color:#fff;}*/
+    body{width:100%;height:100%;background-color:#fff;}
     .brand-header-out{position:relative;z-index:3;}
     .empower-guide{padding-top:2.76rem;padding-bottom:.27rem;background-color:#fff;}
     .empower-guide img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
     .empower-guide p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
     .empower-guide input{display:block;width:6.666rem;height:1.1733rem;margin:5.447rem auto 0;color:white;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:#d6ab55;border:1px solid #d6ab55;border-radius:.533rem;}
     .empower-guide p span{color:#d6ab55;border-bottom:1px solid #d6ab55;}
-    .empower-guide .consult-tel{margin-top:.85rem;color:#999;font-size:.373rem;}
-    .empower-guide .consult-tel a{color:#999;}
+    /*.empower-guide .consult-tel{margin-top:.85rem;color:#999;font-size:.373rem;}*/
+    /*.empower-guide .consult-tel a{color:#999;}*/
+    .empower-success-back{position:fixed;bottom:2rem;width:100%;text-align:center;}
+    .empower-success-back input{display:block;width:6.666rem;height:1.1733rem;margin:5.447rem auto 0;color:white;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:#d6ab55;border:1px solid #d6ab55;border-radius:.533rem;}
+    .consult-tel{position:fixed;bottom:.667rem;width:100%;margin:0 auto;text-align:center;color:#999;font-size:.373rem;}
+    .consult-tel a{color:#999;}
     .empower-guide .tips{color:#999;font-size:.373rem;}
 
 
