@@ -116,7 +116,7 @@
     /*body{height:100%;background-color:#fff;}*/
     body{width:100%;height:100%;background-color:#fff;}
     .brand-header-out{position:relative;z-index:3;}
-    .empower-guide{padding-bottom:1.0rem;background-color:#fff;}
+    .empower-guide{position:fixed;width:100%;padding-bottom:1.0rem;background-color:#fff;}
     .empower-guide-succeed{padding-top:1.493rem;}
     .empower-guide img{display:block;width:2.613rem;height:2.573rem;margin:0 auto .4rem;}
     .empower-guide p{color:#2c2c2c;font-size:.4533rem;line-height:.6rem;text-align:center;}

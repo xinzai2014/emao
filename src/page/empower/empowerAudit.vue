@@ -98,7 +98,7 @@
     /*body{height:100%;background-color:#fff;}*/
     body{width:100%;height:100%;background-color:#fff;}
     .brand-header-out{position:relative;z-index:3;}
-    .empower-guide{padding-top:2.76rem;padding-bottom:.27rem;background-color:#fff;}
+    .empower-guide{position:fixed;width:100%;padding-top:2.76rem;padding-bottom:.27rem;background-color:#fff;}
     .empower-guide img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
     .empower-guide p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
     /*.empower-guide input{display:block;width:6.666rem;height:1.1733rem;margin:5.447rem auto 0;color:white;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:#d6ab55;border:1px solid #d6ab55;border-radius:.533rem;}*/
