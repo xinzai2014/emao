@@ -237,7 +237,9 @@
 		        grantReason:'',//驳回理由
 		        APPWap:false, //是wap还是App flase是wap
 		        showPhone:0, //0显示1不显示
-		        showEnable:0 //0有弹框 1没弹框
+		        showEnable:0, //0有弹框 1没弹框
+		        nameIndex:0,
+		        ratioIndex:0
 		    }
 		},
 		methods:{
@@ -544,29 +546,27 @@
                 this.percentNum = 0;
                 
                 if(this.StockType == 2){
-                	
-                	this.itemsTabel.forEach((ele,index)=>{
-	                    if((ele.name == "")||(ele.name == null)){
+                	for(var i=0;i<this.itemsTabel.length;i++){
+                		if((this.itemsTabel[i].name == "")||(this.itemsTabel[i].name == null)){
 	                    	this.$store.dispatch("ALERT", 
 			                    {
 			                        flag:true,
 			                        text:"请填写股东姓名"
 			                    }
 		                    )
-	                    	return;
+		                    return false
 	                    }
-	                    if((ele.ratio == "")||(ele.ratio == null)){
+	                    if((this.itemsTabel[i].ratio == "")||(this.itemsTabel[i].ratio == null)){
 	                    	this.$store.dispatch("ALERT", 
 			                    {
 			                        flag:true,
 			                        text:"请填写股东占比"
 			                    }
 		                    );
-		                    return
+		                    return false
 	                    }
-	                    this.percentNum += parseFloat(ele.ratio);
-	                })
-
+	                    this.percentNum += parseFloat(this.itemsTabel[i].ratio);
+                	}
 	                if(this.percentNum > 100){
 	                	this.$store.dispatch("ALERT", 
 		                    {
@@ -613,8 +613,7 @@
 	                    }
                     );
                 	if(this.APPWap){
-                		 window.location = 'https://tcm.m.emao.com/#/empower/empowerSuccess?token=' + this.token;
-                		 alert(window.location.href);
+                		this.$router.push({path:'empower/empowerSuccess',query:{token:this.token}});
                 	}else{
                 		this.$router.push({path:'empower/empowerSuccess'});
                 	}
@@ -773,7 +772,7 @@
 		},
 		components:{
 		    uploader
-		},
+		}/*,
 		beforeRouteLeave(to,form,next){
 			if(this.$route.query.token){
 				this.showPhone = 1;
@@ -782,7 +781,7 @@
 		      	this.enableGobackButton();
 			}
 	      	next();
-	    }
+	    }*/
 	}
 
 </script>
