@@ -44,7 +44,6 @@
 
             },
             telephoneButton(){ //电话
-                alert(1);
                 var obj = {
                     actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     params:{hidden:1}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
