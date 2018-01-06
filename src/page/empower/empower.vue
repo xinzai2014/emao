@@ -102,7 +102,7 @@
                     			<div class="ratio-info">
                     				<p v-for="(item,index) in itemsTabel">
 	                    				<em><input type="text" v-model="item.name" /></em>
-	                    				<em><input type="number" v-model="item.ratio" @keyup="parseFl(item)"/>%</em>
+	                    				<em><input type="number" v-model="item.ratio" @input="parseFl(item)"/>%</em>
 	                    			</p>
                     			</div>
                     		</div>
@@ -290,6 +290,14 @@
 					if(val.length >= 2){
 						item.ratio = (item.ratio.split('.')[0])+'.'+(val[0])
 					}
+				}else if(str == 0){
+					this.$store.dispatch("ALERT", 
+	                    {
+	                        flag:true,
+	                        text:"请输入正确的股东占比"
+	                    }
+                    );
+                    return false
 				}
 			},
 			aptitudeHide(){
@@ -432,16 +440,6 @@
                     );
                     return false
                 }
-                if((this.carNum.length > 5)){
-                    this.$store.dispatch("ALERT", 
-	                    {
-	                        flag:true,
-	                        text:"店铺月均销量最多填写5位数"
-	                    }
-                    );
-                    return false
-                }
-                
                 if((this.AptitudeType === "")||(this.AptitudeType == null)){
                     this.$store.dispatch("ALERT", 
 	                    {
@@ -545,15 +543,6 @@
 	                    {
 	                        flag:true,
 	                        text:"请填写展厅面积"
-	                    }
-                    );
-                    return false
-                }
-                if((this.area.length > 5)){
-                    this.$store.dispatch("ALERT", 
-	                    {
-	                        flag:true,
-	                        text:"展厅面积最多填写5位数"
 	                    }
                     );
                     return false
