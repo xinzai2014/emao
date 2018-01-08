@@ -43,6 +43,22 @@
                 }
 
             },
+            //电话按钮不显示
+            telephoneButton(){ //电话
+                var obj = {
+                    actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    params:{hidden:1}//hidden=0显示电话按钮，hidden=1隐藏电话按钮
+                };
+                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
+            //允许禁止返回
+            enableGobackButton(){ //禁止返回
+                var obj = {
+                    actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    params:{enable:1, title: "确定退出授权店认证"}//enable=0不允许返回，enable=1允许返回
+                };
+                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
 
             //关闭当前窗口
             closeCurrentWindow() {
@@ -82,6 +98,8 @@
                 if (this.isTcmApp()){
                     document.title = "审核中";
                     this.showHeadStatus = false;
+                    this.telephoneButton();
+                    this.enableGobackButton();
                 }else{
                     this.showHeadStatus = true;
                 }

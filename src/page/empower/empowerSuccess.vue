@@ -43,6 +43,7 @@
                 }
 
             },
+            //电话按钮不显示
             telephoneButton(){ //电话
                 var obj = {
                     actionname:"telephoneButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
@@ -50,6 +51,7 @@
                 };
                 this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
+            //允许禁止返回
             enableGobackButton(){ //禁止返回
                 var obj = {
                     actionname:"enableGobackButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
