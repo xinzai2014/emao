@@ -672,13 +672,15 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
+			    	alert(data.grantStatus);
 			    	if(data.grantStatus == 1){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerAudit',query:{token:this.token}});
 			    		}else{
 			    			this.$router.push({path:'empower/empowerAudit'});
 			    		}
-			    	}else if(data.grantStatus == 2){
+			    	}
+			    	if(data.grantStatus == 2){
 			    		if(this.APPWap){
 			    			this.$router.push({path:'empower/empowerAdopt',query:{token:this.token}});
 			    		}else{
