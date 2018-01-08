@@ -783,12 +783,13 @@
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.fullData();
+			alert('ddddd');
 		    if(this.$route.query.token){
 	            this.titHide = false;
 	            this.APPWap = true;
         		document.title='授权店认证';
-        		this.telephoneButton();
-        		this.enableGobackButton();
+        		/*this.telephoneButton();
+        		this.enableGobackButton();*/
 	        }
 	        
 		},
