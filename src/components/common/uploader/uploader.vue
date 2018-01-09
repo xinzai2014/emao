@@ -48,7 +48,8 @@
                 updateIndex:false,
                 imgURL:[], //回传给父组件的图片绝对路径集合
                 bigImg:null,
-                showBigImg:false
+                showBigImg:false,
+                token:''
             }
         },
         methods:{
@@ -135,17 +136,22 @@
                     console.warn('no file!');
                     return
                 }
+                if(this.$route.query.token){
+                    this.token = this.$route.query.token;
+                }else{
+                    this.token = sessionStorage.token;
+                }
                 const formData = new FormData();
                 formData.append("file", this.files[index].file);
                 const xhr = new XMLHttpRequest();
                 xhr.upload.addEventListener('progress', this.uploadProgress, false)
-                xhr.open('POST', this.initData.url + "?token="+sessionStorage.token, true)
+                xhr.open('POST', this.initData.url + "?token="+this.token, true)
                 xhr.setRequestHeader("Accept","application/json;version=1.0.0");
                 xhr.setRequestHeader('X-Emao-TCM-Wap',1);
                 this.uploading = true
                 xhr.send(formData)
                 xhr.onload = () => {
-                    this.uploading = false
+                    this.uploading = false;
                     if (xhr.status === 200) {
                         var ajaxResponse = eval('(' + xhr.responseText + ')');
                         that.imgURL[index] = ajaxResponse.data.url;
@@ -262,8 +268,6 @@
         position:relative;
     }
     .up-btn {
-        border: 1px solid #d6ab55;
-        border-radius: 0.533333rem;
         color: #bb8800;
         font-size: 0.373333rem;
         height: 0.85333rem;

@@ -1,44 +1,35 @@
 <template>
-<div>
-    <!--首页-品牌列表-头部-->
-    <header class="brand-list-header header-hidden">
-        <i class="white-lt brand-left-cion" @click="goBack"></i>
-        <strong class="brand-list-title">{{brandName}}</strong>
-        <span class="brand-switch" @click="showBrandDialog">切换品牌</span>
-        <div class="brand-list-open" v-if="showBrandSlide">
-            <ul class="index-brand-list clearfix">
-                <li v-for="(item,index) in brandData" @click="changeBrand(item.id,item.name)">
-                    <img :src = item.logoUrl >
-                    <span>{{item.name}}</span>
-                </li>
-            </ul>
-        </div>
-    </header>
-
-    <div class="brand-back" v-if="showBrandSlide" @click="showBrandDialog">
-
-    </div>
-    <section class="index-car-source brand-list-source" v-if="serieData.length>0">
-        <p class="index-car-title">本地车源</p>
-        <ul class="index-car-con">
-            <li v-for="(item,index) in serieData" @click="goSerie(item.id)">
-                <img  :src = item.imgUrl alt="">
-                <div class="index-car-back">
-                    <p class="index-car-name">{{item.name}}</p>
-                    <p class="index-car-price"><span>{{item.minPrice}}</span>万<em v-if="item.saleCars>1">起</em></p>
-                    <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
-                    <p class="index-car-sale" v-if="item.maxFall>0">最高下 <strong>{{item.maxFall}}万</strong></p>
+    <div>
+        <!--头部-->
+        <header class="user-tit user-fixed">
+            <a href="javascript:;" class="white-lt" @click="goBack"></a>品牌车系
+        </header>
+        <!--内容-->
+        <section>
+            <div class="brand-wrap">
+                <div class="brand-lt">
+                    <ul id="brand-ul">
+                        <li v-for="(item,index) in brandData" :class="item.id== initData.brandId ? 'active':''" @click="changeBrand(item.id,item.name)"><em>{{item.name}}</em></li>
+                    </ul>
                 </div>
-            </li>
-        </ul>
-    </section>
-        <!--查询表单-->
-    <search></search>
-
-    <!-- 车型数据 -->
-    <car v-if="showbrandTag"></car>
-
-</div>
+                <div class="brand-rt">
+                    <h4>共{{serieLength}}款车系在售</h4>
+                    <div class="brand-ct">
+                        <div class="brand-item" v-for="(item,index) in serieData" @click="goSerie(item.id)">
+                            <img :src = item.imgUrl alt="">
+                            <div class="brand-info">
+                                <p class="brand-info-tit">{{item.name}}</p>
+                                <p class="brand-price">{{item.minPrice}}<span>万起</span></p>
+                                <p class="brand-num">共{{item.saleCars}}个车型在售</p>
+                                <p v-if="item.maxFall>0" class="brand-sale">最高下{{item.maxFall}}万</p>
+                            </div>
+                            <em v-if="Number(item.soldOut)" class="sold-out"></em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 </template>
 <script>
 import search from '../index/search'
@@ -54,11 +45,12 @@ import car from '../index/car'
                     offset:0,
                     len:10
                 },
-                showBrandSlide:false, //是否显示下拉框
                 brandData:[ //品牌数据
 
                 ],
                 serieData:[],
+                serieLength:null,
+                scrollIndex:0,
                 showbrand:false //车型弹层
             }
         },
@@ -72,7 +64,9 @@ import car from '../index/car'
                     }
                 }).then(function (response) {
                     this.brandData = response.body.data;
-
+                    setTimeout(()=>{
+                        this.countHeight();
+                    },100)
                   }).catch(function (error) {
                   });
             },
@@ -83,18 +77,19 @@ import car from '../index/car'
                     params:this.initData
                 }).then(function (response) {
                     this.serieData = response.body.data;
-
+                    this.serieLength = this.serieData.length;
                   }).catch(function (error) {
                   });
             },
             goBack(){
                 this.$router.push({name:'index'});
             },
-            showBrandDialog(){
-                this.showBrandSlide = !this.showBrandSlide;
-            },
+            countHeight(){ //记录初始楼层高度
+                var ulHeight = document.getElementsByClassName('active')[0].offsetTop;
+                var branUl = document.getElementById('brand-ul');
+                branUl.scrollTop = ulHeight;
+            }, //滚动到指定位置
             changeBrand(index,name){
-                this.showBrandDialog();
                 this.$store.dispatch("DEFAULT_BRAND",{ // 通过store传值
                   brandName: name,
                   brandId: index
@@ -144,44 +139,125 @@ import car from '../index/car'
     }
 </script>
 <style>
-/*品牌列表页-头部*/
-.brand-header-out{position:relative;z-index:3;}
-.brand-switch{position:absolute;right:.4666rem;font-size:.4rem;color:#d5aa5c;margin-right:0;}
-.brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
-.header-hidden{overflow:initial;width:100%;}
-/*品牌列表页-车源*/
-/*.brand-list-source{padding-top:0 !important;}*/
-
-.brand-back{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:2;}
-
-/*品牌列表页-车源-弹窗*/
-.brand-list-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
-.brand-popup-in{position:fixed;top:50%;left:50%;width:7.2rem;height:4.4rem;margin-left:-3.6rem;margin-top:-2.2rem;font-size:.4533rem;border-radius:.1333rem;overflow:hidden;}
-.brand-search-tips{height:2.1334rem;padding:1.0666rem 1.0rem 0 1.0rem;background-color:#fff;}
-.brand-popup-ok{height:1.2rem;line-height:1.2rem;color:#fff;text-align:center;background-color:#d5aa5c;}
-
-.index-brand{padding:.5333rem 0.4rem;}
-.index-brand-in{padding-bottom:.5333rem;background-color:#fff;}
-.index-brand-list{padding-bottom:0.533rem;}
-.index-brand-list li{float:left;width:20%;text-align:center;overflow:hidden;line-height:1}
-.index-brand-list li img{display:block;width:1.067rem;height:1.067rem;margin:.666rem auto 0;}
-.index-brand-list li span{display:block;margin-top:0.133rem;color:#2c2c2c;font-size:0.3733rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1}
-.index-more-brand{margin-top:.8rem;text-align:center;}
-.index-more-brand i{margin-left:.1333rem;}
-
-
-/*品牌列表页-车源-展开*/
-.brand-open-popup{z-index:2;}
-/*首页本地车源*/
-.index-car-back{position:absolute;top:0;left:0;right:0;bottom:0;background: -webkit-linear-gradient(left, rgba(0,37,111,0.4) , rgba(255,255,255,0)); /* Safari 5.1 - 6.0 */}
-.index-car-source{padding-top:.5333rem;padding-bottom:.5333rem;background-color:#fff;}
-.index-car-title{padding-left:.4rem;margin:0 0 .5333rem .4rem;font-size:.5066rem;color:#2c2c2c;border-left:2px solid #2c2c2c;}
-.index-car-con li{margin-bottom:.1333rem;color:#fff;height:5.333rem;}
-.index-car-con li{display:block;position:relative;color:#fff;}
-.index-car-con li img{display:block;width:10rem;height:100%;}
-.index-car-name{position:absolute;top:.5333rem;left:.5333rem;font-size:.5066rem;}
-.index-car-price{position:absolute;top:1.8rem;left:.5333rem;font-size:.4rem;}
-.index-car-price span{font-size:.5866rem;}
-.index-car-count{position:absolute;top:2.8666rem;left:.5333rem;font-size:.4rem;}
-.index-car-sale{position:absolute;top:3.7333rem;left:.5333rem;display:block;padding:.0666rem .3333rem .0666rem .1333rem;font-size:.3866rem;color:#fff;border-top-right-radius:.4rem;border-bottom-right-radius:.4rem;background-color:#d6ab55;}
+.user-fixed{
+    position:fixed;
+    z-index:999;
+    width:100%;
+    left:0;
+    top:0;
+}
+.brand-wrap{
+    overflow:hidden;
+}
+.brand-lt{
+    width:1.866667rem;
+    float:left;
+   
+}
+.brand-lt{
+    background:#fff;
+    width:1.866667rem;
+    position:fixed;
+    left:0;
+    bottom:0;
+    top:1.173333rem;
+     -webkit-overflow-scrolling: touch;
+}
+.brand-lt ul{
+    -webkit-overflow-scrolling: touch;
+    overflow-y:auto;
+    height:100%;
+    width:100%;
+}
+.brand-lt ul li{
+    height:1.333333rem;
+    font-size:0.373333rem;
+    color:#666;
+    text-align:center;
+    display:table;
+    border-bottom:1px solid #f5f5f5;
+}
+.brand-lt ul li em{
+    width:1.866667rem;
+    display:table-cell;
+    vertical-align:middle;
+}
+.brand-lt ul li.active{
+    background:#f5f5f5;
+    color:#2c2c2c;
+    font-weight:bold;
+}
+.brand-rt{
+    width:7.733333rem;
+    float:right;
+    margin-top:1.173333rem;
+}
+.brand-rt h4{
+    font-size:0.506667rem;
+    font-weight:bold;
+    padding-left:0.4rem;
+    color:#2c2c2c;
+    line-height:1.6rem;
+}
+.brand-item{
+    height:3.893333rem;
+    width:7.333333rem;
+    border-radius:0.266667rem;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:0.4rem;
+}
+.brand-item img{
+    width:100%;
+    height:100%;
+    border-radius:0.266667rem;
+}
+.brand-info{
+    position:absolute;
+    height:3.893333rem;
+    width:6.933333rem;
+    left:0.4rem;
+    top:0;
+    color:#fff;
+}
+.brand-info-tit{
+    margin-top:0.4rem;
+    font-size:0.4rem;
+    font-weight:bold;
+    height:0.466667rem;
+    overflow:hidden;
+    line-height:0.466667rem;
+}
+.brand-price{
+    font-size:0.506667rem;
+    font-weight:bold;
+    margin-top:0.8rem;
+}
+.brand-price span{
+    font-weight:normal;
+    font-size:0.373333rem;
+    margin-left:0.133333rem;
+}
+.brand-num{
+    font-size:0.373333rem;
+    line-height:0.666667rem;
+    margin-bottom:0.133333rem;
+}
+.brand-sale{
+    height:0.4rem;
+    padding:.0666rem .3333rem .0666rem .1333rem;
+    border-radius:0 0.4rem 0.4rem 0;
+    background:#d5aa5c;
+    display:inline;
+}
+.sold-out{
+    display:block;
+    width:2.546667rem;
+    height:1.866667rem;
+    background:url(../../assets/sold-out.png) no-repeat;
+    background-size:contain;
+    position:absolute;
+    right:0;
+    bottom:0;
+}
 </style>

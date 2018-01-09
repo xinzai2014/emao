@@ -9,16 +9,78 @@
 	        <div class="notice-item" v-for="(item,index) in infoData">
 	        	<div v-if="item.content_body !='通知'">
 		            <div class="notice-tit">{{item.created_at}}</div>
-			            <div class="notice-ct" @click=refresh(item.url)>
-			                <div class="notice-tp">{{item.content_header}}</div>
-			                <div v-if="item.content_body" class="notice-bt"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
+			            <div class="notice-ct" @click="refresh(item.url)">
+			                <div v-if="item.content_header" class="notice-tp">{{item.content_header}}</div>
+			                <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt" v-if="item.type != 603"></i> {{item.content_body}}</div>
 			            </div>
 		        </div>
 		        <div v-else>
-		            <div class="notice-tit">{{item.created_at}}</div>
-		            <div class="notice-ct">
-		                <div class="notice-tp">{{item.content_header}}</div>
+		        	<div v-if="item.type ==603">
+			            <div class="notice-tit">{{item.created_at}}</div>
+			            <div class="notice-ct">
+			                <div class="notice-tp">{{item.content_header}}</div>
+			            </div>
 		            </div>
+		            <!--<div v-else>-->
+			            <!--<div class="notice-tit">{{item.created_at}}</div>-->
+			            <!--<div class="notice-ct">-->
+			            	<!--<router-link v-if="item.type == 607" :to="{name:'soldCarDetail',params:{id:item.order_num}}">-->
+				                <!--<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>-->
+				                <!--&lt;!&ndash; <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> &ndash;&gt;-->
+				            <!--</router-link>-->
+				            <!--<router-link v-else :to="{path:'/rejectDeclare',query:{id:item.order_num}}">-->
+				                <!--<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>-->
+				                <!--&lt;!&ndash; <div v-if="item.content_body" class="notice-bt notice-bts"><i class="white-rt"></i> {{item.content_body}}</div> &ndash;&gt;-->
+				            <!--</router-link>-->
+				        <!--</div>-->
+			             <!-- -->
+		            <!--</div>-->
+
+
+					<div v-else-if="item.type ==607">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{name:'soldCarDetail',params:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
+					<div v-else-if="item.type ==608">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{path:'/rejectDeclare',query:{id:item.order_num}}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+					<div v-else-if="item.type ==617">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<!--<router-link :to="{name:'/empower/empowerSuccess'}">-->
+							<router-link :to="{path:'/empower/empowerSuccess'}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i>{{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
+					<div v-else="item.type ==618">
+						<div class="notice-tit">{{item.created_at}}</div>
+						<div class="notice-ct">
+							<router-link :to="{path:'/empower'}">
+								<div class="notice-tp notice-tps"><i class="white-rt"></i> {{item.content_header}}</div>
+							</router-link>
+						</div>
+					</div>
+
+
+
 		        </div>
 	        </div>
 	        <div  class="frameCon translateY" v-show="showFrame">
@@ -143,19 +205,38 @@
 	background:#fff;
 	width:8.933333rem;
 	margin:0.4rem auto 0 auto;
+	cursor:pointer;
+	overflow:hidden;
+}
+.notice-ct a{
+	display:block;
 }
 .notice-tp{
 	padding:0.8rem 0.4rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
-.notice-bt{
-	padding:0.533333rem 0.4rem;
+.notice-bts{
+	padding:0.533333rem 0.8rem 0 0.4rem;
 	font-size:0.4rem;
 	color:#2c2c2c;
+	max-height:1.1rem;
+	overflow:hidden;
+	margin-bottom:0.533333rem;
+	position:relative;
 }
-.notice-bt i{
-	float:right !important;
+.notice-tps{
+	position:relative;
+	padding:0.533333rem 0.8rem 0.4rem 0.4rem;
+}
+.notice-bts i,.notice-tps i{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0.4rem;
+	margin:auto;
+
 }
 .notice-bt span{
 	color:#fc3036;

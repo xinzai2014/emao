@@ -15,12 +15,14 @@
                       <router-link to="/profile/info">
                         <span class="white-rt" ></span>
                         <h3>{{name}}<!--<i class="company-icon" v-show="auth_status=='已完成认证'"></i>--></h3>
-                        <p>
-                          星级
-                          <i v-for="n in level"></i>
+                        <p :class="type == 2 ? 'active':''">
+                          <i></i><b v-if="type == 1">加盟店</b><b v-else>授权店</b>
                           <span class="auth_status" v-if="data_status">{{data_status}}</span>
                         </p>
                       </router-link>
+                      <div v-if="showFlag && type == 1" class="empower-sata">
+                          <router-link :to="routerLink">{{grantText}}<i></i><em></em></router-link>
+                      </div>
                     </div>
                     <div class="company-bt">
                           <div class="item">
@@ -128,7 +130,10 @@ export default {
       messageNum:0, //消息数
       name:'',  //公司名称
       auth_status:'',   //认证状态
-      level:0, //等级
+      showFlag:2, //按钮是否显示 
+      grantStatus:0, //授权审核状态
+      type:1, //店铺类型 1加盟店 2授权店
+      grantText:'',//授权状态文字
       rebate:'', //返利金额
       capital:'',    //营销支持费
       coupon_num:'', //优惠券
@@ -138,7 +143,8 @@ export default {
       is_transtor:'',  //是否是中转库管理员
       showAlert: false, //弹出框
       alertText: null, //弹出信息
-      data_status:''
+      data_status:'',
+      routerLink:''
     }
   },
   components:{
@@ -204,7 +210,6 @@ export default {
     }).then(function (response) {
         this.name = response.body.data.name;     //公司名称
         this.auth_status = response.body.data.auth_status;   //认证状态
-        this.level = Number(response.body.data.level);    //等级
         this.rebate = this.priceG(response.body.data.rebate);    //返利金额
         this.capital = this.priceG(response.body.data.capital);    //营销支持费
         this.coupon_num = response.body.data.coupon_num;   //优惠券
@@ -212,6 +217,22 @@ export default {
         this.delivered_num = response.body.data.delivered_num;   //待发货
         this.received_num = response.body.data.received_num;    //待收货
         this.is_transtor = response.body.data.is_transtor;   //是否是中转库管理员
+        this.showFlag = Number(response.body.data.showFlag);    //按钮是否显示
+        this.grantStatus = response.body.data.grantStatus;    //授权审核状态
+        this.type = response.body.data.type;    //授权审核状态
+        if(this.grantStatus == 0){
+            this.grantText = '升级为授权店';
+            this.routerLink = '/empower/empowerGuide'
+        }else if(this.grantStatus == 1){
+            this.grantText = '授权店审核中';
+            this.routerLink = '/empower/empowerAudit'
+        }else if(this.grantStatus == 2){
+            this.grantText = '审核成功';
+            this.routerLink = '/empower/empowerSuccess'
+        }else if(this.grantStatus == 3){
+            this.grantText = '升级失败';
+            this.routerLink = '/empower'
+        }
       }).catch(function (error) {
         this.showAlert = true;
         this.alertText = error.body.msg||"请求失败了";
@@ -309,23 +330,65 @@ export default {
 }
 .company-ct p{
     height:0.346667rem;
-    margin:0.533333rem 0;
-    font-size:0.346667rem;
+    margin:0.2rem 0;
+    font-size:0.32rem;
     line-height:0.346667rem;
-    color:#2c2c2c;
+    color:#999;
     padding:0 0.4rem;
+}
+.company-ct p b{
+  font-weight:normal;
 }
 .company-ct p i{
     display:inline-block;
-    width:0.346667rem;
-    height:0.346667rem;
-    background:url(../../assets/stars-icon.png) no-repeat;
+    width:0.24rem;
+    height:0.29rem;
+    background:url(../../assets/icon-s9.png) no-repeat;
     background-size:contain;
-    margin-right:14px;
+    margin-right:0.1rem;
     vertical-align:bottom;
 }
-.company-ct p i:first-child{
-    margin-left:0.2rem;
+.company-ct p.active{
+  color:#d5aa5c;
+}
+.company-ct p.active i{
+    background:url(../../assets/icon-s12.png) no-repeat;
+    background-size:contain;
+}
+.empower-sata{
+  display:inline-block;
+  background:#dbaf61;
+  border-radius:0.4rem;
+  padding:0 0.6rem;
+  font-size:0.32rem;
+  height:0.66rem;
+  line-height:0.666667rem;
+  margin-left:0.4rem;
+  margin-bottom:0.266667rem;
+  position:relative;
+}
+.empower-sata a{
+  display:block;
+  color:#fff;
+}
+.empower-sata i{
+  position:absolute;
+  display:inline-block;
+  width:0.4rem;
+  height:0.146667rem;
+  background:url(../../assets/icon-s11.png) no-repeat;
+  background-size:contain;
+  left:0.6rem;
+  top:-0.1rem;
+}
+.company-ct em{
+    display:inline-block;
+    width:0.133333rem;
+    height:0.226667rem;
+    background:url(../../assets/icon-s10.png) no-repeat;
+    background-size:contain;
+    margin-left:0.133333rem;
+    vertical-align:inherit;
 }
 .company-bt .item{
     width:3.066667rem;
