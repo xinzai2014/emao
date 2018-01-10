@@ -2,14 +2,18 @@
     <div style="height:100%;">
         <!--头部-->
         <header class="user-tit">
-            <!--<router-link to="/soldCar">-->
-                <!--<a href="javascript:;" class="white-lt" ></a>-->
-            <!--</router-link>-->
-            <a href="javascript:;" class="white-lt" @click="resetIndex"></a>
-            车辆申报信息
+            <router-link to="/declare">
+                <a href="javascript:;" class="white-lt"></a>
+            </router-link>
+           申报资料
         </header>
         <!--提交申报资料-->
         <section class="submit-wrap">
+            <div class="details-tit">
+                <h4>
+                    售车申报审核中，请耐心等待
+                </h4>
+            </div>
             <div class="sales-item">
                 <h3>{{saleInfo.auto_name}}</h3>
                 <p class="sales-color">{{saleInfo.ext_color}}/{{saleInfo.int_color}}</p>
@@ -27,34 +31,34 @@
                 <div class="user-info">
                     <div class="left">客户电话：</div>
                     <div class="right">
-                       <p>{{saleInfo.phone}}</p>
+                        <p>{{saleInfo.phone}}</p>
                     </div>
                 </div>
 
                 <div class="user-info">
                     <div class="left">身份证号：</div>
                     <div class="right">
-                       <p>{{saleInfo.idcard}}</p>
+                        <p>{{saleInfo.idcard}}</p>
                     </div>
                 </div>
 
                 <div class="user-info">
                     <div class="left">电子邮箱：</div>
                     <div class="right">
-                       <p>{{saleInfo.email}}</p>
+                        <p>{{saleInfo.email}}</p>
                     </div>
                 </div>
 
             </div>
             <div class="submit-info-list">
                 <div class="user-info-form">
-                    <p class="user-info-tit">客户身份证正面照片</p>
-                   <div class="user-info-pic" @click=showPopUp(saleInfo.idcard_img_front)>
-                       <img :src="saleInfo.idcard_img_front" alt="">
-                   </div>
+                    <p class="user-info-tit">身份证正面照片</p>
+                    <div class="user-info-pic" @click=showPopUp(saleInfo.idcard_img_front)>
+                        <img :src="saleInfo.idcard_img_front" alt="">
+                    </div>
                 </div>
                 <div class="user-info-form">
-                    <p class="user-info-tit">客户身份证背面照片</p>
+                    <p class="user-info-tit">身份证背面照片</p>
                     <div class="user-info-pic"  @click=showPopUp(saleInfo.idcard_img_reverse)>
                         <img :src="saleInfo.idcard_img_reverse" alt="">
                     </div>
@@ -101,10 +105,6 @@
         }
     },
     methods:{
-        //回到上一级
-        resetIndex(){
-            this.$router.go(-1);
-        },
         //初始化拿数据
         //初始化拿数据
         getData(){
@@ -117,7 +117,7 @@
                     id:this.id
                 }
             }).then(function(response){
-                 this.saleInfo = response.body.data;
+                this.saleInfo = response.body.data;
             })
         },
         /*获取图片地址，显示遮罩弹窗和图片*/
@@ -280,4 +280,13 @@
     }
     .user-info-form .user-info-pic{margin-top:.5333rem;width:3.667rem;height:2.773rem;}
     .user-info-form .user-info-pic img{width:100%;height:100%;}
+    .details-tit{
+        padding:0.533333rem 0.4rem;
+        background:#d5aa5c;
+    }
+    .details-tit h4{
+        font-size:0.506667rem;
+        color:#fff;
+        line-height:0.533333rem;
+    }
 </style>

@@ -3,7 +3,7 @@
 	<section class="index-car-source">
         <p class="index-car-title">本地车源</p>
         <ul class="index-car-con">
-        	<router-link v-for="(item,index) in serieList" :to="'/serie/' + item.id" tag="li" :serieID = item.id @click.native="goSerie(index)">
+        	<router-link v-for="(item,index) in serieList " :key="index" :to="'/serie/' + item.id" tag="li" :serieID = item.id @click.native="goSerie(index)">
                 <img :src= item.imgUrl alt="">
                 <div class="index-car-back">
 	                <p class="index-car-name">{{item.name}}</p>
@@ -11,6 +11,7 @@
 	                <p class="index-car-count">共<i>{{item.saleCars}}</i>个车型在售</p>
 	                <p class="index-car-sale" v-if="item.maxFall>0">最高下 <strong>{{item.maxFall}}万</strong></p>
                 </div>
+                <p v-if="Number(item.soldOut)" class="sold-out"></p>
             </router-link>
         </ul>
         <p class="index-more-brand" v-show="serieMore" @click="getSerie">查看更多 <i class="yellow-bt"></i></p>
@@ -74,6 +75,6 @@ export default {
 .index-car-count{position:absolute;top:2.8666rem;left:.5333rem;font-size:.4rem;}
 
 .index-car-sale{position:absolute;top:3.7333rem;left:.5333rem;display:block;padding:.0666rem .3333rem .0666rem .1333rem;font-size:.3866rem;color:#fff;border-top-right-radius:.4rem;border-bottom-right-radius:.4rem;background-color:#d6ab55;}
-
+.sold-out{display:block; width:2.546667rem; height:1.866667rem; background:url(../../assets/sold-out.png) no-repeat; background-size:contain; position:absolute; right:0; bottom:0; }
 
 </style>

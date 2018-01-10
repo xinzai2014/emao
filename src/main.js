@@ -44,7 +44,7 @@ Vue.use(VueResource)
 //全局默认配置
 Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 Vue.http.headers.common = {
-	Accept:"application/json; version=1.2.0"
+	Accept:"application/json; version=2.1.0"
 };
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
@@ -146,6 +146,11 @@ Vue.http.interceptors.push(function(request,next){
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;
+	    	if(code == 4010){ //密码修改了
+				sessionStorage.clear();
+				this.$router.push('/login/account');
+				return false;
+			}
 	    	if(/^[3-5]/.test(code)){
 	    		this.$store.dispatch("ALERT", // 通过store传值
 			      {

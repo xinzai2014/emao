@@ -2,14 +2,14 @@
 
 	<section class="index-brand">
         <div class="index-brand-in">
-            <ul class="clearfix" :class='{"index-brand-info":look}'>
+            <ul class="clearfix index-brand-info">
                 <li v-for="(item,index) in brandList" :brand=item.id @click="goBrand(item.id,item.name)">
-                    <img :src=item.logoUrl >
+                    <img :src=item.logoUrl alt="">
                     <span>{{item.name}}</span>
                 </li>
             </ul>
-            <p class="index-more-brand" @click="seeMore" v-if="look">更多品牌 <i class="yellow-bt"></i></p>
-            <p class="index-more-brand brand-collect" @click="seeMore" v-if="collect">收起<i class="yellow-bt"></i></p>
+            <p class="index-more-brand" @click="goBrand(brandList[0].id,brandList[0].name)" v-if="look">更多品牌 <i class="yellow-bt"></i></p>
+            <!-- <p class="index-more-brand brand-collect" @click="seeMore" v-if="collect">收起<i class="yellow-bt"></i></p> -->
         </div>
     </section>
 
@@ -27,10 +27,10 @@ export default {
     }
   },
   methods:{
-  	seeMore(){ //查看更多 一个变量怎么做呢
+  	/*seeMore(){ //查看更多 一个变量怎么做呢
   		this.look = !this.look;
   		this.collect = !this.collect
-  	},
+  	},*/
   	goBrand(index,name){ //去品牌列表页
   		this.$router.push({
         path:"/" + 'brand/' + index

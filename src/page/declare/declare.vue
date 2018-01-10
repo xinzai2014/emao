@@ -22,9 +22,24 @@
                     <h3>{{item.brand_name}} {{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                     <p class="sales-number">VIN：{{item.vin_num}}</p>
-                    <p class="sales-time">
-                        <span :vinNumValue = item.order_num @click="goEdit(item.order_num,item.goods_stock_id)">售车申报</span>
-                        {{item.add_order_time}}入库
+                    <!--<p class="sales-time">-->
+                        <!--<span :vinNumValue = item.order_num @click="goEdit(item.order_num,item.goods_stock_id)">售车申报</span>-->
+                        <!--<i v-if="item.is_sell==4">申报审核未通过，请重新提交</i>-->
+                        <!--<i v-if="item.is_sell==1">申报审核中</i>-->
+                        <!--<i v-if="item.is_sell==2">申报待提交</i>-->
+                    <!--</p>-->
+                    <p class="sales-time" v-if="item.is_sell==4">
+                        <span :vinNumValue = item.order_num @click=goReject(item)>售车申报</span>
+                        <i>申报审核未通过，请重新提交</i>
+                    </p>
+                    <p class="sales-time" v-if="item.is_sell==1">
+                        <span :vinNumValue = item.order_num @click=goReject(item)>查看详情</span>
+                        <i>申报审核中</i>
+                    </p>
+                    <p class="sales-time" v-if="item.is_sell==2">
+                        <!--<span :vinNumValue = item.order_num @click="goEdit(item.id)">售车申报</span>-->
+                        <span :vinNumValue = item.order_num @click=goReject(item)>售车申报</span>
+                        <i>申报待提交</i>
                     </p>
                 </div>
             </div>
@@ -77,9 +92,45 @@
                 this.$router.push({"name":sessionStorage.getItem("prePath")})
             },
             //组件方法
-            goEdit(orderNum,goodsStockId){
-                this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
+//            //跳转到提交申报资料页
+//            goEdit(orderNum,goodsStockId){
+//                this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
+//            },
+            //跳转到申报资料审核页
+//            goAudit(id){
+//                this.$router.push('/auditDeclare/'+ id );//售车申报资料页跳转
+//            },
+//
+//            //跳转到申报资料审核未通过页
+//            goReject(id){
+//                this.$router.push('/rejectDeclare/'+ id);//售车申报资料页跳转
+//            },
+
+            //跳转到申报资料审核未通过页
+            goReject(item){
+                if (item.id){
+                    this.$router.push({
+                        path:'rejectDeclare',
+                        query:{
+                            id:item.id,
+                            is_sell:item.is_sell
+                        }
+                    })
+                    //this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );
+                }else{
+                    this.$router.push({
+                        path:'rejectDeclare',
+                        query:{
+                            is_sell:item.is_sell,
+                            orderNum : item.order_num,
+                            goods_stock_id : item.goods_stock_id
+                        }
+                    })
+                }
+
             },
+
+
             //把时间戳换成时间格式
             getLocalTime(timestamp) {
                 var date = new Date(parseInt(timestamp) * 1000);
@@ -147,8 +198,8 @@
 
                 this.showLoading = true;
                 this.preventRepeatReuqest = true;
-                this.currentPage = parseInt(this.currentPage) + 1;
-
+                this.current_page = parseInt(this.current_page) + 1;
+                this.getDeclaerData();
             }
         },
         mounted(){
@@ -165,7 +216,12 @@
             // 导航离开该组件的对应路由时调用
             // 可以访问组件实例 `this`
             next();
-            if (!(from.name == null || from.name == "soldCar" || from.name == "editDeclare" || from.name == "soldCarDetail")) {
+//            if (!(from.name == null || from.name == "soldCar" || from.name == "editDeclare" || from.name == "soldCarDetail")) {
+//                sessionStorage.setItem("prePath",from.name);
+//            }
+
+            console.log(from);
+            if (!(from.name == null || from.name == "soldCar" || from.name == "rejectDeclare" || from.name == "soldCarDetail")) {
                 sessionStorage.setItem("prePath",from.name);
             }
 

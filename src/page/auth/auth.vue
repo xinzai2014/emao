@@ -47,10 +47,22 @@
         </div>
         <div class="clear20"></div>
         <div class="authen-info">
+            <!--<p>-->
+                <!--<label>主营类型：</label>-->
+                <!--<span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>-->
+            <!--</p>-->
             <p>
-                <label>主营类型：</label>
-                <span @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">{{item.name}}</span>
+                <label>感兴趣的产品定位：</label>
             </p>
+            <div class="product-positioning">
+                <div @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">
+                    <i>{{item.name}}</i>
+                    <i>{{item.value}}</i>
+                </div>
+            </div>
+
+
+
             <div class="authen-limts">
                 <span>是否经过厂家品牌授权</span>
                 <div class="authen-limts-con">
@@ -200,19 +212,22 @@
                 postCityData:null, //城市提交数据
                 manageType:[
                     {
-                        sort:2,
-                        flag:false,
-                        name:"自主"
-                    },
-                    {
                         sort:1,
                         flag:false,
-                        name:"合资"
+                        name:"普通档产品",
+                        value:"（16万以内）"
+                    },
+                    {
+                        sort:2,
+                        flag:false,
+                        name:"高档产品",
+                        value:"（16万以上）"
                     },
                     {
                         sort:3,
                         flag:false,
-                        name:"豪华"
+                        name:"平行进口车",
+                        value:""
                     }
                 ],
                 showDialog:false,
@@ -512,12 +527,13 @@
                         city_id:this.postCityData.cityData.id,
                         district_id:this.postCityData.areaData.id,
                         address:this.address,
-                        activities:this.types,
+                        //activities:this.types,
                         brand_auth:authList,
                         booth_out_img:this.booth_out_img,
                         booth_in_img:this.booth_in_img,
                         road_license:this.road_license,
-                        repair_place:this.repair_place
+                        repair_place:this.repair_place,
+                        authorizeGrade:this.types
                     }
                 ).then(function(reponse){
                     if(reponse.body.code == 200){
@@ -596,10 +612,11 @@
                    //      cityData:null,
                    //      areaData:null
                    //  }
-                   this.types = data.activities;
+                   this.types = data.authorizeGrade;
                    this.address = data.address;
-                   if(data.activities){
-                       var manageTypeList = data.activities.split(",");
+                   if(data.authorizeGrade){
+                       var manageTypeList = data.authorizeGrade.split(",");
+
                        manageTypeList.forEach((ele,index) => {
                             var index =  this.manageType.findIndex(function(va,ind,arr){
                                 return va.sort == ele;
@@ -768,6 +785,39 @@
 
 }
 
+/*感兴趣的产品定位*/
+.product-positioning{margin-right:-.2rem;}
+
+.authen-info .product-positioning div.active{
+    background:#d6ab55;
+    color:#fff;
+}
+.authen-info .product-positioning div{
+    display:block;
+    float:left;
+    width:30%;
+    height:1.063rem;
+    padding-top:.1335rem;
+    padding-bottom:.1335rem;
+    font-size:0.373333rem;
+    margin-right:0.2rem;
+    text-align:center;
+    border-radius:0.133333rem;
+    color:#d6ab55;
+    border:1px solid #d6ab55;
+}
+.authen-info .product-positioning div i{
+    display:block;
+    font-style:normal;
+}
+.authen-info .product-positioning div:nth-child(3){
+    height:1.063rem;
+}
+.authen-info .product-positioning div:nth-child(3) i{
+    display:block;
+    font-style:normal;
+    line-height:1.063rem;
+}
 /*资料*/
 .user-info{
     padding:0.533333rem 0;
