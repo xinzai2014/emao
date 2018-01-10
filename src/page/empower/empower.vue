@@ -767,6 +767,10 @@
 			        	this.delBtn = true;
 			        	this.addBtn = false;
 			        }
+			        if(data.shareholderRatio.length == 3 || data.shareholderRatio.length == 4){
+			        	this.delBtn = true;
+			        	this.addBtn = true;
+			        }
 			        if(data.grantStatus){
 			        	this.grantStatus = data.grantStatus;
 			        }
