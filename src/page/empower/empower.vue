@@ -766,9 +766,6 @@
 			        if(data.shareholderRatio.length == 5){
 			        	this.delBtn = true;
 			        	this.addBtn = false;
-			        }else{
-			        	this.delBtn = true;
-			        	this.addBtn = true;
 			        }
 			        if(data.grantStatus){
 			        	this.grantStatus = data.grantStatus;
