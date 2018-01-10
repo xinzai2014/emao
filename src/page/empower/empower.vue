@@ -108,7 +108,7 @@
                     		</div>
                     		<div class="empower-btn">
                     			<p><span v-show="addBtn" class="add" @click="addTable">添加<em></em></span></p>
-                    			<p><span v-show="delBtn" class="del" @click="delTable">删除<em></em></span></p>
+                    			<p><span v-show="delBtn"  class="del" @click="delTable">删除<em></em></span></p>
                     		</div>
 		        		</div>
 	        		</div>
@@ -152,6 +152,7 @@
 		    	channel:'',//渠道
 		    	area:'',//展厅面积
 		    	showDialog:false,
+		    	lenbtn:false,
 		    	uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
@@ -758,8 +759,16 @@
 				        	this.StockSelect = true;
 				        }
 			        }
+			        
 			        if(data.shareholderRatio.length > 0){
 			        	this.itemsTabel = data.shareholderRatio;
+			        }
+			        if(data.shareholderRatio.length == 5){
+			        	this.delBtn = true;
+			        	this.addBtn = false;
+			        }else{
+			        	this.delBtn = true;
+			        	this.addBtn = true;
 			        }
 			        if(data.grantStatus){
 			        	this.grantStatus = data.grantStatus;
