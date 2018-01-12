@@ -179,7 +179,7 @@
                 aptitude_text:'',//弹框内容
                 itemsStall:[
                 	{ name: '普通档产品',value:'（16万以内）',type:1,flag:false},
-		            { name: '高档档产品',value:'（16万以上）',type:2,flag:false},
+		            { name: '高档产品',value:'（16万以上）',type:2,flag:false},
 		            { name: '平行进口车',value:'',type:3,flag:false},
                 ],
                 itemsAptitude: [
