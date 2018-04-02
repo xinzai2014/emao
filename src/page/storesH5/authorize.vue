@@ -138,7 +138,7 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
-
+			    	alert(1);
 			    },function(){
 			    })
 			    if(this.data.joinStatus == 1){
@@ -219,6 +219,7 @@
 		mounted(){
 			//组件初始化
 			//加盟还是授权
+			alert(1);
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.anchorName = this.$route.query.anchor || '';
 			if(this.anchorName){
@@ -226,8 +227,9 @@
 			}else{
 				this.anchor = false;
 			}
+			alert(2);
 	        this.fullData();
-	        if(this.$route.query.token){
+	        if(this.token){
 	            this.titHide = false;
         		document.title='权益选择';
 	        }
