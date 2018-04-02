@@ -230,6 +230,7 @@
 			alert(2);
 	        //this.fullData();
 	        
+	        alert(window.location.href)
 	        alert(this.token)
 	        if(this.token){
 	            this.titHide = false;
