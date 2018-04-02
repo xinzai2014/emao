@@ -138,7 +138,7 @@
 			        params:data
 			    }).then(function (response) { 
 			    	var data = response.body.data;
-			    	alert(1);
+
 			    },function(){
 			    })
 			    if(this.data.joinStatus == 1){
@@ -228,12 +228,14 @@
 				this.anchor = false;
 			}
 			alert(2);
-	        this.fullData();
+	        //this.fullData();
+	        
+	        alert(this.token)
 	        if(this.token){
 	            this.titHide = false;
         		document.title='权益选择';
 	        }
-	        this.goAnchor();
+	        //this.goAnchor();
 		}
 	}
 
