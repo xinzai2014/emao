@@ -540,6 +540,7 @@ router.beforeEach((to, from, next) => {
     if(token == null){ //用于app内部跳转多个参数后续完善
         var href = window.location.href,
             str = href.indexOf('token=');
+            alert(window.location.href);
             if(str != -1){
                 token = href.substr(str+6);
             }  
