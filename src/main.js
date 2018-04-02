@@ -190,3 +190,4 @@ var obj = new Vue({
     }
   }*/
 })
+
