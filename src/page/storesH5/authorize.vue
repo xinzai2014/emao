@@ -221,6 +221,7 @@
 			//加盟还是授权
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.anchorName = this.$route.query.anchor || '';
+			alert(this.anchorName);
 			if(this.anchorName){
 				this.anchor = true;
 			}else{
