@@ -149,6 +149,7 @@
             },
             franchFun(){ //加盟跳转
             	window.location = 'emaotaochemao://push/infocomplete?type=0';
+            	this.layerMask = false;
             },
             authFun(tagUrl,status){ //授权店跳转
             	if(!this.data.dataStatus){ //没有填写打款账户
@@ -190,11 +191,10 @@
             		if(this.anchorName == 'newAnchor'){
             			window.scrollTo(0,0);
             		}else{
-            			console.log('ok');
             			window.scrollTo(0,(anchor.offsetTop)+180);
             		}
             		
-            		console.log(anchor.offsetTop);
+            		
             	}
 		        
 		    },
@@ -229,11 +229,19 @@
 	            this.titHide = false;
         		document.title='权益选择';
 	        }
-	        this.goAnchor();
+	        setTimeout(()=>{
+	        	this.goAnchor();
+	        },500)
+	        
 		}
 	}
 
 </script>
+<style scoped>
+	body,html{
+		height: auto;
+	}
+</style>
 <style>
 	.franch-wrap{
 		width: 100%;
@@ -414,7 +422,7 @@
 	}
 	.layer-btn{
 		position: absolute;
-		left: 0;
+		right: 0;
 		bottom: -0.026667rem;
 		width: 100%;
 		background: #f5f5f5;
