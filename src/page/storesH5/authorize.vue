@@ -34,7 +34,7 @@
 					</div>
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.grantExpense}}</div>
-					<div class="new-btn" v-if="showText" @click="layerFun">需要申请加盟店</div>
+					<div class="new-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
 					<div class="new-btn" v-else @click="authFun(newAnchor,1)">成为新车授权店</div>
 				</div>
 				<div class="parallel-ct" id="paraAnchor" v-if="!data.empowerImportedStatus">
@@ -44,7 +44,7 @@
 					</div>
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.empowerImportedExpense}}</div>
-					<div class="parallel-btn" v-if="showText" @click="layerFun">需要申请加盟店</div>
+					<div class="parallel-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
 					<div class="parallel-btn" v-else @click="authFun(paraAnchor,2)">成为平行进口车授权店</div>
 				</div>
 				<div class="fast-ct" id="fastAnchor" v-if="!data.empowerFastStatus">
@@ -54,7 +54,7 @@
 					</div>
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.empowerFastExpense}}</div>
-					<div class="fast-btn" v-if="showText" @click="layerFun">需要申请加盟店</div>
+					<div class="fast-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
 					<div class="fast-btn" v-else @click="authFun(fastAnchor,3)">成为快弹车授权店</div>
 				</div>
 			</div>
@@ -219,7 +219,6 @@
 		mounted(){
 			//组件初始化
 			//加盟还是授权
-			alert(1);
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.anchorName = this.$route.query.anchor || '';
 			if(this.anchorName){
@@ -227,16 +226,13 @@
 			}else{
 				this.anchor = false;
 			}
-			alert(2);
-	        //this.fullData();
+	        this.fullData();
 	        
-	        alert(window.location.href)
-	        alert(this.token)
 	        if(this.token){
 	            this.titHide = false;
         		document.title='权益选择';
 	        }
-	        //this.goAnchor();
+	        this.goAnchor();
 		}
 	}
 
