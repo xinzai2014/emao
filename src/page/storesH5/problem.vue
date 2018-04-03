@@ -49,9 +49,9 @@
             dataFun(){//数据处理
             	if(this.identity == 1){
             		this.identityName = '总经理'
-            	}else if(his.identity == 2){
+            	}else if(this.identity == 2){
             		this.identityName = '销售主管'
-            	}else if(his.identity == 3){
+            	}else if(this.identity == 3){
             		this.identityName = '其他'
             	}
             	var arr = this.couponStr.split(";");
