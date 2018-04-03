@@ -65,7 +65,7 @@
             	//console.log(manageTypeList);
             },
             couponFun(){
-            	window.location = 'emaotaochemao://push/answerquestion?companyname='+this.companyName+'&linkname='+this.linkName+'&identity='+this.identity;
+            	window.location = encodeURI('emaotaochemao://push/answerquestion?companyname='+encodeURIComponent(this.companyName)+'&linkname='+encodeURIComponent(this.linkName)+'&identity='+encodeURIComponent(this.identity));
             	
             }
 
