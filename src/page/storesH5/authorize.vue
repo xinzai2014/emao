@@ -12,7 +12,7 @@
 					<p class="franch-top">
 						<span class="link-auth" @click="authShow"></span>
 					</p>
-					<p class="franch-text" if="data.joinStatus != ''">
+					<p class="franch-text" if="data.joinStatus == 0 || data.joinStatus == 1">
 						<span v-for="(item,index) in data.joinCouponData">{{item.price}}*{{item.num}}优惠券</span>
 					</p>
 					<div class="franch-btn" @click="franchFun">成为加盟店</div>
@@ -27,7 +27,7 @@
 			</header>
 			<span class="anchor-tit"></span>
 			<div class="anchor-ct" if="data.joinStatus == 1">
-				<div class="new-ct" id="newAnchor" v-if="!data.grantStatus">
+				<div class="new-ct" id="newAnchor" v-if="data.grantStatus == 0">
 					<span class="new-top"></span>
 					<div class="new-reward">
 						<span v-for="(item,index) in data.grantCouponData">{{item.price}}*{{item.num}}优惠券</span>
@@ -35,7 +35,7 @@
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.grantExpense}}</div>
 					<div class="new-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
-					<div class="new-btn" v-else @click="authFun(newAnchor,1)">成为新车授权店</div>
+					<div class="new-btn" v-else @click="authFun('newAnchor',1)">成为新车授权店</div>
 				</div>
 				<div class="parallel-ct" id="paraAnchor" v-if="data.empowerImportedStatus == 0">
 					<span class="parallel-top"></span>
@@ -45,7 +45,7 @@
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.empowerImportedExpense}}</div>
 					<div class="parallel-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
-					<div class="parallel-btn" v-else @click="authFun(paraAnchor,2)">成为平行进口车授权店</div>
+					<div class="parallel-btn" v-else @click="authFun('paraAnchor',2)">成为平行进口车授权店</div>
 				</div>
 				<div class="fast-ct" id="fastAnchor" v-if="data.empowerFastStatus == 0">
 					<span class="fast-top"></span>
@@ -55,7 +55,7 @@
 					<span class="anchor-icon"></span>
 					<div class="new-cost">{{data.empowerFastExpense}}</div>
 					<div class="fast-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
-					<div class="fast-btn" v-else @click="authFun(fastAnchor,3)">成为快弹车授权店</div>
+					<div class="fast-btn" v-else @click="authFun('fastAnchor',3)">成为快弹车授权店</div>
 				</div>
 			</div>
 			<div class="layer-mask" v-show="layerMask">
@@ -137,22 +137,21 @@
 			        method:"GET",
 			        params:data
 			    }).then(function (response) { 
-			    	var data = response.body.data;
-
+			    	this.data = response.body.data;
+			    	if(this.data.joinStatus == 1){
+				    	this.showText = true;
+				    }else{
+				    	this.showText = false
+				    }
 			    },function(){
 			    })
-			    if(this.data.joinStatus == 1){
-			    	this.showText = true;
-			    }else{
-			    	this.showText = false
-			    }
+			    
             },
             franchFun(){ //加盟跳转
             	window.location = 'emaotaochemao://push/infocomplete?type=0';
             },
             authFun(tagUrl,status){ //授权店跳转
             	if(!this.data.dataStatus){ //没有填写打款账户
-            		alert(tagUrl)
             		window.location = 'emaotaochemao://push/bankaccount?anchor=' + tagUrl;
             	} else{
             		if(status == 1){ //新车
@@ -219,7 +218,6 @@
 			//加盟还是授权
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.anchorName = this.$route.query.anchor || '';
-			alert(this.anchorName);
 			if(this.anchorName){
 				this.anchor = true;
 			}else{
