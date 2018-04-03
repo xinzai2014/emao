@@ -153,6 +153,7 @@
             },
             authFun(tagUrl,status){ //授权店跳转
             	if(!this.data.dataStatus){ //没有填写打款账户
+            		alert(tagUrl);
             		window.location = 'emaotaochemao://push/bankaccount?anchor=' + tagUrl;
             		this.closeCurrentWindow();
             	} else{
