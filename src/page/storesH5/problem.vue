@@ -66,6 +66,7 @@
             },
             couponFun(){
             	window.location = 'emaotaochemao://push/answerquestion/?companyname='+this.companyName+'&linkname='+this.linkName+'&identity='+this.identity;
+            	
             }
 
 		},

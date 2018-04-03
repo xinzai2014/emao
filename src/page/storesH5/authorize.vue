@@ -152,13 +152,11 @@
             },
             authFun(tagUrl,status){ //授权店跳转
             	if(!this.data.dataStatus){ //没有填写打款账户
-            		alert(tagUrl);
+            		alert(tagUrl)
             		window.location = 'emaotaochemao://push/bankaccount?anchor=' + tagUrl;
-
             	} else{
             		if(status == 1){ //新车
             			window.location = 'emaotaochemao://push/infocomplete?type=' + status;
- 
             		}
             		if(status == 2){ //平行
             			var data = {
@@ -174,7 +172,8 @@
 					    		window.location = 'emaotaochemao://push/infosubmit?msg=' + data.msg;
 					    	}else{
 					    		window.location = 'emaotaochemao://push/infocomplete?type=' + status;
-					   
+					    	}
+					    	
 
 					    },function(){
 					    })
@@ -182,7 +181,7 @@
             		}
             		if(status == 3){ //快弹车
             			window.location = 'emaotaochemao://push/infocomplete?type=' + status;
- 
+            			
             		}
             	}
             },
