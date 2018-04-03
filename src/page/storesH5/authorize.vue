@@ -26,7 +26,7 @@
 				<strong class="brand-list-title">权益选择</strong>
 			</header>
 			<span class="anchor-tit"></span>
-			<div class="anchor-ct" if="data.joinStatus != ''">
+			<div class="anchor-ct" if="data.joinStatus == 1">
 				<div class="new-ct" id="newAnchor" v-if="!data.grantStatus">
 					<span class="new-top"></span>
 					<div class="new-reward">
@@ -37,7 +37,7 @@
 					<div class="new-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
 					<div class="new-btn" v-else @click="authFun(newAnchor,1)">成为新车授权店</div>
 				</div>
-				<div class="parallel-ct" id="paraAnchor" v-if="!data.empowerImportedStatus">
+				<div class="parallel-ct" id="paraAnchor" v-if="data.empowerImportedStatus == 0">
 					<span class="parallel-top"></span>
 					<div class="new-reward">
 						<span v-for="(item,index) in data.empowerImportedCouponData">{{item.price}}*{{item.num}}优惠券</span>
@@ -47,7 +47,7 @@
 					<div class="parallel-btn" v-if="showText" @click="layerFun">需先申请加盟店</div>
 					<div class="parallel-btn" v-else @click="authFun(paraAnchor,2)">成为平行进口车授权店</div>
 				</div>
-				<div class="fast-ct" id="fastAnchor" v-if="!data.empowerFastStatus">
+				<div class="fast-ct" id="fastAnchor" v-if="data.empowerFastStatus == 0">
 					<span class="fast-top"></span>
 					<div class="new-reward">
 						<span v-for="(item,index) in data.empowerFastCouponData">{{item.price}}*{{item.num}}优惠券</span>
