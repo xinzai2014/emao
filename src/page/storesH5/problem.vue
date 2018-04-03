@@ -90,11 +90,8 @@
 <style>
 	.problem-wrap{
 		width: 100%;
-		height: 100%;
 		background: #feeda4;
 		position: absolute;
-		left: 0;
-		bottom: 0;
 		overflow: hidden;
 
 	}
