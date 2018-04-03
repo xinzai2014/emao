@@ -12,7 +12,7 @@
 					<span v-for="(item,index) in couponArr">您已获得{{item}}</span>
 				</p>
 			</div>
-			<span class="problem-btn">领取优惠券</span>
+			<span class="problem-btn" @click="couponFun">领取优惠券</span>
 			<span class="problem-icon"></span>
 		</div>
 	</div>
@@ -63,6 +63,10 @@
 				}
 				this.couponArr = arr;
             	//console.log(manageTypeList);
+            },
+            couponFun(){
+            	window.location = 'emaotaochemao://push/answerquestion/?companyname='+this.companyName+'&linkname='+this.linkName+'&identity='+this.identity;
+            	this.closeCurrentWindow();
             }
 
 		},
