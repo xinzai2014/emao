@@ -65,10 +65,8 @@
             	//console.log(manageTypeList);
             },
             couponFun(){
-            	alert('ok');
             	window.location = 'emaotaochemao://push/answerquestion/?companyname='+this.companyName+'&linkname='+this.linkName+'&identity='+this.identity;
-            	alert(window.location)
-            	//this.closeCurrentWindow();
+            	this.closeCurrentWindow();
             }
 
 		},
