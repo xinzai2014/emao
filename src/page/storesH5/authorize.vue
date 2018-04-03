@@ -231,7 +231,7 @@
 	        }
 	        setTimeout(()=>{
 	        	this.goAnchor();
-	        },500)
+	        },1000)
 	        
 		}
 	}
