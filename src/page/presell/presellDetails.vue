@@ -1,0 +1,169 @@
+<template>
+    <div>
+        <header class="user-tit declare-head">
+            <span class="white-lt"></span>
+            预售详情
+            <router-link to="/soldCar">
+                <em>分享</em>
+            </router-link>
+        </header>
+        <section>
+            图片滚动
+        </section>
+        <section class="car-info-wrap">
+            <div class="car-parameter">
+                <p class="car-name">2014款 经典版 1.6L 自由手动优 </p>
+                <div class="car-price">
+                    <p>
+                        <span>预售价:</span>
+                        <strong>328.59</strong>
+                        <em>万</em>
+                    </p>
+                    <p>
+                        <span>指导价：</span>
+                        <em><i>333.39</i>万</em>
+                    </p>
+                    <p class="car-count-down">
+                        <span>距结束剩余</span>
+                        <span>2天20时10分</span>
+                    </p>
+                </div>
+                <p class="car-parameter-tips">定金 2000 元，未按时到达指定仓库，退回定金并赔付500 代金券</p>
+            </div>
+
+            <div class="car-time-place">
+                <ul>
+                    <li>
+                        <span>到货时间：</span>
+                        <em>2018年4月10日前</em>
+                    </li>
+                    <li>
+                        <span>提货地点：</span>
+                        <em>北京、武汉、广州、成都、沈阳</em>
+                    </li>
+                    <li>
+                        <span>车型颜色：</span>
+                        <em>黑色/米色  红色、米色</em>
+                    </li>
+                    <li>
+                        <span>提货地点：</span>
+                        <em>北京、武汉、广州、成都、沈阳</em>
+                    </li>
+                    <li>
+                        <span>生产日期：</span>
+                        <em>2018.03</em>
+                    </li>
+                </ul>
+
+
+                <div class="car-reserve">
+                    <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
+                    <p class="car-reserve-tips">
+                        <span>河北</span>再订<i>3</i>台<span> <span>石家庄</span>提货</span>
+                    </p>
+                    <div class="car-reserve-roll">
+                        <ul>
+                            <li>
+                                <span>58分钟前</span>
+                                <span>保定黄*****有限公司</span>
+                                <span>预定1台</span>
+                            </li>
+                            <li>
+                                <span>58分钟前</span>
+                                <span>保定黄*****有限公司</span>
+                                <span>预定1台</span>
+                            </li>
+                            <li>
+                                <span>58分钟前</span>
+                                <span>保定黄*****有限公司</span>
+                                <span>预定1台</span>
+                            </li>
+                            <li>
+                                <span>58分钟前</span>
+                                <span>保定黄*****有限公司</span>
+                                <span>预定1台</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="car-share"><img src="../../assets/presell-share.png" alt=""></p>
+                    <p class="car-batch-count">已有 <span>一</span>批车辆发往石家庄</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="car-presell-flow">
+            <p>预定流程</p>
+            <img src="../../assets/car-presell-flow.png" alt="">
+        </section>
+
+        <section class="car-presell-explain">
+            <p class="presell-explain-title">预定说明</p>
+            <ul class="presell-explain-con">
+                <li>
+                    <span>1、</span>
+                    定金可以抵扣车款；
+                </li>
+                <li>
+                    <span>2、</span>
+                    如因一猫原因造成车辆延迟到达指定仓库，经销商可以选择取消订单，一猫退回定金并赔付500元代金券；
+                </li>
+                <li>
+                    <span>3、</span>
+                    预定成功后，系统会为您自动生成全款订单，车辆入库后可补全款；
+                </li>
+                <li>
+                    <span>4、</span>
+                    如有疑问咨询当地销售经理，或联系客服 400-000-0000
+                </li>
+            </ul>
+        </section>
+
+        <section class="car-reserve-btn">
+            <input type="text" name="立即预定" value="立即预定" />
+        </section>
+
+    </div>
+</template>
+<style>
+    .user-tit{font-weight:normal;}
+    .declare-head{position:relative;}
+    .declare-head em{position:absolute;right:.4rem;color:#d5aa5c;}
+    .car-info-wrap{padding:.53rem .4rem .4rem;  background-color:#fff;  }
+    .car-parameter{padding-bottom:.4rem;border-bottom:1px solid #e0e0e0;}
+    .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
+    .car-price{position:relative;}
+    .car-price p:nth-of-type(1) {color:#fc3036;font-size:.4rem;}
+    .car-price p:nth-of-type(1) strong{font-size:.427rem;font-weight:bold;}
+    .car-price p:nth-of-type(1) em{font-size:.32rem;}
+    .car-price p:nth-of-type(2) {font-size:.32rem;color:#999;}
+    .car-price p:nth-of-type(2) em{text-decoration:line-through;}
+    .car-price p:nth-of-type(2) em i{color:#999;}
+    .car-count-down{position:absolute;top:0;right:-.4rem;padding:.1333rem .4rem;color:#fff;border-top-left-radius:.667rem;border-bottom-left-radius:.667rem;background-color:#fc3238;}
+    .car-count-down span{display:block;}
+    .car-count-down span:nth-of-type(2){font-size:.3467rem;font-weight:bold;}
+    .car-parameter-tips{margin-top:.32rem;color:#ff825c;font-size:.3467rem;}
+    .car-time-place{padding-top:.4rem;}
+    .car-time-place ul li{margin-bottom:.267rem;}
+    .car-time-place ul li span{font-size:.32rem;color:#999;}
+    .car-time-place ul li em{font-size:.32rem;color:#333;}
+    .car-reserve{padding:.467rem .5333rem;background-color:#fef9f1;}
+    .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
+    .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
+    .car-reserve-tips i{font-weight:bold;font-style:normal;}
+    .car-reserve-roll ul li{margin-bottom:.267rem;font-size:.32rem;color:#999;}
+    .car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}
+    .car-share{text-align:center;}
+    .car-share img{width:7.147rem;height:1.68rem;}
+    .car-batch-count{text-align:center;color:#2c2c2c;font-size:.32rem;}
+    .car-presell-flow{margin-top:.4rem;padding-top:.533rem;padding-bottom:.533rem;text-align:center;background-color:#fff;}
+    .car-presell-flow p{font-size:.372rem;color:#000;text-align:center;}
+    .car-presell-flow img{width:7.707rem;height:1.88rem;margin-top:.867rem;}
+    .car-presell-explain{margin-top:.4rem;margin-bottom:.4rem;padding:.533rem;background-color:#fff;}
+    .presell-explain-title{margin-bottom:.6rem;font-size:.3467rem;color:#000;text-align:center;}
+    .presell-explain-con li{position:relative;margin-left:.6rem;margin-bottom:.267rem;color:#999;font-size:.4rem;line-height:.533rem;}
+    .presell-explain-con li span{position:absolute;left:-.6rem;}
+    .car-reserve-btn{height:1.867rem;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;}
+    .car-reserve-btn input{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
+</style>

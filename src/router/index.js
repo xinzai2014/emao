@@ -146,6 +146,22 @@ const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/em
 
 
 
+
+//预售详情
+const presellDetails = r => require.ensure([], () => r(require('../page/presell/presellDetails')),'presellDetails')
+
+//预售确认预定
+const presellReserve = r => require.ensure([], () => r(require('../page/presell/presellReserve')),'presellReserve')
+
+//预售预定成功
+const presellSuccess = r => require.ensure([],() => r(require('../page/presell/presellSuccess')),'presellSuccess')
+
+//预售订单列表
+const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
+
+
+
+
 Vue.use(Router)
 
 var router=new Router({
@@ -491,6 +507,26 @@ var router=new Router({
             path: '/empower/empowerAdopt',  //授权店审核通过
             name: 'empowerAdopt',
             component: empowerAdopt
+        },
+        {
+            path:'/presell/presellDetails',  //预售详情页
+            name:'presellDetails',
+            component:presellDetails
+        },
+        {
+            path:'/presell/presellReserve',   //预售确认预定
+            name:'presellReserve',
+            component:presellReserve
+        },
+        {
+            path:'/presell/presellSuccess',  //预定成功
+            name:'presellSuccess',
+            component:presellSuccess
+        },
+        {
+            path:'/presell/presellList',     //预售订单列表
+            name:'presellList',
+            component:presellList
         }
         
     ]
