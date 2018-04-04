@@ -152,7 +152,7 @@
             	this.layerMask = false;
             },
             authFun(tagUrl,status){ //授权店跳转
-            	if(!this.data.dataStatus){ //没有填写打款账户
+            	if(this.data.dataStatus == 0){ //没有填写打款账户
             		window.location = 'emaotaochemao://push/bankaccount?anchor=' + tagUrl;
             	} else{
             		if(status == 1){ //新车
