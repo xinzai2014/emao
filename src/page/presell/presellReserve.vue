@@ -66,9 +66,14 @@
                 </li>
             </ul>
             <p class="car-account-voucher">上传付款凭证</p>
-            <div>
-                上传图片组件
-            </div>
+
+            <!--<div>-->
+                <!--上传图片组件-->
+            <!--</div>-->
+
+            <!--上传图片组件-->
+            <uploader :uploadData="uploadData" @getUpload="getUpload"></uploader>
+
             <p class="car-account-tips">注：使用个人账户打款，定金无法开具增值税专用发票</p>
         </section>
 
@@ -110,6 +115,33 @@
 </template>
 
 
+<script>
+    import uploader from '../../components/common/uploader/uploader';
+    export default{
+        name:'presellReserve',
+        data(){
+            return {
+                //上传付款凭证
+                uploadData:{
+                    url:"https://tcmapi.emao.com/upload",
+                    count:1,                        //传几张照片
+                    flag:"presellVoucher",           //照片标志
+                    image:"static/presell-voucher.jpg"      //照片路径
+                }
+            }
+        },
+        methods:{
+            getUpload(data,flag){
+                this.dataURL[flag] = data;
+            },
+        },
+        components:{
+            uploader
+        }
+    }
+</script>
+
+
 <style>
     .user-tit{font-weight:normal;}
     .user-tit .white-lt {  position: absolute;  left: 0.48rem;  top: 0.4rem;  }
@@ -136,14 +168,14 @@
     .car-colour-vount ul li:last-child{border-bottom:none;}
     .car-account-wrap{margin-top:.4rem;padding:.53rem .4rem .4rem;background-color:#fff;}
     .car-account-title{font-size: .4rem; color: #000;}
-    .car-account-wrap ul{margin-top:.333rem;padding:.333rem .333rem 0 .333rem;background-color:#fef9f1;}
+    .car-account-wrap ul{margin-top:.333rem;padding:.333rem;background-color:#fef9f1;}
     .car-account-wrap ul li{ margin-bottom:.333rem;font-size: .346rem;}
     .car-account-wrap ul li span{display:inline-block;width:1.7333rem;color: #999;}
     .car-account-wrap ul li em{color: #333;}
-    .car-account-wrap ul li:last-child{color:#fc3036;}
+    .car-account-wrap ul li:last-child{margin-bottom:0;color:#fc3036;}
     .car-account-wrap ul li:last-child span{color:#fc3036;}
     .car-account-wrap ul li:last-child em{color:#fc3036;}
-    .car-account-voucher{margin-top:.4rem;margin-bottom:.4rem;}
+    .car-account-voucher{margin-top:.4rem;margin-bottom:.4rem;font-size:.4rem;}
     .car-account-tips{color:#fc3036;}
     .car-warehouse-wrap{margin-top:.4rem;margin-bottom:.4rem;padding:.53rem .4rem .4rem;background-color:#fff;}
     .car-warehouse-title{margin-bottom:.5333rem;font-size: .4rem; color: #000;}

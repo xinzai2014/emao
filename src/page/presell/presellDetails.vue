@@ -7,9 +7,15 @@
                 <em>分享</em>
             </router-link>
         </header>
-        <section>
-            图片滚动
-        </section>
+        <!--<section>-->
+            <!--图片滚动-->
+        <!--</section>-->
+
+        <!--预售详情-图片滚动-->
+        <!--<swiper :circular="circular" v-if="circular.length"></swiper>-->
+
+        <!--<swiper></swiper>-->
+
         <section class="car-info-wrap">
             <div class="car-parameter">
                 <p class="car-name">2014款 经典版 1.6L 自由手动优 </p>
@@ -43,7 +49,7 @@
                     </li>
                     <li>
                         <span>车型颜色：</span>
-                        <em>黑色/米色  红色、米色</em>
+                        <em>黑色/米色  红色/米色</em>
                     </li>
                     <li>
                         <span>提货地点：</span>
@@ -62,29 +68,35 @@
                         <span>河北</span>再订<i>3</i>台<span> <span>石家庄</span>提货</span>
                     </p>
                     <div class="car-reserve-roll">
-                        <ul>
-                            <li>
-                                <span>58分钟前</span>
-                                <span>保定黄*****有限公司</span>
-                                <span>预定1台</span>
-                            </li>
-                            <li>
-                                <span>58分钟前</span>
-                                <span>保定黄*****有限公司</span>
-                                <span>预定1台</span>
-                            </li>
-                            <li>
-                                <span>58分钟前</span>
-                                <span>保定黄*****有限公司</span>
-                                <span>预定1台</span>
-                            </li>
-                            <li>
-                                <span>58分钟前</span>
-                                <span>保定黄*****有限公司</span>
-                                <span>预定1台</span>
+                        <ul ref="con1" :class="{anim:animate==true}">
+                            <!--<li>-->
+                                <!--<span>58分钟前</span>-->
+                                <!--<span>保定黄*****有限公司</span>-->
+                                <!--<span>预定1台</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<span>58分钟前</span>-->
+                                <!--<span>保定黄*****有限公司</span>-->
+                                <!--<span>预定1台</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<span>58分钟前</span>-->
+                                <!--<span>保定黄*****有限公司</span>-->
+                                <!--<span>预定1台</span>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<span>58分钟前</span>-->
+                                <!--<span>保定黄*****有限公司</span>-->
+                                <!--<span>预定1台</span>-->
+                            <!--</li>-->
+                            <li v-for="item in items">
+                                <span>{{item.time}}</span>
+                                <span>{{item.company}}</span>
+                                <span>{{item.count}}</span>
                             </li>
                         </ul>
                     </div>
+
                     <p class="car-share"><img src="../../assets/presell-share.png" alt=""></p>
                     <p class="car-batch-count">已有 <span>一</span>批车辆发往石家庄</p>
                 </div>
@@ -115,7 +127,7 @@
                 </li>
                 <li>
                     <span>4、</span>
-                    如有疑问咨询当地销售经理，或联系客服 400-000-0000
+                    如有疑问咨询当地销售经理，或联系客服 400-825-2368
                 </li>
             </ul>
         </section>
@@ -126,6 +138,62 @@
 
     </div>
 </template>
+
+
+<script>
+    import swiper from '../../components/common/swiper/swiper'
+    export default{
+        name:'presellDetails',
+        data(){
+            return {
+                //轮播图数据
+                circular:[],
+
+
+                animate:false,
+                items:[
+                    {
+                        time:"58分钟前",
+                        company:'保定黄*****有限公司',
+                        count:'预定1台'
+
+                    },
+                    {
+                        time:"10分钟前",
+                        company:'郑州*****有限公司',
+                        count:'预定2台'
+
+                    },
+                    {
+                        time:"20分钟前",
+                        company:'北京*****有限公司',
+                        count:'预定3台'
+
+                    }
+//                    {name:"雷军"},
+//                    {name:"王勤"}
+                ]
+
+            }
+        },
+        created(){
+            setInterval(this.scroll,2000)
+        },
+        methods:{
+            scroll(){
+                this.animate=true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
+                setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
+                    this.items.push(this.items[0]);  // 将数组的第一个元素添加到数组的
+                    this.items.shift();               //删除数组的第一个元素
+                    this.animate=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
+                },500)
+            }
+        }
+
+
+    }
+</script>
+
 <style>
     .user-tit{font-weight:normal;}
     .declare-head{position:relative;}
@@ -152,7 +220,9 @@
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
-    .car-reserve-roll ul li{margin-bottom:.267rem;font-size:.32rem;color:#999;}
+    .car-reserve-roll{overflow:hidden;height:.4267rem;}
+    /*.car-reserve-roll ul{height:.4267rem;}*/
+    .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;color:#999;}
     .car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}
     .car-share{text-align:center;}
     .car-share img{width:7.147rem;height:1.68rem;}
@@ -166,4 +236,23 @@
     .presell-explain-con li span{position:absolute;left:-.6rem;}
     .car-reserve-btn{height:1.867rem;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;}
     .car-reserve-btn input{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
+
+
+    /*#box{*/
+        /*width: 300px;*/
+        /*height: 32px;*/
+        /*overflow: hidden;*/
+        /*padding-left: 30px;*/
+        /*border: 1px solid black;*/
+    /*}*/
+    .anim{
+        transition: all 0.5s;
+        margin-top: -.4rem;
+    }
+    /*#con1 li{*/
+        /*list-style: none;*/
+        /*line-height: 30px;*/
+        /*height: 30px;*/
+    /*}*/
+
 </style>
