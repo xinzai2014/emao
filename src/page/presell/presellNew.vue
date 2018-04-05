@@ -19,36 +19,27 @@
                         <em><i>333.39</i>万</em>
                     </p>
                 </div>
-                <div class="car-parameter-tips">定金 {{earnest}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
+                <div class="car-parameter-tips">定金 {{earnest}}元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
             </div>
         </section>
 
         <section class="car-colour-vount">
             <p class="car-colour-title">选择外观/内饰颜色和数量</p>
             <ul>
-                <!--<li>-->
-                    <!--<p><span>黑色</span> / <span>米色</span> </p>-->
-                    <!--<p>库存： <span>{{inventory}}</span> 台</p>-->
-                    <!--<p><span v-on:click="counterSubtract">-</span> <span> <input type="text" v-model="count"></span> <span v-on:click="counterAugment">+</span> </p>-->
-                <!--</li>-->
-
-
                 <li v-for="(item,index) in decorateData">
                     <p><span>{{item.waiguan}}</span> / <span>{{item.neishi}}</span> </p>
                     <p>库存： <span>{{item.kucun}}</span> 台</p>
-                    <p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.count" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>
+                    <p><span @click="subtractAugment(index)">-</span> <span> <input type="text" v-model="item.count" @input="countMonitor(index)"></span> <span @click="countAugment(index)">+</span> </p>
                 </li>
-
-
                 <!--<li>-->
                     <!--<p><span>黑色</span> / <span>米色</span> </p>-->
                     <!--<p>库存： <span>5</span> 台</p>-->
-                    <!--<p><span>-</span> <span> <input type="text" name=""  v-model="count2"></span> <span>+</span> </p>-->
+                    <!--<p><span>-</span> <span> <input type="text" name=""></span> <span>+</span> </p>-->
                 <!--</li>-->
                 <!--<li>-->
                     <!--<p><span>黑色</span> / <span>米色</span> </p>-->
                     <!--<p>库存： <span>5</span> 台</p>-->
-                    <!--<p><span>-</span> <span> <input type="text" name=""  v-model="count3"></span> <span>+</span> </p>-->
+                    <!--<p><span>-</span> <span> <input type="text" name=""></span> <span>+</span> </p>-->
                 <!--</li>-->
             </ul>
         </section>
@@ -71,13 +62,13 @@
                 </li>
                 <li>
                     <span>定金金额：</span>
-                    <em>{{earnesTotal}}</em>元
+                    <em>{{earnestTotal}}</em>元
                 </li>
             </ul>
             <p class="car-account-voucher">上传付款凭证</p>
 
             <!--<div>-->
-                <!--上传图片组件-->
+            <!--上传图片组件-->
             <!--</div>-->
 
             <!--上传图片组件-->
@@ -133,136 +124,104 @@
     export default{
         name:'presellReserve',
         data(){
-            return {
-                //上传付款凭证
-                uploadData:{
-                    url:"https://tcmapi.emao.com/upload",
-                    count:1,                        //传几张照片
-                    flag:"presellVoucher",           //照片标志
-                    image:"static/presell-voucher.jpg"      //照片路径
+        return {
+            //上传付款凭证
+            uploadData:{
+                url:"https://tcmapi.emao.com/upload",
+                count:1,                        //传几张照片
+                flag:"presellVoucher",           //照片标志
+                image:"static/presell-voucher.jpg"      //照片路径
+            },
+            showAlert:false,
+            alertText:null,
+            decorateData:[
+                {
+                    waiguan: "黑色",
+                    waiguanId: "1",
+                    neishi: "米色",
+                    neishiId: "2",
+                    kucun: "5",
+                    count:0
                 },
-                presellTotalPrices:null,
-//                count:null,
-                showAlert:false,
-                alertText:null,
-//                inventory:10,
-                earnest:1000,
-//                earnesTotal:0,
-                decorateData:[
-                    {
-                        waiguan: "黑色",
-                        waiguanId: "1",
-                        neishi: "米色",
-                        neishiId: "2",
-                        kucun: "5",
-                        count:0
-                    },
-                    {
-                        waiguan: "白色",
-                        waiguanId: "3",
-                        neishi: "米色",
-                        neishiId: "4",
-                        kucun: "10",
-                        count:0
-                    },
-                    {
-                        waiguan: "黑色",
-                        waiguanId: "5",
-                        neishi: "白色",
-                        neishiId: "6",
-                        kucun: "8",
-                        count:0
-                    }
-                ]
-//                count2:null,
-//                count3:null
+                {
+                    waiguan: "白色",
+                    waiguanId: "3",
+                    neishi: "米色",
+                    neishiId: "4",
+                    kucun: "10",
+                    count:0
+                },
+                {
+                    waiguan: "黑色",
+                    waiguanId: "5",
+                    neishi: "白色",
+                    neishiId: "6",
+                    kucun: "8",
+                    count:0
+                }
+            ],
+            earnest:2000
+
+        }
+    },
+    methods:{
+        /*上传图片相关*/
+        getUpload(data,flag){
+            this.dataURL[flag] = data;
+        },
+
+        subtractAugment(index){
+            this.decorateData[index].count -= 1;
+            if ( parseInt(this.decorateData[index].count) < 0) {
+                this.showAlert = true;
+                this.alertText = "数量不能少于0";
+                this.decorateData[index].count = 0;
             }
         },
-        methods:{
-            /*上传图片相关*/
-            getUpload(data,flag){
-                this.dataURL[flag] = data;
-            },
-
-            /*定金金额相关*/
-            getPresellTotalPrices(){
-
-            },
-
-            /*数量减*/
-//            counterSubtract(){
-//                this.count -= 1;
-//                if (this.count < 0) {
-//                    this.showAlert = true;
-//                    this.alertText = '数量不能小于0';
-//                    this.count = 0;
-//                }
-//            },
-//
-//
-//            counterAugment(){
-//                this.count += 1;
-//                if (this.count > this.inventory) {
-//                    this.showAlert = true;
-//                    this.alertText = '数量不能大于库存';
-//                    this.count = this.inventory;
-//                }
-//            }
-
-
-
-
-
-            counterSubtract(index){
-                this.decorateData[index].count -= 1;
-                if (this.decorateData[index].count < 0) {
-                    this.showAlert = true;
-                    this.alertText = '数量不能小于0';
-                    this.decorateData[index].count = 0;
-                }
-            },
-
-
-            counterAugment(index){
-                this.decorateData[index].count += 1;
-                if (this.decorateData[index].count > this.decorateData[index].kucun) {
-                    this.showAlert = true;
-                    this.alertText = '数量不能大于库存';
-                    this.decorateData[index].count = this.decorateData[index].kucun;
-                }
-            },
-            countMonitor(index){
-                if ( parseInt(this.decorateData[index].count) > parseInt(this.decorateData[index].kucun)) {
-                    this.showAlert = true;
-                    this.alertText = "数量不能大于库存";
-                    //this.decorateData[index].count = 0;
-                }
+        countAugment(index){
+            this.decorateData[index].count += 1;
+            if (parseInt(this.decorateData[index].count) > parseInt(this.decorateData[index].kucun)) {
+                this.showAlert = true;
+                this.alertText = "数量不能大于库存";
+                this.decorateData[index].count = this.decorateData[index].kucun;
             }
-
-
-
         },
-        components:{
-            uploader,
-             alertTip
-        },
-        mounted(){
-            //this.presellTotalPrices = 0;
-           // this.count = 0;
-//            this.count2 = 0;
-//            this.count3 = 0;
-        },
-        computed:{
-            earnesTotal:function(){
-                var that = this;
-                var total = 0;
-                this.decorateData.forEach(function(item,index){
-                    total += item.count * that.earnest
-                });
-                return total;
-//                return this.
+        countMonitor(index){
+            //alert(1);
+            //console.log(this.decorateData[index].count);
+            //console.log(this.decorateData[index].kucun);
+
+            //console.log(typeof(this.decorateData[index].count));
+            //console.log(typeof(this.decorateData[index].kucun));
+
+            if ( parseInt(this.decorateData[index].count) > parseInt(this.decorateData[index].kucun)) {
+                alert(2);
+                this.showAlert = true;
+                this.alertText = "数量不能大于库存";
+                alert(3);
+                this.decorateData[index].count = 0;
             }
         }
+
+
+    },
+    mounted(){
+
+    },
+    computed:{
+        earnestTotal(){
+            var total = 0;
+            var that = this;
+            this.decorateData.forEach(function(item,index){
+                total += item.count * that.earnest;
+            })
+            return total;
+        }
+    },
+    components:{
+        uploader,
+                alertTip
+    }
 
     }
 </script>
@@ -343,14 +302,6 @@
         font-size: 0.54rem;
         display: block;
     }
-    /*.weui-cell__hd {*/
-        /*padding-right: 2em;*/
-        /*float: left;*/
-        /*display: inline-block;*/
-        /*position: relative;*/
-        /*top: 0.85rem;*/
-        /*height: 2rem;*/
-    /*}*/
     .weui-icon-success{
         font-size: 23px;
         color: red;
