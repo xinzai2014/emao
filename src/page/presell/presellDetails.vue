@@ -14,50 +14,53 @@
         <!--预售详情-图片滚动-->
         <!--<swiper :circular="circular" v-if="circular.length"></swiper>-->
 
+        <!--预售详情-图片滚动-->
+        <swiper :circular="circular" v-if="circular.length"></swiper>
+
         <!--<swiper></swiper>-->
 
         <section class="car-info-wrap">
             <div class="car-parameter">
-                <p class="car-name">2014款 经典版 1.6L 自由手动优 </p>
+                <p class="car-name">{{presellData.autoName}}</p>
                 <div class="car-price">
                     <p>
                         <span>预售价:</span>
-                        <strong>328.59</strong>
+                        <strong>{{presellData.prePrice}}</strong>
                         <em>万</em>
                     </p>
                     <p>
                         <span>指导价：</span>
-                        <em><i>333.39</i>万</em>
+                        <em><i>{{presellData.guidePrice}}</i>万</em>
                     </p>
                     <p class="car-count-down">
                         <span>距结束剩余</span>
-                        <span>2天20时10分</span>
+                        <span>{{presellData.endTime}}</span>
                     </p>
                 </div>
-                <p class="car-parameter-tips">定金 2000 元，未按时到达指定仓库，退回定金并赔付500 代金券</p>
+                <p class="car-parameter-tips">定金 {{presellData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</p>
             </div>
 
             <div class="car-time-place">
                 <ul>
                     <li>
+                        <span>可售范围：</span>
+                        <em>{{presellData.area}}</em>
+                    </li>
+                    <li>
                         <span>到货时间：</span>
-                        <em>2018年4月10日前</em>
+                        <em>{{presellData.arrivalTime}}</em>
                     </li>
                     <li>
                         <span>提货地点：</span>
-                        <em>北京、武汉、广州、成都、沈阳</em>
+                        <em>{{presellData.deliveryPlace}}</em>
                     </li>
                     <li>
                         <span>车型颜色：</span>
-                        <em>黑色/米色  红色/米色</em>
-                    </li>
-                    <li>
-                        <span>提货地点：</span>
-                        <em>北京、武汉、广州、成都、沈阳</em>
+                        <em>{{presellData.autoColor}}</em>
                     </li>
                     <li>
                         <span>生产日期：</span>
-                        <em>2018.03</em>
+                        <em>{{presellData.produceTime}}</em>
                     </li>
                 </ul>
 
@@ -65,34 +68,14 @@
                 <div class="car-reserve">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
-                        <span>河北</span>再订<i>3</i>台<span> <span>石家庄</span>提货</span>
+                        <span>{{presellData.preSale.provice}}</span>再订<i>{{presellData.preSale.batch}}</i>台 <span>{{presellData.preSale.city}}</span> 提货
                     </p>
                     <div class="car-reserve-roll">
                         <ul ref="con1" :class="{anim:animate==true}">
-                            <!--<li>-->
-                                <!--<span>58分钟前</span>-->
-                                <!--<span>保定黄*****有限公司</span>-->
-                                <!--<span>预定1台</span>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<span>58分钟前</span>-->
-                                <!--<span>保定黄*****有限公司</span>-->
-                                <!--<span>预定1台</span>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<span>58分钟前</span>-->
-                                <!--<span>保定黄*****有限公司</span>-->
-                                <!--<span>预定1台</span>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<span>58分钟前</span>-->
-                                <!--<span>保定黄*****有限公司</span>-->
-                                <!--<span>预定1台</span>-->
-                            <!--</li>-->
-                            <li v-for="item in items">
+                            <li v-for="item in presellData.preSale.buyList">
                                 <span>{{item.time}}</span>
-                                <span>{{item.company}}</span>
-                                <span>{{item.count}}</span>
+                                <span>{{item.dealer}}</span>
+                                <span>{{item.num}}</span>
                             </li>
                         </ul>
                     </div>
@@ -151,28 +134,84 @@
 
 
                 animate:false,
-                items:[
+//                items:[
+//                    {
+//                        time:"58分钟前",
+//                        company:'保定黄*****有限公司',
+//                        count:'预定1台'
+//
+//                    },
+//                    {
+//                        time:"10分钟前",
+//                        company:'郑州*****有限公司',
+//                        count:'预定2台'
+//
+//                    },
+//                    {
+//                        time:"20分钟前",
+//                        company:'北京*****有限公司',
+//                        count:'预定3台'
+//
+//                    }
+//                ],
+                circular:[
                     {
-                        time:"58分钟前",
-                        company:'保定黄*****有限公司',
-                        count:'预定1台'
-
+                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
                     },
                     {
-                        time:"10分钟前",
-                        company:'郑州*****有限公司',
-                        count:'预定2台'
-
+                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
                     },
                     {
-                        time:"20分钟前",
-                        company:'北京*****有限公司',
-                        count:'预定3台'
-
+                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
                     }
-//                    {name:"雷军"},
-//                    {name:"王勤"}
-                ]
+                ],
+                presellData:{
+                    "autoName": "东风标致308 2014款 经典版 1.6L 手动优尚型",
+                    "prePrice": "7.79",
+                    "guidePrice": "46.58",
+                    "deposit": "2000",
+                    "timeOut": "1",
+                    "endTime": "2天23时34分",
+                    "circular": [
+                        {
+                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                        },
+                        {
+                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                        },
+                        {
+                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                        }
+                    ],
+                    "area": "全国",
+                    "arrivalTime": "2018年4月10日前",
+                    "deliveryPlace": "北京、武汉、广州、成都、沈阳",
+                    "autoColor": "黑色/米色  红色/米色",
+                    "produceTime": "2018.03",
+                    "preSale": {
+                        "batch": "3",
+                        "provice": "河北",
+                        "city": "石家庄",
+                        "endNum": "5",
+                        "buyList": [
+                            {
+                            "dealer": "保定黄*****有限公司",
+                            "num": "预定1台",
+                            "time": "58分钟前"
+                           },
+                            {
+                                "dealer": "河南*****有限公司",
+                                "num": "预定5台",
+                                "time": "38分钟前"
+                            },
+                            {
+                                "dealer": "北京*****有限公司",
+                                "num": "预定10台",
+                                "time": "20分钟前"
+                            }
+                        ]
+                    }
+                }
 
             }
         },
@@ -180,14 +219,48 @@
             setInterval(this.scroll,2000)
         },
         methods:{
+            //单行文字滚动
             scroll(){
                 this.animate=true;    // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
                 setTimeout(()=>{      //  这里直接使用了es6的箭头函数，省去了处理this指向偏移问题，代码也比之前简化了很多
-                    this.items.push(this.items[0]);  // 将数组的第一个元素添加到数组的
-                    this.items.shift();               //删除数组的第一个元素
+                    this.presellData.preSale.buyList.push(this.presellData.preSale.buyList[0]);  // 将数组的第一个元素添加到数组的
+                    this.presellData.preSale.buyList.shift();               //删除数组的第一个元素
                     this.animate=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
                 },500)
+
+            //获取数据
+//            getPresellDetails(){
+//                var dataToken = sessionStorage.token;
+//                var data = {
+//                    token:dataToken,
+//                    id : id
+//                };
+//                this.$http({
+//                    url:'',
+//                    methods:'GET',
+//                    params:data
+//                }).then(function(){
+//                    this.presellData = response.body.data;
+                      //this.circular = response.body.data.circular;
+//                })
+//            }
+
+            this.circular = [
+                {
+                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                },
+                {
+                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                },
+                {
+                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+                }
+            ]
+
             }
+        },
+        components:{
+            swiper
         }
 
 

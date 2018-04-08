@@ -7,19 +7,22 @@
 
         <section class="car-info-wrap">
             <div class="car-parameter">
-                <p class="car-name">2014款 经典版 1.6L 自由手动优 </p>
+                <p class="car-name">{{presellReserveData.overview.autoName}}</p>
                 <div class="car-price">
                     <p>
                         <span>预售价:</span>
-                        <strong>328.59</strong>
+                        <strong>{{presellReserveData.overview.prePrice}}</strong>
                         <em>万</em>
                     </p>
                     <p>
                         <span>指导价：</span>
-                        <em><i>333.39</i>万</em>
+                        <em><i>{{presellReserveData.overview.guidePrice}}</i>万</em>
                     </p>
                 </div>
-                <div class="car-parameter-tips">定金 {{earnest}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
+
+                <div class="car-parameter-tips">定金 {{presellReserveData.overview.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
+
+                <!--<div class="car-parameter-tips">定金 {{earnest}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>-->
             </div>
         </section>
 
@@ -33,23 +36,20 @@
                 <!--</li>-->
 
 
-                <li v-for="(item,index) in decorateData">
-                    <p><span>{{item.waiguan}}</span> / <span>{{item.neishi}}</span> </p>
-                    <p>库存： <span>{{item.kucun}}</span> 台</p>
-                    <p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.count" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>
+                <li v-for="(item,index) in presellReserveData.stock"">
+                    <p><span>{{item.extColor}}</span> / <span>{{item.intColor}}</span> </p>
+                    <p>库存： <span>{{item.sum}}</span> 台</p>
+                    <p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.default" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>
                 </li>
 
 
-                <!--<li>-->
-                    <!--<p><span>黑色</span> / <span>米色</span> </p>-->
-                    <!--<p>库存： <span>5</span> 台</p>-->
-                    <!--<p><span>-</span> <span> <input type="text" name=""  v-model="count2"></span> <span>+</span> </p>-->
+                <!--<li v-for="(item,index) in decorateData">-->
+                    <!--<p><span>{{item.waiguan}}</span> / <span>{{item.neishi}}</span> </p>-->
+                    <!--<p>库存： <span>{{item.kucun}}</span> 台</p>-->
+                    <!--<p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.count" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>-->
                 <!--</li>-->
-                <!--<li>-->
-                    <!--<p><span>黑色</span> / <span>米色</span> </p>-->
-                    <!--<p>库存： <span>5</span> 台</p>-->
-                    <!--<p><span>-</span> <span> <input type="text" name=""  v-model="count3"></span> <span>+</span> </p>-->
-                <!--</li>-->
+
+
             </ul>
         </section>
 
@@ -59,15 +59,15 @@
             <ul>
                 <li>
                     <span>公司名称：</span>
-                    <em>成都一猫电子商务有限公司</em>
+                    <em>{{presellReserveData.bankInfo.companyName}}</em>
                 </li>
                 <li>
                     <span>开户行：</span>
-                    <em>中国银行股份有限公司成都天府大道支行</em>
+                    <em>{{presellReserveData.bankInfo.bankName}}</em>
                 </li>
                 <li>
                     <span>账号：</span>
-                    <em>127993140154 </em>
+                    <em>{{presellReserveData.bankInfo.account}}</em>
                 </li>
                 <li>
                     <span>定金金额：</span>
@@ -90,27 +90,19 @@
         <section class="car-warehouse-wrap">
             <p class="car-warehouse-title">选择提货仓</p>
             <ul>
-                <li>
-                    <i class= "weui-icon-success"></i>
-                    <p>北京仓库</p>
-                    <p>地址：北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号  </p>
-                </li>
-                <li>
-                    <i class= "weui-icon-success"></i>
-                    <p>北京仓库</p>
-                    <p>地址：北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号  </p>
-                </li>
-                <li>
-                    <i class= "weui-icon-success"></i>
-                    <p>北京仓库</p>
-                    <p>地址：北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号  </p>
+                <li v-for="(item,index) in presellReserveData.pickUpWarehouse" @click="chooseWarehouse(index)">
+                    <!--:class="{anmiteStatus:this.$store.state.chooseCar}"-->
+                    <i :class="{'weui-icon-success':item.isChooseWarehouse,'weui-icon-checked':!item.isChooseWarehouse}"></i>
+                    <p>{{item.name}}</p>
+                    <p>地址：{{item.address}}</p>
                 </li>
             </ul>
-            <div class="car-participation-wrap">
-                <div class="car-participation">
-                    <i class="weui-icon-checked"></i>
-                    <p>参与活动：省内拼满12台， <span>石家庄</span> 提车</p>
-                    <p>仓库地址：北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号  </p>
+            <div class="car-participation-wrap" v-if=' presellReserveData.activity.buttonIsShow == "1" '>
+                <div class="car-participation" @click="chooseActivity">
+                    <!--weui-icon-checked,weui-icon-success,weui-check-->
+                    <i :class="{'weui-icon-success':chooseActivityFlag,'weui-icon-checked':!chooseActivityFlag}"></i>
+                    <p>参与活动：省内拼满12台， <span>{{presellReserveData.activity.pickUpArea}}</span> 提车</p>
+                    <p>仓库地址：{{presellReserveData.activity.pickUpAddress}}</p>
                 </div>
             </div>
 
@@ -142,40 +134,103 @@
                     image:"static/presell-voucher.jpg"      //照片路径
                 },
                 presellTotalPrices:null,
-//                count:null,
                 showAlert:false,
                 alertText:null,
-//                inventory:10,
-                earnest:1000,
-//                earnesTotal:0,
-                decorateData:[
-                    {
-                        waiguan: "黑色",
-                        waiguanId: "1",
-                        neishi: "米色",
-                        neishiId: "2",
-                        kucun: "5",
-                        count:0
+                chooseActivityFlag:false,
+                chooseWarehouseFlag:false,
+                formData: {
+                    token: sessionStorage.token,
+                    id: '',
+                    extColorId: [],
+                    intColorId: [],
+                    sum: '',
+                    payimg:[],
+                    warehouseId: '',
+                    isJoinActivity: ''
+
+                },
+                presellReserveData:{
+                    "overview": {
+                        "autoName": "东风标致308 2014款 经典版 1.6L 手动优尚型",
+                        "prePrice": "10.99",
+                        "guidePrice": "17.39",
+                        "deposit": "2000",
+                        "endTime": "1天16时22分"
                     },
-                    {
-                        waiguan: "白色",
-                        waiguanId: "3",
-                        neishi: "米色",
-                        neishiId: "4",
-                        kucun: "10",
-                        count:0
+                    "stock": [
+                        {
+                            "extColor": "黑色",
+                            "extColorId": "1",
+                            "intColor": "米色",
+                            "intColorId": "3",
+                            "sum": "3",
+                            "default": "0"
+                        },
+                        {
+                            "extColor": "黑色",
+                            "extColorId": "1",
+                            "intColor": "白色",
+                            "intColorId": "2",
+                            "sum": "1",
+                            "default": "0"
+                        },
+                        {
+                            "extColor": "白色",
+                            "extColorId": "2",
+                            "intColor": "米色",
+                            "intColorId": "3",
+                            "sum": "5",
+                            "default": "0"
+                        },
+                        {
+                            "extColor": "红色",
+                            "extColorId": "4",
+                            "intColor": "米色",
+                            "intColorId": "3",
+                            "sum": "10",
+                            "default": "0"
+                        }
+                    ],
+                    "bankInfo": {
+                        "companyName": "成都一猫",
+                        "bankName": "中国银行 xxx 分行",
+                        "account": "2934723984"
                     },
-                    {
-                        waiguan: "黑色",
-                        waiguanId: "5",
-                        neishi: "白色",
-                        neishiId: "6",
-                        kucun: "8",
-                        count:0
+                    "pickUpWarehouse": [
+                        {
+                            "id": "1",
+                            "name": "北京仓库",
+                            "address": "北京仓库地址"
+                        },
+                        {
+                            "id": "2",
+                            "name": "河北仓库",
+                            "address": "河北仓库地址"
+                        },
+                        {
+                            "id": "3",
+                            "name": "河南仓库",
+                            "address": "河南仓库地址"
+                        },
+                        {
+                            "id": "4",
+                            "name": "山东仓库",
+                            "address": "山东仓库地址"
+                        },
+                        {
+                            "id": "5",
+                            "name": "湖北仓库",
+                            "address": "湖北仓库地址"
+                        }
+                    ],
+                    "activity": {
+                        "buttonIsShow": "1",
+                        "pickUpArea": "北京昌平仓库",
+                        "pickUpAddress": "北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号"
                     }
-                ]
-//                count2:null,
-//                count3:null
+                }
+
+
             }
         },
         methods:{
@@ -185,58 +240,116 @@
             },
 
             /*定金金额相关*/
-            getPresellTotalPrices(){
-
-            },
-
-            /*数量减*/
-//            counterSubtract(){
-//                this.count -= 1;
-//                if (this.count < 0) {
-//                    this.showAlert = true;
-//                    this.alertText = '数量不能小于0';
-//                    this.count = 0;
-//                }
-//            },
-//
-//
-//            counterAugment(){
-//                this.count += 1;
-//                if (this.count > this.inventory) {
-//                    this.showAlert = true;
-//                    this.alertText = '数量不能大于库存';
-//                    this.count = this.inventory;
-//                }
-//            }
-
-
-
-
-
             counterSubtract(index){
-                this.decorateData[index].count -= 1;
-                if (this.decorateData[index].count < 0) {
+                this.presellReserveData.stock[index].default = parseInt( this.presellReserveData.stock[index].default);
+                this.presellReserveData.stock[index].default -= 1;
+                if (this.presellReserveData.stock[index].default < 0) {
                     this.showAlert = true;
                     this.alertText = '数量不能小于0';
-                    this.decorateData[index].count = 0;
+                    this.presellReserveData.stock[index].default = 0;
                 }
             },
 
 
             counterAugment(index){
-                this.decorateData[index].count += 1;
-                if (this.decorateData[index].count > this.decorateData[index].kucun) {
+                this.presellReserveData.stock[index].default = parseInt(this.presellReserveData.stock[index].default);
+                this.presellReserveData.stock[index].default += 1;
+                if ( this.presellReserveData.stock[index].default >  this.presellReserveData.stock[index].sum ) {
                     this.showAlert = true;
                     this.alertText = '数量不能大于库存';
-                    this.decorateData[index].count = this.decorateData[index].kucun;
+                    this.presellReserveData.stock[index].default = this.presellReserveData.stock[index].sum;
                 }
             },
+
             countMonitor(index){
-                if ( parseInt(this.decorateData[index].count) > parseInt(this.decorateData[index].kucun)) {
+                if ( parseInt(this.presellReserveData.stock[index].default) > parseInt(this.presellReserveData.stock[index].sum)) {
                     this.showAlert = true;
                     this.alertText = "数量不能大于库存";
-                    //this.decorateData[index].count = 0;
                 }
+            },
+
+            /*仓库选中与否*/
+            chooseWarehouse(index){
+
+
+//                if (this.activityFlag == true) {
+//                    this.chooseWarehouseFlag = false;
+//                    return
+//                }else{
+//                    var that = this;
+//                    this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
+//                        that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
+//                    });
+//                    this.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = true;
+//                    this.chooseWarehouseFlag = true;
+//                    this.activityFlag = false;
+//                }
+
+
+
+
+                var that = this;
+                this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
+                    that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
+                });
+                this.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = true;
+                this.chooseWarehouseFlag = true;
+                this.chooseActivityFlag = false;
+            },
+
+
+            /*是否参与活动*/
+            chooseActivity(){
+                var that = this;
+                this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
+                    that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
+                });
+                this.chooseActivityFlag = true;
+                this.chooseWarehouseFlag =false;
+            },
+
+            /*表单数据提交*/
+            submitData(){
+
+                //购买车的数量
+                this.presellReserveData.stock.forEach(function(item,index){
+                    if (item.default > 0) {
+                        this.formData.extColorId.push(item.extColorId);
+                        this.formData.intColorId.push(item.intColorId);
+                        this.formData.sum.push(item.default);
+                    }
+                });
+
+//                this.presellReserveData.pickUpWarehouse.forEach(function(item,index){
+//                    if (item.isChooseWarehouse == true) {
+//                        this.formData.warehouseId = item.id;
+//                    }
+//                })
+
+//                if (this.presellReserveData.activity.buttonIsShow == '1') {
+//                    this.formData.isJoinActivity = '1';
+//                }
+
+                if (this.chooseWarehouseFlag) {
+                    var that = this;
+                    this.presellReserveData.pickUpWarehouse.forEach(function(item,index){
+                        if (item.isChooseWarehouse == true) {
+                            that.formData.warehouseId = item.id;
+                        }
+                    })
+                }
+
+                if (this.chooseActivityFlag && this.presellReserveData.activity.buttonIsShow == '1') {
+                    this.formData.isJoinActivity = '1';
+                }else{
+                    this.formData.isJoinActivity = '0';
+                }
+
+               // this.formData.payimg = this.dataURL[flag];
+
+                this.formData.payimg = [{url: this.dataURL[flag]}]
+
+
             }
 
 
@@ -247,20 +360,25 @@
              alertTip
         },
         mounted(){
-            //this.presellTotalPrices = 0;
-           // this.count = 0;
-//            this.count2 = 0;
-//            this.count3 = 0;
+//            var pickUpWarehouseData = this.presellReserveData.pickUpWarehouse
+//            console.log(pickUpWarehouseData);
+
+            var that = this;
+            this.presellReserveData.pickUpWarehouse.forEach((item,index)=>{
+                this.$set(item,"isChooseWarehouse",false)
+            })
+            console.log(this.presellReserveData.pickUpWarehouse)
+             // this.changeData();
+
         },
         computed:{
             earnesTotal:function(){
                 var that = this;
                 var total = 0;
-                this.decorateData.forEach(function(item,index){
-                    total += item.count * that.earnest
+                this.presellReserveData.stock.forEach(function(item,index){
+                    total += item.default * that.presellReserveData.overview.deposit
                 });
                 return total;
-//                return this.
             }
         }
 
