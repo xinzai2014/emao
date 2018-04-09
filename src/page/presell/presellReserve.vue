@@ -1,14 +1,14 @@
 <template>
     <div>
         <header class="user-tit declare-head">
-            <span class="white-lt"></span>
+            <span class="white-lt" @click="goToIndex"></span>
             预定
         </header>
 
         <section class="car-info-wrap">
             <div class="car-parameter">
                 <p class="car-name">{{overviewData.autoName}}</p>
-                <div class="car-price">
+                <div class="car-reserve-price">
                     <p>
                         <span>预售价:</span>
                         <strong>{{overviewData.prePrice}}</strong>
@@ -109,7 +109,7 @@
         </section>
 
         <section class="car-reserve-btn">
-            <input type="text" name="立即预定" value="立即预定" />
+            <input type="button" name="立即预定" value="立即预定" @click="submitData"/>
         </section>
 
 
@@ -133,6 +133,7 @@
                     flag:"presellVoucher",           //照片标志
                     image:"static/presell-voucher.jpg"      //照片路径
                 },
+                dataURL:{},             //上传数据
                 presellTotalPrices:null,
                 showAlert:false,
                 alertText:null,
@@ -143,7 +144,7 @@
                     id: '',
                     extColorId: [],
                     intColorId: [],
-                    sum: '',
+                    sum: [],
                     payimg:[],
                     warehouseId: '',
                     isJoinActivity: ''
@@ -158,6 +159,11 @@
             }
         },
         methods:{
+
+            /*返回首页*/
+            goToIndex(){
+                this.$router.push("/presell/presellDetails");
+            },
             /*上传图片相关*/
             getUpload(data,flag){
                 this.dataURL[flag] = data;
@@ -262,15 +268,40 @@
 
             /*表单数据提交*/
             submitData(){
+                if (this.earnesTotal == 0) {
+                    this.showAlert = true;
+                    this.alertText = "请选择车型颜色并填写数量";
+                    return
+                }
 
+                if (this.formData.payimg == null || this.formData.payimg.length == 0 ) {
+                    this.showAlert = true;
+                    this.alertText = "请上传付款凭证";
+                    return
+                }
+
+                if ( this.chooseActivityFlag == false && this.chooseWarehouseFlag == false){
+                      this.showAlert = true;
+                      this.alertText = "请选择提车仓库";
+                      return
+                }
+
+
+
+
+                 var that = this;
                 //购买车的数量
-                this.presellReserveData.stock.forEach(function(item,index){
+                this.stockData.forEach(function(item,index){
                     if (item.default > 0) {
-                        this.formData.extColorId.push(item.extColorId);
-                        this.formData.intColorId.push(item.intColorId);
-                        this.formData.sum.push(item.default);
+                        that.formData.extColorId.push(item.extColorId);
+                        that.formData.intColorId.push(item.intColorId);
+                        that.formData.sum.push(item.default);
                     }
                 });
+
+                //console.log(this.formData.extColorId);
+                //console.log(this.formData.intColorId);
+                //console.log(this.formData.sum);
 
 //                this.presellReserveData.pickUpWarehouse.forEach(function(item,index){
 //                    if (item.isChooseWarehouse == true) {
@@ -291,15 +322,31 @@
                     })
                 }
 
+                console.log(this.formData.warehouseId)
+
                 if (this.chooseActivityFlag && this.activityData.buttonIsShow == '1') {
                     this.formData.isJoinActivity = '1';
                 }else{
                     this.formData.isJoinActivity = '0';
                 }
 
+                //console.log(this.formData.isJoinActivity);
+
                // this.formData.payimg = this.dataURL[flag];
 
-                this.formData.payimg = [{url: this.dataURL[flag]}]
+                this.formData.payimg = [{url: this.dataURL.presellVoucher}];
+
+                //console.log(this.formData.payimg);
+
+
+                this.$http.post("order/preSale/create",this.formData).then(function(response){
+
+                    /*存vuex*/
+
+                }).catch(function(error){
+                    this.showAlert = true;
+                    this.alertText = error.body.msg;
+                })
 
 
             }
@@ -312,22 +359,7 @@
              alertTip
         },
         mounted(){
-//            var pickUpWarehouseData = this.presellReserveData.pickUpWarehouse
-//            console.log(pickUpWarehouseData);
-
              this.getPresellDetails();
-
-//            var that = this;
-//            this.presellReserveData.pickUpWarehouse.forEach((item,index)=>{
-//                this.$set(item,"isChooseWarehouse",false)
-//            })
-//            console.log(this.presellReserveData.pickUpWarehouse)
-             // this.changeData();
-
-
-
-
-
         },
         computed:{
             earnesTotal:function(){
@@ -349,14 +381,14 @@
     .user-tit .white-lt {  position: absolute;  left: 0.48rem;  top: 0.4rem;  }
     .car-info-wrap{padding:.53rem .4rem .4rem;  background-color:#fff; }
     .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
-    .car-price{clear:both;overflow:hidden;}
-    .car-price p{float:left;}
-    .car-price p:nth-of-type(1) {margin-right:1.0667rem;color:#fc3036;font-size:.4rem;}
-    .car-price p:nth-of-type(1) strong{font-size:.427rem;font-weight:bold;}
-    .car-price p:nth-of-type(1) em{font-size:.32rem;}
-    .car-price p:nth-of-type(2) {font-size:.32rem;color:#999;}
-    .car-price p:nth-of-type(2) em{text-decoration:line-through;}
-    .car-price p:nth-of-type(2) em i{color:#999;}
+    .car-reserve-price{clear:both;overflow:hidden;}
+    .car-reserve-price p{float:left;}
+    .car-reserve-price p:nth-of-type(1) {margin-right:1.0667rem;color:#fc3036;font-size:.4rem;}
+    .car-reserve-price p:nth-of-type(1) strong{font-size:.427rem;font-weight:bold;}
+    .car-reserve-price p:nth-of-type(1) em{font-size:.32rem;}
+    .car-reserve-price p:nth-of-type(2) {font-size:.32rem;color:#999;}
+    .car-reserve-price p:nth-of-type(2) em{text-decoration:line-through;}
+    .car-reserve-price p:nth-of-type(2) em i{color:#999;}
     .car-parameter-tips{margin-top:.32rem;color:#ff825c;font-size:.3467rem;}
     .car-colour-vount{margin-top:.2667rem;padding:.53rem .4rem .4rem;background-color:#fff;}
     .car-colour-vount .car-colour-title{font-size: .4rem; font-weight: bold;  color: #000;}

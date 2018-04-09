@@ -68,11 +68,11 @@
                 <div class="car-reserve">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
-                        <span>{{presellData.preSale.province}}</span>再订<i>{{presellData.preSale.batch}}</i>台 <span>{{presellData.preSale.city}}</span> 提货
+                        <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.batch}}</i>台 <span>{{preSaleData.city}}</span> 提货
                     </p>
                     <div class="car-reserve-roll">
                         <ul ref="con1" :class="{anim:animate==true}">
-                            <li v-for="item in presellData.preSale.buyList">
+                            <li v-for="item in preSaleData.buyList">
                                 <span>{{item.time}}</span>
                                 <span>{{item.dealer}}</span>
                                 <span>{{item.num}}</span>
@@ -80,7 +80,7 @@
                         </ul>
                     </div>
 
-                    <p class="car-share"><img src="../../assets/presell-share.png" alt=""></p>
+                    <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
                     <p class="car-batch-count">已有 <span>一</span>批车辆发往石家庄</p>
                 </div>
 
@@ -116,7 +116,7 @@
         </section>
 
         <section class="car-reserve-btn">
-            <input type="text" name="立即预定" value="立即预定" />
+            <input type="text" name="立即预定" value="立即预定" @click="presellReserve"/>
         </section>
 
     </div>
@@ -133,7 +133,9 @@
                 circular:[],
                 animate:false,
                 circular:[],
-                presellData:{}}
+                presellData:{},
+                preSaleData:{}
+            }
         },
         created(){
             setInterval(this.scroll,2000)
@@ -163,6 +165,32 @@
 
             },
 
+
+            //向导航条上添加分享按钮
+            addShareButton() {
+                var obj = {
+                    actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+                    callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                    title:"分享",//分享按钮的文案
+                    image:"url",//分享按钮的图片地址；可选参数，若没有该参数，或者 image 的地址为空，则使用 title。若有此参数则优先使用该参数
+                    url:"http://m.emao.com/tcm.html"//要分享的 url
+                };
+                tcmApp(obj);
+            },
+
+            //向社交媒体分享信息
+            shareMessage() {
+                var obj = {
+                    actionname:"shareMessage",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+                    callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                    toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），qq，weibo
+                    url:"http://m.emao.com/tcm.html"//要分享的 url
+                };
+                tcmApp(obj);
+            },
+
             //关闭当前窗口
             closeCurrentWindow() {
                 var obj = {
@@ -182,13 +210,42 @@
                 }
             },
 
+            /*区分app与wap做不同的渲染*/
+            renderDom(){
+                if (this.isTcmApp()){
+                    document.title = "预售详情";
+                    this.showHeadStatus = false;
+                    this.addShareButton();
+                    this.shareMessage();
+                }else{
+                    this.showHeadStatus = true;
+                }
+            },
 
             /*返回首页*/
             goToIndex(){
                 this.$router.push("/index");
             },
 
+            /*页面分享到微信*/
+            shareToWeichat(){
+                this.shareMessage();
+            },
 
+            /*立即预定*/
+            presellReserve(){
+
+                if (this.isTcmApp()) {
+                    //var id = this.$route.query.id;
+                    var id = 20411;
+                    window.open("/presell/presellReserve/" + id );
+                }else{
+                    //var id = this.$route.query.id;
+                    var id = 20411;
+                    this.$router.push('/presell/presellReserve/' + id);
+                }
+
+            },
 
             //获取数据
             getPresellDetails(){
@@ -204,20 +261,11 @@
                 }).then(function(response){
                     this.presellData = response.body.data;
                     this.circular = response.body.data.circular;
+                    this.preSaleData = response.body.data.preSale;
                 })
             }
 
-//            this.circular = [
-//                {
-//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-//                },
-//                {
-//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-//                },
-//                {
-//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-//                }
-//            ]
+
 
 
         },
