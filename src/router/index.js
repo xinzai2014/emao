@@ -517,7 +517,7 @@ var router=new Router({
             component:presellDetails
         },
         {
-            path:'/presell/presellReserve',   //预售确认预定
+            path:'/presell/presellReserve/:id',   //预售确认预定
             name:'presellReserve',
             component:presellReserve
         },

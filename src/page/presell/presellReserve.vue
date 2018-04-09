@@ -7,20 +7,20 @@
 
         <section class="car-info-wrap">
             <div class="car-parameter">
-                <p class="car-name">{{presellReserveData.overview.autoName}}</p>
+                <p class="car-name">{{overviewData.autoName}}</p>
                 <div class="car-price">
                     <p>
                         <span>预售价:</span>
-                        <strong>{{presellReserveData.overview.prePrice}}</strong>
+                        <strong>{{overviewData.prePrice}}</strong>
                         <em>万</em>
                     </p>
                     <p>
                         <span>指导价：</span>
-                        <em><i>{{presellReserveData.overview.guidePrice}}</i>万</em>
+                        <em><i>{{overviewData.guidePrice}}</i>万</em>
                     </p>
                 </div>
 
-                <div class="car-parameter-tips">定金 {{presellReserveData.overview.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
+                <div class="car-parameter-tips">定金 {{overviewData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
 
                 <!--<div class="car-parameter-tips">定金 {{earnest}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>-->
             </div>
@@ -59,15 +59,15 @@
             <ul>
                 <li>
                     <span>公司名称：</span>
-                    <em>{{presellReserveData.bankInfo.companyName}}</em>
+                    <em>{{bankInfoData.companyName}}</em>
                 </li>
                 <li>
                     <span>开户行：</span>
-                    <em>{{presellReserveData.bankInfo.bankName}}</em>
+                    <em>{{bankInfoData.bankName}}</em>
                 </li>
                 <li>
                     <span>账号：</span>
-                    <em>{{presellReserveData.bankInfo.account}}</em>
+                    <em>{{bankInfoData.account}}</em>
                 </li>
                 <li>
                     <span>定金金额：</span>
@@ -90,19 +90,19 @@
         <section class="car-warehouse-wrap">
             <p class="car-warehouse-title">选择提货仓</p>
             <ul>
-                <li v-for="(item,index) in presellReserveData.pickUpWarehouse" @click="chooseWarehouse(index)">
+                <li v-for="(item,index) in pickUpWarehouseData" @click="chooseWarehouse(index)">
                     <!--:class="{anmiteStatus:this.$store.state.chooseCar}"-->
                     <i :class="{'weui-icon-success':item.isChooseWarehouse,'weui-icon-checked':!item.isChooseWarehouse}"></i>
                     <p>{{item.name}}</p>
                     <p>地址：{{item.address}}</p>
                 </li>
             </ul>
-            <div class="car-participation-wrap" v-if=' presellReserveData.activity.buttonIsShow == "1" '>
+            <div class="car-participation-wrap" v-if=' activityData.buttonIsShow == "1" '>
                 <div class="car-participation" @click="chooseActivity">
                     <!--weui-icon-checked,weui-icon-success,weui-check-->
                     <i :class="{'weui-icon-success':chooseActivityFlag,'weui-icon-checked':!chooseActivityFlag}"></i>
-                    <p>参与活动：省内拼满12台， <span>{{presellReserveData.activity.pickUpArea}}</span> 提车</p>
-                    <p>仓库地址：{{presellReserveData.activity.pickUpAddress}}</p>
+                    <p>参与活动：省内拼满12台， <span>{{activityData.pickUpArea}}</span> 提车</p>
+                    <p>仓库地址：{{activityData.pickUpAddress}}</p>
                 </div>
             </div>
 
@@ -149,88 +149,12 @@
                     isJoinActivity: ''
 
                 },
-                presellReserveData:{
-                    "overview": {
-                        "autoName": "东风标致308 2014款 经典版 1.6L 手动优尚型",
-                        "prePrice": "10.99",
-                        "guidePrice": "17.39",
-                        "deposit": "2000",
-                        "endTime": "1天16时22分"
-                    },
-                    "stock": [
-                        {
-                            "extColor": "黑色",
-                            "extColorId": "1",
-                            "intColor": "米色",
-                            "intColorId": "3",
-                            "sum": "3",
-                            "default": "0"
-                        },
-                        {
-                            "extColor": "黑色",
-                            "extColorId": "1",
-                            "intColor": "白色",
-                            "intColorId": "2",
-                            "sum": "1",
-                            "default": "0"
-                        },
-                        {
-                            "extColor": "白色",
-                            "extColorId": "2",
-                            "intColor": "米色",
-                            "intColorId": "3",
-                            "sum": "5",
-                            "default": "0"
-                        },
-                        {
-                            "extColor": "红色",
-                            "extColorId": "4",
-                            "intColor": "米色",
-                            "intColorId": "3",
-                            "sum": "10",
-                            "default": "0"
-                        }
-                    ],
-                    "bankInfo": {
-                        "companyName": "成都一猫",
-                        "bankName": "中国银行 xxx 分行",
-                        "account": "2934723984"
-                    },
-                    "pickUpWarehouse": [
-                        {
-                            "id": "1",
-                            "name": "北京仓库",
-                            "address": "北京仓库地址"
-                        },
-                        {
-                            "id": "2",
-                            "name": "河北仓库",
-                            "address": "河北仓库地址"
-                        },
-                        {
-                            "id": "3",
-                            "name": "河南仓库",
-                            "address": "河南仓库地址"
-                        },
-                        {
-                            "id": "4",
-                            "name": "山东仓库",
-                            "address": "山东仓库地址"
-                        },
-                        {
-                            "id": "5",
-                            "name": "湖北仓库",
-                            "address": "湖北仓库地址"
-                        }
-                    ],
-                    "activity": {
-                        "buttonIsShow": "1",
-                        "pickUpArea": "北京昌平仓库",
-                        "pickUpAddress": "北京市昌平区八达岭高速昌平南桥西侧 元龙产业园区8号"
-                    }
-                }
-
-
+                presellReserveData:{},
+                activityData:{},
+                overviewData:{},
+                bankInfoData:{},
+                stockData:[],
+                pickUpWarehouseData:[]
             }
         },
         methods:{
@@ -239,14 +163,41 @@
                 this.dataURL[flag] = data;
             },
 
+            /*获得数据*/
+            getPresellDetails(){
+                var dataToken = sessionStorage.token;
+                var data = {
+                    token:dataToken,
+                    id : 42
+                };
+                this.$http({
+                    url:'order/preSale/confirm',
+                    methods:'GET',
+                    params:data
+                }).then(function(response){
+                    this.presellReserveData = response.body.data;
+                    this.activityData = this.presellReserveData.activity;
+                    this.overviewData = this.presellReserveData.overview;
+                    this.bankInfoData = this.presellReserveData.bankInfo;
+                    this.stockData = this.presellReserveData.stock;
+                    this.pickUpWarehouseData = this.presellReserveData.pickUpWarehouse;
+
+
+                    var that = this;
+                    this.pickUpWarehouseData.forEach((item,index)=>{
+                        that.$set(item,"isChooseWarehouse",false)
+                    });
+                })
+            },
+
             /*定金金额相关*/
             counterSubtract(index){
-                this.presellReserveData.stock[index].default = parseInt( this.presellReserveData.stock[index].default);
-                this.presellReserveData.stock[index].default -= 1;
-                if (this.presellReserveData.stock[index].default < 0) {
+                this.stockData[index].default = parseInt( this.stockData[index].default);
+                this.stockData[index].default -= 1;
+                if (this.stockData[index].default < 0) {
                     this.showAlert = true;
                     this.alertText = '数量不能小于0';
-                    this.presellReserveData.stock[index].default = 0;
+                    this.stockData[index].default = 0;
                 }
             },
 
@@ -289,10 +240,11 @@
 
 
                 var that = this;
-                this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
-                    that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
+                this.pickUpWarehouseData.forEach(function(ele,index){
+                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
                 });
-                this.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = true;
+                this.pickUpWarehouseData[index].isChooseWarehouse = true;
+                console.log( this.pickUpWarehouseData);
                 this.chooseWarehouseFlag = true;
                 this.chooseActivityFlag = false;
             },
@@ -301,8 +253,8 @@
             /*是否参与活动*/
             chooseActivity(){
                 var that = this;
-                this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
-                    that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
+                this.pickUpWarehouseData.forEach(function(ele,index){
+                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
                 });
                 this.chooseActivityFlag = true;
                 this.chooseWarehouseFlag =false;
@@ -332,14 +284,14 @@
 
                 if (this.chooseWarehouseFlag) {
                     var that = this;
-                    this.presellReserveData.pickUpWarehouse.forEach(function(item,index){
+                    this.pickUpWarehouseData.forEach(function(item,index){
                         if (item.isChooseWarehouse == true) {
                             that.formData.warehouseId = item.id;
                         }
                     })
                 }
 
-                if (this.chooseActivityFlag && this.presellReserveData.activity.buttonIsShow == '1') {
+                if (this.chooseActivityFlag && this.activityData.buttonIsShow == '1') {
                     this.formData.isJoinActivity = '1';
                 }else{
                     this.formData.isJoinActivity = '0';
@@ -363,20 +315,26 @@
 //            var pickUpWarehouseData = this.presellReserveData.pickUpWarehouse
 //            console.log(pickUpWarehouseData);
 
-            var that = this;
-            this.presellReserveData.pickUpWarehouse.forEach((item,index)=>{
-                this.$set(item,"isChooseWarehouse",false)
-            })
-            console.log(this.presellReserveData.pickUpWarehouse)
+             this.getPresellDetails();
+
+//            var that = this;
+//            this.presellReserveData.pickUpWarehouse.forEach((item,index)=>{
+//                this.$set(item,"isChooseWarehouse",false)
+//            })
+//            console.log(this.presellReserveData.pickUpWarehouse)
              // this.changeData();
+
+
+
+
 
         },
         computed:{
             earnesTotal:function(){
                 var that = this;
                 var total = 0;
-                this.presellReserveData.stock.forEach(function(item,index){
-                    total += item.default * that.presellReserveData.overview.deposit
+                this.stockData.forEach(function(item,index){
+                    total += item.default * that.overviewData.deposit
                 });
                 return total;
             }

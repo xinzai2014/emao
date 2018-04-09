@@ -7,61 +7,22 @@
         <section class="car-reserve-list">
 
             <ul class="car-reserve-con sales-wrap"  v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-                <li class="car-reserve-txt" >
-                    <p class="car-reserve-state">等待财务审核，需等待3个小时</p>
+                <li class="car-reserve-txt" v-for="(item,index) in presellList">
+                    <p class="car-reserve-state">{{item.description}}</p>
                     <div class="car-presell-in">
-                        <p class="car-presell-name">奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</p>
+                        <p class="car-presell-name">{{item.autoName}}</p>
                          <ul class="car-presell-facade">
-                          <li>
-                              <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                              <p>X <span>1</span></p>
-                          </li>
-                          <li>
-                              <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                              <p>X <span>1</span></p>
-                          </li>
-                      </ul>
-                    </div>
-                </li>
-                <li class="car-reserve-txt">
-                    <p class="car-reserve-state">等待财务审核，需等待3个小时</p>
-                    <div class="car-presell-in">
-                        <p class="car-presell-name">奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</p>
-                        <ul class="car-presell-facade">
-                            <li>
-                                <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                                <p>X <span>1</span></p>
-                            </li>
-                            <li>
-                                <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                                <p>X <span>1</span></p>
-                            </li>
+                              <li v-for="(appearanceItem,appearanceIndex) in item.preOrder">
+                                  <p><span>{{appearanceItem.color}}</span></p>
+                                  <p>X <span>1</span></p>
+                              </li>
                         </ul>
-                        <div class="car-presell-aigin-wrap">
-                            <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定">
+                        <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' ">
+                            <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.id)">
                         </div>
                     </div>
                 </li>
-                <li class="car-reserve-txt">
-                    <p class="car-reserve-state">等待财务审核，需等待3个小时</p>
-                    <div class="car-presell-in">
-                        <p class="car-presell-name">奇瑞 艾瑞泽3 2015款 1.5L 自动够炫版</p>
-                        <ul class="car-presell-facade">
-                            <li>
-                                <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                                <p>X <span>1</span></p>
-                            </li>
-                            <li>
-                                <p><span>闪光黑</span>/<span>黑色内饰</span></p>
-                                <p>X <span>1</span></p>
-                            </li>
-                        </ul>
-                        <div class="car-presell-aigin-wrap">
-                            <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定">
-                        </div>
 
-                    </div>
-                </li>
             </ul>
 
             <p class="visib-109"></p>
@@ -134,11 +95,11 @@
                     page:this.currentPage
                 };
                 this.$http({
-                    url:'',
+                    url:'order/preSale/index',
                     method:'GET',
                     params:data
-                }).then(function(){
-                    var presellList = pesponse.body.data.list;
+                }).then(function(response){
+                    var presellList = response.body.data.list;
                     this.presellList = this.presellList.concat(presellList);
 
                     if (!this.presellList.length) {
@@ -156,9 +117,14 @@
                         return;
                     }
                 }).catch(function(){
-                    this.showAlert = true;
-                    this.alertText = error.body.msg;
+//                    this.showAlert = true;
+//                    this.alertText = error.body.msg;
                 })
+            },
+
+            /*重新预定*/
+            rebook(id){
+                this.$router.push('/presell/presellReserve/' + id)
             }
 
         },
@@ -194,4 +160,7 @@
     .car-presell-facade li p:nth-of-type(2){float:right;}
     .car-presell-aigin-wrap{text-align:right;}
     .car-presell-aigin{display:inline-block;width:2.4rem;height:.8rem;margin-top:.4rem;border:none;border-radius:.4rem;font-size:.373rem;color:#fff;background-color:#d6ab55;}
+    .no-auto{position: absolute;width: 100%;padding: 4.0rem 0; text-align: center;font-size: 0.453333rem;left: 0;}
+    .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+    .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>

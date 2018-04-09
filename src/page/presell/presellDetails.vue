@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="user-tit declare-head">
-            <span class="white-lt"></span>
+            <span class="white-lt" @click="goToIndex"></span>
             预售详情
             <router-link to="/soldCar">
                 <em>分享</em>
@@ -60,7 +60,7 @@
                     </li>
                     <li>
                         <span>生产日期：</span>
-                        <em>{{presellData.produceTime}}</em>
+                        <em>{{presellData.productionTime}}</em>
                     </li>
                 </ul>
 
@@ -68,7 +68,7 @@
                 <div class="car-reserve">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
-                        <span>{{presellData.preSale.provice}}</span>再订<i>{{presellData.preSale.batch}}</i>台 <span>{{presellData.preSale.city}}</span> 提货
+                        <span>{{presellData.preSale.province}}</span>再订<i>{{presellData.preSale.batch}}</i>台 <span>{{presellData.preSale.city}}</span> 提货
                     </p>
                     <div class="car-reserve-roll">
                         <ul ref="con1" :class="{anim:animate==true}">
@@ -131,89 +131,9 @@
             return {
                 //轮播图数据
                 circular:[],
-
-
                 animate:false,
-//                items:[
-//                    {
-//                        time:"58分钟前",
-//                        company:'保定黄*****有限公司',
-//                        count:'预定1台'
-//
-//                    },
-//                    {
-//                        time:"10分钟前",
-//                        company:'郑州*****有限公司',
-//                        count:'预定2台'
-//
-//                    },
-//                    {
-//                        time:"20分钟前",
-//                        company:'北京*****有限公司',
-//                        count:'预定3台'
-//
-//                    }
-//                ],
-                circular:[
-                    {
-                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                    },
-                    {
-                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                    },
-                    {
-                        "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                    }
-                ],
-                presellData:{
-                    "autoName": "东风标致308 2014款 经典版 1.6L 手动优尚型",
-                    "prePrice": "7.79",
-                    "guidePrice": "46.58",
-                    "deposit": "2000",
-                    "timeOut": "1",
-                    "endTime": "2天23时34分",
-                    "circular": [
-                        {
-                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                        },
-                        {
-                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                        },
-                        {
-                            "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                        }
-                    ],
-                    "area": "全国",
-                    "arrivalTime": "2018年4月10日前",
-                    "deliveryPlace": "北京、武汉、广州、成都、沈阳",
-                    "autoColor": "黑色/米色  红色/米色",
-                    "produceTime": "2018.03",
-                    "preSale": {
-                        "batch": "3",
-                        "provice": "河北",
-                        "city": "石家庄",
-                        "endNum": "5",
-                        "buyList": [
-                            {
-                            "dealer": "保定黄*****有限公司",
-                            "num": "预定1台",
-                            "time": "58分钟前"
-                           },
-                            {
-                                "dealer": "河南*****有限公司",
-                                "num": "预定5台",
-                                "time": "38分钟前"
-                            },
-                            {
-                                "dealer": "北京*****有限公司",
-                                "num": "预定10台",
-                                "time": "20分钟前"
-                            }
-                        ]
-                    }
-                }
-
-            }
+                circular:[],
+                presellData:{}}
         },
         created(){
             setInterval(this.scroll,2000)
@@ -227,38 +147,83 @@
                     this.presellData.preSale.buyList.shift();               //删除数组的第一个元素
                     this.animate=false;  // margin-top 为0 的时候取消过渡动画，实现无缝滚动
                 },500)
+            },
+
+            /*向App传值*/
+            tcmApp(obj){
+                //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+                //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+                //或者由服务器判断响应不同的平台脚本
+                if (navigator.userAgent.indexOf("iPhone") > 0) {
+                    window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
+                }
+                else {
+                    window.tcmAppObject.postMessage(JSON.stringify(obj));//向 Android 发送消息，iOS 无效
+                }
+
+            },
+
+            //关闭当前窗口
+            closeCurrentWindow() {
+                var obj = {
+                    actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                };
+                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+            },
+
+            /*判断是否是App*/
+            isTcmApp(){
+                // return navigator.userAgent.indexOf("tcm") !== -1;
+
+                if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+
+
+            /*返回首页*/
+            goToIndex(){
+                this.$router.push("/index");
+            },
+
+
 
             //获取数据
-//            getPresellDetails(){
-//                var dataToken = sessionStorage.token;
-//                var data = {
-//                    token:dataToken,
-//                    id : id
-//                };
-//                this.$http({
-//                    url:'',
-//                    methods:'GET',
-//                    params:data
-//                }).then(function(){
-//                    this.presellData = response.body.data;
-                      //this.circular = response.body.data.circular;
-//                })
-//            }
-
-            this.circular = [
-                {
-                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                },
-                {
-                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                },
-                {
-                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
-                }
-            ]
-
+            getPresellDetails(){
+                var dataToken = sessionStorage.token;
+                var data = {
+                    token:dataToken,
+                    id : 15
+                };
+                this.$http({
+                    url:'preSale/detail',
+                    methods:'GET',
+                    params:data
+                }).then(function(response){
+                    this.presellData = response.body.data;
+                    this.circular = response.body.data.circular;
+                })
             }
+
+//            this.circular = [
+//                {
+//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+//                },
+//                {
+//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+//                },
+//                {
+//                    "imgUrl": "http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+//                }
+//            ]
+
+
         },
+        mounted(){
+            this.getPresellDetails();
+         },
         components:{
             swiper
         }
@@ -296,7 +261,10 @@
     .car-reserve-roll{overflow:hidden;height:.4267rem;}
     /*.car-reserve-roll ul{height:.4267rem;}*/
     .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;color:#999;}
-    .car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}
+    /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
+
+    .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}
+
     .car-share{text-align:center;}
     .car-share img{width:7.147rem;height:1.68rem;}
     .car-batch-count{text-align:center;color:#2c2c2c;font-size:.32rem;}
