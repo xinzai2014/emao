@@ -164,6 +164,45 @@
             goToIndex(){
                 this.$router.push("/presell/presellDetails");
             },
+
+
+            /*向App传值*/
+            tcmApp(obj){
+                //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+                //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+                //或者由服务器判断响应不同的平台脚本
+                if (navigator.userAgent.indexOf("iPhone") > 0) {
+                    window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
+                }
+                else {
+                    window.tcmAppObject.postMessage(JSON.stringify(obj));//向 Android 发送消息，iOS 无效
+                }
+
+            },
+
+
+            /*判断是否是App*/
+            isTcmApp(){
+                // return navigator.userAgent.indexOf("tcm") !== -1;
+
+                if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+
+
+            /*区分app与wap做不同的渲染*/
+            renderDom(){
+                if (this.isTcmApp()){
+                    document.title = "预定";
+                    this.showHeadStatus = false;
+                }else{
+                    this.showHeadStatus = true;
+                }
+            },
+
             /*上传图片相关*/
             getUpload(data,flag){
                 this.dataURL[flag] = data;
