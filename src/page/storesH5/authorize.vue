@@ -67,6 +67,15 @@
 					</p>
 				</div>
 			</div>
+			<div class="layer-mask" v-show="newMask">
+				<div class="layer-ct">
+					<p class="layer-tit">您已经申请过新车服务，可直接线下付款申请“平行进口车”业务</p>
+					<p class="layer-btn">
+						<span @click="closeNew">取消</span>
+						<span class="layer-link" @click="newFun">立即申请</span>
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -80,6 +89,8 @@
 		    	showText:true,//按钮显示什么文字
 		    	token:'',
 		    	anchorName:'',
+		    	newMask:false, //新车弹框
+		    	newMsg:'',//新车信息
 		    	data:{
 				      /*"joinStatus": 2,
 				      "empowerImportedStatus": 0,
@@ -151,6 +162,13 @@
             	window.location = 'emaotaochemao://push/infocomplete?type=0';
             	this.layerMask = false;
             },
+            closeNew(){
+            	this.newMask = false;
+            },
+            newFun(){
+            	window.location = 'emaotaochemao://push/infosubmit?msg=' + this.newMsg;
+            	this.newMask = false;
+            },
             authFun(tagUrl,status){ //授权店跳转
             	if(this.data.dataStatus == 0){ //没有填写打款账户
             		window.location = 'emaotaochemao://push/bankaccount?anchor=' + tagUrl;
@@ -169,7 +187,8 @@
 					    }).then(function (response) { 
 					    	var data = response.body.data;
 					    	if(data.status){ //新车信息已提交
-					    		window.location = 'emaotaochemao://push/infosubmit?msg=' + data.msg;
+					    		this.newMsg = data.msg;
+					    		this.newMask = true;
 					    	}else{
 					    		window.location = 'emaotaochemao://push/infocomplete?type=' + status;
 					    	}
