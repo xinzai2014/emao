@@ -12,7 +12,7 @@
 					<p class="franch-top">
 						<span class="link-auth" @click="authShow"></span>
 					</p>
-					<p class="franch-text" if="data.joinStatus == 0 || data.joinStatus == 1">
+					<p class="franch-text">
 						<span v-for="(item,index) in data.joinCouponData">{{item.price}}*{{item.num}}优惠券</span>
 					</p>
 					<div class="franch-btn" @click="franchFun">成为加盟店</div>
@@ -26,7 +26,7 @@
 				<strong class="brand-list-title">权益选择</strong>
 			</header>
 			<span class="anchor-tit"></span>
-			<div class="anchor-ct" if="data.joinStatus == 1">
+			<div class="anchor-ct">
 				<div class="new-ct" id="newAnchor" v-if="data.grantStatus == 0">
 					<span class="new-top"></span>
 					<div class="new-reward">
@@ -150,9 +150,11 @@
 			    }).then(function (response) { 
 			    	this.data = response.body.data;
 			    	if(this.data.joinStatus == 1){
+			    		this.anchor = false
 				    	this.showText = true;
 				    }else{
 				    	this.showText = false
+				    	this.anchor = true
 				    }
 			    },function(){
 			    })
@@ -237,11 +239,6 @@
 			//加盟还是授权
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.anchorName = this.$route.query.anchor || '';
-			if(this.anchorName){
-				this.anchor = true;
-			}else{
-				this.anchor = false;
-			}
 	        this.fullData();
 	        
 	        if(this.token){
