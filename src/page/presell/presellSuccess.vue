@@ -1,21 +1,121 @@
 <template>
     <div>
         <header class="user-tit declare-head">
-            <span class="white-lt"></span>
+            <span class="white-lt" @click="backtrack"></span>
             确认预定
         </header>
 
         <section class="car-reserved">提交成功，请等待财务审核，预计等待3小时</section>
 
-        <section class="car-reserved-tips">
-            本省经销商再订 <span>2</span> 台，即可包物流到 <span>石家庄</span>
+        <section class="car-reserved-tips" v-if="presellSuccessData.state == '100'">
+            <span>{{presellSuccessData.scope}}</span>再订 <span>{{presellSuccessData.num}}</span> 台，您即可在 <span>{{presellSuccessData.pickUpArea}}</span>提货
+        </section>
+
+
+        <section class="car-reserved-tips" v-if="presellSuccessData.state == '200' ">
+            拼板成功！您的车辆将会发运到 <span>{{presellSuccessData.pickUpArea}}</span>
+        </section>
+
+        <section class="car-reserved-tips" v-if=" presellSuccessData.state == '300' ">
+            {{presellSuccessData.msg}}
         </section>
 
         <section class="car-reserved-share">
-            <input type="text" name="分享到微信 邀请友商" value="分享到微信 邀请友商" />
+            <input type="text" name="分享到微信 邀请友商" value="分享到微信 邀请友商" @click="shareToWeichat"/>
         </section>
     </div>
 </template>
+
+<script>
+    export default{
+        name:'presellSuccess',
+        data(){
+            return {
+                presellSuccessData:{},
+                state:''
+            }
+        },
+        methods:{
+            /*向App传值*/
+            tcmApp(obj){
+                //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+                //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+                //或者由服务器判断响应不同的平台脚本
+                if (navigator.userAgent.indexOf("iPhone") > 0) {
+                    window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//向 iOS 发送消息，Android 无效
+                }
+                else {
+                    window.tcmAppObject.postMessage(JSON.stringify(obj));//向 Android 发送消息，iOS 无效
+                }
+
+            },
+
+            /*判断是否是App*/
+            isTcmApp(){
+                // return navigator.userAgent.indexOf("tcm") !== -1;
+
+                if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+
+            //向社交媒体分享信息
+            shareMessage() {
+                var obj = {
+                    actionname:"shareMessage",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+                    //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                    toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
+                    title:"",
+                    subTitle:"",
+                    imgUrl:"",
+                    url:"https://m.emao.com/tcm.html"//要分享内容的 url
+                };
+                this.tcmApp(obj);
+
+
+
+            },
+
+            /*页面分享到微信*/
+            shareToWeichat(){
+                this.shareMessage();
+            },
+
+            /*区分app与wap做不同的渲染*/
+            renderDom(){
+                if (this.isTcmApp()){
+                    document.title = "确认预定";
+                    this.showHeadStatus = false;
+                    this.shareMessage();
+                }else{
+                    this.showHeadStatus = true;
+                }
+            },
+
+
+            getPresellSuccessData(){
+                this.presellSuccessData = this.$store.getters.getPresellData;
+            },
+
+            /*返回首页*/
+            backtrack(){
+               // this.$router.push("/index");
+                //从我预售进来的话，到我的预售列表
+
+
+
+                //从预售详情进来，到预售详情页面
+            },
+
+        },
+        mounted(){
+            this.renderDom();
+        }
+    }
+</script>
 <style>
     html{width:100%;background-color:#fff;}
     body{width:100%;height:100%;background-color:#fff;}

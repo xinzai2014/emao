@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="user-tit declare-head">
-            <span class="white-lt" @click="goToIndex"></span>
+            <span class="white-lt" @click="backtrack"></span>
             预定
         </header>
 
@@ -162,7 +162,13 @@
         methods:{
 
             /*返回首页*/
-            goToIndex(){
+            backtrack(){
+
+                /*分情况判断*/
+                /*从我的预售列表页来，返回到我的预售列表页*/
+                /*从预售详情页面来，返回到预售详情*/
+
+
                 this.$router.push("/presell/presellDetails");
             },
 
@@ -193,12 +199,22 @@
                 }
             },
 
+            //隐藏导航条分享按钮
+            hideShareButton() {
+                var obj = {
+                    actionname:"hideShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+                    callback:callback//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                };
+                this.tcmApp(obj);
+            },
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
                 if (this.isTcmApp()){
                     document.title = "预定";
                     this.showHeadStatus = false;
+                    this.hideShareButton();
                 }else{
                     this.showHeadStatus = true;
                 }
@@ -339,20 +355,6 @@
                     }
                 });
 
-                //console.log(this.formData.extColorId);
-                //console.log(this.formData.intColorId);
-                //console.log(this.formData.sum);
-
-//                this.presellReserveData.pickUpWarehouse.forEach(function(item,index){
-//                    if (item.isChooseWarehouse == true) {
-//                        this.formData.warehouseId = item.id;
-//                    }
-//                })
-
-//                if (this.presellReserveData.activity.buttonIsShow == '1') {
-//                    this.formData.isJoinActivity = '1';
-//                }
-
                 if (this.chooseWarehouseFlag) {
                     var that = this;
                     this.pickUpWarehouseData.forEach(function(item,index){
@@ -382,6 +384,15 @@
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
                     this.backtrackData = response.body.data;
                     /*存vuex*/
+                    this.$store.dispatch("PRESELL_DATA",
+                            {
+                               state: response.body.data.state,
+                               scope: response.body.data.scope,
+                                num:  response.body.data.num,
+                                pickUpArea:response.body.data.pickUpArea,
+                                msg:response.body.data.msg
+                            }
+                    );
 
                     if (this.isTcmApp()) {
                         this.$route.push({path:'presell/presellSuccess',query:{token:sessionStorage.token}});
@@ -410,6 +421,7 @@
             if (!sessionStorage.token) {
                 sessionStorage.token = this.$route.query.token;
             }
+            this.renderDom();
             this.getPresellReserve();
         },
         computed:{

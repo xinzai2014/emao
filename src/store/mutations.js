@@ -16,7 +16,8 @@ import {
   PAYMENT_URL,
   PAYMENT_DATA,
   SERIE_URL,
-  ORDER_URL
+  ORDER_URL,
+  PRESELL_DATA
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -108,6 +109,12 @@ export default {
   [ORDER_URL](state,obj){
     state.orderURL = obj;
     setStore('orderURL',obj);
+  },
+
+  [PRESELL_DATA](state,obj){  //保存预售预定页下订单成功返回的数据
+	state.presellData = obj;
+	setStore('presellData',obj);
   }
+
 
 }

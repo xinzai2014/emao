@@ -41,5 +41,8 @@ export default {
   },
   getOrderURL(state){ //订单/展车详情返回
     return state.orderURL || getStore("orderURL");
+  },
+  getPresellData(state){  //保存预售预定页下订单成功返回的数据
+    return state.presellData || getStore("presellData");
   }
 }

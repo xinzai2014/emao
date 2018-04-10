@@ -3,9 +3,7 @@
         <header class="user-tit declare-head">
             <span class="white-lt" @click="goToIndex"></span>
             预售详情
-            <router-link to="/soldCar">
-                <em>分享</em>
-            </router-link>
+            <em>分享</em>
         </header>
         <!--<section>-->
             <!--图片滚动-->
@@ -172,11 +170,15 @@
                     actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-                    title:"分享",//分享按钮的文案
-                    image:"url",//分享按钮的图片地址；可选参数，若没有该参数，或者 image 的地址为空，则使用 title。若有此参数则优先使用该参数
-                    url:"https://m.emao.com/tcm.html"//要分享的 url
+                    buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
+                   // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+                    title:"",
+                    subTitle:"",
+                    imgUrl:"",
+                    url:"https://img.emao.com/order"//要分享内容的 url
+
                 };
-                tcmApp(obj);
+                this.tcmApp(obj);
             },
 
             //向社交媒体分享信息
@@ -184,19 +186,14 @@
                 var obj = {
                     actionname:"shareMessage",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-                    callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-                    toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），qq，weibo
-                    url:"https://m.emao.com/tcm.html"//要分享的 url
+                    //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                    toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
+                    title:"",
+                    subTitle:"",
+                    imgUrl:"",
+                    url:"https://m.emao.com/tcm.html"//要分享内容的 url
                 };
-                tcmApp(obj);
-            },
-
-            //关闭当前窗口
-            closeCurrentWindow() {
-                var obj = {
-                    actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-                };
-                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
+                this.tcmApp(obj);
             },
 
             /*判断是否是App*/
@@ -252,7 +249,8 @@
                 var dataToken = sessionStorage.token;
                 var data = {
                     token:dataToken,
-                    id : 15
+//                    id : 15
+                    id : 42
                 };
                 this.$http({
                     url:'preSale/detail',

@@ -16,7 +16,8 @@ import {
   PAYMENT_URL,
   PAYMENT_DATA,
   SERIE_URL,
-  ORDER_URL
+  ORDER_URL,
+	PRESELL_DATA
 } from './mutations-types.js'
 
 
@@ -93,5 +94,8 @@ export default {
 
   [ORDER_URL](context,obj){
     context.commit(ORDER_URL,obj);
+  },
+  [PRESELL_DATA](context,obj){  //保存预售预定页下订单成功返回的数据
+	context.commit(PRESELL_DATA,obj);
   }
 }
