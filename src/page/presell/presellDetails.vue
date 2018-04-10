@@ -174,7 +174,7 @@
                     callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     title:"分享",//分享按钮的文案
                     image:"url",//分享按钮的图片地址；可选参数，若没有该参数，或者 image 的地址为空，则使用 title。若有此参数则优先使用该参数
-                    url:"http://m.emao.com/tcm.html"//要分享的 url
+                    url:"https://m.emao.com/tcm.html"//要分享的 url
                 };
                 tcmApp(obj);
             },
@@ -186,7 +186,7 @@
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），qq，weibo
-                    url:"http://m.emao.com/tcm.html"//要分享的 url
+                    url:"https://m.emao.com/tcm.html"//要分享的 url
                 };
                 tcmApp(obj);
             },
@@ -238,7 +238,7 @@
                 if (this.isTcmApp()) {
                     //var id = this.$route.query.id;
                     var id = 20411;
-                    window.open("/presell/presellReserve/" + id );
+                    window.open("/presell/presellReserve/" + id  +'?token=' + sessionStorage.token);
                 }else{
                     //var id = this.$route.query.id;
                     var id = 20411;
@@ -270,6 +270,9 @@
 
         },
         mounted(){
+            if (!sessionStorage.token) {
+                sessionStorage.token = this.$route.query.token;
+            }
             this.getPresellDetails();
          },
         components:{

@@ -155,7 +155,8 @@
                 overviewData:{},
                 bankInfoData:{},
                 stockData:[],
-                pickUpWarehouseData:[]
+                pickUpWarehouseData:[],
+                backtrackData:{}
             }
         },
         methods:{
@@ -209,7 +210,7 @@
             },
 
             /*获得数据*/
-            getPresellDetails(){
+            getPresellReserve(){
                 var dataToken = sessionStorage.token;
                 var data = {
                     token:dataToken,
@@ -379,8 +380,16 @@
 
 
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
-
+                    this.backtrackData = response.body.data;
                     /*存vuex*/
+
+                    if (this.isTcmApp()) {
+                        this.$route.push({path:'presell/presellSuccess',query:{token:sessionStorage.token}});
+                    }else{
+                        //var id = this.$route.query.id;
+                        var id = 20411;
+                        this.$route.push('/presell/presellSuccess');
+                    }
 
                 }).catch(function(error){
                     this.showAlert = true;
@@ -398,7 +407,10 @@
              alertTip
         },
         mounted(){
-             this.getPresellDetails();
+            if (!sessionStorage.token) {
+                sessionStorage.token = this.$route.query.token;
+            }
+            this.getPresellReserve();
         },
         computed:{
             earnesTotal:function(){
