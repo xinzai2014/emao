@@ -17,7 +17,8 @@ import {
   PAYMENT_DATA,
   SERIE_URL,
   ORDER_URL,
-  PRESELL_DATA
+  PRESELL_DATA,
+	PRESELL_FLAG
 } from './mutations-types.js'
 
 import {setStore, getStore} from '../config/mUtils'
@@ -114,6 +115,11 @@ export default {
   [PRESELL_DATA](state,obj){  //保存预售预定页下订单成功返回的数据
 	state.presellData = obj;
 	setStore('presellData',obj);
+  },
+
+  [PRESELL_FLAG](state,obj){  //预售预定页跳转地址
+	state.presellFlag = obj;
+	setStore('presellFlag',obj);
   }
 
 

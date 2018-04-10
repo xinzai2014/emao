@@ -17,7 +17,8 @@ import {
   PAYMENT_DATA,
   SERIE_URL,
   ORDER_URL,
-	PRESELL_DATA
+	PRESELL_DATA,
+	PRESELL_FLAG
 } from './mutations-types.js'
 
 
@@ -97,5 +98,9 @@ export default {
   },
   [PRESELL_DATA](context,obj){  //保存预售预定页下订单成功返回的数据
 	context.commit(PRESELL_DATA,obj);
+  },
+
+  [PRESELL_FLAG](context,obj){   //预售预定页跳转地址
+	context.commit(PRESELL_FLAG,obj);
   }
 }

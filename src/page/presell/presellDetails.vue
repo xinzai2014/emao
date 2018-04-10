@@ -240,6 +240,11 @@
                     //var id = this.$route.query.id;
                     var id = 20411;
                     this.$router.push('/presell/presellReserve/' + id);
+                    this.$store.dispatch("PRESELL_FLAG",
+                            {
+                                tag:'presellDetails'
+                            }
+                    )
                 }
 
             },

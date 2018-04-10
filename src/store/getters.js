@@ -44,5 +44,8 @@ export default {
   },
   getPresellData(state){  //保存预售预定页下订单成功返回的数据
     return state.presellData || getStore("presellData");
+  },
+  getPresellFlag(){
+    return state.presellFlag || getStore("presellFlag");
   }
 }

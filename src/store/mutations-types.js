@@ -35,3 +35,5 @@ export const SERIE_URL = "SERIE_URL" //商品详情页返回URL
 export const ORDER_URL = "ORDER_URL" //订单/展车详情页返回URL
 
 export const PRESELL_DATA = "PRESELL_DATA" //保存预售预定页下订单成功后返回的数据
+
+export const PRESELL_FLAG = 'PRESELL_FLAG' //预售预定页跳转地址
