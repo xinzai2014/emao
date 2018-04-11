@@ -93,6 +93,8 @@
 		background: #feeda4;
 		position: absolute;
 		overflow: hidden;
+		background: #feeda4;
+		min-height: 100%;
 
 	}
 	.brand-list-header {
