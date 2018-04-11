@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="user-tit declare-head">
+        <header class="user-tit declare-head"  v-if="this.showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
             预定
         </header>
@@ -70,7 +70,7 @@
         <section class="car-warehouse-wrap">
             <p class="car-warehouse-title">选择提货仓</p>
             <ul>
-                <li v-for="(item,index) in pickUpWarehouseData" @click="chooseWarehouse(index)">
+                <li v-for="(item,index) in pickUpWarehouseData" @click="chooseWarehouse(item,index)">
                     <!--:class="{anmiteStatus:this.$store.state.chooseCar}"-->
                     <i :class="{'weui-icon-success':item.isChooseWarehouse,'weui-icon-checked':!item.isChooseWarehouse}"></i>
                     <p>{{item.name}}</p>
@@ -117,7 +117,7 @@
                 presellTotalPrices:null,
                 showAlert:false,
                 alertText:null,
-                chooseActivityFlag:false,
+                chooseActivityFlag:true,
                 chooseWarehouseFlag:false,
                 formData: {
                     token: '',
@@ -136,7 +136,8 @@
                 bankInfoData:{},
                 stockData:[],
                 pickUpWarehouseData:[],
-                backtrackData:{}
+                backtrackData:{},
+                showHeadStatus:false
             }
         },
         methods:{
@@ -219,25 +220,27 @@
                 var dataToken = sessionStorage.token;
                 var data = {
                     token:dataToken,
-                    id : 42
+                    id : this.$route.params.id
                 };
                 this.$http({
                     url:'order/preSale/confirm',
                     methods:'GET',
                     params:data
                 }).then(function(response){
-                    this.presellReserveData = response.body.data;
-                    this.activityData = this.presellReserveData.activity;
-                    this.overviewData = this.presellReserveData.overview;
-                    this.bankInfoData = this.presellReserveData.bankInfo;
-                    this.stockData = this.presellReserveData.stock;
-                    this.pickUpWarehouseData = this.presellReserveData.pickUpWarehouse;
+                    var presellReserveData = response.body.data;
+                    this.activityData = presellReserveData.activity;
+                    this.overviewData = presellReserveData.overview;
+                    this.bankInfoData = presellReserveData.bankInfo;
+                    this.stockData = presellReserveData.stock;
 
 
-                    var that = this;
-                    this.pickUpWarehouseData.forEach((item,index)=>{
-                        that.$set(item,"isChooseWarehouse",false)
+                    var tagData = presellReserveData.pickUpWarehouse;
+                    tagData.forEach((item,index)=>{
+                       item.isChooseWarehouse = false;
                     });
+
+                    this.pickUpWarehouseData = tagData;
+
                 })
             },
 
@@ -271,44 +274,31 @@
             },
 
             /*仓库选中与否*/
-            chooseWarehouse(index){
+            chooseWarehouse(item,index){
 
-
-//                if (this.activityFlag == true) {
-//                    this.chooseWarehouseFlag = false;
-//                    return
-//                }else{
-//                    var that = this;
-//                    this.presellReserveData.pickUpWarehouse.forEach(function(ele,index){
-//                        that.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = false;
-//                    });
-//                    this.presellReserveData.pickUpWarehouse[index].isChooseWarehouse = true;
-//                    this.chooseWarehouseFlag = true;
-//                    this.activityFlag = false;
-//                }
-
-
-
-
+                item.isChooseWarehouse = !item.isChooseWarehouse;
                 var that = this;
-                this.pickUpWarehouseData.forEach(function(ele,index){
-                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
+                this.pickUpWarehouseData.forEach(function(ele,ind){
+
+                    if(!(index == ind)){
+                        that.pickUpWarehouseData[index].isChooseWarehouse = false;
+                    }
                 });
-                this.pickUpWarehouseData[index].isChooseWarehouse = true;
-                console.log( this.pickUpWarehouseData);
-                this.chooseWarehouseFlag = true;
-                this.chooseActivityFlag = false;
+//
+//                console.log( this.pickUpWarehouseData);
+//                this.chooseWarehouseFlag = true;
+//                this.chooseActivityFlag = false;
             },
 
 
             /*是否参与活动*/
             chooseActivity(){
                 var that = this;
-                this.pickUpWarehouseData.forEach(function(ele,index){
-                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
-                });
-                this.chooseActivityFlag = true;
-                this.chooseWarehouseFlag =false;
+//                this.pickUpWarehouseData.forEach(function(ele,index){
+//                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
+//                });
+                this.chooseActivityFlag = !this.chooseActivityFlag;
+                //this.chooseWarehouseFlag =false;
             },
 
             /*表单数据提交*/
@@ -327,15 +317,15 @@
                 }
 
 
+                var tag = this.pickUpWarehouseData.find((ele,index,arr)=>{
+                    return ele.isChooseWarehouse == true;
+                });
 
-                if ( this.chooseActivityFlag == false && this.chooseWarehouseFlag == false){
-                      this.showAlert = true;
-                      this.alertText = "请选择提车仓库";
-                      return
+                if(!tag){
+                    this.showAlert = true;
+                    this.alertText = "请选择提车仓库";
+                    return false;
                 }
-
-
-
 
                  var that = this;
                 //购买车的数量
@@ -372,24 +362,13 @@
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
                     this.backtrackData = response.body.data;
                     this.$store.dispatch("PRESELL_DATA", this.backtrackData);
-
-                    if (this.isTcmApp()) {
-                        this.$route.push({path:'presell/presellSuccess',query:{token:sessionStorage.token}});
+                    if(this.isTcmApp()){
+                        this.$router.push('/presell/presellSuccess?token' + sessionStorage.token);
                     }else{
-                        var id = this.$route.params.id;
-                        //var id = 20411;
-                        this.$route.push('/presell/presellSuccess');
+                        this.$router.push('/presell/presellSuccess');
                     }
-
-                }).catch(function(error){
-                    this.showAlert = true;
-                    this.alertText = error.body.msg;
-                })
-
-
+                });
             }
-
-
 
         },
         components:{
@@ -400,8 +379,8 @@
             if (!sessionStorage.token) {
                 sessionStorage.token = this.$route.query.token;
             }
-            this.renderDom();
-            this.getPresellReserve();
+            //this.renderDom();
+           this.getPresellReserve();
         },
         computed:{
             earnesTotal:function(){

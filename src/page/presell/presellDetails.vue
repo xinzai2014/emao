@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="user-tit declare-head">
+        <header class="user-tit declare-head" v-if="this.showHeadStatus">
             <span class="white-lt" @click="goToIndex"></span>
             预售详情
             <em>分享</em>
@@ -209,6 +209,7 @@
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
+                 //alert(this.isTcmApp());
                 if (this.isTcmApp()){
                     document.title = "预售详情";
                     this.showHeadStatus = false;
@@ -233,12 +234,13 @@
             presellReserve(){
 
                 if (this.isTcmApp()) {
-                    //var id = this.$route.params.id;
-                    var id = 20411;
-                    window.open("/presell/presellReserve/" + id  +'?token=' + sessionStorage.token);
+                    var id = this.$route.params.id;
+                    //var id = 20411;
+                    window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
+                    //window.open('http://192.168.60.238:8080/#/presell/presellReserve/42?token=' + sessionStorage.token,'_blank');
                 }else{
-                    //var id = this.$route.params.id;
-                    var id = 20411;
+                    var id = this.$route.params.id;
+                    //var id = 20411;
                     this.$router.push('/presell/presellReserve/' + id);
                     this.$store.dispatch("PRESELL_FLAG",
                             {
@@ -255,14 +257,14 @@
                 var dataToken = sessionStorage.token;
                 var data = {
                     token:dataToken,
-//                    id : 15
-                    id : 42
+                    id : this.$route.params.id
                 };
                 this.$http({
                     url:'preSale/detail',
                     methods:'GET',
                     params:data
                 }).then(function(response){
+                    //alert(JSON.stringify(response));
                     this.presellData = response.body.data;
                     this.circular = response.body.data.circular;
                     this.preSaleData = response.body.data.preSale;
@@ -278,6 +280,7 @@
                 sessionStorage.token = this.$route.query.token;
             }
             this.getPresellDetails();
+            this.renderDom();
          },
         components:{
             swiper

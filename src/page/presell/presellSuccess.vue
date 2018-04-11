@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="user-tit declare-head">
+        <header class="user-tit declare-head" v-if="this.showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
             确认预定
         </header>
@@ -53,7 +53,6 @@
             /*判断是否是App*/
             isTcmApp(){
                 // return navigator.userAgent.indexOf("tcm") !== -1;
-
                 if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
                     return false;
                 } else {
@@ -86,10 +85,10 @@
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
+                alert(this.isTcmApp());
                 if (this.isTcmApp()){
                     document.title = "确认预定";
                     this.showHeadStatus = false;
-                    this.shareMessage();
                 }else{
                     this.showHeadStatus = true;
                 }
@@ -116,6 +115,8 @@
 
         },
         mounted(){
+
+            this.getPresellSuccessData();
             this.renderDom();
         }
     }

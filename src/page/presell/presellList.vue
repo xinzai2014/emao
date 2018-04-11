@@ -135,13 +135,10 @@
 
         },
         mounted(){
-            this.getPresellListData();
-        },
-
-        watch:{
-            $route(){
-                this.getPresellListData();
+            if (!sessionStorage.token) {
+                sessionStorage.token = this.$route.query.token;
             }
+            this.getPresellListData();
         },
         components:{
             alertTip
