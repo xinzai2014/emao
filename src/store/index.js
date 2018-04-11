@@ -28,7 +28,7 @@ const state = {
     paymentData:null, //汇款页面跳转汇款账户页面前保存数据
     orderURL:null, //订单/展车详情跳转
     serieURL:null,  //车系详情页
-	presellData:null,  //预售预定页下订单成功返回的数据
+	presellData:{},  //预售预定页下订单成功返回的数据
 	presellFlag:'' //预售预订页跳转标识
 }
 

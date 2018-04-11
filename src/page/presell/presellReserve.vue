@@ -120,7 +120,7 @@
                 chooseActivityFlag:false,
                 chooseWarehouseFlag:false,
                 formData: {
-                    token: sessionStorage.token,
+                    token: '',
                     id: '',
                     extColorId: [],
                     intColorId: [],
@@ -207,7 +207,11 @@
 
             /*上传图片相关*/
             getUpload(data,flag){
+                console.log(data);
                 this.dataURL[flag] = data;
+
+                //this.formData.payimg = [{url: this.dataURL.presellVoucher}];
+                this.formData.payimg = [{url: data[0]}];
             },
 
             /*获得数据*/
@@ -315,11 +319,14 @@
                     return
                 }
 
+                console.log(this.formData.payimg);
                 if (this.formData.payimg == null || this.formData.payimg.length == 0 ) {
                     this.showAlert = true;
                     this.alertText = "请上传付款凭证";
                     return
                 }
+
+
 
                 if ( this.chooseActivityFlag == false && this.chooseWarehouseFlag == false){
                       this.showAlert = true;
@@ -357,31 +364,20 @@
                     this.formData.isJoinActivity = '0';
                 }
 
+                this.formData.token = sessionStorage.token;
+                this.formData.id = this.$route.params.id;
 
-                this.formData.payimg = [{url: this.dataURL.presellVoucher}];
 
-
+                //this.formData.payimg = [{url: this.dataURL.presellVoucher}];
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
                     this.backtrackData = response.body.data;
-                    /*存vuex*/
-//                    this.$store.dispatch("PRESELL_DATA",
-//                            {
-//                               state: response.body.data.state,
-//                               scope: response.body.data.scope,
-//                                num:  response.body.data.num,
-//                                pickUpArea:response.body.data.pickUpArea,
-//                                msg:response.body.data.msg
-//                            }
-//                    );
-
-
-                    this.$store.dispatch("PRESELL_DATA", response.body.data);
+                    this.$store.dispatch("PRESELL_DATA", this.backtrackData);
 
                     if (this.isTcmApp()) {
                         this.$route.push({path:'presell/presellSuccess',query:{token:sessionStorage.token}});
                     }else{
-                        //var id = this.$route.params.id;
-                        var id = 20411;
+                        var id = this.$route.params.id;
+                        //var id = 20411;
                         this.$route.push('/presell/presellSuccess');
                     }
 
@@ -416,19 +412,7 @@
                 });
                 return total;
             }
-        },
-        //路由判断
-        beforeRouteEnter (to, from, next) {
-            // 导航离开该组件的对应路由时调用
-            // 可以访问组件实例 `this`
-            next();
-            console.log(from);
-            if (!(from.name == null || from.name == "soldCar" || from.name == "rejectDeclare" || from.name == "soldCarDetail")) {
-                sessionStorage.setItem("prePath",from.name);
-            }
-
         }
-
 
     }
 </script>
