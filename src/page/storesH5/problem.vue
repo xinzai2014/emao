@@ -112,8 +112,8 @@
 	    top: .4rem;
 	}
 	.problem-bg{
-		background: url('../../assets/problem.png');
-		height: 16.08rem;
+		background: #feeda4 url('../../assets/problem.png') no-repeat;
+		min-height: 16.08rem;
 		width: 10.0rem;
 		background-size: contain;
 	}
