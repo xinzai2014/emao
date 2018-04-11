@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="user-tit declare-head" v-if="this.showHeadStatus">
+        <header class="user-tit declare-head" v-if="showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
             确认预定
         </header>
@@ -32,7 +32,8 @@
         data(){
             return {
                 presellSuccessData:{},
-                state:''
+                state:'',
+                showHeadStatus:false
             }
         },
         methods:{
