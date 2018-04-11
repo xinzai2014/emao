@@ -85,7 +85,6 @@
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
-                alert(this.isTcmApp());
                 if (this.isTcmApp()){
                     document.title = "确认预定";
                     this.showHeadStatus = false;
