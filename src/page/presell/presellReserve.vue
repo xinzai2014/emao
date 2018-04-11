@@ -22,34 +22,17 @@
 
                 <div class="car-parameter-tips">定金 {{overviewData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
 
-                <!--<div class="car-parameter-tips">定金 {{earnest}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>-->
             </div>
         </section>
 
         <section class="car-colour-vount">
             <p class="car-colour-title">选择外观/内饰颜色和数量</p>
             <ul>
-                <!--<li>-->
-                    <!--<p><span>黑色</span> / <span>米色</span> </p>-->
-                    <!--<p>库存： <span>{{inventory}}</span> 台</p>-->
-                    <!--<p><span v-on:click="counterSubtract">-</span> <span> <input type="text" v-model="count"></span> <span v-on:click="counterAugment">+</span> </p>-->
-                <!--</li>-->
-
-
                 <li v-for="(item,index) in presellReserveData.stock"">
                     <p><span>{{item.extColor}}</span> / <span>{{item.intColor}}</span> </p>
                     <p>库存： <span>{{item.sum}}</span> 台</p>
                     <p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.default" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>
                 </li>
-
-
-                <!--<li v-for="(item,index) in decorateData">-->
-                    <!--<p><span>{{item.waiguan}}</span> / <span>{{item.neishi}}</span> </p>-->
-                    <!--<p>库存： <span>{{item.kucun}}</span> 台</p>-->
-                    <!--<p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.count" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>-->
-                <!--</li>-->
-
-
             </ul>
         </section>
 
@@ -76,9 +59,6 @@
             </ul>
             <p class="car-account-voucher">上传付款凭证</p>
 
-            <!--<div>-->
-                <!--上传图片组件-->
-            <!--</div>-->
 
             <!--上传图片组件-->
             <uploader :uploadData="uploadData" @getUpload="getUpload"></uploader>
@@ -167,9 +147,14 @@
                 /*分情况判断*/
                 /*从我的预售列表页来，返回到我的预售列表页*/
                 /*从预售详情页面来，返回到预售详情*/
+                var routeName = this.$store.getters.getPresellFlag;
+                if (routeName == presellDetails) {
+                    var id = this.$route.params.id;
+                    this.$router.push("/presell/presellDetails/" + id);
+                }else if (routeName == presellList){
+                    this.$router.push("/presell/presellList")
+                }
 
-
-                this.$router.push("/presell/presellDetails");
             },
 
 
@@ -372,32 +357,30 @@
                     this.formData.isJoinActivity = '0';
                 }
 
-                //console.log(this.formData.isJoinActivity);
-
-               // this.formData.payimg = this.dataURL[flag];
 
                 this.formData.payimg = [{url: this.dataURL.presellVoucher}];
-
-                //console.log(this.formData.payimg);
 
 
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
                     this.backtrackData = response.body.data;
                     /*存vuex*/
-                    this.$store.dispatch("PRESELL_DATA",
-                            {
-                               state: response.body.data.state,
-                               scope: response.body.data.scope,
-                                num:  response.body.data.num,
-                                pickUpArea:response.body.data.pickUpArea,
-                                msg:response.body.data.msg
-                            }
-                    );
+//                    this.$store.dispatch("PRESELL_DATA",
+//                            {
+//                               state: response.body.data.state,
+//                               scope: response.body.data.scope,
+//                                num:  response.body.data.num,
+//                                pickUpArea:response.body.data.pickUpArea,
+//                                msg:response.body.data.msg
+//                            }
+//                    );
+
+
+                    this.$store.dispatch("PRESELL_DATA", response.body.data);
 
                     if (this.isTcmApp()) {
                         this.$route.push({path:'presell/presellSuccess',query:{token:sessionStorage.token}});
                     }else{
-                        //var id = this.$route.query.id;
+                        //var id = this.$route.params.id;
                         var id = 20411;
                         this.$route.push('/presell/presellSuccess');
                     }
@@ -433,7 +416,19 @@
                 });
                 return total;
             }
+        },
+        //路由判断
+        beforeRouteEnter (to, from, next) {
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+            next();
+            console.log(from);
+            if (!(from.name == null || from.name == "soldCar" || from.name == "rejectDeclare" || from.name == "soldCarDetail")) {
+                sessionStorage.setItem("prePath",from.name);
+            }
+
         }
+
 
     }
 </script>

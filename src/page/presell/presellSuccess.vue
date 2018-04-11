@@ -102,12 +102,16 @@
 
             /*返回首页*/
             backtrack(){
-               // this.$router.push("/index");
                 //从我预售进来的话，到我的预售列表
-
-
-
                 //从预售详情进来，到预售详情页面
+                var routeName = this.$store.getters.getPresellFlag.tag;
+                if (routeName == presellDetails) {
+                    var id = this.$store.getters.getPresellFlag.id;
+                    this.$router.push("/presell/presellDetails/" + id);
+                }else if (routeName == presellList){
+                    this.$router.push("/presell/presellList")
+                }
+
             },
 
         },

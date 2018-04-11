@@ -63,7 +63,7 @@
                 </ul>
 
 
-                <div class="car-reserve">
+                <div class="car-reserve" v-if="preSaleData.type == '2' ">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
                         <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.batch}}</i>台 <span>{{preSaleData.city}}</span> 提货
@@ -79,7 +79,7 @@
                     </div>
 
                     <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count">已有 <span>一</span>批车辆发往石家庄</p>
+                    <p class="car-batch-count">已有 <span>{{preSaleData.batch}}</span>批车辆发往石家庄</p>
                 </div>
 
             </div>
@@ -233,16 +233,17 @@
             presellReserve(){
 
                 if (this.isTcmApp()) {
-                    //var id = this.$route.query.id;
+                    //var id = this.$route.params.id;
                     var id = 20411;
                     window.open("/presell/presellReserve/" + id  +'?token=' + sessionStorage.token);
                 }else{
-                    //var id = this.$route.query.id;
+                    //var id = this.$route.params.id;
                     var id = 20411;
                     this.$router.push('/presell/presellReserve/' + id);
                     this.$store.dispatch("PRESELL_FLAG",
                             {
-                                tag:'presellDetails'
+                                tag:'presellDetails',
+                                id:id
                             }
                     )
                 }

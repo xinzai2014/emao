@@ -512,7 +512,7 @@ var router=new Router({
             component: empowerAdopt
         },
         {
-            path:'/presell/presellDetails',  //预售详情页
+            path:'/presell/presellDetails/:id',  //预售详情页
             name:'presellDetails',
             component:presellDetails
         },

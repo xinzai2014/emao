@@ -18,7 +18,7 @@
                               </li>
                         </ul>
                         <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' ">
-                            <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.id)">
+                            <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">
                         </div>
                     </div>
                 </li>
@@ -117,13 +117,19 @@
                         return;
                     }
                 }).catch(function(){
-//                    this.showAlert = true;
-//                    this.alertText = error.body.msg;
+                    this.showAlert = true;
+                    this.alertText = error.body.msg;
                 })
             },
 
             /*重新预定*/
             rebook(id){
+                this.$store.dispatch("PRESELL_FLAG",
+                        {
+                            tag:'presellList'
+                        }
+                );
+
                 this.$router.push('/presell/presellReserve/' + id)
             }
 
