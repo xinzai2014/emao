@@ -106,6 +106,7 @@
                 //从我预售进来的话，到我的预售列表
                 //从预售详情进来，到预售详情页面
                 var routeName = this.$store.getters.getPresellFlag.tag;
+                console.log(routeName);
                 if (routeName == presellDetails) {
                     var id = this.$store.getters.getPresellFlag.id;
                     this.$router.push("/presell/presellDetails/" + id);

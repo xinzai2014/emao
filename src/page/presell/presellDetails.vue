@@ -110,7 +110,8 @@
         </section>
 
         <section class="car-reserve-btn">
-            <input type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
+            <input v-if="preSaleData.batch>0" class="car-presell-present" type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
+            <input v-else="preSaleData.batch == 0" class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled  @click="presellReserve"/>
         </section>
 
     </div>
@@ -333,7 +334,8 @@
     .presell-explain-con li{position:relative;margin-left:.6rem;margin-bottom:.267rem;color:#999;font-size:.4rem;line-height:.533rem;}
     .presell-explain-con li span{position:absolute;left:-.6rem;}
     .car-reserve-btn{height:1.867rem;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;}
-    .car-reserve-btn input{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
+    .car-reserve-btn .car-presell-present{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
+    .car-reserve-btn .car-presell-present-disabled{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#999;border:none;border-radius:.5867rem;background-color:#e6e6e6;}
 
 
     /*#box{*/
