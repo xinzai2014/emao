@@ -144,7 +144,10 @@ const empowerAudit = r => require.ensure([], () => r(require('../page/empower/em
 const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
 
 
+//app1.5.0加盟店H5
 
+const problem = r => require.ensure([], () => r(require('../page/storesH5/problem')), 'problem')
+const authorize = r => require.ensure([], () => r(require('../page/storesH5/authorize')), 'authorize')
 
 Vue.use(Router)
 
@@ -491,7 +494,18 @@ var router=new Router({
             path: '/empower/empowerAdopt',  //授权店审核通过
             name: 'empowerAdopt',
             component: empowerAdopt
+        },
+        {
+            path: '/storesH5/problem',  //几个小问题
+            name: 'problem',
+            component: problem
+        },
+        {
+            path: '/storesH5/authorize',  //授权店
+            name: 'authorize',
+            component: authorize
         }
+
         
     ]
 })
@@ -504,7 +518,7 @@ router.beforeEach((to, from, next) => {
         var href = window.location.href,
             str = href.indexOf('token=');
             if(str != -1){
-                token = href.substr(str+6);
+                token = href.substr(str+6,str+38);
             }  
     }
     document.documentElement.scrollTop = 0;
