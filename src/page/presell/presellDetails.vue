@@ -1,17 +1,10 @@
 <template>
     <div>
-        <header class="user-tit declare-head" v-if="this.showHeadStatus">
+        <header class="user-tit declare-head" v-if="showHeadStatus">
             <span class="white-lt" @click="goToIndex"></span>
             预售详情
             <em>分享</em>
         </header>
-        <!--<section>-->
-            <!--图片滚动-->
-        <!--</section>-->
-
-        <!--预售详情-图片滚动-->
-        <!--<swiper :circular="circular" v-if="circular.length"></swiper>-->
-
         <!--预售详情-图片滚动-->
         <swiper :circular="circular" v-if="circular.length"></swiper>
 
@@ -114,7 +107,7 @@
         </section>
 
         <section class="car-reserve-btn">
-            <input type="text" name="立即预定" value="立即预定" @click="presellReserve"/>
+            <input type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
         </section>
 
     </div>
@@ -132,7 +125,8 @@
                 animate:false,
                 circular:[],
                 presellData:{},
-                preSaleData:{}
+                preSaleData:{},
+                showHeadStatus:false
             }
         },
         created(){
@@ -166,16 +160,17 @@
 
             //向导航条上添加分享按钮
             addShareButton() {
+            //alert(1);
                 var obj = {
                     actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-                    callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+                    //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
                    // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
                     title:"",
                     subTitle:"",
                     imgUrl:"",
-                    url:"https://img.emao.com/order"//要分享内容的 url
+                    url:"https://m.emao.com/tcm.html"//要分享内容的 url
 
                 };
                 this.tcmApp(obj);
@@ -209,12 +204,11 @@
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
-                 //alert(this.isTcmApp());
                 if (this.isTcmApp()){
                     document.title = "预售详情";
                     this.showHeadStatus = false;
                     this.addShareButton();
-                    this.shareMessage();
+                    //this.shareMessage();
                 }else{
                     this.showHeadStatus = true;
                 }
@@ -236,7 +230,9 @@
                 if (this.isTcmApp()) {
                     var id = this.$route.params.id;
                     //var id = 20411;
-                    window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
+
+                    window.open("https://tcm.m.emao.com/#/presell/presellReserve/" + id,'_blank');
+                    //window..open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
                     //window.open('http://192.168.60.238:8080/#/presell/presellReserve/42?token=' + sessionStorage.token,'_blank');
                 }else{
                     var id = this.$route.params.id;

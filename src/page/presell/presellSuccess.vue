@@ -21,7 +21,7 @@
         </section>
 
         <section class="car-reserved-share">
-            <input type="text" name="分享到微信 邀请友商" value="分享到微信 邀请友商" @click="shareToWeichat"/>
+            <input type="button" name="分享到微信 邀请友商" value="分享到微信 邀请友商" @click="shareToWeichat"/>
         </section>
     </div>
 </template>
@@ -54,6 +54,8 @@
             /*判断是否是App*/
             isTcmApp(){
                 // return navigator.userAgent.indexOf("tcm") !== -1;
+                //alert(1);
+                //alert(this.$route.query.token);
                 if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
                     return false;
                 } else {
@@ -86,6 +88,7 @@
 
             /*区分app与wap做不同的渲染*/
             renderDom(){
+                alert(this.isTcmApp());
                 if (this.isTcmApp()){
                     document.title = "确认预定";
                     this.showHeadStatus = false;
@@ -115,7 +118,6 @@
 
         },
         mounted(){
-
             this.getPresellSuccessData();
             this.renderDom();
         }

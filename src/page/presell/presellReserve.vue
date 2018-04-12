@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="user-tit declare-head"  v-if="this.showHeadStatus">
+        <header class="user-tit declare-head"  v-if="showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
             预定
         </header>
@@ -28,7 +28,7 @@
         <section class="car-colour-vount">
             <p class="car-colour-title">选择外观/内饰颜色和数量</p>
             <ul>
-                <li v-for="(item,index) in presellReserveData.stock"">
+                <li v-for="(item,index) in stockData"">
                     <p><span>{{item.extColor}}</span> / <span>{{item.intColor}}</span> </p>
                     <p>库存： <span>{{item.sum}}</span> 台</p>
                     <p><span v-on:click="counterSubtract(index)">-</span> <span> <input type="text" v-model="item.default" @input="countMonitor(index)"></span> <span v-on:click="counterAugment(index)">+</span> </p>
@@ -148,11 +148,11 @@
                 /*分情况判断*/
                 /*从我的预售列表页来，返回到我的预售列表页*/
                 /*从预售详情页面来，返回到预售详情*/
-                var routeName = this.$store.getters.getPresellFlag;
-                if (routeName == presellDetails) {
+                var routeName = this.$store.getters.getPresellFlag.tag;
+                if (routeName == "presellDetails") {
                     var id = this.$route.params.id;
                     this.$router.push("/presell/presellDetails/" + id);
-                }else if (routeName == presellList){
+                }else if (routeName == "presellList"){
                     this.$router.push("/presell/presellList")
                 }
 
@@ -370,17 +370,24 @@
                 });
             }
 
+
+
+
+
+
         },
         components:{
             uploader,
              alertTip
         },
         mounted(){
+            //alert(sessionStorage.token);
             if (!sessionStorage.token) {
                 sessionStorage.token = this.$route.query.token;
             }
-            //this.renderDom();
+           //alert(sessionStorage.token);
            this.getPresellReserve();
+           this.renderDom();
         },
         computed:{
             earnesTotal:function(){

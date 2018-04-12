@@ -165,8 +165,15 @@
                             tag:'presellList'
                         }
                 );
+                if (this.isTcmApp()) {
+                    this.$router.push('/presell/presellReserve/' + id +'?token=' + sessionStorage.token)
+                }else{
+                    this.$router.push('/presell/presellReserve/' + id )
+                }
 
-                this.$router.push('/presell/presellReserve/' + id)
+
+
+
             }
 
         },
