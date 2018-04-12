@@ -130,14 +130,14 @@
                     isJoinActivity: ''
 
                 },
-                presellReserveData:{},
                 activityData:{},
                 overviewData:{},
                 bankInfoData:{},
                 stockData:[],
                 pickUpWarehouseData:[],
                 backtrackData:{},
-                showHeadStatus:false
+                showHeadStatus:false,
+                isChooseWarehouse:false
             }
         },
         methods:{
@@ -235,11 +235,14 @@
 
 
                     var tagData = presellReserveData.pickUpWarehouse;
+                    //alert(1);
+                    //console.log(tagData);
                     tagData.forEach((item,index)=>{
                        item.isChooseWarehouse = false;
                     });
 
                     this.pickUpWarehouseData = tagData;
+                   // console.log( this.pickUpWarehouseData);
 
                 })
             },
@@ -257,17 +260,18 @@
 
 
             counterAugment(index){
-                this.presellReserveData.stock[index].default = parseInt(this.presellReserveData.stock[index].default);
-                this.presellReserveData.stock[index].default += 1;
-                if ( this.presellReserveData.stock[index].default >  this.presellReserveData.stock[index].sum ) {
+                //alert(1);
+                this.stockData[index].default = parseInt(this.stockData[index].default);
+                this.stockData[index].default += 1;
+                if ( this.stockData[index].default >  this.stockData[index].sum ) {
                     this.showAlert = true;
                     this.alertText = '数量不能大于库存';
-                    this.presellReserveData.stock[index].default = this.presellReserveData.stock[index].sum;
+                    this.stockData[index].default = this.stockData[index].sum;
                 }
             },
 
             countMonitor(index){
-                if ( parseInt(this.presellReserveData.stock[index].default) > parseInt(this.presellReserveData.stock[index].sum)) {
+                if ( parseInt(this.stockData[index].default) > parseInt(this.stockData[index].sum)) {
                     this.showAlert = true;
                     this.alertText = "数量不能大于库存";
                 }
@@ -275,28 +279,21 @@
 
             /*仓库选中与否*/
             chooseWarehouse(item,index){
-
                 item.isChooseWarehouse = !item.isChooseWarehouse;
                 var that = this;
-                this.pickUpWarehouseData.forEach(function(ele,ind){
-
+                that.pickUpWarehouseData.forEach(function(ele,ind){
                     if(!(index == ind)){
-                        that.pickUpWarehouseData[index].isChooseWarehouse = false;
+                        ele.isChooseWarehouse = false;
                     }
                 });
-//
-//                console.log( this.pickUpWarehouseData);
-//                this.chooseWarehouseFlag = true;
-//                this.chooseActivityFlag = false;
+
             },
 
 
             /*是否参与活动*/
             chooseActivity(){
                 var that = this;
-//                this.pickUpWarehouseData.forEach(function(ele,index){
-//                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
-//                });
+                //alert(2);
                 this.chooseActivityFlag = !this.chooseActivityFlag;
                 if (this.chooseActivityFlag == false) {
                     this.showAlert = true;
@@ -373,10 +370,6 @@
                     }
                 });
             }
-
-
-
-
 
 
         },

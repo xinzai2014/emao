@@ -72,7 +72,7 @@
                     </div>
 
                     <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count">已有 <span>{{preSaleData.batch}}</span>批车辆发往石家庄</p>
+                    <p class="car-batch-count">已有 <span>{{preSaleData.batch}}</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
 
             </div>

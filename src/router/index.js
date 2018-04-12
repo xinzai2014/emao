@@ -160,8 +160,6 @@ const presellSuccess = r => require.ensure([],() => r(require('../page/presell/p
 const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
 
 
-const presellNew = r => require.ensure([], () => r(require('../page/presell/presellNew')),'presellNew')
-
 
 
 
@@ -531,11 +529,6 @@ var router=new Router({
             path:'/presell/presellList',     //预售订单列表
             name:'presellList',
             component:presellList
-        },
-        {
-            path:'/presell/presellNew',
-            name:'presellNew',
-            component:presellNew
         }
         
     ]
