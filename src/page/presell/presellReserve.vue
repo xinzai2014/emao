@@ -298,6 +298,10 @@
 //                    that.pickUpWarehouseData[index].isChooseWarehouse = false;
 //                });
                 this.chooseActivityFlag = !this.chooseActivityFlag;
+                if (this.chooseActivityFlag == false) {
+                    this.showAlert = true;
+                    this.alertText = "若不参加该活动，您只能前往所选仓库进行提车";
+                }
                 //this.chooseWarehouseFlag =false;
             },
 
