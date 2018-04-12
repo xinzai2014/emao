@@ -110,8 +110,8 @@
         </section>
 
         <section class="car-reserve-btn">
-            <input v-if="preSaleData.batch>0" class="car-presell-present" type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
-            <input v-else="preSaleData.batch == 0" class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled  @click="presellReserve"/>
+            <input v-if="presellData.endTime != '' " class="car-presell-present" type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
+            <input v-else class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled  @click="presellReserve"/>
         </section>
 
     </div>
