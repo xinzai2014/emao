@@ -27,6 +27,9 @@
                         <span>距结束剩余</span>
                         <span>{{presellData.endTime}}</span>
                     </p>
+                    <p class="car-count-down" v-if="presellData.endTime == '' ">
+                        <span>预售已结束</span>
+                    </p>
                 </div>
                 <p class="car-parameter-tips">定金 {{presellData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</p>
             </div>
@@ -59,7 +62,7 @@
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
-                        <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.batch}}</i>台 <span>{{preSaleData.city}}</span> 提货
+                        <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
                     </p>
                     <div class="car-reserve-roll">
                         <ul ref="con1" :class="{anim:animate==true}">
@@ -72,7 +75,7 @@
                     </div>
 
                     <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count">已有 <span>{{preSaleData.batch}}</span>批车辆发往{{preSaleData.city}}</p>
+                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有 <span>{{preSaleData.batch}}</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
 
             </div>

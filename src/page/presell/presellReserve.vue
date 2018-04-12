@@ -338,14 +338,14 @@
                     }
                 });
 
-                if (this.chooseWarehouseFlag) {
-                    var that = this;
-                    this.pickUpWarehouseData.forEach(function(item,index){
-                        if (item.isChooseWarehouse == true) {
-                            that.formData.warehouseId = item.id;
-                        }
-                    })
-                }
+
+                var that = this;
+                this.pickUpWarehouseData.forEach(function(item,index){
+                    if (item.isChooseWarehouse == true) {
+                        that.formData.warehouseId = item.id;
+                    }
+                })
+
 
                 console.log(this.formData.warehouseId)
 
