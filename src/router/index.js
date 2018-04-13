@@ -128,20 +128,20 @@ const storage = r => require.ensure([], () => r(require('../page/storage/storage
 //后期淘车猫加入专题
 const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
 
-////授权店认证 node-sass
-//const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
-//
-////授权店升级引导
-//const empowerGuide = r => require.ensure([], () => r(require('../page/empower/empowerGuide')), 'empowerGuide')
-//
-////授权店提交成功
-//const empowerSuccess = r => require.ensure([], () => r(require('../page/empower/empowerSuccess')), 'empowerSuccess')
-//
-////授权店审核中
-//const empowerAudit = r => require.ensure([], () => r(require('../page/empower/empowerAudit')), 'empowerAudit')
-//
-////授权店审核通过
-//const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
+//授权店认证
+const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
+
+//授权店升级引导
+const empowerGuide = r => require.ensure([], () => r(require('../page/empower/empowerGuide')), 'empowerGuide')
+
+//授权店提交成功
+const empowerSuccess = r => require.ensure([], () => r(require('../page/empower/empowerSuccess')), 'empowerSuccess')
+
+//授权店审核中
+const empowerAudit = r => require.ensure([], () => r(require('../page/empower/empowerAudit')), 'empowerAudit')
+
+//授权店审核通过
+const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
 
 
 
@@ -484,32 +484,31 @@ var router=new Router({
           name: 'auction',
           component: auction,
         },
-        // node-sass 注释掉
-        //{
-        //    path: '/empower',  //授权店认证
-        //    name: 'empower',
-        //    component: empower
-        //},
-        //{
-        //    path: '/empower/empowerGuide',  //授权店升级引导
-        //    name: 'empowerGuide',
-        //    component: empowerGuide
-        //},
-        //{
-        //    path: '/empower/empowerSuccess',  //授权店提交成功
-        //    name: 'empowerSuccess',
-        //    component: empowerSuccess
-        //},
-        //{
-        //    path: '/empower/empowerAudit',  //授权店审核中
-        //    name: 'empowerAudit',
-        //    component: empowerAudit
-        //},
-        //{
-        //    path: '/empower/empowerAdopt',  //授权店审核通过
-        //    name: 'empowerAdopt',
-        //    component: empowerAdopt
-        //},
+        {
+            path: '/empower',  //授权店认证
+            name: 'empower',
+            component: empower
+        },
+        {
+            path: '/empower/empowerGuide',  //授权店升级引导
+            name: 'empowerGuide',
+            component: empowerGuide
+        },
+        {
+            path: '/empower/empowerSuccess',  //授权店提交成功
+            name: 'empowerSuccess',
+            component: empowerSuccess
+        },
+        {
+            path: '/empower/empowerAudit',  //授权店审核中
+            name: 'empowerAudit',
+            component: empowerAudit
+        },
+        {
+            path: '/empower/empowerAdopt',  //授权店审核通过
+            name: 'empowerAdopt',
+            component: empowerAdopt
+        },
         {
             path:'/presell/presellDetails/:id',  //预售详情页
             name:'presellDetails',
