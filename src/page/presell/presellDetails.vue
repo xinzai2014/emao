@@ -111,8 +111,10 @@
 
         <section class="car-reserve-btn">
             <input v-if="presellData.endTime != '' " class="car-presell-present" type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
-            <input v-else class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled  @click="presellReserve"/>
+            <input v-else class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled/>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 
     </div>
 </template>
@@ -120,6 +122,7 @@
 
 <script>
     import swiper from '../../components/common/swiper/swiper'
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         name:'presellDetails',
         data(){
@@ -130,7 +133,12 @@
                 circular:[],
                 presellData:{},
                 preSaleData:{},
-                showHeadStatus:false
+                showHeadStatus:false,
+                presellModel:'',
+                presellPrice:'',
+                showAlert:false,
+                alertText:null,
+
             }
         },
         created(){
@@ -161,24 +169,24 @@
 
             },
 
-
             //向导航条上添加分享按钮
             addShareButton() {
-            //alert(1);
                 var obj = {
                     actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
-                   // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-                    title:"",
+                    //buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
                     subTitle:"",
                     imgUrl:"",
                     url:"https://m.emao.com/tcm.html"//要分享内容的 url
-
                 };
                 this.tcmApp(obj);
             },
+
+
+
 
             //向社交媒体分享信息
             shareMessage() {
@@ -187,7 +195,7 @@
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
-                    title:"",
+                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
                     subTitle:"",
                     imgUrl:"",
                     url:"https://m.emao.com/tcm.html"//要分享内容的 url
@@ -211,8 +219,16 @@
                 if (this.isTcmApp()){
                     document.title = "预售详情";
                     this.showHeadStatus = false;
-                    this.addShareButton();
-                    //this.shareMessage();
+//                    var timer;
+//                    timer = setTimeout( function(){
+//                        addShareButton()
+//                    },2000);
+//
+//                    timer();
+
+
+                    setTimeout(this.addShareButton,1500);
+
                 }else{
                     this.showHeadStatus = true;
                 }
@@ -236,11 +252,15 @@
                     //var id = 20411;
 
                     window.open("https://tcm.m.emao.com/#/presell/presellReserve/" + id,'_blank');
-                    //window..open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
+                    //window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
                     //window.open('http://192.168.60.238:8080/#/presell/presellReserve/42?token=' + sessionStorage.token,'_blank');
                 }else{
+                    if (this.presellData.preStockNum == '0') {
+                        this.showAlert = true;
+                        this.alertText = "抱歉，车辆已售罄";
+                    }
+
                     var id = this.$route.params.id;
-                    //var id = 20411;
                     this.$router.push('/presell/presellReserve/' + id);
                     this.$store.dispatch("PRESELL_FLAG",
                             {
@@ -264,10 +284,13 @@
                     methods:'GET',
                     params:data
                 }).then(function(response){
-                    //alert(JSON.stringify(response));
                     this.presellData = response.body.data;
                     this.circular = response.body.data.circular;
                     this.preSaleData = response.body.data.preSale;
+                    this.presellModel = response.body.data.autoName;
+                    this.presellPrice = response.body.data.prePrice;
+                    window.presellModel = response.body.data.autoName;
+                    window.presellPrice = response.body.data.prePrice;
                 })
             }
 
@@ -316,9 +339,9 @@
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
-    .car-reserve-roll{overflow:hidden;height:.4267rem;}
+    .car-reserve-roll{overflow:hidden;max-height:1.8rem;}
     /*.car-reserve-roll ul{height:.4267rem;}*/
-    .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;color:#999;}
+    .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;text-align:center;color:#999;}
     /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
 
     .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}

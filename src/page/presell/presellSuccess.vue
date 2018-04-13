@@ -53,9 +53,6 @@
 
             /*判断是否是App*/
             isTcmApp(){
-                // return navigator.userAgent.indexOf("tcm") !== -1;
-                //alert(1);
-                //alert(this.$route.query.token);
                 if (typeof(this.$route.query.token) == 'undefined' || this.$route.query.token == '') {
                     return false;
                 } else {

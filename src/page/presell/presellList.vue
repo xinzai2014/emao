@@ -14,7 +14,7 @@
                          <ul class="car-presell-facade">
                               <li v-for="(appearanceItem,appearanceIndex) in item.preOrder">
                                   <p><span>{{appearanceItem.color}}</span></p>
-                                  <p>X <span>1</span></p>
+                                  <p>X <span>{{appearanceItem.num}}</span></p>
                               </li>
                         </ul>
                         <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' ">

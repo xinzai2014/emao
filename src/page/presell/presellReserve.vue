@@ -372,6 +372,19 @@
             }
 
 
+
+
+//            submitData(){
+//                this.$store.dispatch("PRESELL_DATA", this.backtrackData);
+//                if(this.isTcmApp()){
+//                    this.$router.push('/presell/presellSuccess?token=' + sessionStorage.token);
+//                    alert(JSON.stringify(this.$router.query));
+//                }else{
+//                    this.$router.push('/presell/presellSuccess');
+//                }
+//            }
+
+
         },
         components:{
             uploader,
