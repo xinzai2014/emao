@@ -246,11 +246,12 @@
                 if (this.isTcmApp()) {
                     var id = this.$route.params.id;
                     window.open("https://tcm.m.emao.com/#/presell/presellReserve/" + id,'_blank');
-                   // window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
+                    //window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
                 }else{
                     if (this.presellData.preStockNum == '0') {
                         this.showAlert = true;
                         this.alertText = "抱歉，车辆已售罄";
+                        return false;
                     }
 
                     var id = this.$route.params.id;
