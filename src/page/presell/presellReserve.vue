@@ -71,7 +71,6 @@
             <p class="car-warehouse-title">选择提货仓</p>
             <ul>
                 <li v-for="(item,index) in pickUpWarehouseData" @click="chooseWarehouse(item,index)">
-                    <!--:class="{anmiteStatus:this.$store.state.chooseCar}"-->
                     <i :class="{'weui-icon-success':item.isChooseWarehouse,'weui-icon-checked':!item.isChooseWarehouse}"></i>
                     <p>{{item.name}}</p>
                     <p>地址：{{item.address}}</p>
@@ -79,7 +78,6 @@
             </ul>
             <div class="car-participation-wrap" v-if=' activityData.buttonIsShow == "1" '>
                 <div class="car-participation" @click="chooseActivity">
-                    <!--weui-icon-checked,weui-icon-success,weui-check-->
                     <i :class="{'weui-icon-success':chooseActivityFlag,'weui-icon-checked':!chooseActivityFlag}"></i>
                     <p>参与活动：省内拼满12台， <span>{{activityData.pickUpArea}}</span> 提车</p>
                     <p>仓库地址：{{activityData.pickUpAddress}}</p>
@@ -114,30 +112,29 @@
                     image:"static/presell-voucher.jpg"      //照片路径
                 },
                 dataURL:{},             //上传数据
-                presellTotalPrices:null,
-                showAlert:false,
-                alertText:null,
-                chooseActivityFlag:true,
-                chooseWarehouseFlag:false,
-                formData: {
-                    token: '',
-                    id: '',
-                    extColorId: [],
-                    intColorId: [],
-                    sum: [],
-                    payimg:[],
-                    warehouseId: '',
-                    isJoinActivity: ''
+                showAlert:false,  //是否显示弹窗
+                alertText:null,   //弹窗的内容
+                chooseActivityFlag:true,   //是否选择了参与活动
+                chooseWarehouseFlag:false,  //是否选择了常规仓库
+                formData: {       //表单提交的数据
+                    token: '',     //token
+                    id: '',        //活动id
+                    extColorId: [],  //外饰
+                    intColorId: [],  //内饰
+                    sum: [],         //车的数量（数组格式）
+                    payimg:[],       //付款凭证（数组格式）
+                    warehouseId: '',  //常规仓库id
+                    isJoinActivity: ''  //是否参加活动
 
                 },
-                activityData:{},
-                overviewData:{},
-                bankInfoData:{},
-                stockData:[],
-                pickUpWarehouseData:[],
-                backtrackData:{},
-                showHeadStatus:false,
-                isChooseWarehouse:false
+                activityData:{},    //参与活动模块的数据
+                overviewData:{},    //车型相关数据
+                bankInfoData:{},    //公司账户数据
+                stockData:[],    //外观，内饰信息
+                pickUpWarehouseData:[],  //仓库信息
+                backtrackData:{},  //接口数据
+                showHeadStatus:false,  //是否头部
+                isChooseWarehouse:false  //是否选择常规仓库
             }
         },
         methods:{
@@ -235,14 +232,13 @@
 
 
                     var tagData = presellReserveData.pickUpWarehouse;
-                    //alert(1);
-                    //console.log(tagData);
+
                     tagData.forEach((item,index)=>{
                        item.isChooseWarehouse = false;
                     });
 
                     this.pickUpWarehouseData = tagData;
-                   // console.log( this.pickUpWarehouseData);
+
 
                 })
             },
@@ -299,7 +295,6 @@
                     this.showAlert = true;
                     this.alertText = "若不参加该活动，您只能前往所选仓库进行提车";
                 }
-                //this.chooseWarehouseFlag =false;
             },
 
             /*表单数据提交*/
@@ -362,23 +357,41 @@
                 //this.formData.payimg = [{url: this.dataURL.presellVoucher}];
                 this.$http.post("order/preSale/create",this.formData).then(function(response){
                     this.backtrackData = response.body.data;
+                    this.$store.dispatch("PRESELL_FLAG",
+                            {
+                                presellModel:this.overviewData.autoName,
+                                presellPrice:this.overviewData.prePrice
+                            }
+                    );
                     this.$store.dispatch("PRESELL_DATA", this.backtrackData);
+                    this.$store.dispatch("PRESELL_FLAG",
+                            {
+                                presellModel:this.overviewData.autoName,
+                                presellPrice:this.overviewData.prePrice
+                            }
+                    );
                     if(this.isTcmApp()){
-                        this.$router.push('/presell/presellSuccess?token' + sessionStorage.token);
+                        this.$router.push('/presell/presellSuccess?token=' + sessionStorage.token);
                     }else{
                         this.$router.push('/presell/presellSuccess');
                     }
                 });
-            }
+            },
 
 
 
 
 //            submitData(){
+//                this.$store.dispatch("PRESELL_FLAG",
+//                        {
+//                            presellModel:this.overviewData.autoName,
+//                            presellPrice:this.overviewData.prePrice
+//                        }
+//                );
 //                this.$store.dispatch("PRESELL_DATA", this.backtrackData);
 //                if(this.isTcmApp()){
 //                    this.$router.push('/presell/presellSuccess?token=' + sessionStorage.token);
-//                    alert(JSON.stringify(this.$router.query));
+//                    //alert(JSON.stringify(this.$router.query));
 //                }else{
 //                    this.$router.push('/presell/presellSuccess');
 //                }
@@ -391,11 +404,9 @@
              alertTip
         },
         mounted(){
-            //alert(sessionStorage.token);
             if (!sessionStorage.token) {
                 sessionStorage.token = this.$route.query.token;
             }
-           //alert(sessionStorage.token);
            this.getPresellReserve();
            this.renderDom();
         },

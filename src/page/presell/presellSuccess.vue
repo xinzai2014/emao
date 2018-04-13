@@ -31,9 +31,11 @@
         name:'presellSuccess',
         data(){
             return {
-                presellSuccessData:{},
-                state:'',
-                showHeadStatus:false
+                presellSuccessData:{},  //成功页的数据
+                state:'',               //渲染数据的判断值
+                showHeadStatus:false,   //是否显示头部
+                presellModel:null,      //分享里面的车型
+                presellPrice:null       //分享里面的预售价格
             }
         },
         methods:{
@@ -67,7 +69,7 @@
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
-                    title:"",
+                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
                     subTitle:"",
                     imgUrl:"",
                     url:"https://m.emao.com/tcm.html"//要分享内容的 url
@@ -91,6 +93,8 @@
                 }else{
                     this.showHeadStatus = true;
                 }
+                window.presellModel = this.$store.getters.getPresellFlag.presellModel;
+                window.presellPrice = this.$store.getters.getPresellFlag.presellPrice;
             },
 
 

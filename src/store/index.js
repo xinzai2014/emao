@@ -29,7 +29,7 @@ const state = {
     orderURL:null, //订单/展车详情跳转
     serieURL:null,  //车系详情页
 	presellData:{},  //预售预定页下订单成功返回的数据
-	presellFlag:'' //预售预订页跳转标识
+	presellFlag:{} //预售预订页跳转标识
 }
 
 export default new Vuex.Store({

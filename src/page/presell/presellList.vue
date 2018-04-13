@@ -52,17 +52,17 @@
         name:'presellList',
         data(){
             return {
-                presellList:[],
-                touchend:false,
-                perPage:'10',
-                currentPage:'1',
-                lastPage:'0',
-                showLoading:true,
-                preventRepeatRequest:false,
-                showNoDataVal:false,
-                showAlert:false,
-                alertText:null,
-                showHeadStatus:false
+                presellList:[],  //预售列表页信息
+                touchend:false,  //是否加载到底部
+                perPage:'10',    //每页多少条
+                currentPage:'1',  //当前页数
+                lastPage:'0',     //最后一页
+                showLoading:true,  //是否显示加载loading
+                preventRepeatRequest:false,  //是否请求数据
+                showNoDataVal:false,    //没有预售车辆
+                showAlert:false,        //是否显示弹窗
+                alertText:null,         //弹窗的内容
+                showHeadStatus:false    //是否显示头部
             }
         },
         methods:{

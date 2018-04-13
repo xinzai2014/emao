@@ -8,8 +8,6 @@
         <!--预售详情-图片滚动-->
         <swiper :circular="circular" v-if="circular.length"></swiper>
 
-        <!--<swiper></swiper>-->
-
         <section class="car-info-wrap">
             <div class="car-parameter">
                 <p class="car-name">{{presellData.autoName}}</p>
@@ -129,19 +127,17 @@
             return {
                 //轮播图数据
                 circular:[],
-                animate:false,
-                circular:[],
-                presellData:{},
-                preSaleData:{},
-                showHeadStatus:false,
-                presellModel:'',
-                presellPrice:'',
-                showAlert:false,
-                alertText:null,
+                animate:false,  //是否运动
+                presellData:{},  //页面数据
+                preSaleData:{},  //预售信息
+                showHeadStatus:false,  //是否显示头部
+                showAlert:false,  //是否显示弹窗
+                alertText:null,   //弹窗提示信息
 
             }
         },
         created(){
+            /*文字滚动效果*/
             setInterval(this.scroll,2000)
         },
         methods:{
@@ -249,11 +245,8 @@
 
                 if (this.isTcmApp()) {
                     var id = this.$route.params.id;
-                    //var id = 20411;
-
                     window.open("https://tcm.m.emao.com/#/presell/presellReserve/" + id,'_blank');
-                    //window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
-                    //window.open('http://192.168.60.238:8080/#/presell/presellReserve/42?token=' + sessionStorage.token,'_blank');
+                   // window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
                 }else{
                     if (this.presellData.preStockNum == '0') {
                         this.showAlert = true;
@@ -339,7 +332,7 @@
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
-    .car-reserve-roll{overflow:hidden;max-height:1.8rem;}
+    .car-reserve-roll{overflow:hidden;height:1.8rem;}
     /*.car-reserve-roll ul{height:.4267rem;}*/
     .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;text-align:center;color:#999;}
     /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
