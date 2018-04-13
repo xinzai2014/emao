@@ -222,6 +222,7 @@
 //
 //                    timer();
 
+                    console.log(1);
 
                     setTimeout(this.addShareButton,1500);
 
