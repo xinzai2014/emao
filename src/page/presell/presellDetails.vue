@@ -250,8 +250,7 @@
                 }
                 if (this.isTcmApp()) {
                     var id = this.$route.params.id;
-                    window.open("https://tcm.m.emao.com/#/presell/presellReserve/" + id,'_blank');
-                    //window.open("http://192.168.60.238:8080/#/presell/presellReserve/" + id,'_blank');
+                    window.open("/#/presell/presellReserve/" + id,'_blank');
                 }else{
                     var id = this.$route.params.id;
                     this.$router.push('/presell/presellReserve/' + id);
