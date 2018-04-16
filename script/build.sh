@@ -13,7 +13,7 @@ main()
     cd ${app_path}
     # npm install
     #	npm run build
-    /bin/npm install
+    cnpm install
     /bin/npm run build
 }
 
