@@ -149,6 +149,23 @@ const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/em
 const problem = r => require.ensure([], () => r(require('../page/storesH5/problem')), 'problem')
 const authorize = r => require.ensure([], () => r(require('../page/storesH5/authorize')), 'authorize')
 
+
+//预售详情
+const presellDetails = r => require.ensure([], () => r(require('../page/presell/presellDetails')),'presellDetails')
+
+//预售确认预定
+const presellReserve = r => require.ensure([], () => r(require('../page/presell/presellReserve')),'presellReserve')
+
+//预售预定成功
+const presellSuccess = r => require.ensure([],() => r(require('../page/presell/presellSuccess')),'presellSuccess')
+
+//预售订单列表
+const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
+
+
+
+
+
 Vue.use(Router)
 
 var router=new Router({
@@ -496,6 +513,7 @@ var router=new Router({
             component: empowerAdopt
         },
         {
+
             path: '/storesH5/problem',  //几个小问题
             name: 'problem',
             component: problem
@@ -504,6 +522,26 @@ var router=new Router({
             path: '/storesH5/authorize',  //授权店
             name: 'authorize',
             component: authorize
+        },
+        {
+            path:'/presell/presellDetails/:id',  //预售详情页
+            name:'presellDetails',
+            component:presellDetails
+        },
+        {
+            path:'/presell/presellReserve/:id',   //预售确认预定
+            name:'presellReserve',
+            component:presellReserve
+        },
+        {
+            path:'/presell/presellSuccess',  //预定成功
+            name:'presellSuccess',
+            component:presellSuccess
+        },
+        {
+            path:'/presell/presellList',     //预售订单列表
+            name:'presellList',
+            component:presellList
         }
 
         
