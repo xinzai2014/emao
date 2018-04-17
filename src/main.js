@@ -43,9 +43,14 @@ Vue.use(VueResource)
 
 //全局默认配置
 Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
+//Vue.http.headers.common = {
+//	Accept:"application/json; version=2.1.0"
+//};
+
 Vue.http.headers.common = {
-	Accept:"application/json; version=2.4.0"
+	Accept:"application/json; version=2.6.0"
 };
+
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
 //页面公用元素
@@ -185,3 +190,4 @@ var obj = new Vue({
     }
   }*/
 })
+
