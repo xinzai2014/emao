@@ -73,7 +73,7 @@
                     </div>
 
                     <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有 <span>{{preSaleData.batch}}</span>批车辆发往{{preSaleData.city}}</p>
+                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>$nbsp{{preSaleData.batch}}$nbsp</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
 
             </div>
@@ -132,7 +132,7 @@
                 preSaleData:{},  //预售信息
                 showHeadStatus:false,  //是否显示头部
                 showAlert:false,  //是否显示弹窗
-                alertText:null,   //弹窗提示信息
+                alertText:null   //弹窗提示信息
 
             }
         },
@@ -199,6 +199,15 @@
                 this.tcmApp(obj);
             },
 
+            //用 JS 函数在新窗口打开指定链接
+            windowOpen() {
+                var obj = {
+                    actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    url: window.location.origin + '/#/presell/presellReserve/' + window.id// 要打开的链接
+                };
+                this.tcmApp(obj);
+            },
+
             /*判断是否是App*/
             isTcmApp(){
                 // return navigator.userAgent.indexOf("tcm") !== -1;
@@ -249,8 +258,11 @@
                     return false;
                 }
                 if (this.isTcmApp()) {
-                    var id = this.$route.params.id;
-                    window.open("/#/presell/presellReserve/" + id,'_blank');
+                    //var id = this.$route.params.id;
+                    window.id = this.$route.params.id;
+                    //window.open("/#/presell/presellReserve/" + id,'_blank');
+                    this.windowOpen();
+
                 }else{
                     var id = this.$route.params.id;
                     this.$router.push('/presell/presellReserve/' + id);
