@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="showDomTag">
         <header class="user-tit declare-head"  v-if="showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
             预定
@@ -134,7 +134,8 @@
                 pickUpWarehouseData:[],  //仓库信息
                 backtrackData:{},  //接口数据
                 showHeadStatus:false,  //是否头部
-                isChooseWarehouse:false  //是否选择常规仓库
+                isChooseWarehouse:false,  //是否选择常规仓库
+                showDomTag:false
             }
         },
         methods:{
@@ -239,12 +240,17 @@
 
                     this.pickUpWarehouseData = tagData;
 
+                    this.showDomTag = true;
+
 
                 })
             },
 
             /*定金金额相关*/
             counterSubtract(index){
+                if (this.stockData[index].default == '') {
+                    this.stockData[index].default = 0;
+                }
                 this.stockData[index].default = parseInt( this.stockData[index].default);
                 this.stockData[index].default -= 1;
                 if (this.stockData[index].default < 0) {
@@ -256,7 +262,9 @@
 
 
             counterAugment(index){
-                //alert(1);
+                if (this.stockData[index].default == '') {
+                    this.stockData[index].default = 0;
+                }
                 this.stockData[index].default = parseInt(this.stockData[index].default);
                 this.stockData[index].default += 1;
                 if ( this.stockData[index].default >  this.stockData[index].sum ) {
@@ -289,7 +297,6 @@
             /*是否参与活动*/
             chooseActivity(){
                 var that = this;
-                //alert(2);
                 this.chooseActivityFlag = !this.chooseActivityFlag;
                 if (this.chooseActivityFlag == false) {
                     this.showAlert = true;
