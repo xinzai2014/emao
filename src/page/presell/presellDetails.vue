@@ -233,7 +233,7 @@
 
                     console.log(1);
 
-                    setTimeout(this.addShareButton,1500);
+                    //setTimeout(this.addShareButton,1500);
 
                 }else{
                     this.showHeadStatus = true;
@@ -295,6 +295,7 @@
                     this.presellPrice = response.body.data.prePrice;
                     window.presellModel = response.body.data.autoName;
                     window.presellPrice = response.body.data.prePrice;
+                    this.addShareButton();
                 })
             }
 
