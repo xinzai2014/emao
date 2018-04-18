@@ -73,7 +73,7 @@
                     </div>
 
                     <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>$nbsp{{preSaleData.batch}}$nbsp</span>批车辆发往{{preSaleData.city}}</p>
+                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
 
             </div>
