@@ -17,9 +17,15 @@
                                   <p>X <span>{{appearanceItem.num}}</span></p>
                               </li>
                         </ul>
-                        <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' ">
+                        <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' && item.preStockNum > 0">
                             <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">
                         </div>
+
+
+                        <!--<div class="car-presell-aigin-wrap" v-if="item.state== '2' ">-->
+                            <!--<input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">-->
+                        <!--</div>-->
+
                     </div>
                 </li>
 
@@ -28,10 +34,10 @@
             <p class="visib-109"></p>
 
             <transition name="loading">
-                <div v-show="showLoading">正在加载中</div>
+                <!--<div v-show="showLoading">正在加载中</div>-->
             </transition>
 
-            <p v-if="touchend" class="empty_data">没有更多了</p>
+            <!--<p v-if="touchend" class="empty_data">没有更多了</p>-->
 
         </section>
 
@@ -79,6 +85,16 @@
                     window.tcmAppObject.postMessage(JSON.stringify(obj));//向 Android 发送消息，iOS 无效
                 }
 
+            },
+            //用 JS 函数在新窗口打开指定链接
+            //window.open('https://tcm.m.emao.com/#/presell/presellReserve/' + id +'?token=' + sessionStorage.token,'_blank');
+            windowOpen() {
+                var obj = {
+                    actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                    url: window.location.origin + '/#/presell/presellReserve/' + window.id // 要打开的链接
+                    //url: window.location.origin + '/#/presell/presellReserve/' + window.id + '?token=' + window.token// 要打开的链接
+                };
+                this.tcmApp(obj);
             },
 
             /*判断是否是App*/
@@ -147,7 +163,7 @@
                     this.currentPage = response.body.data.page.currentPage;
                     this.lastPage = response.body.data.page.lastPage;
                     this.hideLoading();
-                    this.preventRepeatRequest = false;
+                    this.preventRepeatRequest = true;
                     if (this.currentPage == this.lastPage) {
                         this.touchend = true;
                         return;
@@ -160,13 +176,21 @@
 
             /*重新预定*/
             rebook(id){
+
+                //window.location = 'https://tcm.m.emao.com/#/presell/presellReserve/' + id +'?token=' + sessionStorage.token;
+
                 this.$store.dispatch("PRESELL_FLAG",
                         {
                             tag:'presellList'
                         }
                 );
                 if (this.isTcmApp()) {
-                    this.$router.push('/presell/presellReserve/' + id +'?token=' + sessionStorage.token)
+                    //this.$router.push('/presell/presellReserve/' + id +'?token=' + sessionStorage.token);
+                    //window.open('https://tcm.m.emao.com/#/presell/presellReserve/' + id +'?token=' + sessionStorage.token,'_blank');
+                    window.id = id;
+                    window.token =  sessionStorage.token;
+                    this.windowOpen();
+
                 }else{
                     this.$router.push('/presell/presellReserve/' + id )
                 }
