@@ -37,7 +37,7 @@
                 <!--<div v-show="showLoading">正在加载中</div>-->
             </transition>
 
-            <p v-if="touchend" class="empty_data">没有更多了</p>
+            <!--<p v-if="touchend" class="empty_data">没有更多了</p>-->
 
         </section>
 
