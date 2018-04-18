@@ -162,6 +162,14 @@ const presellSuccess = r => require.ensure([],() => r(require('../page/presell/p
 //预售订单列表
 const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
 
+//邀请注册
+const invitation = r => require.ensure([],() => r(require('../page/invitation/invitation')),'invitation')
+
+//纪录
+const record = r => require.ensure([],() => r(require('../page/invitation/record')),'record')
+
+//领取
+const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
 
 
@@ -543,7 +551,24 @@ var router=new Router({
             name:'presellList',
             component:presellList
         }
-
+        ,
+        {
+            path:'/invitation/invitation',     //邀请注册
+            name:'invitation',
+            component:invitation
+        }
+        ,
+        {
+            path:'/invitation/record',     //纪录
+            name:'record',
+            component:record
+        }
+        ,
+        {
+            path:'/invitation/receive',     //领取
+            name:'receive',
+            component:receive
+        }
         
     ]
 })
