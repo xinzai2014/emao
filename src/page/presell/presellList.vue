@@ -17,14 +17,14 @@
                                   <p>X <span>{{appearanceItem.num}}</span></p>
                               </li>
                         </ul>
-                        <!--<div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' && item.preStockNum > 0">-->
-                            <!--<input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">-->
-                        <!--</div>-->
-
-
-                        <div class="car-presell-aigin-wrap" v-if="item.state== '2' ">
+                        <div class="car-presell-aigin-wrap" v-if="item.timeOut == '0' && item.state== '2' && item.preStockNum > 0">
                             <input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">
                         </div>
+
+
+                        <!--<div class="car-presell-aigin-wrap" v-if="item.state== '2' ">-->
+                            <!--<input class="car-presell-aigin" type="button" name="重新预定" value="重新预定" @click="rebook(item.preSaleId)">-->
+                        <!--</div>-->
 
                     </div>
                 </li>
