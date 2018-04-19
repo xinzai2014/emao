@@ -1,15 +1,16 @@
 <template>
-	<div class="problem-wrap">
-		<div class="problem-bg">
-			<div class="problem-ct">
-				<h3>{{linkName}}</h3>
-				<p><span>{{identityName}}</span>{{companyName}}</p>
-				<p class="counp-num">
-					<span v-for="(item,index) in couponArr">您已获得{{item}}</span>
-				</p>
-			</div>
-			<span class="problem-btn" @click="couponFun">领取优惠券</span>
-			<span class="problem-icon"></span>
+	<div class="invitation2">
+		<div class="rule_btn" @click="ruleShow"></div>
+		<ul class="share">
+			<li @click=""></li>
+			<li @click="QRcodeShow"></li>
+			<li @click=""></li>
+		</ul>
+		<div class="lookRecord" @click="lookRecord"></div>
+		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
+			<img :src="QRcodeUrl"/>
+		</div>
+		<div class="rule_pop" @click="ruleHide"  v-show="rule">
 		</div>
 	</div>
 </template>
@@ -17,14 +18,10 @@
 	export default {
 		data () {
 		    return{
-		    	titHide:true, //是否显示导航
 		    	token:'',
-		    	companyName:'', //公司名称
-		    	linkName:'',//用户名称
-		    	identity:'',//职位
-		    	couponStr:'',//优惠券
-		    	couponArr:[], //优惠券数组
-		    	identityName:'',//职位转汉字
+		    	QRcode:false,
+		    	QRcodeUrl:'',
+		    	rule:false
 		    }
 		},
 		methods:{
@@ -36,134 +33,93 @@
 	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
 	            }
             },
-            closeCurrentWindow() {
-                var obj = {
-                    actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-                };
-                this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
-            },
-            dataFun(){//数据处理
-            	if(this.identity == 1){
-            		this.identityName = '总经理'
-            	}else if(this.identity == 2){
-            		this.identityName = '销售主管'
-            	}else if(this.identity == 3){
-            		this.identityName = '其他'
-            	}
-            	var arr = this.couponStr.split(";");
-            	for(var i = 0;i<arr.length;i++){
-				    if(arr[i]==''||arr[i]==null||typeof(arr[i])==undefined){
-				        arr.splice(i,1);
-				        i=i-1;
-				    }
-				}
-				this.couponArr = arr;
-            	//console.log(manageTypeList);
-            },
             couponFun(){
             	window.location = encodeURI('emaotaochemao://push/answerquestion?companyname='+encodeURIComponent(this.companyName)+'&linkname='+encodeURIComponent(this.linkName)+'&identity='+encodeURIComponent(this.identity));
             	
+            },
+            lookRecord(){
+            	this.$router.push({name:'record'});
+            },
+            QRcodeShow(){
+            	this.QRcode=true;
+            },
+            QRcodeHide(){
+            	this.QRcode=false;
+            },
+            ruleShow(){
+            	this.rule=true;
+            },
+            ruleHide(){
+            	this.rule=false;
             }
 
 		},
 		mounted(){
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
-			this.companyName = this.$route.query.companyName;
-	    	this.linkName = this.$route.query.linkName;
-	    	this.identity = this.$route.query.identity;
-	    	this.couponStr = this.$route.query.couponStr;
-	    	this.dataFun();
-		    if(this.$route.query.token){
-	            this.titHide = false;
-        		document.title='几个小问题';
-	        }
 	        
 		}
 	}
 
 </script>
 <style>
-	.problem-wrap{
-		width: 100%;
-		background: #feeda4;
-		position: absolute;
-		overflow: hidden;
-		background: #feeda4;
-		min-height: 100%;
-
-	}
-	.brand-list-header {
-	    position: relative;
-	    z-index: 25;
-	    overflow: hidden;
-	    height: 1.1733rem;
-	    text-align: center;
-	    font-size: 0.4rem;
-	    line-height:1.1733rem;
-	    color: #fff;
-	    background-color: #27282f;
-	}
-	.brand-left-cion {
-	    position: absolute;
-	    left: .4666rem;
-	    top: .4rem;
-	}
-	.problem-bg{
-		background: #feeda4 url('../../assets/problem.png') no-repeat;
-		min-height: 16.08rem;
-		width: 10.0rem;
-		background-size: contain;
-	}
-	.problem-ct{
-		width: 7.36rem;
-		height: auto;
-		margin:0 auto;
-		padding-top:0.466667rem;
-		overflow: hidden;
-	}
-	.problem-ct h3{
-		font-size: 0.533333rem;
-		line-height: 0.8rem;
-		color: #ca5d28;
-	}
-	.problem-ct p{
-		font-size: 0.32rem;
-		line-height: 0.5rem;
-		color: #ca5d28;
-	}
-	.problem-ct p span{
-		margin-right: 0.333333rem;
-	}
-	.counp-num{
-		margin: 6.0rem auto 0 auto;
-		text-align: center;
-		color: #d24053;
-	}
-	.counp-num span{
-		display: block;
-		width: 100%;
-		font-size: 0.453333rem;
-		line-height: 0.6rem;
-	}
-	.problem-btn{
-		width: 6.666667rem;
-		height: 1.173333rem;
-		display: block;
-		color: #fff;
-		font-size: 0.453333rem;
-		line-height: 1.173333rem;
-		background: #f5596e;
-		margin: 0.4rem auto 0 auto;
-		border-radius: 0.586667rem;
-		text-align: center;
-	}
-	.problem-icon{
-		width: 10.0rem;
-		height:6.426667rem;
-		display: block;
-		margin: 0 auto;
-		background: url('../../assets/problem-icon.png');
-		background-size: contain;
-	}
+html,body{
+	height: 100%;
+}
+.invitation2{
+	width:100%;
+	height:100%;
+	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
+	background-size:100%;
+	position: relative;
+}
+.rule_btn{
+	position:absolute;
+	right: 0;
+	width:1rem;
+	height: 1rem;
+	top:0.55rem;
+}
+.share{
+	position: absolute;
+	top:11.1rem;
+}
+.share li{
+	width:2rem;
+	height: 2rem;
+	margin-left:1rem;
+	float: left;
+}
+.lookRecord{
+	position: absolute;
+    top: 14.2rem;
+    width: 4rem;
+    height: 1rem;
+    left: 3rem;
+}
+.QRcode_pop{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height: 100%;
+	background: url('../../assets/QRcode.png') rgba(0,0,0,0.6);
+	background-size:100%;
+}
+.QRcode_pop img{
+	width:4.75rem;
+	height:4.75rem;
+	position: absolute;
+	top:6.5rem;
+	left:2.6rem;
+}
+.rule_pop{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height: 100%;
+	background: url('../../assets/rule.png') rgba(0,0,0,0.6);
+	background-size:100%;
+}
 </style>

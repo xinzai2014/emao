@@ -15,7 +15,7 @@
 			</div>
 		</div>	
 		<div class="invitation">
-			<div class="invitation-btn">去邀请好友获得更多奖励</div>
+			<div class="invitation-btn" @click="toInvitation">去邀请好友获得更多奖励</div>
 			<div class="invitation-list">
 				<div class="invitation-title">
 					<ul>
@@ -25,7 +25,7 @@
 						<li>我获得的奖励</li>
 					</ul>
 				</div>
-				<div class="invitation-in">
+				<div class="invitation-in" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
 					<ul>
 						<li>
 							<span>2018-09-09</span>
@@ -57,36 +57,110 @@
 							<span>13111111111</span>
 							<span>200元优惠券</span>
 						</li>
+						<li>
+							<span>2018-09-09</span>
+							<span>巴拉巴拉巴拉</span>
+							<span>13111111111</span>
+							<span>200元优惠券</span>
+						</li>
+						<li>
+							<span>2018-09-09</span>
+							<span>巴拉巴拉巴拉</span>
+							<span>13111111111</span>
+							<span>200元优惠券</span>
+						</li>
+						<li>
+							<span>2018-09-09</span>
+							<span>巴拉巴拉巴拉</span>
+							<span>13111111111</span>
+							<span>200元优惠券</span>
+						</li>
+						<li>
+							<span>2018-09-09</span>
+							<span>巴拉巴拉巴拉</span>
+							<span>13111111111</span>
+							<span>200元优惠券</span>
+						</li>
+						<li>
+							<span>2018-09-09</span>
+							<span>巴拉巴拉巴拉</span>
+							<span>13111111111</span>
+							<span>200元优惠券</span>
+						</li>
 					</ul>
+					<transition name="loading">
+		            <div v-show="showLoading" class="center">正在加载中</div>
+		          </transition>
+		          <p v-if="touchend" class="empty_data">没有更多了</p>
+					</div>
 				</div>
-			</div>
-		</div>
+				</div>
+		<section class="no-auto server-no-response" @click="toInvitation" v-if="recordList.length!=0">
+            <img src="../../assets/record_null.jpg" alt="">
+        </section>
 	</div>
 </template>
 <script>
 	export default {
 		data () {
 		    return{
-		    	titHide:true, //是否显示导航
-		    	token:sessionStorage.token
+		    	token:sessionStorage.token,
+		    	recordData:null,
+		    	recordList:[],
+		    	currentPage:'1',
+		        lastPage:'0',
+		        perPage:'10',
+		        touchend: false,
+		        preventRepeatReuqest: false,
+		        showLoading:true
 		    }
 		},
 		methods:{
 			fullData(){
             	var data = {
-			        token:this.token
+			        token:this.token,
+			        perPage:this.perPage,
+            		page:this.currentPage, 
 			    }
             	this.$http({
-			        url:"dealer/show",
+			        url:"",
 			        method:"GET",
 			        params:data
 			    }).then(function (response) { 
-			    	var data = response.body.data;
-			    	console.log(data);
-
+			    	this.recordData = response.body.data;
+			    	this.recordList = response.body.data.list;
+			    	this.currentPage=response.body.data.page.currentPage;
+		            this.lastPage=response.body.data.page.lastPage;
+		            this.perPage=response.body.data.page.perPage;
+		            this.hideLoading();
+		            this.preventRepeatReuqest = false;
+		            if (this.currentPage === this.lastPage) {
+		              this.touchend = true;
+		              return
+		             }
 			    },function(){
 			    })
-            }
+            },
+            toInvitation(){
+            	this.$router.push({name:'invitation'});
+            },
+		    loaderMore(){
+		      if (this.touchend) {
+		        return
+		      }
+		      //防止重复请求
+		      if (this.preventRepeatReuqest) {
+		        return 
+		      }
+		      this.showLoading = true;
+		      this.preventRepeatReuqest = true;
+
+		      this.currentPage=parseInt(this.currentPage)+1;
+		      this.fillData();   
+		    },
+		    hideLoading(){
+		      this.showLoading = false;
+		    }
 		},
 		mounted(){
 			//组件初始化
@@ -179,6 +253,10 @@
 		background: #feee8f;
 		float: left;
 	}
+	.invitation-in{
+		height: 8.5rem;
+		overflow-y: scroll;
+	}
 	.invitation-in li{
 		height: 1.04rem;		
 		color: #000;
@@ -194,4 +272,22 @@
 		text-overflow:ellipsis;
 		white-space: nowrap;
 	}
+	.no-auto {
+	height:100%;
+	background:white;
+	position:absolute;
+	top:0;
+	lfet:0;
+}
+	.no-auto img{
+	width:100%;
+}
+.center{
+	text-align: center;
+}
+.empty_data{
+    color:#666;
+    text-align: center;
+    line-height: 2rem;
+  }
 </style>
