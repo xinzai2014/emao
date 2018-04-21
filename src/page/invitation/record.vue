@@ -1,6 +1,6 @@
 <template>
 	<div class="record">
-		<div class="record-top">
+		<div class="record-top" v-if="recordData!=null">
 			<div class="record-top-l">
 				<p>
 					<span class="number">{{recordData.couponTotal}}</span><span class="zi">元</span>
