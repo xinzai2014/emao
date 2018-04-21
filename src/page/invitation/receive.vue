@@ -13,19 +13,23 @@
 			<p class="center2">送你<span>500元</span>购车优惠券</p>
 			<div class="login-info">
 				<div class="login-phone">
-					<input type="text" maxlength="11" placeholder="手机号"> 
-					<span class="login-errror" style="display: none;">请输入正确的电话号码</span>
-				</div>
+                  <input type="text"  v-model="telephone" maxlength="11" placeholder="手机号" ref="telephone">
+                  <span class="login-errror" :class="{fadeIn:telError}" v-show="telError">请输入正确的电话号码</span>
+              </div>
 				<div class="login-code clearfix">
-					<input type="text" placeholder="验证码" name="code">
-					 <i class="">获取验证码</i> 
-					 <span class="login-errror" style="display: none;">请输入正确格式的验证码</span>
-				</div>
-				<input type="button" name="" value="立即领取" class="login-btn">
+		            <input type="text" v-model="code" placeholder="验证码"  name="code"  ref="code">
+		            <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
+		            <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
+		        </div>
+				<input type="button" name="" value="立即领取" class="login-btn" @click="login">
 			</div>
 		</div>
-		<div class="received" v-show=""></div>
-		<div class="receiveSuccess" v-show=""></div>
+		<div class="received" v-show="">
+			<span class="position_btn" @click=""></span>
+		</div>
+		<div class="receiveSuccess" v-show="">
+			<span class="position_btn" @click=""></span>
+		</div>
 	</div>
 </template>
 <script>
@@ -33,7 +37,13 @@
 		data () {
 		    return{		    	
 		    	token:'',
-		    	
+		    	code:"",
+		      codeText:"获取验证码",
+		      num:60,
+		      errorCode:false,
+		      disabled:false,
+		      telephone:'',
+		      telError:false
 		    }
 		},
 		methods:{
@@ -66,7 +76,101 @@
 	            else {
 	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
 	            }
-            }
+            },
+		    getCode(){  //获取验证码
+		    	if(this.disabled){
+		    		return false;
+		    	};
+		    	if(!this.checkTel()) return "";
+		    	// this.$http({
+		     //        url:"message/login",
+		     //        type:"GET",
+		     //        params:{
+		     //        	dataToken:sessionStorage.dataToken,
+		     //        	phone:this.telephone
+		     //        	},
+		     //    }).then(function (response) {
+		        	this.setCode();
+		            //this.$router.push('/index'); //路由跳转
+		          // },function(error){
+
+		          // }).catch(function (error) {
+
+		          // }).finally(function(){
+		          // 	 //this.getDataToken();
+		          // });
+		    },
+		    setCode(){
+		    	this.codeText = this.num+"s后重新获取";
+		    	this.disabled = true;
+		    	var that = this;
+		    	window.timer = window.setInterval(()=>{
+		    		that.num--;
+		    		that.codeText = this.num+"s后重新获取";
+		    		this.disabled = true;
+		    		if(!this.num){
+		    			this.codeText = "重新获取";
+		    			this.num = 60;
+		    			this.disabled = false;
+		    			window.clearInterval(window.timer);
+		    			return false;
+		    		}
+		    	},1000);
+		    },
+			checkTel(){
+		      var telExp = /^(1(3|4|5|7|8)[0-9]{1}\d{8})$/;
+		        if(telExp.test(this.telephone)){
+		           this.telError = false;
+		         }else{
+		           this.telError = true;
+		           this.$refs.telephone.focus();
+		           setTimeout(()=>{
+		           		this.telError = false;
+		           },1500);
+		           return false;
+		         }
+		         return true;
+		    },
+			checkCode(){
+				var codeExp = /^[a-zA-Z0-9]{6}$/;
+		    	if(codeExp.test(this.code)){
+		    		this.errorCode = false;
+		    	}else{
+		    		this.errorCode = true;
+		    		setTimeout(()=>{
+		           		this.errorCode = false;
+		           },1500);
+		    		this.$refs.code.focus();
+		    		return false;
+		    	}
+		    	return true;
+			},
+		    login(){
+		    	if(!this.checkTel()) return "";
+				if(!this.checkCode()) return "";
+		    	if(this.telError || this.errorCode){
+		    		return false;
+		    	}
+		         var data = {
+		            phone:this.telephone,//获取父组件实例
+		            code:this.code,
+		            dataToken:sessionStorage.dataToken
+		         };
+		        this.$http({
+		            url:"passport/codeLogin",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            sessionStorage.token = response.body.data.token;
+		            sessionStorage.telephone = this.$parent.telephone;
+		          },function(error){
+
+		          }).catch(function (error) {
+
+		          }).finally(function(){
+		          	 this.getDataToken();
+		          })
+		    }
 		},
 		mounted(){
 			//组件初始化
@@ -77,7 +181,7 @@
 	}
 
 </script>
-<style>
+<style scope>
 body,html{
 		height: 100%;
 	}
@@ -110,13 +214,13 @@ margin-bottom: 0.4rem
 
 .login-phone{position:relative;width:7.333rem;height:.933rem;margin:.497rem auto 0;border-bottom:1px solid #eee;
 }
-.login-phone input{color:#FFF;display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background:none;
+.login-phone input{color:#999;display:block;width:7.333rem;height:.933rem;font-size: .453rem;border:none;background:none;
 }
 .login-errror{display:block;position:absolute;bottom:-.8rem;left:0;width:7.333rem;height:.8rem;line-height:.8rem;text-align:center;font-size:.373rem;color:#fff;background-color:#e94545;
 }
 .login-code{position:relative;width:7.333rem;height:.933rem;margin:.497rem auto 0;font-size:.6133rem;color:#fff;border-bottom:1px solid #eee;
 }
-.login-code input{color:#FFF;display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;
+.login-code input{color:#999;display:block;float:left;width:4rem;height:.933rem;font-size: .453rem;border:none;background-color:transparent;
 }
 .login-code i{display:block;float:right;font-size:.453rem;color:#ffdb7d;margin-top: 0.28rem;
 }
@@ -146,6 +250,14 @@ margin-bottom: 0.4rem
 	background: url('../../assets/receiveSuccess.png') no-repeat rgba(0,0,0,0.6);
 	background-size: 100%;
 }
-	
+
+.position_btn{
+	position: absolute;
+    width: 6rem;
+    height: 1.5rem;
+    top: 11.1rem;
+    left: 2rem;
+}
+
 	
 </style>
