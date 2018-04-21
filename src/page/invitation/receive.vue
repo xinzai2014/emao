@@ -36,8 +36,8 @@
 	export default {
 		data () {
 		    return{		    	
-		    	token:'',
-		    	code:"",
+	    	  token:'',
+	    	  code:"",
 		      codeText:"获取验证码",
 		      num:60,
 		      errorCode:false,
@@ -97,7 +97,7 @@
 		          // }).catch(function (error) {
 
 		          // }).finally(function(){
-		          // 	 //this.getDataToken();
+
 		          // });
 		    },
 		    setCode(){
