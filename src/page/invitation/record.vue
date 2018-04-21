@@ -3,13 +3,13 @@
 		<div class="record-top">
 			<div class="record-top-l">
 				<p>
-					<span class="number">200</span><span class="zi">元</span>
+					<span class="number">{{recordData.couponTotal}}</span><span class="zi">元</span>
 				</p>
 				<p>累计奖励优惠券</p>
 			</div>
 			<div class="record-top-r">
 				<p>
-					<span class="number">2</span><span class="zi">人</span>
+					<span class="number">{{recordData.invitedNum}}</span><span class="zi">人</span>
 				</p>
 				<p>成功邀请</p>
 			</div>
@@ -26,66 +26,12 @@
 					</ul>
 				</div>
 				<div class="invitation-in" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
-					<ul>
+					<ul v-for="(item,index) in recordList">	
 						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
-						</li>
-						<li>
-							<span>2018-09-09</span>
-							<span>巴拉巴拉巴拉</span>
-							<span>13111111111</span>
-							<span>200元优惠券</span>
+							<span>{{item.date}}</span>
+							<span>{{item.userName}}</span>
+							<span>{{item.phone}}</span>
+							<span>{{item.couponPrice}}元优惠券</span>
 						</li>
 					</ul>
 					<transition name="loading">
@@ -95,7 +41,7 @@
 					</div>
 				</div>
 				</div>
-		<section class="no-auto server-no-response" @click="toInvitation" v-if="recordList.length!=0">
+		<section class="no-auto server-no-response" @click="toInvitation" v-if="recordList.length==0">
             <img src="../../assets/record_null.jpg" alt="">
         </section>
 	</div>
@@ -117,29 +63,49 @@
 		},
 		methods:{
 			fullData(){
-            	var data = {
-			        token:this.token,
-			        perPage:this.perPage,
-            		page:this.currentPage, 
-			    }
-            	this.$http({
-			        url:"",
-			        method:"GET",
-			        params:data
-			    }).then(function (response) { 
-			    	this.recordData = response.body.data;
-			    	this.recordList = response.body.data.list;
-			    	this.currentPage=response.body.data.page.currentPage;
-		            this.lastPage=response.body.data.page.lastPage;
-		            this.perPage=response.body.data.page.perPage;
-		            this.hideLoading();
-		            this.preventRepeatReuqest = false;
-		            if (this.currentPage === this.lastPage) {
-		              this.touchend = true;
-		              return
-		             }
-			    },function(){
-			    })
+       //      	var data = {
+			    //     token:this.token,
+			    //     activityId:'',
+			    //     perPage:this.perPage,
+       //      		page:this.currentPage, 
+			    // }
+       //      	this.$http({
+			    //     url:"invited/invitedLis",
+			    //     method:"GET",
+			    //     params:data
+			    // }).then(function (response) { 
+			    // 	this.recordData = response.body.data;
+			    // 	this.recordList = response.body.data.list;
+			    // 	this.currentPage=response.body.data.page.currentPage;
+		     //        this.lastPage=response.body.data.page.lastPage;
+		     //        this.perPage=response.body.data.page.perPage;
+		     //        this.hideLoading();
+		     //        this.preventRepeatReuqest = false;
+		     //        if (this.currentPage === this.lastPage) {
+		     //          this.touchend = true;
+		     //          return
+		     //         }
+			    // },function(){
+			    // })
+			    this.recordData = {
+				     "couponTotal":"300",
+				     "invitedNum":"2",
+				     "time":"1502357410" 
+				};
+			    this.recordList = [
+			         {
+			             "date":"2018-09-09",
+			             "userName": "dsfj",
+			             "phone": "13677878878",
+			             "couponPrice": "300",
+			         },
+			         {
+			             "date":"2018-09-09",
+			             "userName": "dsfj",
+			             "phone": "13677878878",
+			             "couponPrice": "300",
+			         }
+			    ];
             },
             toInvitation(){
             	this.$router.push({name:'invitation'});
@@ -163,7 +129,7 @@
 		    }
 		},
 		mounted(){
-			//组件初始化
+			this.token = this.$route.query.token||sessionStorage.token;
 	        this.fullData();
 		}
 	}

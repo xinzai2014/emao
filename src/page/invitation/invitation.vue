@@ -33,15 +33,25 @@
 	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
 	            }
             },
-            couponFun(){
-            	window.location = encodeURI('emaotaochemao://push/answerquestion?companyname='+encodeURIComponent(this.companyName)+'&linkname='+encodeURIComponent(this.linkName)+'&identity='+encodeURIComponent(this.identity));
-            	
-            },
             lookRecord(){
             	this.$router.push({name:'record'});
             },
             QRcodeShow(){
-            	this.QRcode=true;
+          //   	var data={
+          //   		token:this.token,
+          //   		activityId:'',
+          //   		requestType:0
+          //   	}
+          //   	this.$http({
+		        //     url:"link/createLink",
+		        //     method:"GET",
+		        //     params:data
+		        // }).then(function (response) {
+		        //     this.QRcodeUrl = response.body.data.url;
+		            this.QRcode=true;
+		          // },function(error){
+
+		          // })
             },
             QRcodeHide(){
             	this.QRcode=false;

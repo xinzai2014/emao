@@ -1,16 +1,16 @@
 <template>
 	<div class="receive">
-		<div class="content" v-if="false">
-			<p class="center2">你的好友“{{}}”邀请你一起加入车商猫</p>
-			<p class="center2 margin_20">送你<span>500元</span>购车优惠券</p>
+		<div class="content" v-if="shareType!=1 && dataAc!=null">
+			<p class="center2">你的好友“{{dataAc.userName}}”邀请你一起加入车商猫</p>
+			<p class="center2 margin_20">送你<span>{{dataAc.couponPrice}}元</span>购车优惠券</p>
 			<p class="center2">你可以在<span>“车商猫-我的-优惠券”</span>中查看</p>
 			<p class="center2">赶快点击立即下载车商猫App,开启购车之旅吧。</p>
 			<input type="button" name="" value="下载车商猫App" class="login-btn">
 		</div>
-		<div class="content2">
-			<p class="center2 font4">大芒果</p>
+		<div class="content2" v-if="shareType==2 && dataAc!=null">
+			<p class="center2 font4">{{dataAc.userName}}</p>
 			<p class="center2">邀请你一起加入车商猫</p>
-			<p class="center2">送你<span>500元</span>购车优惠券</p>
+			<p class="center2">送你<span>{{dataAc.couponPrice}}元</span>购车优惠券</p>
 			<div class="login-info">
 				<div class="login-phone">
                   <input type="text"  v-model="telephone" maxlength="11" placeholder="手机号" ref="telephone">
@@ -21,13 +21,13 @@
 		            <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
 		            <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
 		        </div>
-				<input type="button" name="" value="立即领取" class="login-btn" @click="login">
+				<input type="button" name="" value="立即领取" class="login-btn" @click="submit">
 			</div>
 		</div>
-		<div class="received" v-show="">
+		<div class="received" v-show="received" @click="closePop">
 			<span class="position_btn" @click=""></span>
 		</div>
-		<div class="receiveSuccess" v-show="">
+		<div class="receiveSuccess" v-show="receiveSuccess" @click="closePop">
 			<span class="position_btn" @click=""></span>
 		</div>
 	</div>
@@ -35,7 +35,8 @@
 <script>
 	export default {
 		data () {
-		    return{		    	
+		    return{	
+		      dataAc:null,    	
 	    	  token:'',
 	    	  code:"",
 		      codeText:"获取验证码",
@@ -43,31 +44,38 @@
 		      errorCode:false,
 		      disabled:false,
 		      telephone:'',
-		      telError:false
+		      telError:false,
+		      shareType:'',
+		      received:false,
+		      receiveSuccess:true
 		    }
 		},
 		methods:{
-			//初始化
+			//初始化			
 			fullData(){
-            	var data = {
-			        token:this.token
-			    }
-            	this.$http({
-			        url:"dealer/show",
-			        method:"GET",
-			        params:data
-			    }).then(function (response) { 
-			    	this.data = response.body.data;
-			    	if(this.data.joinStatus == 1){
-			    		this.anchor = false
-				    	this.showText = true;
-				    }else{
-				    	this.showText = false
-				    	this.anchor = true
-				    }
-			    },function(){
-			    })
-			    
+				// var url=""
+				// if(this.shareType==1){
+				// 	url="invited/inviteShareByMess"
+				// }else if(this.shareType==2){
+				// 	url="invited/inviteShareByUrl"
+				// }
+    //         	var data = {
+			 //        token:this.token,
+			 //        activityId:''
+			 //    }
+    //         	this.$http({
+			 //        url:url,
+			 //        method:"GET",
+			 //        params:data
+			 //    }).then(function (response) { 
+			    // 	this.dataAc = response.body.data;
+			    // },function(){
+			    // })
+			    this.dataAc = {
+			         "userName":'sdfsd',
+			         "couponPrice":"500",
+			         "url":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+				}
             },
             tcmApp(obj){ //app跳转
             	if (navigator.userAgent.indexOf("iPhone") > 0) {
@@ -77,29 +85,27 @@
 	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
 	            }
             },
+            closePop(){
+            	this.received=false
+            	this.receiveSuccess=false
+            },
 		    getCode(){  //获取验证码
 		    	if(this.disabled){
 		    		return false;
 		    	};
 		    	if(!this.checkTel()) return "";
-		    	// this.$http({
-		     //        url:"message/login",
-		     //        type:"GET",
-		     //        params:{
-		     //        	dataToken:sessionStorage.dataToken,
-		     //        	phone:this.telephone
-		     //        	},
-		     //    }).then(function (response) {
+		    	this.$http({
+		            url:"invited/GetValidateCode",
+		            type:"POST",
+		            params:{
+		            	phone:this.telephone
+		            	},
+		        }).then(function (response) {
 		        	this.setCode();
-		            //this.$router.push('/index'); //路由跳转
-		          // },function(error){
+		          },function(error){
 
-		          // }).catch(function (error) {
-
-		          // }).finally(function(){
-
-		          // });
-		    },
+		          })
+		       },
 		    setCode(){
 		    	this.codeText = this.num+"s后重新获取";
 		    	this.disabled = true;
@@ -145,37 +151,32 @@
 		    	}
 		    	return true;
 			},
-		    login(){
+		    submit(){
 		    	if(!this.checkTel()) return "";
 				if(!this.checkCode()) return "";
 		    	if(this.telError || this.errorCode){
 		    		return false;
 		    	}
 		         var data = {
-		            phone:this.telephone,//获取父组件实例
+		            phone:this.telephone,
 		            code:this.code,
-		            dataToken:sessionStorage.dataToken
+		            token:this.token
 		         };
 		        this.$http({
-		            url:"passport/codeLogin",
+		            url:"invited/",
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		            sessionStorage.token = response.body.data.token;
-		            sessionStorage.telephone = this.$parent.telephone;
+		        	this.received=false
+            		this.receiveSuccess=false
 		          },function(error){
 
-		          }).catch(function (error) {
-
-		          }).finally(function(){
-		          	 this.getDataToken();
 		          })
 		    }
 		},
-		mounted(){
-			//组件初始化
-			//加盟还是授权
+		mounted(){		
 			this.token = this.$route.query.token||sessionStorage.token;
+			this.shareType = this.$route.query.shareType
 	        this.fullData(); 
 		}
 	}
