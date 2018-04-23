@@ -1,7 +1,7 @@
 <template>
 	<div class="rating_page about-page">
 			<header class="user-tit">
-				<a href="javascript:;" class="white-lt" @click="goback"></a>关于淘车猫
+				<a href="javascript:;" class="white-lt" @click="goback"></a>关于车商猫
 			</header>
 
 		<section class="about-wrap">
@@ -10,7 +10,7 @@
 				<span>version 1.1</span>
 			</div>
 			<div class="about-ct">
-				<p>淘车猫是"一猫汽车网"为综合经销商提供优质自营车源的服务平台，使用平台可方便快速的完成订车、安全高效的管理车辆。淘车猫还提供店内展车服务，减少经销商资金压力。
+				<p>车商猫是"一猫汽车网"为综合经销商提供优质自营车源的服务平台，使用平台可方便快速的完成订车、安全高效的管理车辆。车商猫还提供店内展车服务，减少经销商资金压力。
 				</p>
 				<p>
 				自建物流仓储，保证车辆交付及及时性，闪电发车，3日必达！
