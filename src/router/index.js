@@ -582,6 +582,7 @@ router.beforeEach((to, from, next) => {
             str = href.indexOf('token=');
             if(str != -1){
                 token = href.substr(str+6,str+38);
+                alert(token);
             }  
     }
     document.documentElement.scrollTop = 0;

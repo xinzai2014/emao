@@ -164,24 +164,31 @@
 		            invitedType:this.invitedType,
 		            activityId:this.activityId
 		         };
-		         // this.$http.post(
-           //  		"invited/registerDealerUserByValidateCode",
-           //  		 data
-           //  	).then(function (response) {
-           //  		//1 新用户 result
-           //  		//2 老用户 
-		        	// this.received=false
-           //  		this.receiveSuccess=false
-		         //  },function(error){
-
-		         //  })
+		         this.$http.post(
+            		"invited/registerDealerUserByValidateCode",
+            		 data
+            	).then(function (response) {
+            		if(response.data.code==200){
+            			if(response.data.data.result==1){
+            				this.receiveSuccess=true
+            			}else if(response.data.data.result==2){
+            				this.received=true
+            			}
+            		}else{
+            			
+            		}
+		          },function(error){
+		          	if(error.body.code == 4011){
+		          		this.errorPasswordCount++;
+		          	}
+		          })
 		    }
 		},
 		mounted(){		
-			this.token = this.$route.query.token||sessionStorage.token;
+			this.token = this.$route.query.token||sessionStorage.token||eba83d2f6b6d1bf8db1878259b15125e;
 			this.shareType = this.$route.query.invitedType||2
-			this.dealerId = this.$route.query.dealerId
-			this.activityId=this.$route.query.activityId
+			this.dealerId = this.$route.query.dealerId||1
+			this.activityId=this.$route.query.activityId||1
 	        this.fullData(); 
 		}
 	}

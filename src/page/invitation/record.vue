@@ -88,7 +88,7 @@
 			    })
             },
             toInvitation(){
-            	this.$router.push({name:'invitation'});
+            	this.$router.push({name:'invitation',query:{token:this.token}});
             },
 		    loaderMore(){
 		      if (this.touchend) {
