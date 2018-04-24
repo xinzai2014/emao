@@ -2,9 +2,9 @@
 	<div class="invitation2">
 		<div class="rule_btn" @click="ruleShow"></div>
 		<ul class="share">
-			<li @click=""></li>
+			<li @click="shortMessage"></li>
 			<li @click="QRcodeShow"></li>
-			<li @click=""></li>
+			<li @click="moreShare"></li>
 		</ul>
 		<div class="lookRecord" @click="lookRecord"></div>
 		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
@@ -21,7 +21,8 @@
 		    	token:'',
 		    	QRcode:false,
 		    	QRcodeUrl:'',
-		    	rule:false
+		    	rule:false,
+		    	activityId:''
 		    }
 		},
 		methods:{
@@ -37,21 +38,21 @@
             	this.$router.push({name:'record'});
             },
             QRcodeShow(){
-          //   	var data={
-          //   		token:this.token,
-          //   		activityId:'',
-          //   		requestType:0
-          //   	}
-          //   	this.$http({
-		        //     url:"link/createLink",
-		        //     method:"GET",
-		        //     params:data
-		        // }).then(function (response) {
-		        //     this.QRcodeUrl = response.body.data.url;
+            	var data={
+            		token:this.token,
+            		activityId:1,
+            		requestType:0
+            	}
+            	this.$http({
+		            url:"link/createLink",
+		            method:"GET",
+		            params:data
+		        }).then(function (response) {
+		            this.QRcodeUrl = response.body.data.url;
 		            this.QRcode=true;
-		          // },function(error){
+		          },function(error){
 
-		          // })
+		          })
             },
             QRcodeHide(){
             	this.QRcode=false;
@@ -61,12 +62,21 @@
             },
             ruleHide(){
             	this.rule=false;
+            },
+            shortMessage(){//短信
+            	window.location='';
+            },
+            moreShare(){//更多分享
+            	var obj='';
+            	this.tcmApp(obj);
             }
 
 		},
 		mounted(){
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
+			this.activityId = this.$route.query.activityId;
+			sessionStorage.activityId=this.$route.query.activityId||1;
 	        
 		}
 	}

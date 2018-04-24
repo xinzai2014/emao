@@ -1,13 +1,13 @@
 <template>
-	<div class="receive">
-		<div class="content" v-if="shareType!=1 && dataAc!=null">
+	<div v-if="dataAc!=null" class="receive" :style="'background:'+dataAc.activityPicUrl">
+		<div class="content" v-if="shareType==1">
 			<p class="center2">你的好友“{{dataAc.userName}}”邀请你一起加入车商猫</p>
 			<p class="center2 margin_20">送你<span>{{dataAc.couponPrice}}元</span>购车优惠券</p>
 			<p class="center2">你可以在<span>“车商猫-我的-优惠券”</span>中查看</p>
 			<p class="center2">赶快点击立即下载车商猫App,开启购车之旅吧。</p>
-			<input type="button" name="" value="下载车商猫App" class="login-btn">
+			<input type="button" name="" value="下载车商猫App" class="login-btn" @click="downLoadApp">
 		</div>
-		<div class="content2" v-if="shareType==2 && dataAc!=null">
+		<div class="content2" v-if="shareType==2">
 			<p class="center2 font4">{{dataAc.userName}}</p>
 			<p class="center2">邀请你一起加入车商猫</p>
 			<p class="center2">送你<span>{{dataAc.couponPrice}}元</span>购车优惠券</p>
@@ -25,10 +25,10 @@
 			</div>
 		</div>
 		<div class="received" v-show="received" @click="closePop">
-			<span class="position_btn" @click=""></span>
+			<span class="position_btn" @click="downLoadApp"></span>
 		</div>
 		<div class="receiveSuccess" v-show="receiveSuccess" @click="closePop">
-			<span class="position_btn" @click=""></span>
+			<span class="position_btn" @click="downLoadApp"></span>
 		</div>
 	</div>
 </template>
@@ -47,35 +47,33 @@
 		      telError:false,
 		      shareType:'',
 		      received:false,
-		      receiveSuccess:true
+		      receiveSuccess:false,
+		      dealerId:'',
+		      activityId:''
 		    }
 		},
 		methods:{
 			//初始化			
 			fullData(){
-				// var url=""
-				// if(this.shareType==1){
-				// 	url="invited/inviteShareByMess"
-				// }else if(this.shareType==2){
-				// 	url="invited/inviteShareByUrl"
-				// }
-    //         	var data = {
-			 //        token:this.token,
-			 //        activityId:''
-			 //    }
-    //         	this.$http({
-			 //        url:url,
-			 //        method:"GET",
-			 //        params:data
-			 //    }).then(function (response) { 
-			    // 	this.dataAc = response.body.data;
-			    // },function(){
-			    // })
-			    this.dataAc = {
-			         "userName":'sdfsd',
-			         "couponPrice":"500",
-			         "url":"http://img.emao.net/car/material/nc/bbk/eclo-1080x380.jpg"
+				var url=""
+				if(this.shareType==1){
+					url="invited/inviteShareByMess"
+				}else{
+					url="invited/inviteShareByUrl"
 				}
+            	var data = {
+			        token:this.token,
+			        activityId:sessionStorage.activityId,
+			        dealerId:this.dealerId
+			    }
+            	this.$http({
+			        url:url,
+			        method:"GET",
+			        params:data
+			    }).then(function (response) { 
+			    	this.dataAc = response.body.data;
+			    },function(){
+			    })
             },
             tcmApp(obj){ //app跳转
             	if (navigator.userAgent.indexOf("iPhone") > 0) {
@@ -84,6 +82,9 @@
 	            else {
 	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
 	            }
+            },
+            downLoadApp(){
+            	alert('下载车商猫App');
             },
             closePop(){
             	this.received=false
@@ -94,13 +95,12 @@
 		    		return false;
 		    	};
 		    	if(!this.checkTel()) return "";
-		    	this.$http({
-		            url:"invited/GetValidateCode",
-		            type:"POST",
-		            params:{
-		            	phone:this.telephone
-		            	},
-		        }).then(function (response) {
+		    	this.$http.post(
+            		"invited/getValidateCode",
+            		{
+	            		phone:this.telephone
+	            	}
+            	).then(function (response) {
 		        	this.setCode();
 		          },function(error){
 
@@ -160,23 +160,28 @@
 		         var data = {
 		            phone:this.telephone,
 		            code:this.code,
-		            token:this.token
+		            dealerId:this.dealerId,
+		            invitedType:this.invitedType,
+		            activityId:this.activityId
 		         };
-		        this.$http({
-		            url:"invited/",
-		            method:"GET",
-		            params:data
-		        }).then(function (response) {
-		        	this.received=false
-            		this.receiveSuccess=false
-		          },function(error){
+		         // this.$http.post(
+           //  		"invited/registerDealerUserByValidateCode",
+           //  		 data
+           //  	).then(function (response) {
+           //  		//1 新用户 result
+           //  		//2 老用户 
+		        	// this.received=false
+           //  		this.receiveSuccess=false
+		         //  },function(error){
 
-		          })
+		         //  })
 		    }
 		},
 		mounted(){		
 			this.token = this.$route.query.token||sessionStorage.token;
-			this.shareType = this.$route.query.shareType
+			this.shareType = this.$route.query.invitedType||2
+			this.dealerId = this.$route.query.dealerId
+			this.activityId=this.$route.query.activityId
 	        this.fullData(); 
 		}
 	}

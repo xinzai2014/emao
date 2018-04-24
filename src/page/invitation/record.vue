@@ -25,7 +25,7 @@
 						<li>我获得的奖励</li>
 					</ul>
 				</div>
-				<div class="invitation-in" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+				<div class="invitation-in" v-load-more="loaderMore">
 					<ul v-for="(item,index) in recordList">	
 						<li>
 							<span>{{item.date}}</span>
@@ -63,49 +63,29 @@
 		},
 		methods:{
 			fullData(){
-       //      	var data = {
-			    //     token:this.token,
-			    //     activityId:'',
-			    //     perPage:this.perPage,
-       //      		page:this.currentPage, 
-			    // }
-       //      	this.$http({
-			    //     url:"invited/invitedLis",
-			    //     method:"GET",
-			    //     params:data
-			    // }).then(function (response) { 
-			    // 	this.recordData = response.body.data;
-			    // 	this.recordList = response.body.data.list;
-			    // 	this.currentPage=response.body.data.page.currentPage;
-		     //        this.lastPage=response.body.data.page.lastPage;
-		     //        this.perPage=response.body.data.page.perPage;
-		     //        this.hideLoading();
-		     //        this.preventRepeatReuqest = false;
-		     //        if (this.currentPage === this.lastPage) {
-		     //          this.touchend = true;
-		     //          return
-		     //         }
-			    // },function(){
-			    // })
-			    this.recordData = {
-				     "couponTotal":"300",
-				     "invitedNum":"2",
-				     "time":"1502357410" 
-				};
-			    this.recordList = [
-			         {
-			             "date":"2018-09-09",
-			             "userName": "dsfj",
-			             "phone": "13677878878",
-			             "couponPrice": "300",
-			         },
-			         {
-			             "date":"2018-09-09",
-			             "userName": "dsfj",
-			             "phone": "13677878878",
-			             "couponPrice": "300",
-			         }
-			    ];
+            	var data = {
+			        token:this.token,
+			        activityId:sessionStorage.activityId,
+			        perPage:this.perPage,
+            		page:this.currentPage, 
+			    }
+            	this.$http({
+			        url:"invited/invitedList",
+			        method:"GET",
+			        params:data
+			    }).then(function (response) { 
+			    	this.recordData = response.body.data;
+			    	this.recordList = response.body.data.list;
+			    	this.currentPage=response.body.data.page.currentPage;
+		            this.lastPage=response.body.data.page.lastPage;
+		            this.perPage=response.body.data.page.perPage;
+		            this.hideLoading();
+		            this.preventRepeatReuqest = false;
+		            if (this.currentPage === this.lastPage) {
+		              this.touchend = true;
+		              return
+		             }
+			    })
             },
             toInvitation(){
             	this.$router.push({name:'invitation'});
@@ -122,7 +102,7 @@
 		      this.preventRepeatReuqest = true;
 
 		      this.currentPage=parseInt(this.currentPage)+1;
-		      this.fillData();   
+		      this.fullData();   
 		    },
 		    hideLoading(){
 		      this.showLoading = false;
