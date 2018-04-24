@@ -58,14 +58,15 @@
 		        perPage:'10',
 		        touchend: false,
 		        preventRepeatReuqest: false,
-		        showLoading:true
+		        showLoading:true,
+		        activityId:''
 		    }
 		},
 		methods:{
 			fullData(){
             	var data = {
 			        token:this.token,
-			        activityId:sessionStorage.activityId,
+			        activityId:this.activityId,
 			        perPage:this.perPage,
             		page:this.currentPage, 
 			    }
@@ -88,7 +89,7 @@
 			    })
             },
             toInvitation(){
-            	this.$router.push({name:'invitation',query:{token:this.token}});
+            	this.$router.push({name:'invitation',query:{token:this.token,activityId:this.activityId}});
             },
 		    loaderMore(){
 		      if (this.touchend) {
@@ -110,6 +111,7 @@
 		},
 		mounted(){
 			this.token = this.$route.query.token||sessionStorage.token;
+			this.activityId=this.$route.query.activityId;
 	        this.fullData();
 		}
 	}

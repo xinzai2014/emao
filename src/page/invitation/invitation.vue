@@ -35,7 +35,7 @@
 	            }
             },
             lookRecord(){
-            	this.$router.push({name:'record',query:{token:this.token}});
+            	this.$router.push({name:'record',query:{token:this.token,activityId:this.activityId}});
             },
             QRcodeShow(){
             	var data={
@@ -77,9 +77,7 @@
 		mounted(){
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
-			this.activityId = this.$route.query.activityId;
-			sessionStorage.activityId=this.$route.query.activityId;
-	        
+			this.activityId = this.$route.query.activityId;  
 		}
 	}
 
