@@ -30,9 +30,13 @@
 		<div class="receiveSuccess" v-show="receiveSuccess" @click="closePop">
 			<span class="position_btn" @click="downLoadApp"></span>
 		</div>
+		<alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
 	</div>
 </template>
+
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
+
 	export default {
 		data () {
 		    return{	
@@ -49,9 +53,14 @@
 		      received:false,
 		      receiveSuccess:false,
 		      dealerId:'',
-		      activityId:''
+		      activityId:'',
+		      showAlert: false, //弹出框
+      		 alertText: null, //弹出信息
 		    }
 		},
+		  components:{
+		    alertTip
+		  },
 		methods:{
 			//初始化			
 			fullData(){
@@ -161,8 +170,9 @@
 		            phone:this.telephone,
 		            code:this.code,
 		            dealerId:this.dealerId,
-		            invitedType:this.invitedType,
-		            activityId:this.activityId
+		            invitedType:this.shareType,
+		            activityId:this.activityId,
+		            dealerName:this.dataAc.userName
 		         };
 		         this.$http.post(
             		"invited/registerDealerUserByValidateCode",
@@ -175,20 +185,22 @@
             				this.received=true
             			}
             		}else{
-            			
+            			this.showAlert = true;
+		            	this.alertText = response.data.msg;
             		}
 		          },function(error){
-		          	if(error.body.code == 4011){
-		          		this.errorPasswordCount++;
+		          	if(error.body.code){
+		          		this.showAlert = true;
+		            	this.alertText = response.data.msg;
 		          	}
 		          })
 		    }
 		},
 		mounted(){		
-			this.token = this.$route.query.token||sessionStorage.token||eba83d2f6b6d1bf8db1878259b15125e;
-			this.shareType = this.$route.query.invitedType||2
-			this.dealerId = this.$route.query.dealerId||1
-			this.activityId=this.$route.query.activityId||1
+			this.token = this.$route.query.token||sessionStorage.token
+			this.shareType = this.$route.query.invitedType
+			this.dealerId = this.$route.query.dealerId
+			this.activityId=this.$route.query.activityId
 	        this.fullData(); 
 		}
 	}

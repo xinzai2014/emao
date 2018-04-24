@@ -64,19 +64,21 @@
             	this.rule=false;
             },
             shortMessage(){//短信
-            	window.location='';
+            	window.location = encodeURI(' emaotaochemao://push/messageinvite?activityid='+encodeURIComponent(this.activityid));
             },
             moreShare(){//更多分享
-            	var obj='';
+            	var obj={
+            		
+            	};
             	this.tcmApp(obj);
             }
 
 		},
 		mounted(){
 			//组件初始化
-			this.token = this.$route.query.token||sessionStorage.token||eba83d2f6b6d1bf8db1878259b15125e;
-			this.activityId = this.$route.query.activityId||1;
-			sessionStorage.activityId=this.$route.query.activityId||1;
+			this.token = this.$route.query.token||sessionStorage.token;
+			this.activityId = this.$route.query.activityId;
+			sessionStorage.activityId=this.$route.query.activityId;
 	        
 		}
 	}
