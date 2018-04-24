@@ -5,7 +5,7 @@
 		</header>
 		<!--设置-->
 		<section class="set-wrap" @click="goAbout">
-			<div><i class="yellow-rt"></i>关于淘车猫</div>
+			<div><i class="yellow-rt"></i>关于车商猫</div>
 		</section>
 		<transition name="router-slid">
             <router-view></router-view>
