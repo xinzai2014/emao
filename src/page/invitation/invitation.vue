@@ -64,7 +64,7 @@
             	this.rule=false;
             },
             shortMessage(){//短信
-            	window.location = encodeURI('emaotaochemao://push/messageinvite?activityid='+encodeURIComponent(this.activityid));
+            	window.location = 'emaotaochemao://push/messageinvite?activityid='+this.activityid;
             },
             moreShare(){//更多分享
             	var obj={
