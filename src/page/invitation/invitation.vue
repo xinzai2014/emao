@@ -40,7 +40,7 @@
             QRcodeShow(){
             	var data={
             		token:this.token,
-            		activityId:1,
+            		activityId:this.activityid,
             		requestType:0
             	}
             	this.$http({
