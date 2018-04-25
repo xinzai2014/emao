@@ -39,24 +39,44 @@
 
         <section class="car-account-wrap">
             <p class="car-account-title">请使用公司账户将定金转入以下账户：</p>
+            <!--<ul>-->
+                <!--<li>-->
+                    <!--<span>公司名称：</span>-->
+                    <!--<em>{{bankInfoData.companyName}}</em>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<span>开户行：</span>-->
+                    <!--<em>{{bankInfoData.bankName}}</em>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<span>账号：</span>-->
+                    <!--<em>{{bankInfoData.account}}</em>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<span>定金金额：</span>-->
+                    <!--<em>{{earnesTotal}}</em>元-->
+                <!--</li>-->
+            <!--</ul>-->
+
             <ul>
                 <li>
                     <span>公司名称：</span>
-                    <em>{{bankInfoData.companyName}}</em>
+                    <em>成都一猫电子商务有限公司</em>
                 </li>
                 <li>
                     <span>开户行：</span>
-                    <em>{{bankInfoData.bankName}}</em>
+                    <em>中国银行股份有限公司成都天府大道支行</em>
                 </li>
                 <li>
                     <span>账号：</span>
-                    <em>{{bankInfoData.account}}</em>
+                    <em>127993140154</em>
                 </li>
                 <li>
                     <span>定金金额：</span>
                     <em>{{earnesTotal}}</em>元
                 </li>
             </ul>
+
             <p class="car-account-voucher">上传付款凭证</p>
 
 
@@ -523,7 +543,7 @@
         content: "\EA06";
         font-size: 0.54rem;
     }
-    .car-participation-wrap{margin-top:.4rem;padding-top:.4rem;border-top:1px dashed #d5aa5c;}
+    .car-participation-wrap{display:none;margin-top:.4rem;padding-top:.4rem;border-top:1px dashed #d5aa5c;}
     .car-participation{position:relative;padding:.333rem .333rem .333rem 1.333rem;background-color:#fef9f1;}
     .car-participation i{position:absolute;top:.85rem;left:.5rem;}
     .car-participation p:nth-of-type(1){margin-bottom:.2667rem;color:#ff825c;}

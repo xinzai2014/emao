@@ -341,7 +341,7 @@
     .car-time-place ul li{margin-bottom:.267rem;}
     .car-time-place ul li span{font-size:.32rem;color:#999;}
     .car-time-place ul li em{font-size:.32rem;color:#333;}
-    .car-reserve{padding:.467rem .5333rem;background-color:#fef9f1;}
+    .car-reserve{display:none;padding:.467rem .5333rem;background-color:#fef9f1;}
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
