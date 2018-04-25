@@ -66,13 +66,18 @@
             shortMessage(){//短信
             	window.location = 'emaotaochemao://push/messageinvite?activityid='+this.activityid;
             },
-            moreShare(){//更多
-            	var obj={
-
-            	};
-            	this.tcmApp(obj);
+            showShareDialog(){//更多
+            	var obj = {
+			        actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+			        actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+			        callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+			        title:"我是标题",
+			        subTitle:"我是副标题",
+			        imgUrl:"要分享的图片链接",
+			        url:"http://img.emao.com/order"//要分享内容的 url
+			    };
+			    this.tcmApp(obj);
             }
-
 		},
 		mounted(){
 			//组件初始化
