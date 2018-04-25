@@ -54,7 +54,7 @@
 	export default {
 		data () {
 		    return{
-		    	token:sessionStorage.token,
+		    	token:'',
 		    	recordData:null,
 		    	recordList:[],
 		    	currentPage:'1',
