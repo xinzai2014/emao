@@ -87,7 +87,6 @@
 		            var obj = {
 				        actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
 				        actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-				        callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
 				        title:"来自好友的邀请",
 				        subTitle:'你的好友'+userName+'邀请你一起加入车商猫，送你'+couponPrice+'元购物优惠券',
 				        imgUrl:'',

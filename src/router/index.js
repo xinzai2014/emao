@@ -577,6 +577,10 @@ var router=new Router({
 
 router.beforeEach((to, from, next) => {
     var token = sessionStorage.getItem('token');
+    alert(to.name);
+    if(to.name=='receive'){
+        next();
+    }
     if(token == null){ //用于app内部跳转多个参数后续完善
         var href = window.location.href,
             str = href.indexOf('token=');
