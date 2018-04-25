@@ -82,13 +82,15 @@
 		            params:data
 		        }).then(function (response) {
 		            let url = response.body.data.url;
+		            let userName=response.body.data.userName;
+		            let couponPrice=response.body.data.couponPrice;
 		            var obj = {
 				        actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
 				        actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
 				        callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-				        title:"我是标题",
+				        title:"来自好友的邀请",
 				        subTitle:"我是副标题",
-				        imgUrl:"要分享的图片链接",
+				        imgUrl:'你的好友'+userName+'邀请你一起加入车商猫，送你'+couponPrice+'元购物优惠券',
 				        url:url//要分享内容的 url
 				    };
 				    this.tcmApp(obj);
