@@ -66,7 +66,7 @@
             shortMessage(){//短信
             	window.location = 'emaotaochemao://push/messageinvite?activityid='+this.activityid;
             },
-            moreShare(){//更多分享
+            moreShare(){//更多
             	var obj={
 
             	};
