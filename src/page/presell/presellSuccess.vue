@@ -7,17 +7,21 @@
 
         <section class="car-reserved">提交成功，请等待财务审核，预计等待3小时</section>
 
-        <section class="car-reserved-tips" v-if="presellSuccessData.state == '100'">
-            <span>{{presellSuccessData.scope}}</span>再订 <span>{{presellSuccessData.num}}</span> 台，您即可在 <span>{{presellSuccessData.pickUpArea}}</span>提货
-        </section>
+        <!--<section class="car-reserved-tips" v-if="presellSuccessData.state == '100'">-->
+            <!--<span>{{presellSuccessData.scope}}</span>再订 <span>{{presellSuccessData.num}}</span> 台，您即可在 <span>{{presellSuccessData.pickUpArea}}</span>提货-->
+        <!--</section>-->
 
 
-        <section class="car-reserved-tips" v-if="presellSuccessData.state == '200' ">
-            拼板成功！您的车辆将会发运到 <span>{{presellSuccessData.pickUpArea}}</span>
-        </section>
+        <!--<section class="car-reserved-tips" v-if="presellSuccessData.state == '200' ">-->
+            <!--拼板成功！您的车辆将会发运到 <span>{{presellSuccessData.pickUpArea}}</span>-->
+        <!--</section>-->
 
-        <section class="car-reserved-tips" v-if=" presellSuccessData.state == '300' ">
-            {{presellSuccessData.msg}}
+        <!--<section class="car-reserved-tips" v-if=" presellSuccessData.state == '300' ">-->
+            <!--{{presellSuccessData.msg}}-->
+        <!--</section>-->
+
+        <section class="car-reserved-tips">
+            邀请友商，共享优质车源！
         </section>
 
         <section class="car-reserved-share">
