@@ -45,7 +45,8 @@
             	var data={
             		token:this.token,
             		activityId:this.activityId,
-            		requestType:0
+            		requestType:0,
+            		invitedType:2
             	}
             	this.$http({
 		            url:"link/createLink",
@@ -74,7 +75,8 @@
             	var data={
 	        		token:this.token,
 	        		activityId:this.activityId,
-	        		requestType:1
+	        		requestType:1,
+	        		invitedType:3
 	        	}
 	        	this.$http({
 		            url:"link/createLink",
