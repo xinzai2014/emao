@@ -1,7 +1,7 @@
 <template>
 
 	<header class="index-header">
-	    <strong class="index-title">淘车猫</strong>
+	    <strong class="index-title">车商猫</strong>
 	    <div class="index-news news-icon" v-show="myMessage">
 	        <span>{{myMessage}}</span>
 	    </div>
