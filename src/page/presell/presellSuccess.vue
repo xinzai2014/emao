@@ -134,7 +134,8 @@
     .user-tit{font-weight:normal;}
     .user-tit .white-lt {  position: absolute;  left: 0.48rem;  top: 0.4rem;  }
     .car-reserved{height:1.333rem;font-size:.3467rem;color:#333;line-height:1.33rem;text-align:center;background-color:#f3e6cc;}
-    .car-reserved-tips{margin-top:1.6rem;font-size:.3467rem;text-align:center;}
+    /*.car-reserved-tips{margin-top:1.6rem;font-size:.3467rem;text-align:center;}*/
+    .car-reserved-tips{margin-top:1.6rem;font-size:.4rem;font-weight:bold;text-align:center;}
     .car-reserved-tips span{font-size:.48rem;font-weight:bold;}
     .car-reserved-share{position: fixed;  bottom: 2rem;  width: 100%;  text-align: center;}
     .car-reserved-share input{display: block;
