@@ -1,5 +1,9 @@
 <template>
 	<div class="record">
+		<header class="brand-list-header header-fixed" v-show="">
+			<i class="white-lt brand-left-cion"></i> 
+			<strong class="brand-list-title">邀请好友</strong>
+		</header>
 		<div class="record-top" v-if="recordData!=null">
 			<div class="record-top-l">
 				<p>

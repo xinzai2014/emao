@@ -1,10 +1,14 @@
 <template>
 	<div class="invitation2">
+		<header class="brand-list-header header-fixed" v-show="">
+			<i class="white-lt brand-left-cion"></i> 
+			<strong class="brand-list-title">邀请好友</strong>
+		</header>
 		<div class="rule_btn" @click="ruleShow"></div>
 		<ul class="share">
 			<li @click="shortMessage"></li>
 			<li @click="QRcodeShow"></li>
-			<li @click="moreShare"></li>
+			<li @click="showShareDialog"></li>
 		</ul>
 		<div class="lookRecord" @click="lookRecord"></div>
 		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
@@ -40,7 +44,7 @@
             QRcodeShow(){
             	var data={
             		token:this.token,
-            		activityId:this.activityid,
+            		activityId:this.activityId,
             		requestType:0
             	}
             	this.$http({
