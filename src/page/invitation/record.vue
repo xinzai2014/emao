@@ -1,5 +1,5 @@
 <template>
-	<div class="record">
+	<div class="record" v-show="recordData!=null">
 		<header class="brand-list-header header-fixed" v-show="">
 			<i class="white-lt brand-left-cion"></i> 
 			<strong class="brand-list-title">邀请好友</strong>
@@ -80,7 +80,8 @@
 			        params:data
 			    }).then(function (response) { 
 			    	this.recordData = response.body.data;
-			    	this.recordList = response.body.data.list;
+			    	var list=response.body.data.list;
+			    	this.recordList=this.recordList.concat(list);
 			    	this.currentPage=response.body.data.page.currentPage;
 		            this.lastPage=response.body.data.page.lastPage;
 		            this.perPage=response.body.data.page.perPage;

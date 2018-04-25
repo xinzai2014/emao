@@ -131,13 +131,23 @@ Vue.directive('load-more',{
 		    }
 		}
 		//loadMore(el,binding.value);
-		window.onscroll  = function () {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if(scrollTop + window.innerHeight >= (el.clientHeight)) {
-				var fnc = binding.value;
+		// window.onscroll  = function () {
+  //     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  //     if(scrollTop + window.innerHeight >= (el.clientHeight)) {
+		// 		var fnc = binding.value;
+		// 		fnc();
+		// 	}
+		// }
+
+	    el.addEventListener('scroll',function () {
+
+	        if(this.scrollHeight-this.scrollTop===this.clientHeight){
+	        	var fnc = binding.value;
 				fnc();
-			}
-		}
+	        }
+
+	    })
+
       },
   unbind(){
     window.onscroll = null;
@@ -149,7 +159,6 @@ Vue.http.interceptors.push(function(request,next){
       true
     );
     next(function (response) {
-    	// alert(JSON.stringify(response));
     	if(response.body){
 	    	var code = response.body.code;
 	    	if(code == 4010){ //密码修改了
