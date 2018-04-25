@@ -117,6 +117,11 @@ import alertTip from '../../components/common/alertTip/alertTip'
 		        	this.setCode();
 		          },function(error){
 
+		          },function(error){
+		          	if(error.body.code==401||error.body.code==502){
+		          		this.showAlert = true;
+		            	this.alertText = response.data.msg;
+		          	}
 		          })
 		       },
 		    setCode(){
