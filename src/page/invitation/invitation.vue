@@ -68,7 +68,7 @@
             	this.rule=false;
             },
             shortMessage(){//短信
-            	window.location = 'emaotaochemao://push/messageinvite?activityid='+this.activityid;
+            	window.location = 'emaotaochemao://push/messageinvite?activityid='+this.activityId;
             },
             showShareDialog(){//更多
             	var data={
