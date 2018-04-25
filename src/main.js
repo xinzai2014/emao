@@ -149,7 +149,7 @@ Vue.http.interceptors.push(function(request,next){
       true
     );
     next(function (response) {
-    	alert(JSON.stringify(response));
+    	// alert(JSON.stringify(response));
     	if(response.body){
 	    	var code = response.body.code;
 	    	if(code == 4010){ //密码修改了

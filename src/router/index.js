@@ -577,21 +577,22 @@ var router=new Router({
 
 router.beforeEach((to, from, next) => {
     var token = sessionStorage.getItem('token');
-    alert(to.name);
-    if(to.name=='receive'){
-        next();
-    }
+
     if(token == null){ //用于app内部跳转多个参数后续完善
-        var href = window.location.href,
-            str = href.indexOf('token=');
-            if(str != -1){
-                token = href.substr(str+6,str+38);
-            }  
+        if(to.name=='receive'){
+            next();
+        }else{
+            var href = window.location.href,
+                str = href.indexOf('token=');
+                if(str != -1){
+                    token = href.substr(str+6,str+38);
+                }  
+        }
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     //如何做登录完了回到某个页面去呢
-    if(to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
+    if(to.name=='receive'||to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
         next();
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
         next();

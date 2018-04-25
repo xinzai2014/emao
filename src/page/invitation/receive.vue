@@ -116,9 +116,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
             	).then(function (response) {
 		        	this.setCode();
 		          },function(error){
-
-		          },function(error){
-		          	if(error.body.code==401||error.body.code==502){
+		          	if(error.body.code==403||error.body.code==506){
 		          		this.showAlert = true;
 		            	this.alertText = response.data.msg;
 		          	}
