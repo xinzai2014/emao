@@ -72,7 +72,7 @@ import alertTip from '../../components/common/alertTip/alertTip'
 				}
             	var data = {
 			        token:this.token,
-			        activityId:sessionStorage.activityId,
+			        activityId:this.activityId,
 			        dealerId:this.dealerId
 			    }
             	this.$http({
