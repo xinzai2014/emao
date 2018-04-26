@@ -557,9 +557,9 @@ body,html{
 		height: 100%;
 	}
 .receive{
-	height:100%;
+	min-height:17.786667rem;
 	background: url('../../assets/share.png') no-repeat #241e2a;
-	background-size:contain;
+	background-size:100%;
 	padding-top: 7.5rem;
 	box-sizing: border-box;
 }
