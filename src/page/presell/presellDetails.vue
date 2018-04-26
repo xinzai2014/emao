@@ -2,7 +2,7 @@
     <div>
         <header class="user-tit declare-head" v-if="showHeadStatus">
             <span class="white-lt" @click="goToIndex"></span>
-            预售详情
+            预售车源
             <em>分享</em>
         </header>
         <!--预售详情-图片滚动-->
@@ -29,7 +29,7 @@
                         <span>预售已结束</span>
                     </p>
                 </div>
-                <p class="car-parameter-tips">定金 {{presellData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</p>
+                <p class="car-parameter-tips">定金 {{presellData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500元代金券</p>
             </div>
 
             <div class="car-time-place">
@@ -359,11 +359,12 @@
     .car-presell-flow{margin-top:.4rem;padding-top:.533rem;padding-bottom:.533rem;text-align:center;background-color:#fff;}
     .car-presell-flow p{font-size:.372rem;color:#000;text-align:center;}
     .car-presell-flow img{width:7.707rem;height:1.88rem;margin-top:.867rem;}
-    .car-presell-explain{margin-top:.4rem;margin-bottom:.4rem;padding:.533rem;background-color:#fff;}
+    /*.car-presell-explain{margin-top:.4rem;margin-bottom:.4rem;padding:.533rem;background-color:#fff;}*/
+    .car-presell-explain{margin-top:.4rem;margin-bottom:1.4rem;padding:.533rem;background-color:#fff;}
     .presell-explain-title{margin-bottom:.6rem;font-size:.3467rem;color:#000;text-align:center;}
     .presell-explain-con li{position:relative;margin-left:.6rem;margin-bottom:.267rem;color:#999;font-size:.4rem;line-height:.533rem;}
     .presell-explain-con li span{position:absolute;left:-.6rem;}
-    .car-reserve-btn{height:1.867rem;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;}
+    .car-reserve-btn{display:inline-block;position:fixed;bottom:0;left:0;height:1.867rem;width:100%;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;border-top:1px solid #e7e7e7;}
     .car-reserve-btn .car-presell-present{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
     .car-reserve-btn .car-presell-present-disabled{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#999;border:none;border-radius:.5867rem;background-color:#e6e6e6;}
 
