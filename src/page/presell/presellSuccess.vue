@@ -76,7 +76,7 @@
                     title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
                     subTitle:"",
                     imgUrl:"",
-                    url:"https://m.emao.com/tcm.html"//要分享内容的 url
+                    url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
                 this.tcmApp(obj);
 
