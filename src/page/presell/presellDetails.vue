@@ -82,28 +82,40 @@
         </section>
 
         <section class="car-presell-flow">
-            <p>预定流程</p>
+            <p>订购流程</p>
             <img src="../../assets/car-presell-flow.png" alt="">
         </section>
 
         <section class="car-presell-explain">
-            <p class="presell-explain-title">预定说明</p>
+            <p class="presell-explain-title">关于预售</p>
             <ul class="presell-explain-con">
                 <li>
                     <span>1、</span>
-                    定金可以抵扣车款；
+                    预售车源，为一猫采购的限时限量畅销车源；
                 </li>
                 <li>
                     <span>2、</span>
-                    如因一猫原因造成车辆延迟到达指定仓库，经销商可以选择取消订单，一猫退回定金并赔付500元代金券；
+                    支付定金可锁定车源，车辆入库后补齐尾款，前往指定地点提车；
                 </li>
                 <li>
                     <span>3、</span>
-                    预定成功后，系统会为您自动生成全款订单，车辆入库后可补全款；
+                    定金可抵扣车款；
                 </li>
                 <li>
                     <span>4、</span>
-                    如有疑问咨询当地销售经理，或联系客服 400-825-2368
+                    因经销商原因，导致交易无法继续，定金将不予退还；
+                </li>
+                <li>
+                    <span>5、</span>
+                    一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券；
+                </li>
+                <li>
+                    <span>6、</span>
+                    开票及申请合格证流程，与其他零售车型一致；
+                </li>
+                <li>
+                    <span>7、</span>
+                    如有疑问可咨询渠道支持，或联系客服 400-825-2368。
                 </li>
             </ul>
         </section>
