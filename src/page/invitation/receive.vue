@@ -8,7 +8,7 @@
 			<p class="center2">你的好友“{{dataAc.userName}}”邀请你一起加入车商猫</p>
 			<p class="center2 margin_20">送你<span>{{dataAc.couponPrice}}元</span>购车优惠券</p>
 			<p class="center2">你可以在<span>“车商猫-我的-优惠券”</span>中查看</p>
-			<p class="center2">赶快点击立即下载车商猫App,开启购车之旅吧。</p>
+			<p class="center2">赶快点击下载车商猫App,开启购车之旅吧。</p>
 			<input type="button" name="" value="下载车商猫App" class="login-btn" @click="downLoadApp">
 		</div>
 		<div class="content2" v-if="dataAc!=null&&(shareType==2||shareType==3)">
