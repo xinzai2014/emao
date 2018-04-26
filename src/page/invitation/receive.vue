@@ -605,7 +605,7 @@ margin-bottom: 0.4rem
 }
 .received{
 	position: fixed;
-	top:0;
+	top:-0.8rem;
 	left: 0;
 	width:100%;
 	height: 100%;
@@ -614,7 +614,7 @@ margin-bottom: 0.4rem
 }
 .receiveSuccess{
 	position: fixed;
-	top:0;
+	top:-0.8rem;
 	left: 0;
 	width:100%;
 	height: 100%;

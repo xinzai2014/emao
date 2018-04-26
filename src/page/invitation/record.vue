@@ -231,7 +231,7 @@
 	background:white;
 	position:absolute;
 	top:0;
-	lfet:0;
+	left:0;
 }
 	.no-auto img{
 	width:100%;

@@ -165,7 +165,7 @@ html,body{
 }
 .rule_pop{
 	position: fixed;
-	top:-0.4rem;
+	top:-0.8rem;
 	left:0;
 	width:100%;
 	height: 100%;
