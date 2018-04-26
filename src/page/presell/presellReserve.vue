@@ -20,7 +20,7 @@
                     </p>
                 </div>
 
-                <div class="car-parameter-tips">定金 {{overviewData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500 代金券</div>
+                <div class="car-parameter-tips">定金 {{overviewData.deposit}} 元，未按时到达指定仓库，退回定金并赔付500元代金券</div>
 
             </div>
         </section>
