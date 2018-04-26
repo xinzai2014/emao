@@ -39,26 +39,26 @@
 
         <section class="car-account-wrap">
             <p class="car-account-title">请使用公司账户将定金转入以下账户：</p>
-            <!--<ul>-->
-                <!--<li>-->
-                    <!--<span>公司名称：</span>-->
-                    <!--<em>{{bankInfoData.companyName}}</em>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<span>开户行：</span>-->
-                    <!--<em>{{bankInfoData.bankName}}</em>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<span>账号：</span>-->
-                    <!--<em>{{bankInfoData.account}}</em>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<span>定金金额：</span>-->
-                    <!--<em>{{earnesTotal}}</em>元-->
-                <!--</li>-->
-            <!--</ul>-->
-
             <ul>
+                <li>
+                    <span>公司名称：</span>
+                    <em>{{bankInfoData.companyName}}</em>
+                </li>
+                <li>
+                    <span>开户行：</span>
+                    <em>{{bankInfoData.bankName}}</em>
+                </li>
+                <li>
+                    <span>账号：</span>
+                    <em>{{bankInfoData.account}}</em>
+                </li>
+                <li>
+                    <span>定金金额：</span>
+                    <em>{{earnesTotal}}</em>元
+                </li>
+            </ul>
+
+            <!-- <ul>
                 <li>
                     <span>公司名称：</span>
                     <em>成都一猫电子商务有限公司</em>
@@ -75,7 +75,7 @@
                     <span>定金金额：</span>
                     <em>{{earnesTotal}}</em>元
                 </li>
-            </ul>
+            </ul> -->
 
             <p class="car-account-voucher">上传付款凭证</p>
 
