@@ -127,6 +127,7 @@ html,body{
 	width:1rem;
 	height: 1rem;
 	top:0.55rem;
+	cursor: pointer;
 }
 .share{
 	position: absolute;
@@ -137,6 +138,7 @@ html,body{
 	height: 2rem;
 	margin-left:1rem;
 	float: left;
+	cursor: pointer;
 }
 .lookRecord{
 	position: absolute;
@@ -167,7 +169,7 @@ html,body{
 	left:0;
 	width:100%;
 	height: 100%;
-	background: #f00 url('../../assets/rule.png') rgba(0,0,0,0.6);
+	background:url('../../assets/rule.png') rgba(0,0,0,0.6);
 	background-size:100%;
 }
 </style>
