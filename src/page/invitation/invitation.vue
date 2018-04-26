@@ -105,6 +105,7 @@
 			//组件初始化
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.activityId = this.$route.query.activityId;  
+			document.title='邀请好友';
 		}
 	}
 
@@ -162,7 +163,7 @@ html,body{
 }
 .rule_pop{
 	position: fixed;
-	top:0;
+	top:-0.4rem;
 	left:0;
 	width:100%;
 	height: 100%;

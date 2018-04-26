@@ -2,7 +2,7 @@
 	<div class="record" v-show="recordData!=null">
 		<header class="brand-list-header header-fixed" v-show="">
 			<i class="white-lt brand-left-cion"></i> 
-			<strong class="brand-list-title">邀请好友</strong>
+			<strong class="brand-list-title">邀请奖励记录</strong>
 		</header>
 		<div class="record-top" v-if="recordData!=null">
 			<div class="record-top-l">
@@ -117,6 +117,7 @@
 		mounted(){
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.activityId=this.$route.query.activityId;
+			document.title = '邀请奖励记录';
 	        this.fullData();
 		}
 	}
