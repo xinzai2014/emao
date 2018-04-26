@@ -555,7 +555,6 @@ import alertTip from '../../components/common/alertTip/alertTip'
 <style scope>
 body,html{
 		height: 100%;
-		width: 10.0rem;
 	}
 .receive{
 	height:100%;

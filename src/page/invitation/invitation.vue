@@ -167,7 +167,7 @@ html,body{
 	left:0;
 	width:100%;
 	height: 100%;
-	background: url('../../assets/rule.png') rgba(0,0,0,0.6);
+	background: #f00 url('../../assets/rule.png') rgba(0,0,0,0.6);
 	background-size:100%;
 }
 </style>
