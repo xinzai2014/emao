@@ -67,6 +67,14 @@
 		    }
 		},
 		methods:{
+			tcmApp(obj){ //app跳转
+            	if (navigator.userAgent.indexOf("iPhone") > 0) {
+	            	window.webkit.messageHandlers.tcmAppObject.postMessage(obj);//IOS
+	            }
+	            else {
+	            	window.tcmAppObject.postMessage(JSON.stringify(obj));//Android
+	            }
+            },
 			fullData(){
             	var data = {
 			        token:this.token,
@@ -94,7 +102,11 @@
 			    })
             },
             toInvitation(){
-            	this.$router.push({name:'invitation',query:{token:this.token,activityId:this.activityId}});
+            	// this.$router.push({name:'invitation',query:{token:this.token,activityId:this.activityId}});
+            	var obj = {
+			        actionname:"closeCurrentWindow"//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+			    };
+			    this.tcmApp(obj);//tcmApp 函数参见通信规则中的示例说明
             },
 		    loaderMore(){
 		      if (this.touchend) {
