@@ -162,6 +162,14 @@ const presellSuccess = r => require.ensure([],() => r(require('../page/presell/p
 //预售订单列表
 const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
 
+//邀请注册
+const invitation = r => require.ensure([],() => r(require('../page/invitation/invitation')),'invitation')
+
+//纪录
+const record = r => require.ensure([],() => r(require('../page/invitation/record')),'record')
+
+//领取
+const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
 
 
@@ -543,7 +551,24 @@ var router=new Router({
             name:'presellList',
             component:presellList
         }
-
+        ,
+        {
+            path:'/invitation/invitation',     //邀请注册
+            name:'invitation',
+            component:invitation
+        }
+        ,
+        {
+            path:'/invitation/record',     //纪录
+            name:'record',
+            component:record
+        }
+        ,
+        {
+            path:'/invitation/receive',     //领取
+            name:'receive',
+            component:receive
+        }
         
     ]
 })
@@ -552,17 +577,22 @@ var router=new Router({
 
 router.beforeEach((to, from, next) => {
     var token = sessionStorage.getItem('token');
+
     if(token == null){ //用于app内部跳转多个参数后续完善
-        var href = window.location.href,
-            str = href.indexOf('token=');
-            if(str != -1){
-                token = href.substr(str+6,str+38);
-            }  
+        if(to.name=='receive'){
+            next();
+        }else{
+            var href = window.location.href,
+                str = href.indexOf('token=');
+                if(str != -1){
+                    token = href.substr(str+6,str+38);
+                }  
+        }
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     //如何做登录完了回到某个页面去呢
-    if(to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
+    if(to.name=='receive'||to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"||to.name == "receive"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
         next();
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
         next();
