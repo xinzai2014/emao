@@ -570,7 +570,13 @@ body,html{
 	text-align: center;
 	font-size: 0.4rem;
 	margin:auto;
-	line-height: 0.6rem
+	line-height: 0.6rem;
+	height: 0.6rem;
+}
+.receive .center2.font4{
+	font-size: 0.49rem;
+	font-weight: bold;
+	margin-bottom: 0.1rem;
 }
 
 .receive .center2 span{
@@ -631,6 +637,7 @@ margin-bottom: 0.4rem
     top: 11.1rem;
     left: 2rem;
 }
+
 
 	
 </style>
