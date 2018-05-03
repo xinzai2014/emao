@@ -122,7 +122,7 @@ html,body{
 }
 .invitation2{
 	width:100%;
-	height:100%;
+	height:16.08rem;
 	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
 	background-size:100%;
 	position: relative;
@@ -158,7 +158,7 @@ html,body{
 	top:0;
 	left:0;
 	width:100%;
-	height: 100%;
+	height: 16.08rem;
 	background: url('../../assets/QRcode.png') rgba(0,0,0,0.6);
 	background-size:100%;
 }
@@ -174,8 +174,8 @@ html,body{
 	top:-0.8rem;
 	left:0;
 	width:100%;
-	height: 100%;
+	height: 16.08rem;
 	background:url('../../assets/rule.png') rgba(0,0,0,0.6);
-	background-size:100%;
+	background-size:100% 100%;
 }
 </style>
