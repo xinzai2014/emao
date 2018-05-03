@@ -48,7 +48,7 @@ Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //};
 
 Vue.http.headers.common = {
-	Accept:"application/json; version=2.6.0"
+	Accept:"application/json; version=2.7.0"
 };
 
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
@@ -131,13 +131,23 @@ Vue.directive('load-more',{
 		    }
 		}
 		//loadMore(el,binding.value);
-		window.onscroll  = function () {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if(scrollTop + window.innerHeight >= (el.clientHeight)) {
-				var fnc = binding.value;
+		// window.onscroll  = function () {
+  //     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  //     if(scrollTop + window.innerHeight >= (el.clientHeight)) {
+		// 		var fnc = binding.value;
+		// 		fnc();
+		// 	}
+		// }
+
+	    el.addEventListener('scroll',function () {
+
+	        if(this.scrollHeight-this.scrollTop===this.clientHeight){
+	        	var fnc = binding.value;
 				fnc();
-			}
-		}
+	        }
+
+	    })
+
       },
   unbind(){
     window.onscroll = null;
