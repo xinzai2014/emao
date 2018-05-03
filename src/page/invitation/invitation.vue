@@ -95,9 +95,9 @@
 		            var obj = {
 				        actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
 				        actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-				        title:"来自好友的邀请",
-				        subTitle:'你的好友'+userName+'邀请你一起加入车商猫，送你'+couponPrice+'元购物优惠券',
-				        imgUrl:'',
+				        title:"汽车经销商的机会来了，你还不抓紧上车？来自好友的邀请。",
+				        subTitle:'你的好友“'+userName+'”邀请你一起加入车商猫，送你'+couponPrice+'元购物优惠券',
+				        imgUrl:'https://zt.m.emao.com/img/shareApp.png',
 				        url:url//要分享内容的 url
 				    };
 				    this.tcmApp(obj);
