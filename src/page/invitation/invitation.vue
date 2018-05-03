@@ -39,7 +39,12 @@
 	            }
             },
             lookRecord(){
-            	this.$router.push({name:'record',query:{token:this.token,activityId:this.activityId}});
+            	// this.$router.push({name:'record',query:{token:this.token,activityId:this.activityId}});
+            	var obj = {
+			        actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+			        url: "https://tcm.m.emao.com/#/invitation/record?token"+this.token+'&activityId'+this.activityId
+			    };
+			    this.tcmApp(obj);
             },
             QRcodeShow(){
             	var data={

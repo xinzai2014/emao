@@ -562,6 +562,8 @@ body,html{
 	background-size:100%;
 	padding-top: 7.5rem;
 	box-sizing: border-box;
+	width: 10rem;
+    margin: auto;
 }
 .receive .center2{
 	width:7.2rem;
