@@ -13,7 +13,7 @@
                 <p class="car-name">{{presellData.autoName}}</p>
                 <div class="car-price">
                     <p>
-                        <span>预售价:</span>
+                        <span>抢购价:</span>
                         <strong>{{presellData.prePrice}}</strong>
                         <em>万</em>
                     </p>
@@ -82,12 +82,12 @@
         </section>
 
         <section class="car-presell-flow">
-            <p>订购流程</p>
+            <p>抢购流程</p>
             <img src="../../assets/car-presell-flow.png" alt="">
         </section>
 
         <section class="car-presell-explain">
-            <p class="presell-explain-title">关于预售</p>
+            <p class="presell-explain-title">关于限时抢购</p>
             <ul class="presell-explain-con">
                 <li>
                     <span>1、</span>
@@ -186,9 +186,9 @@
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
                     //buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
-                    subTitle:"",
-                    imgUrl:"",
+                    title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
+                    subTitle:"车商猫爆款限量抢购，还不抓紧上车！",
+                    imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
                 this.tcmApp(obj);
@@ -204,9 +204,9 @@
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
-                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
-                    subTitle:"",
-                    imgUrl:"",
+                    title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
+                    subTitle:"车商猫爆款限量抢购，还不抓紧上车！",
+                    imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
                 this.tcmApp(obj);

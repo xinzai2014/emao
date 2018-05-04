@@ -2,7 +2,7 @@
     <div>
         <header class="user-tit declare-head" v-if="this.showHeadStatus">
             <span class="white-lt"></span>
-            我的预售
+            我的抢购
         </header>
         <section class="car-reserve-list">
 
@@ -44,7 +44,7 @@
 
         <section class="no-auto server-no-response" v-if=showNoDataVal>
             <img src="../../assets/no-vehicles-sold-news.png" alt="">
-            <p>暂无预售车辆信息</p>
+            <p>暂无抢购车辆信息</p>
         </section>
 
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
@@ -110,7 +110,7 @@
             /*区分app与wap做不同的渲染*/
             renderDom(){
                 if (this.isTcmApp()){
-                    document.title = "我的预售";
+                    document.title = "我的抢购";
                     this.showHeadStatus = false;
                 }else{
                     this.showHeadStatus = true;
