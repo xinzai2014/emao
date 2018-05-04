@@ -2,7 +2,7 @@
     <div>
         <header class="user-tit declare-head" v-if="showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
-            确认预定
+            抢购成功
         </header>
 
         <section class="car-reserved">提交成功，请等待财务审核，预计等待3小时</section>
@@ -73,9 +73,9 @@
                     actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
-                    title:window.presellModel + ' 预售价：'  + window.presellPrice + '万',
-                    subTitle:"",
-                    imgUrl:"",
+                    title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
+                    subTitle:"成都提车，车商猫爆款限量抢购，还不抓紧上车！",
+                    imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
                 this.tcmApp(obj);
@@ -92,7 +92,7 @@
             /*区分app与wap做不同的渲染*/
             renderDom(){
                 if (this.isTcmApp()){
-                    document.title = "确认预定";
+                    document.title = "抢购成功";
                     this.showHeadStatus = false;
                 }else{
                     this.showHeadStatus = true;

@@ -2,7 +2,7 @@
     <div v-if="showDomTag">
         <header class="user-tit declare-head"  v-if="showHeadStatus">
             <span class="white-lt" @click="backtrack"></span>
-            抢购
+            立即抢购
         </header>
 
         <section class="car-info-wrap">
@@ -216,7 +216,7 @@
             /*区分app与wap做不同的渲染*/
             renderDom(){
                 if (this.isTcmApp()){
-                    document.title = "抢购";
+                    document.title = "立即抢购";
                     this.showHeadStatus = false;
                     this.hideShareButton();
                 }else{
