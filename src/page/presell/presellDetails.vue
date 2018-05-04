@@ -2,7 +2,7 @@
     <div>
         <header class="user-tit declare-head" v-if="showHeadStatus">
             <span class="white-lt" @click="goToIndex"></span>
-            预售车源
+            限时抢购
             <em>分享</em>
         </header>
         <!--预售详情-图片滚动-->
@@ -235,7 +235,7 @@
             /*区分app与wap做不同的渲染*/
             renderDom(){
                 if (this.isTcmApp()){
-                    document.title = "预售车源";
+                    document.title = "限时抢购";
                     this.showHeadStatus = false;
                     //setTimeout(this.addShareButton,1500);
 
