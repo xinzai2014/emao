@@ -91,7 +91,7 @@
             <ul class="presell-explain-con">
                 <li>
                     <span>1、</span>
-                    预售车源，为一猫采购的限时限量畅销车源；
+                    限时抢购车源，为一猫采购的限时限量畅销车源；
                 </li>
                 <li>
                     <span>2、</span>
