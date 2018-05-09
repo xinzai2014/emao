@@ -5,6 +5,7 @@
 			<strong class="brand-list-title">邀请好友</strong>
 		</header>
 		<div class="invitation2in">
+			<img src="../../assets/zc_02.png" alt="">
 			<div class="rule_btn" @click="ruleShow"></div>
 		</div>
 		
@@ -140,11 +141,11 @@ html,body{
 }
 .invitation2in{
 	width:100%;
-	height:10.693333rem;
-	background: url(../../assets/zc_02.png) no-repeat;
-	background-size:100%;
 	position: relative;
 	margin: auto;
+}
+.invitation2in img{
+	width: 100%;
 }
 .rule_btn{
 	position:absolute;
