@@ -130,7 +130,7 @@ html,body{
 }
 
 .invitation2{
-	width:10rem;
+	width:100%;
 	height:16.08rem;
 	background: #241e2a;
 	margin: auto;
@@ -214,5 +214,6 @@ html,body{
 	right: -0.266667rem;
 	top: -0.366667rem;
 	background: url(../../assets/zc_06.png) no-repeat;
+	background-size:100%;
 }
 </style>
