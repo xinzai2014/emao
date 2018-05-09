@@ -14,8 +14,12 @@
 			<li @click="showShareDialog"></li>
 		</ul>
 		<div class="lookRecord" @click="lookRecord"></div>
-		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
-			<img :src="QRcodeUrl"/>
+		<!-- v-show="QRcode" -->
+		<div class="QRcode_pop" >
+			<div class="QRcode_in">
+				<img :src="QRcodeUrl"/>
+				<span class="QRcode_in_clone" @click="QRcodeHide"></span>
+			</div>
 		</div>
 		<div class="frame" v-show="rule">
 			<div class="rule_pop">
@@ -175,17 +179,36 @@ html,body{
 	position: fixed;
 	top:0;
 	left:0;
-	width:100%;
-	height: 16.08rem;
-	background: url('../../assets/QRcode.png') rgba(0,0,0,0.6);
+	width: 100%;
+	height: 100%;
+	background:rgba(0,0,0,0.6);
+	background-size:100%;
+	padding-top: 50%;
+}
+.QRcode_in{
+	width: 8.946667rem;
+	height: 7.573333rem;
+	position: relative;
+	background: url(../../assets/mdm.png) no-repeat;
+	background-size:100%;
+	margin: 0 auto;
+}
+.QRcode_in_clone{
+	display: block;
+	width: 1.066667rem;
+	height: 1.066667rem;
+	position: absolute;
+	right: -0.266667rem;
+	top: -0.366667rem;
+	background: url(../../assets/zc_06.png) no-repeat;
 	background-size:100%;
 }
 .QRcode_pop img{
 	width:4.75rem;
 	height:4.75rem;
 	position: absolute;
-	top:6.5rem;
-	left:2.6rem;
+	top:1.5rem;
+	left:2.1rem;
 }
 .frame{
 	width: 100%;
