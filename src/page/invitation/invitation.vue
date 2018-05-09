@@ -156,7 +156,6 @@ html,body{
 	height:3.0rem;
 	background: url(../../assets/zc_03.png) no-repeat;
 	background-size:100%;
-	margin-top: 1.333333rem;
 }
 .share li{
 	width:2rem;
