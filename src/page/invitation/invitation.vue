@@ -18,7 +18,9 @@
 			<img :src="QRcodeUrl"/>
 		</div>
 		<div class="frame" v-show="rule">
-			<div class="rule_pop" @click="ruleHide"></div>
+			<div class="rule_pop" @click="ruleHide">
+				<span class="clone"></span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -134,7 +136,7 @@ html,body{
 	margin: auto;
 }
 .invitation2in{
-	width:10rem;
+	width:100%;
 	height:10.693333rem;
 	background: url(../../assets/zc_02.png) no-repeat;
 	background-size:100%;
@@ -203,5 +205,14 @@ html,body{
 	background-size:100%; 
 	margin: 0  auto;
 	position: relative;
+}
+.clone{
+	display: block;
+	width: 1.066667rem;
+	height: 1.066667rem;
+	position: absolute;
+	right: -0.266667rem;
+	top: -0.366667rem;
+	background: url(../../assets/zc_06.png) no-repeat;
 }
 </style>
