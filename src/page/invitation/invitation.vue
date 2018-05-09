@@ -18,7 +18,6 @@
 			<img :src="QRcodeUrl"/>
 		</div>
 		<div class="frame" v-show="rule">
-			<div class="mask"></div>
 			<div class="rule_pop" @click="ruleHide"></div>
 		</div>
 	</div>
@@ -193,13 +192,8 @@ html,body{
 	top: 0;
 	left: 0;
 	overflow-y:scroll; 
-}
-.mask{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	padding: 1rem 0;
+	box-sizing: border-box;
 	background: rgba(0,0,0,0.6);
 }
 .rule_pop{
@@ -208,8 +202,6 @@ html,body{
 	background: url(../../assets/zc_05.png) no-repeat;
 	background-size:100%; 
 	margin: 0  auto;
-	position: absolute;
-	top: 10%;
-	left: 5%;
+	position: relative;
 }
 </style>
