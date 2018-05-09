@@ -18,8 +18,8 @@
 			<img :src="QRcodeUrl"/>
 		</div>
 		<div class="frame" v-show="rule">
-			<div class="rule_pop" @click="ruleHide">
-				<span class="clone"></span>
+			<div class="rule_pop">
+				<span class="clone" @click="ruleHide"></span>
 			</div>
 		</div>
 	</div>
