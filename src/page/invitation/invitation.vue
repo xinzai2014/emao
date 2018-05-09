@@ -198,7 +198,7 @@ html,body{
 	height: 1.066667rem;
 	position: absolute;
 	right: -0.266667rem;
-	top: -0.366667rem;
+	top: -0.466667rem;
 	background: url(../../assets/zc_06.png) no-repeat;
 	background-size:100%;
 }
