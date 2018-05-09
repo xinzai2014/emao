@@ -4,17 +4,27 @@
 			<i class="white-lt brand-left-cion"></i> 
 			<strong class="brand-list-title">邀请好友</strong>
 		</header>
-		<div class="rule_btn" @click="ruleShow"></div>
+		<div class="invitation2in">
+			<img src="../../assets/zc_02.png" alt="">
+			<div class="rule_btn" @click="ruleShow"></div>
+		</div>
+		
 		<ul class="share">
 			<li @click="shortMessage"></li>
 			<li @click="QRcodeShow"></li>
 			<li @click="showShareDialog"></li>
 		</ul>
 		<div class="lookRecord" @click="lookRecord"></div>
-		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
-			<img :src="QRcodeUrl"/>
+		<div class="QRcode_pop" v-show="QRcode">
+			<div class="QRcode_in">
+				<img :src="QRcodeUrl"/>
+				<span class="QRcode_in_clone" @click="QRcodeHide"></span>
+			</div>
 		</div>
-		<div class="rule_pop" @click="ruleHide"  v-show="rule">
+		<div class="frame" v-show="rule">
+			<div class="rule_pop">
+				<span class="clone" @click="ruleHide"></span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -119,25 +129,38 @@
 <style>
 html,body{
 	height: 100%;
+	width: 100%;
+	background: #241e2a;
 }
+
 .invitation2{
 	width:100%;
 	height:16.08rem;
-	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
-	background-size:100%;
+	background: #241e2a;
+	margin: auto;
+}
+.invitation2in{
+	width:100%;
 	position: relative;
+	margin: auto;
+}
+.invitation2in img{
+	width: 100%;
 }
 .rule_btn{
 	position:absolute;
 	right: 0;
-	width:1rem;
-	height: 1rem;
+	width:2rem;
+	height: 2rem;
 	top:0.55rem;
 	cursor: pointer;
 }
 .share{
-	position: absolute;
-	top:11.1rem;
+	width:10rem;
+	height:3.0rem;
+	background: url(../../assets/zc_03.png) no-repeat;
+	background-size:100%;
+	margin: 0 auto;
 }
 .share li{
 	width:2rem;
@@ -147,35 +170,74 @@ html,body{
 	cursor: pointer;
 }
 .lookRecord{
-	position: absolute;
-    top: 14.2rem;
-    width: 4rem;
-    height: 1rem;
-    left: 3rem;
+	width:10rem;
+	height:2.36rem;
+	background: url(../../assets/zc_04.jpg) no-repeat;
+	background-size:100%;
+	margin: 0 auto;	
 }
 .QRcode_pop{
 	position: fixed;
 	top:0;
 	left:0;
-	width:100%;
-	height: 16.08rem;
-	background: url('../../assets/QRcode.png') rgba(0,0,0,0.6);
+	width: 100%;
+	height: 100%;
+	background:rgba(0,0,0,0.6);
+	background-size:100%;
+	padding-top: 50%;
+}
+.QRcode_in{
+	width: 8.946667rem;
+	height: 7.573333rem;
+	position: relative;
+	background: url(../../assets/mdm.png) no-repeat;
+	background-size:100%;
+	margin: 0 auto;
+}
+.QRcode_in_clone{
+	display: block;
+	width: 1.066667rem;
+	height: 1.066667rem;
+	position: absolute;
+	right: -0.266667rem;
+	top: -0.466667rem;
+	background: url(../../assets/zc_06.png) no-repeat;
 	background-size:100%;
 }
 .QRcode_pop img{
 	width:4.75rem;
 	height:4.75rem;
 	position: absolute;
-	top:6.5rem;
-	left:2.6rem;
+	top:1.5rem;
+	left:2.1rem;
+}
+.frame{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	overflow-y:scroll; 
+	padding: 1rem 0;
+	box-sizing: border-box;
+	background: rgba(0,0,0,0.6);
 }
 .rule_pop{
-	position: fixed;
-	top:-0.8rem;
-	left:0;
-	width:100%;
-	height: 16.08rem;
-	background:url('../../assets/rule.png') rgba(0,0,0,0.6);
-	background-size:100% 100%;
+	width:9.28rem;
+	height:14.253333rem;
+	background: url(../../assets/zc_05.png) no-repeat;
+	background-size:100%; 
+	margin: 0  auto;
+	position: relative;
+}
+.clone{
+	display: block;
+	width: 1.066667rem;
+	height: 1.066667rem;
+	position: absolute;
+	right: -0.266667rem;
+	top: -0.366667rem;
+	background: url(../../assets/zc_06.png) no-repeat;
+	background-size:100%;
 }
 </style>
