@@ -14,8 +14,7 @@
 			<li @click="showShareDialog"></li>
 		</ul>
 		<div class="lookRecord" @click="lookRecord"></div>
-		<!-- v-show="QRcode" -->
-		<div class="QRcode_pop" >
+		<div class="QRcode_pop" v-show="QRcode">
 			<div class="QRcode_in">
 				<img :src="QRcodeUrl"/>
 				<span class="QRcode_in_clone" @click="QRcodeHide"></span>
