@@ -122,7 +122,8 @@ html,body{
 }
 .invitation2{
 	width:100%;
-	height:16.08rem;
+	min-height:16.08rem;
+	height: 100%;
 	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
 	background-size:100%;
 	position: relative;
