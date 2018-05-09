@@ -4,7 +4,10 @@
 			<i class="white-lt brand-left-cion"></i> 
 			<strong class="brand-list-title">邀请好友</strong>
 		</header>
-		<div class="rule_btn" @click="ruleShow"></div>
+		<div class="invitation2in">
+			<div class="rule_btn" @click="ruleShow"></div>
+		</div>
+		
 		<ul class="share">
 			<li @click="shortMessage"></li>
 			<li @click="QRcodeShow"></li>
@@ -14,7 +17,9 @@
 		<div class="QRcode_pop" @click="QRcodeHide" v-show="QRcode">
 			<img :src="QRcodeUrl"/>
 		</div>
-		<div class="rule_pop" @click="ruleHide"  v-show="rule">
+		<div class="frame" v-show="rule">
+			<div class="mask"></div>
+			<div class="rule_pop" @click="ruleHide"></div>
 		</div>
 	</div>
 </template>
@@ -122,10 +127,17 @@ html,body{
 	width: 100%;
 	background: #241e2a;
 }
+
 .invitation2{
 	width:10rem;
 	height:16.08rem;
-	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
+	background: #241e2a;
+	margin: auto;
+}
+.invitation2in{
+	width:10rem;
+	height:10.693333rem;
+	background: url(../../assets/zc_02.png) no-repeat;
 	background-size:100%;
 	position: relative;
 	margin: auto;
@@ -133,14 +145,18 @@ html,body{
 .rule_btn{
 	position:absolute;
 	right: 0;
-	width:1rem;
-	height: 1rem;
+	width:2rem;
+	height: 2rem;
 	top:0.55rem;
 	cursor: pointer;
 }
 .share{
-	position: absolute;
-	top:11.1rem;
+	background: red;
+	width:10rem;
+	height:3.0rem;
+	background: url(../../assets/zc_03.png) no-repeat;
+	background-size:100%;
+	margin-top: 1.333333rem;
 }
 .share li{
 	width:2rem;
@@ -150,11 +166,10 @@ html,body{
 	cursor: pointer;
 }
 .lookRecord{
-	position: absolute;
-    top: 14.2rem;
-    width: 4rem;
-    height: 1rem;
-    left: 3rem;
+	width:10rem;
+	height:2.36rem;
+	background: url(../../assets/zc_04.jpg) no-repeat;
+	background-size:100%;	
 }
 .QRcode_pop{
 	position: fixed;
@@ -172,16 +187,30 @@ html,body{
 	top:6.5rem;
 	left:2.6rem;
 }
-.rule_pop{
+.frame{
+	width: 100%;
+	height: 100%;
 	position: fixed;
-	top:0;
-	left:0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	width:10rem;
-	height: 16.08rem;
-	background:url('../../assets/rule.png') rgba(0,0,0,0.6);
-	background-size:100% 100%;
+	top: 0;
+	left: 0;
+
+}
+.mask{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.6);
+}
+.rule_pop{
+	width:9.28rem;
+	height:14.253333rem;
+	background: url(../../assets/zc_05.png) no-repeat;
+	background-size:100%; 
+	margin: 0  auto;
+	position: absolute;
+	top: 10%;
+	left: 5%;
 }
 </style>
