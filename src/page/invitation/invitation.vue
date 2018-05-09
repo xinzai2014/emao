@@ -193,7 +193,7 @@ html,body{
 	position: fixed;
 	top: 0;
 	left: 0;
-
+	overflow-y:scroll; 
 }
 .mask{
 	position: absolute;
