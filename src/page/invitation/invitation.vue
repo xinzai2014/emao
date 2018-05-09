@@ -130,7 +130,7 @@ html,body{
 }
 
 .invitation2{
-	width:10rem;
+	width:100%;
 	height:16.08rem;
 	background: #241e2a;
 	margin: auto;
