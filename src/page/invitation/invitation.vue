@@ -119,14 +119,16 @@
 <style>
 html,body{
 	height: 100%;
+	width: 100%;
+	background: #241e2a;
 }
 .invitation2{
-	width:100%;
-	min-height:16.08rem;
-	height: 100%;
+	width:10rem;
+	height:16.08rem;
 	background: url(../../assets/invitation.jpg) no-repeat #241e2a;
 	background-size:100%;
 	position: relative;
+	margin: auto;
 }
 .rule_btn{
 	position:absolute;
@@ -172,9 +174,12 @@ html,body{
 }
 .rule_pop{
 	position: fixed;
-	top:-0.8rem;
+	top:0;
 	left:0;
-	width:100%;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	width:10rem;
 	height: 16.08rem;
 	background:url('../../assets/rule.png') rgba(0,0,0,0.6);
 	background-size:100% 100%;
