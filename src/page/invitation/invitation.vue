@@ -155,11 +155,11 @@ html,body{
 	cursor: pointer;
 }
 .share{
-	background: red;
 	width:10rem;
 	height:3.0rem;
 	background: url(../../assets/zc_03.png) no-repeat;
 	background-size:100%;
+	margin: 0 auto;
 }
 .share li{
 	width:2rem;
@@ -172,7 +172,8 @@ html,body{
 	width:10rem;
 	height:2.36rem;
 	background: url(../../assets/zc_04.jpg) no-repeat;
-	background-size:100%;	
+	background-size:100%;
+	margin: 0 auto;	
 }
 .QRcode_pop{
 	position: fixed;
