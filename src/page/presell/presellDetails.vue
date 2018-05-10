@@ -45,7 +45,7 @@
                     <li>
                         <span>提货地点：</span>
                         <!-- <em>{{presellData.deliveryPlace}}</em> -->
-                        <em>广州</em>
+                        <em>成都、合肥、济南、武汉、郑州、南京</em>
                     </li>
                     <li>
                         <span>车型颜色：</span>
