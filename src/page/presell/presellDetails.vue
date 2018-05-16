@@ -44,8 +44,8 @@
                     </li>
                     <li>
                         <span>提货地点：</span>
-                        <!-- <em>{{presellData.deliveryPlace}}</em> -->
-                        <em>广州</em>
+                         <em>{{presellData.deliveryPlace}}</em>
+                        <!--<em>广州</em>-->
                     </li>
                     <li>
                         <span>车型颜色：</span>
@@ -187,7 +187,7 @@
                     buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
                     //buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
                     title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
-                    subTitle:"广州提车，车商猫爆款限量抢购，还不抓紧上车！",
+                    subTitle: window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
                     imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
@@ -205,7 +205,7 @@
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
                     title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
-                    subTitle:"广州提车，车商猫爆款限量抢购，还不抓紧上车！",
+                    subTitle: window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
                     imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
@@ -299,7 +299,13 @@
                     this.presellPrice = response.body.data.prePrice;
                     window.presellModel = response.body.data.autoName;
                     window.presellPrice = response.body.data.prePrice;
+                    window.deliveryPlace = this.presellData.deliveryPlace;
                     this.addShareButton();
+                    this.$store.dispatch("PRESELL_FLAG",
+                            {
+                                deliveryPlace:this.presellData.deliveryPlace
+                            }
+                    )
                 })
             }
 
