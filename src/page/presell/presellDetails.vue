@@ -300,12 +300,8 @@
                     window.presellModel = response.body.data.autoName;
                     window.presellPrice = response.body.data.prePrice;
                     window.deliveryPlace = this.presellData.deliveryPlace;
+                    localStorage.setItem("deliveryPlace", response.body.data.deliveryPlace);
                     this.addShareButton();
-                    this.$store.dispatch("PRESELL_FLAG",
-                            {
-                                deliveryPlace:this.presellData.deliveryPlace
-                            }
-                    )
                 })
             }
 

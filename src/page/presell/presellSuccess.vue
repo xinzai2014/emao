@@ -99,7 +99,7 @@
                 }
                 window.presellModel = this.$store.getters.getPresellFlag.presellModel;
                 window.presellPrice = this.$store.getters.getPresellFlag.presellPrice;
-                window.deliveryPlace = this.$store.getters.getPresellFlag.deliveryPlace;
+                window.deliveryPlace = localStorage.getItem("deliveryPlace");
             },
 
 
