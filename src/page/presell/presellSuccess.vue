@@ -74,7 +74,7 @@
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
                     title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
-                    subTitle:"广州提车，车商猫爆款限量抢购，还不抓紧上车！",
+                    subTitle:window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
                     imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
@@ -99,6 +99,7 @@
                 }
                 window.presellModel = this.$store.getters.getPresellFlag.presellModel;
                 window.presellPrice = this.$store.getters.getPresellFlag.presellPrice;
+                window.deliveryPlace = localStorage.getItem("deliveryPlace");
             },
 
 
