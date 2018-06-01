@@ -55,26 +55,40 @@
                         <span>生产日期：</span>
                         <em>{{presellData.productionTime}}</em>
                     </li>
+                    <li v-if="presellData.remark != '' ">
+                        <span>备注：</span>
+                        <em>{{presellData.remark}}</em>
+                    </li>
                 </ul>
 
 
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
-                    <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
-                    <p class="car-reserve-tips">
-                        <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
-                    </p>
-                    <div class="car-reserve-roll">
-                        <ul ref="con1" :class="{anim:animate==true}">
-                            <li v-for="item in preSaleData.buyList">
-                                <span>{{item.time}}</span>
-                                <span>{{item.dealer}}</span>
-                                <span>{{item.num}}</span>
-                            </li>
-                        </ul>
+                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
+                        <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
+                        <p class="car-reserve-tips">
+                            <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
+                        </p>
+                        <div class="car-reserve-roll">
+                            <ul ref="con1" :class="{anim:animate==true}">
+                                <li v-for="item in preSaleData.buyList">
+                                    <span>{{item.time}}</span>
+                                    <span>{{item.dealer}}</span>
+                                    <span>{{item.num}}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
+                        <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
                     </div>
 
-                    <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
-                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
+                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
+                        <p class="car-reserve-tips">
+                            已有<i>{{preSaleData.batch}}</i>批车辆发往 <span>{{preSaleData.city}}</span>
+                        </p>
+                        <p class="car-understock">剩余库存已不足拼版</p>
+                    </div>
+
                 </div>
 
             </div>
@@ -347,7 +361,7 @@
     .car-time-place ul li{margin-bottom:.267rem;}
     .car-time-place ul li span{font-size:.32rem;color:#999;}
     .car-time-place ul li em{font-size:.32rem;color:#333;}
-    .car-reserve{display:none;padding:.467rem .5333rem;background-color:#fef9f1;}
+    .car-reserve{padding:.467rem .5333rem;background-color:#fef9f1;}
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
@@ -357,7 +371,7 @@
     /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
 
     .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}
-
+    .car-understock{font-size:.32rem;text-align:center;color:#999;}
     .car-share{text-align:center;}
     .car-share img{width:7.147rem;height:1.68rem;}
     .car-batch-count{text-align:center;color:#2c2c2c;font-size:.32rem;}
