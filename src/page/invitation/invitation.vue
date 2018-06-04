@@ -119,6 +119,7 @@
 		},
 		mounted(){
 			//组件初始化
+			alert(this.$route.query.token);
 			this.token = this.$route.query.token||sessionStorage.token;
 			this.activityId = this.$route.query.activityId;  
 			document.title='邀请好友';
