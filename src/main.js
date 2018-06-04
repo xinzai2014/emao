@@ -11,13 +11,14 @@ Vue.use(InfiniteScroll);
 
 //表单验证元素
 import zh_CN from 'vee-validate/dist/locale/zh_CN';
-import VeeValidate, { Validator } from 'vee-validate';
+import VeeValidate, {
+	Validator
+} from 'vee-validate';
 
 Validator.addLocale(zh_CN);
 Vue.use(VeeValidate, {
-	locale:'zh_CN'
+	locale: 'zh_CN'
 });
-
 
 
 
@@ -40,7 +41,6 @@ Vue.use(VueResource)
 
 
 
-
 //全局默认配置
 Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //Vue.http.headers.common = {
@@ -48,7 +48,7 @@ Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //};
 
 Vue.http.headers.common = {
-	Accept:"application/json; version=2.7.0"
+	Accept: "application/json; version=2.11.0"
 };
 
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
@@ -63,20 +63,20 @@ import '../plugins/swiper.min.css';
 Vue.config.productionTip = false;
 
 
-Vue.directive('load-more',{
+Vue.directive('load-more', {
 	inserted(el, binding, vnode) {
 		const getStyle = (element, attr, NumberMode = 'int') => {
-		    let target;
-		    // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
-		    if (attr === 'scrollTop') {
-		        target = element.scrollTop;
-		    }else if(element.currentStyle){
-		        target = element.currentStyle[attr];
-		    }else{
-		        target = document.defaultView.getComputedStyle(element,null)[attr];
-		    }
-		    //在获取 opactiy 时需要获取小数 parseFloat
-		    return  NumberMode == 'float'? parseFloat(target) : parseInt(target);
+			let target;
+			// scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
+			if (attr === 'scrollTop') {
+				target = element.scrollTop;
+			} else if (element.currentStyle) {
+				target = element.currentStyle[attr];
+			} else {
+				target = document.defaultView.getComputedStyle(element, null)[attr];
+			}
+			//在获取 opactiy 时需要获取小数 parseFloat
+			return NumberMode == 'float' ? parseFloat(target) : parseInt(target);
 		}
 		const loadMore = (element, callback) => {
 
@@ -85,119 +85,126 @@ Vue.directive('load-more',{
 			let setTop;
 			let paddingBottom;
 			let marginBottom;
-		    let requestFram;
-		    let oldScrollTop;
+			let requestFram;
+			let oldScrollTop;
 
-		    document.body.addEventListener('scroll',() => {
-		       loadMore();
-		    }, false)
-		    //运动开始时获取元素 高度 和 offseTop, pading, margin
-			element.addEventListener('touchstart',() => {
-		        height = element.offsetHeight;
-		        setTop = element.offsetTop;
-		        paddingBottom = getStyle(element,'paddingBottom');
-		        marginBottom = getStyle(element,'marginBottom');
-		    },{passive: true})
+			document.body.addEventListener('scroll', () => {
+				loadMore();
+			}, false)
+			//运动开始时获取元素 高度 和 offseTop, pading, margin
+			element.addEventListener('touchstart', () => {
+				height = element.offsetHeight;
+				setTop = element.offsetTop;
+				paddingBottom = getStyle(element, 'paddingBottom');
+				marginBottom = getStyle(element, 'marginBottom');
+			}, {
+				passive: true
+			})
 
-		    //运动过程中保持监听 scrollTop 的值判断是否到达底部
-		    element.addEventListener('touchmove',() => {
-		       loadMore();
-		    },{passive: true})
+			//运动过程中保持监听 scrollTop 的值判断是否到达底部
+			element.addEventListener('touchmove', () => {
+				loadMore();
+			}, {
+				passive: true
+			})
 
-		    //运动结束时判断是否有惯性运动，惯性运动结束判断是非到达底部
-		    element.addEventListener('touchend',() => {
-		       	oldScrollTop = document.body.scrollTop;
-		       	moveEnd();
-		    },{passive: true})
+			//运动结束时判断是否有惯性运动，惯性运动结束判断是非到达底部
+			element.addEventListener('touchend', () => {
+				oldScrollTop = document.body.scrollTop;
+				moveEnd();
+			}, {
+				passive: true
+			})
 
-		    const moveEnd = () => {
-		        requestFram = requestAnimationFrame(() => {
-		            if (document.body.scrollTop != oldScrollTop) {
-		                oldScrollTop = document.body.scrollTop;
-		                loadMore();
-		                moveEnd();
-		            }else{
-		            	cancelAnimationFrame(requestFram);
-		            	//为了防止鼠标抬起时已经渲染好数据从而导致重获取数据，应该重新获取dom高度
-		            	height = element.offsetHeight;
-		                loadMore();
-		            }
-		        })
-		    }
-		    const loadMore = () => {
-		        if (document.body.scrollTop + windowHeight >= height + setTop + paddingBottom + marginBottom) {
-		            callback();
-		        }
-		    }
+			const moveEnd = () => {
+				requestFram = requestAnimationFrame(() => {
+					if (document.body.scrollTop != oldScrollTop) {
+						oldScrollTop = document.body.scrollTop;
+						loadMore();
+						moveEnd();
+					} else {
+						cancelAnimationFrame(requestFram);
+						//为了防止鼠标抬起时已经渲染好数据从而导致重获取数据，应该重新获取dom高度
+						height = element.offsetHeight;
+						loadMore();
+					}
+				})
+			}
+			const loadMore = () => {
+				if (document.body.scrollTop + windowHeight >= height + setTop + paddingBottom + marginBottom) {
+					callback();
+				}
+			}
 		}
 		//loadMore(el,binding.value);
 		// window.onscroll  = function () {
-  //     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  //     if(scrollTop + window.innerHeight >= (el.clientHeight)) {
+		//     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+		//     if(scrollTop + window.innerHeight >= (el.clientHeight)) {
 		// 		var fnc = binding.value;
 		// 		fnc();
 		// 	}
 		// }
 
-	    el.addEventListener('scroll',function () {
+		el.addEventListener('scroll', function() {
 
-	        if(this.scrollHeight-this.scrollTop===this.clientHeight){
-	        	var fnc = binding.value;
+			if (this.scrollHeight - this.scrollTop === this.clientHeight) {
+				var fnc = binding.value;
 				fnc();
-	        }
+			}
 
-	    })
+		})
 
-      },
-  unbind(){
-    window.onscroll = null;
-  }
+	},
+	unbind() {
+		window.onscroll = null;
+	}
 })
 
-Vue.http.interceptors.push(function(request,next){
+Vue.http.interceptors.push(function(request, next) {
 	this.$store.dispatch("AJAX_LOADING", // 通过store传值
-      true
-    );
-    next(function (response) {
-    	if(response.body){
-	    	var code = response.body.code;
-	    	if(code == 4010){ //密码修改了
+		true
+	);
+	next(function(response) {
+		if (response.body) {
+			var code = response.body.code;
+			if (code == 4010) { //密码修改了
 				sessionStorage.clear();
 				this.$router.push('/login/account');
 				return false;
 			}
-	    	if(/^[3-5]/.test(code)){
-	    		this.$store.dispatch("ALERT", // 通过store传值
-			      {
-			      	flag:true,
-			      	text:response.body.msg
-			      }
-			    );
-	    	}
-    	}
-    	//console.log(response.status);
-    	if(this.$store.state.ajaxLoading == true){
-    		this.$store.dispatch("AJAX_LOADING", // 通过store传值
-		      false
-		    );
-    	}
-        return response;
-    })
+			if (/^[3-5]/.test(code)) {
+				this.$store.dispatch("ALERT", // 通过store传值
+					{
+						flag: true,
+						text: response.body.msg
+					}
+				);
+			}
+		}
+		//console.log(response.status);
+		if (this.$store.state.ajaxLoading == true) {
+			this.$store.dispatch("AJAX_LOADING", // 通过store传值
+				false
+			);
+		}
+		return response;
+	})
 })
 
 /* eslint-disable no-new */
 var obj = new Vue({
-  el: '#app',          //vue实例挂载点
-  store,
-  router,              //路由配置对象
-  render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
-// template: '<App/>',
-  components: { App }  //全局组件
+	el: '#app', //vue实例挂载点
+	store,
+	router, //路由配置对象
+	render: h => h(App), //都是将模板挂载到实例上去,render函数优先级别高于template;更推荐使用,生成的虚拟DOM
+	// template: '<App/>',
+	components: {
+		App
+	} //全局组件
 
-  /*watch:{
-    showLoading(){
-      alert('ok');
-    }
-  }*/
+	/*watch:{
+	  showLoading(){
+	    alert('ok');
+	  }
+	}*/
 })
-
