@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/'
+import axios from 'axios'
 
 //无限滚动加载
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -190,6 +191,8 @@ Vue.http.interceptors.push(function(request, next) {
 		return response;
 	})
 })
+
+Vue.prototype.$axios = axios;
 
 /* eslint-disable no-new */
 var obj = new Vue({
