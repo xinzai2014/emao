@@ -64,7 +64,7 @@
 
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
                     <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
-                        <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
+                        <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
                         <p class="car-reserve-tips">
                             <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
                         </p>
