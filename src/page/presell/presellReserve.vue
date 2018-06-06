@@ -99,7 +99,7 @@
             <div class="car-participation-wrap" v-if=' activityData.buttonIsShow == "1" '>
                 <div class="car-participation" @click="chooseActivity">
                     <i :class="{'weui-icon-success':chooseActivityFlag,'weui-icon-checked':!chooseActivityFlag}"></i>
-                    <p>参与活动：省内拼满12台， <span>{{activityData.pickUpArea}}</span> 提车</p>
+                    <p>参与活动：省内拼满{{activityData.assemblyNumber}}台， <span>{{activityData.pickUpArea}}</span> 提车</p>
                     <p>仓库地址：{{activityData.pickUpAddress}}</p>
                 </div>
             </div>
