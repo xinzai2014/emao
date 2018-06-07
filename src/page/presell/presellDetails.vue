@@ -16,15 +16,14 @@
             </div>
         </section>
         <section class="car-info-wrap">
-            
             <div class="car-time-place">
                 <!-- 名字和设置提醒 -->
                 <div class="car-name">
                     <h4 class="name-content">{{presellData.autoName}}</h4>
                     <div class="set-warning" v-if="isTcmApp" @click="setWarningFun">
-                        <div class="btn-warning" :class="{'actived': this.presellData.isRemind == '1'}">
+                        <div class="btn-warning" :class="{'actived': tpresellData.isRemind == '1'}">
                             <span class="icon-warning"></span>
-                            <span class="text-warning" v-if="this.presellData.isRemind == '0'">提醒我</span>
+                            <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
                             <span class="text-warning" v-else>已醒我</span>
                         </div>
                         <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
@@ -70,7 +69,7 @@
                         </ul>
                     </div>
 
-                    <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="showShareDialog"></p>
+                    <p class="car-share"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
                     <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
             </div>
@@ -115,7 +114,7 @@
             <div class="single"></div>
             <!-- 注册内容 -->
             <div class="register-wrapper" v-show="popupShowWhich === 'register'">
-                <h4 class="ttl">今日注册得<span>200元购车券</span></h4>
+                <h4 class="ttl">新注册立得<span>100元券</span></h4>
                 <div class="input-tel">
                     <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
                 </div>
@@ -123,10 +122,15 @@
             </div>
             <!-- 注册成功内容 -->
             <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
-                <h4 class="ttl">恭喜您获得200元购车券</h4>
-                <h4 class="desc">宝骏510库存有限，前往车商猫APP立即抢购</h4>
+                <h4 class="ttl">欢迎加入车商猫</h4>
+                <h4 class="desc">100购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
                 <div class="btn-goApp">前往APP</div>
-            </div>   
+            </div>
+            <!-- 注册成功内容 -->
+            <div class="registed-wrapper" v-show="popupShowWhich === 'registed '">
+                <h4 class="ttl">欢迎加入车商猫</h4>
+                <div class="btn-goApp">前往APP</div>
+            </div>  
         </popup>
         <popup
             class="selectPopup"
@@ -172,6 +176,7 @@ import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
 import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
 import {timeCountdown} from '../../common/js/countdown.js'; 
+import share from '../../common/js/shareOnly.js';
 
 
 export default {
@@ -216,65 +221,65 @@ export default {
     };
   },
   computed: {
-        // 弹窗背景的图片
-        alertBg () {
-            return require('../../assets/flashSale_alert_bg.jpg')
-        },
-        /*判断是否是App*/
-        isTcmApp () {
-            if (
-                typeof this.$route.query.token == "undefined" ||
-                this.$route.query.token == ""
-            ) {
-                return false;
-            } else {
-                return true;
-            }
-        },
-        /*判断浏览器来源*/
-        getSource(){
-            var browser = {
-                versions: function () {
-                    var u = navigator.userAgent, app = navigator.appVersion;
-                    return {     //移动终端浏览器版本信息
-                        trident: u.indexOf('Trident') > -1, //IE内核
-                        presto: u.indexOf('Presto') > -1, //opera内核
-                        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
-                        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-                        iPad: u.indexOf('iPad') > -1, //是否iPad
-                        webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
-                    };
-                }(),
-                language: (navigator.browserLanguage || navigator.language).toLowerCase()
-            }
-            if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
-                var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
-                if (ua.match(/MicroMessenger/i) == "micromessenger") {
-                    //在微信中打开
-                    return 3;
-                }
-                if (ua.match(/WeiBo/i) == "weibo") {
-                    //在新浪微博客户端打开
-                    return 5;
-                }
-                if (ua.match(/QQ/i) == "qq") {
-                    //在QQ空间打开
-                    return 4;
-                }
-                if (browser.versions.ios) {
-                    //是否在IOS浏览器打开
-                }
-                if (browser.versions.android) {
-                    //是否在安卓浏览器打开
-                }
-            } else {
-                //否则就是PC浏览器打开
-            }
+    // 弹窗背景的图片
+    alertBg () {
+        return require('../../assets/flashSale_alert_bg.jpg')
+    },
+    /*判断是否是App*/
+    isTcmApp () {
+        if (
+            typeof this.$route.query.token == "undefined" ||
+            this.$route.query.token == ""
+        ) {
+            return false;
+        } else {
+            return true;
         }
+    },
+    /*判断浏览器来源*/
+    getSource(){
+        var browser = {
+            versions: function () {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                return {     //移动终端浏览器版本信息
+                    trident: u.indexOf('Trident') > -1, //IE内核
+                    presto: u.indexOf('Presto') > -1, //opera内核
+                    webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                    mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                    iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                    iPad: u.indexOf('iPad') > -1, //是否iPad
+                    webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
+                };
+            }(),
+            language: (navigator.browserLanguage || navigator.language).toLowerCase()
+        }
+        if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+            var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                //在微信中打开
+                return 3;
+            }
+            if (ua.match(/WeiBo/i) == "weibo") {
+                //在新浪微博客户端打开
+                return 5;
+            }
+            if (ua.match(/QQ/i) == "qq") {
+                //在QQ空间打开
+                return 4;
+            }
+            if (browser.versions.ios) {
+                //是否在IOS浏览器打开
+            }
+            if (browser.versions.android) {
+                //是否在安卓浏览器打开
+            }
+        } else {
+            //否则就是PC浏览器打开
+        }
+    }
   },
   created() {
     /*文字滚动效果*/
@@ -351,30 +356,31 @@ export default {
             actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
             actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
             // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-            title: presellData.shareInfo.shareText,
-            subTitle: presellData.shareInfo.shareDescription,
-            imgUrl:presellData.shareInfo.shareImg,
-            url:presellData.shareInfo.shareUrl, //要分享内容的 url
+            title: this.presellData.shareInfo.shareText,
+            subTitle: this.presellData.shareInfo.shareDescription,
+            imgUrl:this.presellData.shareInfo.shareImg,
+            url:this.presellData.shareInfo.shareUrl, //要分享内容的 url
             shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniqueId: presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
+            uniqueId: this.presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
             extra: this.$route.query.id //分享需要的额外字段,预售id
         };
-        tcmApp(obj);
+        this.tcmApp(obj);
     },
     //向导航条上添加分享按钮
     addShareButton() {
+        let _this = this;
         var obj = {
             actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
             actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
             // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
             buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
             // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-            title: presellData.shareInfo.shareText,
-            subTitle: presellData.shareInfo.shareDescription,
-            imgUrl:presellData.shareInfo.shareImg,
-            url:presellData.shareInfo.shareUrl, //要分享内容的 url
+            title: this.presellData.shareInfo.shareText,
+            subTitle: this.presellData.shareInfo.shareDescription,
+            imgUrl: this.presellData.shareInfo.shareImg,
+            url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
         };
-        tcmApp(obj);
+        this.tcmApp(obj);
     },
     /*立即预定*/
     presellReserve() {
@@ -414,7 +420,6 @@ export default {
             window.presellPrice = response.body.data.prePrice;
             window.deliveryPlace = this.presellData.deliveryPlace;
             localStorage.setItem("deliveryPlace", response.body.data.deliveryPlace);
-            this.addShareButton();
         });
       })  
     },
@@ -505,7 +510,7 @@ export default {
                 resolve()
             })
             .catch(error => {
-                const data = response.body.data;
+                const data = error.body.data;
                 const selectNum =  this.selectData.carNum;
                 const stockNum = this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum;
                 this.selectData.carNum = selectNum > data.num ? data.num : selectNum;
@@ -530,9 +535,11 @@ export default {
     this.getPresellDetails().then((presellData) => {
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
+        const shareData = presellData.shareInfo;
+        share(shareData);
+        this.addShareButton();
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
-            this.addShareButton();
             if (update[0] === 'start') {
                 this.btnText = '等待抢购'
                 this.btnState = false
@@ -552,7 +559,6 @@ export default {
                 this.countdownState = false;
             }
         }, (end) => {
-            console.log(end)
             this.countdownArr = end;
             this.btnState = false;
             this.btnText = '已结束';
