@@ -416,7 +416,7 @@ export default {
             resolve(this.presellData);
             window.presellModel = data.autoName;
             window.presellPrice = data.prePrice;
-            window.deliveryPlace = deliveryPlace;
+            window.deliveryPlace = data.deliveryPlace;
             localStorage.setItem("deliveryPlace", data.deliveryPlace);
         });
       })  
