@@ -281,10 +281,7 @@ export default {
         }
     }
   },
-  created() {
-    /*文字滚动效果*/
-    // setInterval(this.scroll, 2000);
-  },
+  
   methods: {
     // 点击设置提醒按钮
     setWarningFun () {
@@ -409,17 +406,18 @@ export default {
             methods: "GET",
             params: params
         }).then(function(response) {
-            this.presellData = response.body.data;
-            this.circular = response.body.data.circular;
-            this.preSaleData = response.body.data.preSale;
-            this.presellModel = response.body.data.autoName;
-            this.presellPrice = response.body.data.prePrice;
+            let data = response.body.data;
+            this.presellData = data;
+            this.circular = data.circular;
+            this.preSaleData = data.preSale;
+            this.presellModel = data.autoName;
+            this.presellPrice = data.prePrice;
             this.stock = response.body.data.preSaleList;
             resolve(this.presellData);
-            window.presellModel = response.body.data.autoName;
-            window.presellPrice = response.body.data.prePrice;
-            window.deliveryPlace = this.presellData.deliveryPlace;
-            localStorage.setItem("deliveryPlace", response.body.data.deliveryPlace);
+            window.presellModel = data.autoName;
+            window.presellPrice = data.prePrice;
+            window.deliveryPlace = deliveryPlace;
+            localStorage.setItem("deliveryPlace", data.deliveryPlace);
         });
       })  
     },
@@ -528,16 +526,22 @@ export default {
         
     }
   },
+  created() {
+    /*文字滚动效果*/
+    // setInterval(this.scroll, 2000);
+  },
   mounted() { 
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
     this.getPresellDetails().then((presellData) => {
+        console.log('presellData', presellData)
+        console.log(presellData.preSaleStartTime)
+        console.log(presellData.preSaleEndTime)
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
         const shareData = presellData.shareInfo;
-        share(shareData);
-        this.addShareButton();
+        
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
             if (update[0] === 'start') {
@@ -565,6 +569,8 @@ export default {
             this.countdownText = '距离结束还剩'
             this.countdownState = true;
         })
+        this.addShareButton();
+        share(shareData);
     });
     this.renderDom();
   },
