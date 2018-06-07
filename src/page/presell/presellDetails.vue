@@ -1,36 +1,36 @@
 <template>
     <div>
-        <header class="user-tit declare-head" v-if="showHeadStatus">
-            <span class="white-lt" @click="goToIndex"></span>
-            限时抢购
-            <em>分享</em>
-        </header>
         <!--预售详情-图片滚动-->
         <swiper :circular="circular" v-if="circular.length"></swiper>
+        <!-- 价格和倒计时 -->
         <section class="car-parameter">
             <div class="car-price">
                 <div class="price-wrapper">
-                <h4 class="true-price">123.00 <span>万</span></h4>
-                <h4 class="guided-price">指导价：123.00万 / 下 123.00万</h4>
+                <h4 class="true-price">{{presellData.prePrice}} <span>万</span></h4>
+                <h4 class="guided-price">指导价：{{presellData.guidePrice}}万 / {{presellData.disparityPrice}}万</h4>
                 </div>
                 <div class="countdown">
-                <h4>距离结束还剩</h4>
-                <div><span>00</span> 天 <span>00</span> : <span>00</span></div> 
+                    <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
+                    <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div> 
                 </div>
             </div>
         </section>
         <section class="car-info-wrap">
+            
             <div class="car-time-place">
+                <!-- 名字和设置提醒 -->
                 <div class="car-name">
-                    <h4 class="name-content">名字名字字</h4>
-                    <div class="set-warning">
-                        <div class="btn-warning actived">
+                    <h4 class="name-content">{{presellData.autoName}}</h4>
+                    <div class="set-warning" v-if="isTcmApp" @click="setWarningFun">
+                        <div class="btn-warning" :class="{'actived': this.presellData.isRemind == '1'}">
                             <span class="icon-warning"></span>
-                            <span class="text-warning">提醒我</span>
+                            <span class="text-warning" v-if="this.presellData.isRemind == '0'">提醒我</span>
+                            <span class="text-warning" v-else>已醒我</span>
                         </div>
-                        <h4 class="desc-warning">12人已提醒</h4>
+                        <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
                     </div>
                 </div>
+                <!-- 详情 -->
                 <ul>
                     <li>
                         <span>可售范围：</span>
@@ -54,6 +54,7 @@
                         <em>{{presellData.productionTime}}</em>
                     </li>
                 </ul>
+                <!-- 同城 -->
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
                     <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
@@ -69,7 +70,7 @@
                         </ul>
                     </div>
 
-                    <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="shareToWeichat"></p>
+                    <p class="car-share"><img src="../../assets/presell-share.png" alt="" @click="showShareDialog"></p>
                     <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
                 </div>
             </div>
@@ -83,49 +84,33 @@
         <section class="car-presell-explain">
             <p class="presell-explain-title">关于限时抢购</p>
             <ul class="presell-explain-con">
-                <li>
-                    <span>1、</span>
-                    限时抢购车源，为一猫采购的限时限量畅销车源；
-                </li>
-                <li>
-                    <span>2、</span>
-                    支付定金可锁定车源，车辆入库后补齐尾款，前往指定地点提车；
-                </li>
-                <li>
-                    <span>3、</span>
-                    定金可抵扣车款；
-                </li>
-                <li>
-                    <span>4、</span>
-                    因经销商原因，导致交易无法继续，定金将不予退还；
-                </li>
-                <li>
-                    <span>5、</span>
-                    一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券；
-                </li>
-                <li>
-                    <span>6、</span>
-                    开票及申请合格证流程，与其他零售车型一致；
-                </li>
-                <li>
-                    <span>7、</span>
-                    如有疑问可咨询渠道支持，或联系客服 400-825-2368。
-                </li>
+                <li><span>1.</span>定金将在提车完成后，退回原支付账户；</li>
+                <li><span>2.</span>支付定金可锁定车源，车辆入库后补齐尾款，前往指定地点提车；</li>
+                <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
+                <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源；</li>
+                <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还；</li>
+                <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券；</li>
+                <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致；</li>
+                <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
             </ul>
         </section>
-
+        <!-- 按钮 -->
         <section class="car-reserve-btn">
-            <input v-if="presellData.endTime != '' " class="car-presell-present" type="button" name="立即预定" value="立即预定" @click="presellReserve"/>
-            <input v-else class="car-presell-present-disabled" type="button" name="立即预定" value="立即预定" disabled/>
+            <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
+            <div v-else class="car-presell-present-disabled">{{btnText}}</div>
         </section>
 
         <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
         <popup
             class="registerPopup"
-            :showPopup="registerpopupState" 
+            :showPopup="registerpopupState"
+            :clickAroundHide="true"
             :contentStyleObj="{
+                background: `#fff url(${alertBg}) no-repeat`,
+                backgroundSize: '100% auto',
                 borderRadius: '.13333rem',
             }"
+            @changePopupState="changeState"
             position="center">
             <div class="single"></div>
             <!-- 注册内容 -->
@@ -133,24 +118,6 @@
                 <h4 class="ttl">今日注册得<span>200元购车券</span></h4>
                 <div class="input-tel">
                     <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
-                    <verification-code
-                        :time = "60"
-                        :options="{
-                            url: 'https://tcmapi.emao.com/withoutAuth/message/verify',
-                            params: codeParams
-                        }"
-                        :initStyleObj="{
-                            background: '#d5aa5c',
-                            textAlign: 'center',
-                            lineHeight: '1.17333rem',
-                            color: '#fff'
-                        }"
-                        :activeStyleObj="{
-                            background: '#e6e6e6d',
-                        }"></verification-code> 
-                </div>
-                <div class="input-code">
-                    <input type="number" class="code" v-model="codeVal" placeholder="请输入验证码">
                 </div>
                 <div class="btn-register" @click="registerFun">立即领取</div>
             </div>
@@ -161,57 +128,186 @@
                 <div class="btn-goApp">前往APP</div>
             </div>   
         </popup>
-        <popup 
-            :showPopup="buyPopupState" 
+        <popup
+            class="selectPopup"
+            :showPopup="selectPopupState" 
             :contentStyleObj="{
                 background: '#fff'
             }"
             position="bottom">
-            11111
-            <br>
-            11111    
+            <div class="select-wrapper">
+                <h4 class="select-ttl">{{'限时抢购'}}</h4>
+                <h4 class="car-ttl">{{'本田思域本田思域本田思域本田思域本田思域本田思域本田思域本田思域本田思域'}}</h4>
+                <div class="price-wrapper">抢购价：<span>{{7.39}} 万</span></div>
+                <div class="color-select">
+                    <h4>可选颜色</h4>
+                    <ul class="color-wrapper">
+                        <li 
+                            class="color-item" 
+                            :class="{'active': selectData['selectColorIndex'] === index}"
+                            v-for="(item, index) in stock" 
+                            :key="index"
+                            @click="selectColor(index)">
+                            {{stock[index]['extColor']}}/{{stock[index]['extColor']}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="num-wrapper">
+                    <h4>预定数量</h4>
+                    <div class="num-select">
+                        <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['sum'])">-</span>
+                        <span class="num-content">{{selectData.carNum}}</span>
+                        <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['sum'])">+</span>
+                    </div> 
+                </div>
+                <div class="btn-go" @click="snapUpFun">立即抢购</div>
+                <span class="btn-close" @click="selectPopupState = false"></span>
+            </div>   
         </popup>
     </div>
 </template>
-
-
 <script>
 import swiper from "../../components/common/swiper/swiper";
 import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
-import VerificationCode from '../../components/common/verificationCode/verificationCode.vue'; 
+import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
+import {timeCountdown} from '../../common/js/countdown.js'; 
 
 
 export default {
   name: "presellDetails",
   data() {
     return {
-      registerpopupState: true, // 注册弹窗
-      buyPopupState: false, // 购买弹窗状态  
+      stock: [
+          {
+              extColor: "黑色",
+              extColorId: "1",
+              initColor: "米色",
+              initColorId: "3",
+              sum: "15"
+          },
+          {
+              extColor: "白色",
+              extColorId: "2",
+              initColor: "米色",
+              initColorId: "3",
+              sum: "5"
+          }
+      ],
+      registerpopupState: false, // 注册弹窗
+      selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: {}, //页面数据
       preSaleData: {}, //预售信息
-      showHeadStatus: false, //是否显示头部
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
       popupShowWhich: 'register', // 显示哪个弹窗，register和success
-      codeVal: '', // 验证码
       telVal: '', // 电话号码
+      btnState: true, // 按钮状态
+      btnText: '立即抢购', // 按钮文案
+      countdownText: '距离开始还剩', // 倒计时文案
+      countdownState: true, // 倒计时文案状态
+      countdownArr: [], // 倒计时数组
+      selectData: {
+          selectColorIndex: 0,
+          carNum: 0
+      }
     };
   },
   computed: {
-      codeParams () {
-          return {
-              phone: this.telVal
-          }
-      }
+        // 弹窗背景的图片
+        alertBg () {
+            return require('../../assets/flashSale_alert_bg.jpg')
+        },
+        /*判断是否是App*/
+        isTcmApp () {
+            if (
+                typeof this.$route.query.token == "undefined" ||
+                this.$route.query.token == ""
+            ) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        /*判断浏览器来源*/
+        getSource(){
+            var browser = {
+                versions: function () {
+                    var u = navigator.userAgent, app = navigator.appVersion;
+                    return {     //移动终端浏览器版本信息
+                        trident: u.indexOf('Trident') > -1, //IE内核
+                        presto: u.indexOf('Presto') > -1, //opera内核
+                        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                        iPad: u.indexOf('iPad') > -1, //是否iPad
+                        webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
+                    };
+                }(),
+                language: (navigator.browserLanguage || navigator.language).toLowerCase()
+            }
+            if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+                var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                    //在微信中打开
+                    return 3;
+                }
+                if (ua.match(/WeiBo/i) == "weibo") {
+                    //在新浪微博客户端打开
+                    return 5;
+                }
+                if (ua.match(/QQ/i) == "qq") {
+                    //在QQ空间打开
+                    return 4;
+                }
+                if (browser.versions.ios) {
+                    //是否在IOS浏览器打开
+                }
+                if (browser.versions.android) {
+                    //是否在安卓浏览器打开
+                }
+            } else {
+                //否则就是PC浏览器打开
+            }
+        }
   },
   created() {
     /*文字滚动效果*/
     // setInterval(this.scroll, 2000);
   },
   methods: {
+    // 点击设置提醒按钮
+    setWarningFun () {
+        if ( this.presellData.isRemind == '1') {
+            this.setStoreAlert('已经设置过了哟！')
+            return;
+        }
+        const params = {
+            token: this.$router.query.token,
+            activeId: this.$router.query.id
+        }
+        this.$http({
+            url: "preSale/setReminder",
+            methods: "GET",
+            params: params
+        }).then(function(response) {
+            const data = response.body.data;
+            this.setStoreAlert('设置成功！')
+            this.presellData.remindNum = data.remindNum;
+            this.presellData.isRemind = data.isRemind
+        }).catch((error) => {
+            this.setStoreAlert('设置失败！')
+        })
+    },  
+    // 设置弹窗状态
+    changeState (state) {
+        this.registerpopupState = state;
+    },
     //单行文字滚动
     scroll() {
       this.animate = true; // 因为在消息向上滚动的时候需要添加css3过渡动画，所以这里需要设置true
@@ -235,119 +331,92 @@ export default {
         window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
       }
     },
-    //向导航条上添加分享按钮
-    addShareButton() {
-      var obj = {
-        actionname: "addShareButton", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        actionid: "messageId", //回调 ID：可选参数，与回调函数配套使用
-        //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-        buttonTitle: "分享", //分享按钮的标题；可选参数，与 buttonImage 二选一
-        //buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-        title: window.presellModel + "【抢购：" + window.presellPrice + "万】",
-        subTitle:
-          window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
-        imgUrl: "https://zt.m.emao.com/img/shareApp.png",
-        url: "http://url.cn/5Ne6oti" //要分享内容的 url
-      };
-      this.tcmApp(obj);
-    },
-    //向社交媒体分享信息
-    shareMessage() {
-      var obj = {
-        actionname: "shareMessage", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        actionid: "messageId", //回调 ID：可选参数，与回调函数配套使用
-        //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-        toSNS: "weichat", //社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
-        title: window.presellModel + "【抢购：" + window.presellPrice + "万】",
-        subTitle:
-          window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
-        imgUrl: "https://zt.m.emao.com/img/shareApp.png",
-        url: "http://url.cn/5Ne6oti" //要分享内容的 url
-      };
-      this.tcmApp(obj);
-    },
     //用 JS 函数在新窗口打开指定链接
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        url: window.location.origin + "/#/presell/presellReserve/" + window.id // 要打开的链接
+        url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[selectData.selectColorIndex].extColorId}&intColorId=${this.stock[selectData.selectColorIndex].intColorId}&presaleNum=${selectData.carNum}` // 要打开的链接
       };
       this.tcmApp(obj);
     },
-    /*判断是否是App*/
-    isTcmApp() {
-      // return navigator.userAgent.indexOf("tcm") !== -1;
-      if (
-        typeof this.$route.query.token == "undefined" ||
-        this.$route.query.token == ""
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    },
     /*区分app与wap做不同的渲染*/
     renderDom() {
-      if (this.isTcmApp()) {
+      if (this.isTcmApp) {
         document.title = "限时抢购";
-        this.showHeadStatus = false;
-        //setTimeout(this.addShareButton,1500);
-      } else {
-        this.showHeadStatus = true;
       }
     },
-    /*返回首页*/
-    goToIndex() {
-      this.$router.push("/index");
+    // 显示分享弹窗
+    showShareDialog() {
+        var obj = {
+            actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+            actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+            // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            title: presellData.shareInfo.shareText,
+            subTitle: presellData.shareInfo.shareDescription,
+            imgUrl:presellData.shareInfo.shareImg,
+            url:presellData.shareInfo.shareUrl, //要分享内容的 url
+            shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
+            uniqueId: presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
+            extra: this.$route.query.id //分享需要的额外字段,预售id
+        };
+        tcmApp(obj);
     },
-    /*页面分享到微信*/
-    shareToWeichat() {
-      this.shareMessage();
+    //向导航条上添加分享按钮
+    addShareButton() {
+        var obj = {
+            actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+            actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
+            // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
+            // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+            title: presellData.shareInfo.shareText,
+            subTitle: presellData.shareInfo.shareDescription,
+            imgUrl:presellData.shareInfo.shareImg,
+            url:presellData.shareInfo.shareUrl, //要分享内容的 url
+        };
+        tcmApp(obj);
     },
     /*立即预定*/
     presellReserve() {
-      if (this.presellData.preStockNum == "0") {
-        this.showAlert = true;
-        this.alertText = "抱歉，车辆已售罄";
-        return false;
-      }
-      if (this.isTcmApp()) {
-        //var id = this.$route.params.id;
-        window.id = this.$route.params.id;
-        //window.open("/#/presell/presellReserve/" + id,'_blank');
-        this.windowOpen();
+      if (this.isTcmApp) {
+        this.selectPopupState = true;
       } else {
-        var id = this.$route.params.id;
-        this.$router.push("/presell/presellReserve/" + id);
-        this.$store.dispatch("PRESELL_FLAG", {
-          tag: "presellDetails",
-          id: id
-        });
+        this.registerpopupState = true;
       }
     },
     //获取数据
     getPresellDetails() {
-      var dataToken = sessionStorage.token;
-      var data = {
-        token: dataToken,
-        id: this.$route.params.id
-      };
-      this.$http({
-        url: "preSale/detail",
-        methods: "GET",
-        params: data
-      }).then(function(response) {
-        this.presellData = response.body.data;
-        this.circular = response.body.data.circular;
-        this.preSaleData = response.body.data.preSale;
-        this.presellModel = response.body.data.autoName;
-        this.presellPrice = response.body.data.prePrice;
-        window.presellModel = response.body.data.autoName;
-        window.presellPrice = response.body.data.prePrice;
-        window.deliveryPlace = this.presellData.deliveryPlace;
-        localStorage.setItem("deliveryPlace", response.body.data.deliveryPlace);
-        this.addShareButton();
-      });
+      return new Promise((resolve, reject) => {
+        var dataToken = sessionStorage.token;
+        var params = {
+            id: this.$route.query.id
+        };
+        if (this.isTcmApp) {
+            params.token = dataToken
+        } else {
+            params.provinceId = this.$route.query.provinceId
+            params.type = 6
+            params.source = this.getSource
+        }
+        this.$http({
+            url: "preSale/detail",
+            methods: "GET",
+            params: params
+        }).then(function(response) {
+            this.presellData = response.body.data;
+            this.circular = response.body.data.circular;
+            this.preSaleData = response.body.data.preSale;
+            this.presellModel = response.body.data.autoName;
+            this.presellPrice = response.body.data.prePrice;
+            this.stock = response.body.data.preSaleList;
+            resolve(this.presellData);
+            window.presellModel = response.body.data.autoName;
+            window.presellPrice = response.body.data.prePrice;
+            window.deliveryPlace = this.presellData.deliveryPlace;
+            localStorage.setItem("deliveryPlace", response.body.data.deliveryPlace);
+            this.addShareButton();
+        });
+      })  
     },
     twoDetial (x) {
         let f = parseFloat(x)
@@ -377,22 +446,13 @@ export default {
             this.initAlert('电话号码为11位数字', true);
             return
         }
-        if (this.codeVal === '') {
-            this.initAlert('验证码不能为空哟！', true);
-            return
-        }
-        if (!/^\d{6}$/g.test(this.codeVal)) {
-            this.initAlert('验证码为6为数字', true);
-            return
-        }
-        this.$axios({
-            url: 'https://tcmapi.emao.com/withoutAuth/passport/register',
+        this.$http({
+            url: 'passport/registerWithoutCode',
             type: 'GET',
             params: {
-            phone: _this.telVal,
-            code: md5(_this.codeVal),
-            invite: _this.$route.query.invite,
-            invitees: _this.$route.query.invitees
+                phone: _this.telVal,
+                invite: _this.$route.query.invite,
+                invitees: _this.$route.query.invitees
             }
         })
         .then((res) => {
@@ -408,12 +468,98 @@ export default {
             }
         })
     },
+    //设置store
+    setStoreAlert (content) {
+        this.$store.dispatch("ALERT", {
+            flag: true,
+            text: content
+        })
+    },
+    // 选择颜色
+    selectColor (index) {
+        this.selectData.selectColorIndex = index
+        this.selectData.carNum = 0
+    },
+    // 计算预定数量
+    calculateFun (boolean, sum) {
+        if (boolean) {
+            this.selectData.carNum = ++this.selectData.carNum > sum ? sum : this.selectData.carNum
+            return
+        }
+        this.selectData.carNum = --this.selectData.carNum < 0 ? 0 : this.selectData.carNum
+    },
+    // 校验库存
+    checkInventory () {
+        return new Promise(resolve => {
+            this.$http({
+                url: '../',
+                type: 'GET',
+                params: {
+                    eventId: this.$route.query.id,
+                    extColorId: this.stock[selectData.selectColorIndex].extColorId,
+                    intColorId: this.stock[selectData.selectColorIndex].intColorId,
+                    presaleNum: selectData.carNum
+                }
+            })
+            .then(response => {
+                resolve()
+            })
+            .catch(error => {
+                const data = response.body.data;
+                const selectNum =  this.selectData.carNum;
+                const stockNum = this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum;
+                this.selectData.carNum = selectNum > data.num ? data.num : selectNum;
+                this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum = stockNum > data.num ? data.num : stockNum;
+            })
+        })
+        
+    },
+    // 立即抢购函数
+    snapUpFun () {
+        this.checkInventory().then(() => {
+            alert('立即抢购');
+            this.windowOpen();
+        })
+        
+    }
   },
-  mounted() {
+  mounted() { 
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
-    this.getPresellDetails();
+    this.getPresellDetails().then((presellData) => {
+        const startTime = new Date(presellData.preSaleStartTime);
+        const endTime = new Date(presellData.preSaleEndTime);
+        timeCountdown({startTime, endTime}, (update) => {
+            this.countdownArr = update;
+            this.addShareButton();
+            if (update[0] === 'start') {
+                this.btnText = '等待抢购'
+                this.btnState = false
+                this.countdownText = '距离开始还剩'
+                this.countdownState = true;
+            }
+            if (update[0] === 'ing') {
+                this.btnText = '立即抢购'
+                this.btnState = true
+                this.countdownText = '距离结束还剩'
+                this.countdownState = true;
+            }
+            if (update[0] === 'ing' && presellData.preSale.endNum === 0) {
+                this.btnText = '已售罄'
+                this.btnState = false
+                this.countdownText = '已售罄'
+                this.countdownState = false;
+            }
+        }, (end) => {
+            console.log(end)
+            this.countdownArr = end;
+            this.btnState = false;
+            this.btnText = '已结束';
+            this.countdownText = '距离结束还剩'
+            this.countdownState = true;
+        })
+    });
     this.renderDom();
   },
   components: {
@@ -426,9 +572,6 @@ export default {
 </script>
 
 <style>
-.user-tit {font-weight: normal;}
-.declare-head {position: relative;}
-.declare-head em { position: absolute;right: 0.4rem;color: #d5aa5c;}
 .car-info-wrap{ padding:0 .4rem .4rem; background: #fff;}
 .car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
 .car-time-place .car-name { margin: 0 -.4rem .5rem; padding: 0.2rem .4rem;min-height:1.1rem;border-bottom: 1px solid #e0e0e0;display: flex; display: -webkit-flex;  align-items: center;
@@ -453,6 +596,7 @@ export default {
 .car-price .price-wrapper .true-price {margin-bottom: .16rem;font-size: 0.58667rem;}
 .car-price .price-wrapper .true-price span{font-size: 0.34667rem;}
 .car-price .countdown {flex: 0 0 2.26rem; text-align: center}
+.car-price .countdown .activeEnd {color: #fff; font-size: 0.37333rem}
 .car-price .countdown span {margin-top: .15rem;display: inline-block;width: 0.42667rem;line-height:0.42667rem;text-align:center;background: #fff;border-radius: .1rem;color: #fc3036}
 
 .car-count-down {position: absolute;top: 0;right: -0.4rem;padding: 0.1333rem 0.4rem;color: #fff;border-top-left-radius: 0.667rem;border-bottom-left-radius: 0.667rem;background-color: #fc3238;}
@@ -477,7 +621,7 @@ export default {
 .car-presell-flow p {font-size: 0.372rem;color: #000;text-align: center;}
 .car-presell-flow img {width: 7.707rem;height: 1.88rem;margin-top: 0.867rem;}
 .car-presell-explain {margin-top: 0.4rem;margin-bottom: 1.4rem;padding: 0.533rem;background-color: #fff;}
-.presell-explain-title {margin-bottom: 0.6rem;font-size: 0.3467rem;color: #000;text-align: center}
+.presell-explain-title {margin-bottom: 0.6rem;font-size: 0.45333rem;color: #000;text-align: center}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
 .car-reserve-btn {display: inline-block;position: fixed;bottom: 0;left: 0; height: 1.867rem;width: 100%;margin: 0 auto;background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
@@ -487,16 +631,28 @@ export default {
 .anim {transition: all 0.5s;margin-top: -0.4rem;}
 
 .registerPopup .single {margin: 0.53333rem auto;width: 2.53333rem;height: 0.8rem;background: url('../../assets/flashSale_single.jpg') no-repeat;background-size:100% auto}
-.registerPopup .register-wrapper .ttl{margin: 0.4rem auto 0.9333rem;font-size: 0.53333rem;color: #d5aa5c;text-align: center}
+.registerPopup .register-wrapper .ttl{margin: 0.4rem auto 0.93333rem;font-size: 0.53333rem;color: #d5aa5c;text-align: center}
 .registerPopup .register-wrapper .ttl span {color: #ff5825}
 .registerPopup .register-wrapper .input-tel {margin: auto;width: 7.6rem;display: flex;font-size: 0.32rem}
-.registerPopup .register-wrapper .input-tel .tel {flex: 1;padding: 0 .3rem; line-height: 0.5rem;border: 1px solid #d5aa5c; border-right: none;}
-.registerPopup .register-wrapper .input-tel .getCode {flex: 0 0 2.30667rem;height: 1.17333rem;border:1px solid #d5aa5c;background: #d5aa5c;text-align: center;line-height: 1.17333rem;color:#fff}
-.registerPopup .register-wrapper .input-tel .sended {background: #e6e6e6; border: 1px solid #e6e6e6;}
-.registerPopup .register-wrapper .input-code { margin: 0.4rem auto 1.2rem;width: 7.6rem;height: 1.17333rem;}
-.registerPopup .register-wrapper .input-code input {padding: 0 .4rem;width: 6.8rem; height: 1.2rem; line-height: 0.5rem; border: 1px solid #999;}
-.registerPopup .register-wrapper .btn-register {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
+.registerPopup .register-wrapper .input-tel .tel {padding: 0 .4rem;width: 6.8rem; height: 1.2rem; line-height: 0.5rem; border: 1px solid #999;font-size: .34667rem;}
+.registerPopup .register-wrapper .btn-register {margin: 1.2rem auto;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
 .registerPopup .register-success-wrapper .ttl {text-align: center;font-size: 0.64rem;color: #ff5825;}
 .registerPopup .register-success-wrapper .desc {margin: .53333rem auto 1.2rem;text-align: center;font-size: 0.4rem;color: #2c2c2c;}
 .registerPopup .register-success-wrapper .btn-goApp {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
+
+.select-wrapper {position: relative; overflow: hidden; padding: 0.53333rem .4rem;}
+.select-wrapper .select-ttl {height: 0.53333rem;line-height: 0.53333rem;padding-left: .4rem;border-left: 0.05333rem solid #000;font-size: 0.50667rem;color: #000}
+.select-wrapper .car-ttl {margin: .8rem 0 .4rem; line-height: 0.6rem;font-size: 0.42667rem;color: #000}
+.select-wrapper .price-wrapper {margin-bottom: 0.5333rem; padding-bottom: 0.5333rem;border-bottom: 1px solid #eee; font-size: 0.37333rem; color: #fc3036}
+.select-wrapper .price-wrapper span {font-size: 0.48rem;}
+.select-wrapper .color-select h4 {margin-bottom: .4rem;font-size: 0.34667rem;color: #2c2c2c}
+.select-wrapper .color-select ul li {display:inline-block;margin: 0 .2rem .2rem 0;padding: .2rem .4rem;background: #f6f6f7;border-radius:0.10667rem;font-size: 0.34667rem;color: #2c2c2c}
+.select-wrapper .color-select ul li.active {background: #d4a962;color: #fff}
+.select-wrapper .num-wrapper {display: flex; overflow: hidden;align-items: center; justify-content: space-between; margin-top: 0.49333rem; padding-bottom: .4rem;border-bottom: 1px solid #eee;}
+.select-wrapper .num-wrapper h4 { flex: 0 0 2rem;font-size: 0.37333rem;color: #000}
+.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 2rem; width: 2rem; height: 0.66667rem;}
+.select-wrapper .num-wrapper .num-select span {flex: 1; text-align: center; line-height: 0.66667rem; font-size: .4rem; color: #e6b255;}
+.select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 0.66667rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
+.select-wrapper .btn-go {margin: .8rem auto .4rem; width: 5.33333rem; height: 1.2rem; line-height: 1.2rem; border-radius: .6rem; text-align: center; background: #d4a962; font-size: 0.45333rem; color: #fff}
+.select-wrapper .btn-close {position: absolute; top:0;right:0;width: 1rem; height: 1rem;background: url('../../assets/presell_close.png') no-repeat center center; background-size: 0.32rem 0.32rem;}
 </style>

@@ -35,7 +35,12 @@ class Countdown {
     const state = (nowTime > startTime && nowTime <= endTime) ? 'ing' : nowTime <= startTime ? 'start' : 'end';
     returnContent.push(state);
     if (state === 'end') {
-      end([state, 0]);
+      if (type === 'double') {
+        end([state, '00', '00', '00', '00']);
+      } else {
+        end([state, '0', '0', '0', '0', '0', '0', '0', '0',]);
+      }
+      
       if (timeTimer) {
         clearInterval(timeTimer);
       }

@@ -532,7 +532,7 @@ var router=new Router({
             component: authorize
         },
         {
-            path:'/presell/presellDetails/:id',  //预售详情页
+            path:'/presell/presellDetails',  //预售详情页
             name:'presellDetails',
             component:presellDetails
         },

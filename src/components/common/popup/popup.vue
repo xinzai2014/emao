@@ -45,14 +45,12 @@
         }
       }
     },
-    mounted () {
-      this.noScrollWithPopup(this.showPopup);
-    },
     methods: {
       // 点击弹窗周围，弹窗消失
       popupAround (e) {
         if (this.clickAroundHide && e.target.getAttribute('data-around') === 'false') {
           this.$emit('changePopupState', false)
+          this.noScrollWithPopup(false);
         }
       },
       // 阻止默认事件
@@ -74,6 +72,11 @@
       enter (el, done) {
         el.style.top = '70%';
         done();
+      }
+    },
+    watch: {
+      showPopup (newVal) {
+        this.noScrollWithPopup(newVal);
       }
     }
   }

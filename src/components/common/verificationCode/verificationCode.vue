@@ -70,7 +70,7 @@
           return
         }
         
-        this.$axios({
+        this.$http({
           url: this.options.url,
           type: 'GET',
           params: this.options.params
