@@ -574,7 +574,13 @@ export default {
     this.getPresellDetails().then((presellData) => {
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
-        const shareData = presellData.shareInfo;
+        const shareInfo = presellData.shareInfo;
+        const shareData = {
+            title: shareInfo.shareText,
+            desc: shareInfo.shareDescription,
+            link: shareInfo.shareUrl,
+            imgUrl: shareInfo.shareImg
+        };
         
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
@@ -606,7 +612,6 @@ export default {
         if (this.isTcmApp) {
             this.addShareButton();
         } else {
-            console.log(shareData)
             share(shareData);
         }
     });

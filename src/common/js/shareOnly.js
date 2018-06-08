@@ -5,34 +5,33 @@ let share = (shareData) => {
   let shareObj = {
     // 初始化分享
     initShare (arg) {
+      console.log(arg)
       let _this = this;
       this._wxReady().then(() => {
         // 朋友圈
         wx.onMenuShareTimeline({
           title: arg.title,
-          desc: arg.subTitle,
-          link: arg.wapUrl + location.search,
-          imgUrl:arg.logoUrl,
+          desc: arg.desc,
+          link: arg.link,
+          imgUrl: arg.imgUrl,
           success: function(res) {
-            // that.successFun(2);
           },
         });
         // 朋友
         wx.onMenuShareAppMessage({
           title: arg.title,
-          desc: arg.subTitle,
-          link: arg.wapUrl + location.search,
-          imgUrl:arg.logoUrl,
+          desc: arg.desc,
+          link: arg.link,
+          imgUrl: arg.imgUrl,
           success: function(res) {
-            // that.successFun(1);
           }
         });
         // qq
         wx.onMenuShareQQ({
           title: arg.title,
-          desc: arg.subTitle,
-          link: arg.wapUrl + location.search,
-          imgUrl:arg.logoUrl,
+          desc: arg.desc,
+          link: arg.link,
+          imgUrl: arg.imgUrl,
           success: function(res) {
             // alert('已分享');
           },
@@ -43,9 +42,9 @@ let share = (shareData) => {
         // qq空间
         wx.onMenuShareQZone({
           title: arg.title,
-          desc: arg.subTitle,
-          link: arg.wapUrl + location.search,
-          imgUrl:arg.logoUrl,
+          desc: arg.desc,
+          link: arg.link,
+          imgUrl: arg.imgUrl,
           success: function(res) {
             // alert('已分享');
           },
