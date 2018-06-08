@@ -33,28 +33,27 @@
                 <ul>
                     <li>
                         <span>可售范围：</span>
-                        <em>{{presellData.area}}</em>
+                        <a>{{presellData.area}}</a>
                     </li>
                     <li>
                         <span>到货时间：</span>
-                        <em>{{presellData.arrivalTime}}</em>
+                        <a>{{presellData.arrivalTime}}</a>
                     </li>
                     <li>
                         <span>提货地点：</span>
-                         <em>{{presellData.deliveryPlace}}</em>
-                        <!--<em>广州</em>-->
+                         <a>{{presellData.deliveryPlace}}</a>
                     </li>
                     <li>
                         <span>车型颜色：</span>
-                        <em>{{presellData.autoColor}}</em>
+                        <a>{{presellData.autoColor}}</a>
                     </li>
                     <li>
                         <span>生产日期：</span>
-                        <em>{{presellData.productionTime}}</em>
+                        <a>{{presellData.productionTime}}</a>
                     </li>
                     <li v-if="presellData.remark != '' ">
                         <span>备注：</span>
-                        <em>{{presellData.remark}}</em>
+                        <a>{{presellData.remark}}</a>
                     </li>
                 </ul>
                 <!-- 同城 -->
@@ -109,6 +108,7 @@
         </section>
         <!-- 按钮 -->
         <section class="car-reserve-btn">
+            <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
             <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
             <div v-else class="car-presell-present-disabled">{{btnText}}</div>
         </section>
@@ -154,9 +154,9 @@
             }"
             position="bottom">
             <div class="select-wrapper">
-                <h4 class="select-ttl">{{'限时抢购'}}</h4>
-                <h4 class="car-ttl">{{'本田思域本田思域本田思域本田思域本田思域本田思域本田思域本田思域本田思域'}}</h4>
-                <div class="price-wrapper">抢购价：<span>{{7.39}} 万</span></div>
+                <h4 class="select-ttl">限时抢购</h4>
+                <h4 class="car-ttl">{{presellData.autoName}}</h4>
+                <div class="price-wrapper">抢购价：<span>{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
                 <div class="color-select">
                     <h4>可选颜色</h4>
                     <ul class="color-wrapper">
@@ -214,7 +214,7 @@ export default {
           }
       ],
       registerpopupState: false, // 注册弹窗
-      selectPopupState: false, // 购买弹窗状态  
+      selectPopupState: true, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: {}, //页面数据
@@ -230,7 +230,7 @@ export default {
       countdownArr: [], // 倒计时数组
       selectData: {
           selectColorIndex: 0,
-          carNum: 0
+          carNum: 1
       }
     };
   },
@@ -297,6 +297,16 @@ export default {
   },
   
   methods: {
+    // 设置优惠券金额
+    setMoney () {
+        this.$http({
+            url: 'https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew',
+            methods: 'GET'
+        })
+        .then(response => {
+            console.log(response.data.data)
+        })
+    },
     // 点击设置提醒按钮
     setWarningFun () {
         if ( this.presellData.isRemind == '1') {
@@ -464,8 +474,8 @@ export default {
             return
         }
         this.$http({
-            url: 'passport/registerWithoutCode',
-            type: 'GET',
+            url: 'withoutAuth/passport/registerWithoutCode',
+            type: 'POST',
             params: {
                 phone: _this.telVal,
                 invite: _this.$route.query.invite,
@@ -477,12 +487,11 @@ export default {
             _this.popupShowWhich = 'success';
         })
         .catch((err) => {
-            console.log(err.statusText)
-            // let data = err.response.data;
-            _this.initAlert(err.statusText, true);
+            console.log(err.data.msg)
+            _this.initAlert(err.data.msg, true);
             _this.$store.dispatch("AJAX_LOADING", false)
-            if (data.code === 400) {
-            _this.showPopupTel = false
+            if (err.data.code === 400) {
+                _this.registerpopupState = false
             }
         })
     },
@@ -558,9 +567,6 @@ export default {
       sessionStorage.token = this.$route.query.token;
     }
     this.getPresellDetails().then((presellData) => {
-        console.log('presellData', presellData)
-        console.log(presellData.preSaleStartTime)
-        console.log(presellData.preSaleEndTime)
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
         const shareData = presellData.shareInfo;
@@ -595,6 +601,7 @@ export default {
         this.addShareButton();
         share(shareData);
     });
+    this.setMoney();
     this.renderDom();
   },
   components: {
@@ -660,7 +667,8 @@ export default {
 .presell-explain-title {margin-bottom: 0.6rem;font-size: 0.45333rem;color: #000;text-align: center}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn {display: inline-block;position: fixed;bottom: 0;left: 0; height: 1.867rem;width: 100%;margin: 0 auto;background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn {display: inline-block;position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%;margin: 0 auto;background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn .soldOut-warning { width: 100%; line-height: 0.8rem;background: #e0c698; color: #ff5825;font-size: .34667rem}
 .car-reserve-btn .car-presell-present {display: inline-block;width: 6.667rem;height: 1.1733rem;margin: 0 auto;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #d5aa5c;}
 .car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 6.667rem;height: 1.1733rem;margin: 0 auto;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
 
