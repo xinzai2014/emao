@@ -31,31 +31,60 @@
                 </div>
                 <!-- 详情 -->
                 <ul>
-                    <li><span>可售范围：</span><a>{{presellData.area}}</a></li>
-                    <li><span>到货时间：</span><a>{{presellData.arrivalTime}}</a></li>
-                    <li><span>提货地点：</span><a>{{presellData.deliveryPlace}}</a></li>
-                    <li><span>车型颜色：</span><a>{{presellData.autoColor}}</a></li>
-                    <li><span>生产日期：</span><a>{{presellData.productionTime}}</a></li>
-                    <li><span>备注：</span><a>{{presellData.remark}}</a></li>
+                    <li>
+                        <span>可售范围：</span>
+                        <em>{{presellData.area}}</em>
+                    </li>
+                    <li>
+                        <span>到货时间：</span>
+                        <em>{{presellData.arrivalTime}}</em>
+                    </li>
+                    <li>
+                        <span>提货地点：</span>
+                         <em>{{presellData.deliveryPlace}}</em>
+                        <!--<em>广州</em>-->
+                    </li>
+                    <li>
+                        <span>车型颜色：</span>
+                        <em>{{presellData.autoColor}}</em>
+                    </li>
+                    <li>
+                        <span>生产日期：</span>
+                        <em>{{presellData.productionTime}}</em>
+                    </li>
+                    <li v-if="presellData.remark != '' ">
+                        <span>备注：</span>
+                        <em>{{presellData.remark}}</em>
+                    </li>
                 </ul>
                 <!-- 同城 -->
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
-                    <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
-                    <p class="car-reserve-tips">
-                        <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
-                    </p>
-                    <div class="car-reserve-roll">
-                        <ul ref="con1" :class="{anim:animate==true}">
-                            <li v-for="(item, index) in preSaleData.buyList" :key="index">
-                                <span>{{item.time}}</span>
-                                <span>{{item.dealer}}</span>
-                                <span>{{item.num}}</span>
-                            </li>
-                        </ul>
+                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
+                        <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
+                        <p class="car-reserve-tips">
+                            <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
+                        </p>
+                        <div class="car-reserve-roll">
+                            <ul ref="con1" :class="{anim:animate==true}">
+                                <li v-for="(item, index) in preSaleData.buyList" :key="index">
+                                    <span>{{item.time}}</span>
+                                    <span>{{item.dealer}}</span>
+                                    <span>{{item.num}}</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="car-share"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
+                        <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
                     </div>
 
-                    <p class="car-share"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
-                    <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
+                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
+                        <p class="car-reserve-tips">
+                            已有<i>{{preSaleData.batch}}</i>批车辆发往 <span>{{preSaleData.city}}</span>
+                        </p>
+                        <p class="car-understock">剩余库存已不足拼版</p>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -662,4 +691,69 @@ export default {
 .select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 0.66667rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
 .select-wrapper .btn-go {margin: .8rem auto .4rem; width: 5.33333rem; height: 1.2rem; line-height: 1.2rem; border-radius: .6rem; text-align: center; background: #d4a962; font-size: 0.45333rem; color: #fff}
 .select-wrapper .btn-close {position: absolute; top:0;right:0;width: 1rem; height: 1rem;background: url('../../assets/presell_close.png') no-repeat center center; background-size: 0.32rem 0.32rem;}
+    .user-tit{font-weight:normal;}
+    .declare-head{position:relative;}
+    .declare-head em{position:absolute;right:.4rem;color:#d5aa5c;}
+    .car-info-wrap{padding:.53rem .4rem .4rem;  background-color:#fff;  }
+    .car-parameter{padding-bottom:.4rem;border-bottom:1px solid #e0e0e0;}
+    .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
+    .car-price{position:relative;}
+    .car-price p:nth-of-type(1) {color:#fc3036;font-size:.4rem;}
+    .car-price p:nth-of-type(1) strong{font-size:.427rem;font-weight:bold;}
+    .car-price p:nth-of-type(1) em{font-size:.32rem;}
+    .car-price p:nth-of-type(2) {font-size:.32rem;color:#999;}
+    .car-price p:nth-of-type(2) em{text-decoration:line-through;}
+    .car-price p:nth-of-type(2) em i{color:#999;}
+    .car-count-down{position:absolute;top:0;right:-.4rem;padding:.1333rem .4rem;color:#fff;border-top-left-radius:.667rem;border-bottom-left-radius:.667rem;background-color:#fc3238;}
+    .car-count-down span{display:block;}
+    .car-count-down span:nth-of-type(2){font-size:.3467rem;font-weight:bold;}
+    .car-parameter-tips{margin-top:.32rem;color:#ff825c;font-size:.3467rem;}
+    .car-time-place{padding-top:.4rem;}
+    .car-time-place ul li{margin-bottom:.267rem;}
+    .car-time-place ul li span{font-size:.32rem;color:#999;}
+    .car-time-place ul li em{font-size:.32rem;color:#333;}
+    .car-reserve{padding:.467rem .5333rem;background-color:#fef9f1;}
+    .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
+    .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
+    .car-reserve-tips i{font-weight:bold;font-style:normal;}
+    .car-reserve-roll{overflow:hidden;height:1.8rem;}
+    /*.car-reserve-roll ul{height:.4267rem;}*/
+    .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;text-align:center;color:#999;}
+    /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
+
+    .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}
+    .car-understock{font-size:.32rem;text-align:center;color:#999;}
+    .car-share{text-align:center;}
+    .car-share img{width:7.147rem;height:1.68rem;}
+    .car-batch-count{text-align:center;color:#2c2c2c;font-size:.32rem;}
+    .car-presell-flow{margin-top:.4rem;padding-top:.533rem;padding-bottom:.533rem;text-align:center;background-color:#fff;}
+    .car-presell-flow p{font-size:.372rem;color:#000;text-align:center;}
+    .car-presell-flow img{width:7.707rem;height:1.88rem;margin-top:.867rem;}
+    /*.car-presell-explain{margin-top:.4rem;margin-bottom:.4rem;padding:.533rem;background-color:#fff;}*/
+    .car-presell-explain{margin-top:.4rem;margin-bottom:1.4rem;padding:.533rem;background-color:#fff;}
+    .presell-explain-title{margin-bottom:.6rem;font-size:.3467rem;color:#000;text-align:center;}
+    .presell-explain-con li{position:relative;margin-left:.6rem;margin-bottom:.267rem;color:#999;font-size:.4rem;line-height:.533rem;}
+    .presell-explain-con li span{position:absolute;left:-.6rem;}
+    .car-reserve-btn{display:inline-block;position:fixed;bottom:0;left:0;height:1.867rem;width:100%;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;border-top:1px solid #e7e7e7;}
+    .car-reserve-btn .car-presell-present{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
+    .car-reserve-btn .car-presell-present-disabled{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#999;border:none;border-radius:.5867rem;background-color:#e6e6e6;}
+
+
+    /*#box{*/
+        /*width: 300px;*/
+        /*height: 32px;*/
+        /*overflow: hidden;*/
+        /*padding-left: 30px;*/
+        /*border: 1px solid black;*/
+    /*}*/
+    .anim{
+        transition: all 0.5s;
+        margin-top: -.4rem;
+    }
+    /*#con1 li{*/
+        /*list-style: none;*/
+        /*line-height: 30px;*/
+        /*height: 30px;*/
+    /*}*/
+
 </style>

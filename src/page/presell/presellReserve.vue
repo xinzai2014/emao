@@ -99,7 +99,7 @@
             <div class="car-participation-wrap" v-if=' activityData.buttonIsShow == "1" '>
                 <div class="car-participation" @click="chooseActivity">
                     <i :class="{'weui-icon-success':chooseActivityFlag,'weui-icon-checked':!chooseActivityFlag}"></i>
-                    <p>参与活动：省内拼满12台， <span>{{activityData.pickUpArea}}</span> 提车</p>
+                    <p>参与活动：省内拼满{{activityData.assemblyNumber}}台， <span>{{activityData.pickUpArea}}</span> 提车</p>
                     <p>仓库地址：{{activityData.pickUpAddress}}</p>
                 </div>
             </div>
@@ -543,7 +543,7 @@
         content: "\EA06";
         font-size: 0.54rem;
     }
-    .car-participation-wrap{display:none;margin-top:.4rem;padding-top:.4rem;border-top:1px dashed #d5aa5c;}
+    .car-participation-wrap{margin-top:.4rem;padding-top:.4rem;border-top:1px dashed #d5aa5c;}
     .car-participation{position:relative;padding:.333rem .333rem .333rem 1.333rem;background-color:#fef9f1;}
     .car-participation i{position:absolute;top:.85rem;left:.5rem;}
     .car-participation p:nth-of-type(1){margin-bottom:.2667rem;color:#ff825c;}

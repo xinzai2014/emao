@@ -7,22 +7,24 @@
 
         <section class="car-reserved">提交成功，请等待财务审核，预计等待3小时</section>
 
-        <!--<section class="car-reserved-tips" v-if="presellSuccessData.state == '100'">-->
-            <!--<span>{{presellSuccessData.scope}}</span>再订 <span>{{presellSuccessData.num}}</span> 台，您即可在 <span>{{presellSuccessData.pickUpArea}}</span>提货-->
-        <!--</section>-->
 
 
-        <!--<section class="car-reserved-tips" v-if="presellSuccessData.state == '200' ">-->
-            <!--拼板成功！您的车辆将会发运到 <span>{{presellSuccessData.pickUpArea}}</span>-->
-        <!--</section>-->
-
-        <!--<section class="car-reserved-tips" v-if=" presellSuccessData.state == '300' ">-->
-            <!--{{presellSuccessData.msg}}-->
-        <!--</section>-->
-
-        <section class="car-reserved-tips">
-            邀请友商，共享优质车源！
+        <section class="car-reserved-tips" v-if="presellSuccessData.state == '100'">
+            <span>{{presellSuccessData.scope}}</span>再订 <span>{{presellSuccessData.num}}</span> 台，您即可在 <span>{{presellSuccessData.pickUpArea}}</span>提货
         </section>
+
+
+        <section class="car-reserved-tips" v-if="presellSuccessData.state == '200' ">
+            拼板成功！您的车辆将会发运到 <span>{{presellSuccessData.pickUpArea}}</span>
+        </section>
+
+        <section class="car-reserved-tips" v-if=" presellSuccessData.state == '300' ">
+            {{presellSuccessData.msg}}
+        </section>
+
+        <!--<section class="car-reserved-tips">-->
+            <!--邀请友商，共享优质车源！-->
+        <!--</section>-->
 
         <section class="car-reserved-share">
             <input type="button" name="分享到微信 邀请友商" value="分享到微信 邀请友商" @click="shareToWeichat"/>
@@ -74,7 +76,8 @@
                     //callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
                     toSNS:"weichat",//社交媒体参数，只有三个选项：weichat（微信），wcircle（微信朋友圈），qq
                     title:window.presellModel + '【抢购：'  + window.presellPrice + '万】',
-                    subTitle:window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
+//                    subTitle:window.deliveryPlace + "提车，车商猫爆款限量抢购，还不抓紧上车！",
+                    subTitle:"车商猫爆款限量抢购，还不抓紧上车！",
                     imgUrl:"https://zt.m.emao.com/img/shareApp.png",
                     url:"http://url.cn/5Ne6oti"//要分享内容的 url
                 };
