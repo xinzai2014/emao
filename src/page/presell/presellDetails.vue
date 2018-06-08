@@ -128,7 +128,7 @@
             <div class="single"></div>
             <!-- 注册内容 -->
             <div class="register-wrapper" v-show="popupShowWhich === 'register'">
-                <h4 class="ttl">新注册立得<span>100元券</span></h4>
+                <h4 class="ttl">新注册立得<span>{{moneyVal}}元券</span></h4>
                 <div class="input-tel">
                     <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
                 </div>
@@ -137,7 +137,7 @@
             <!-- 注册成功内容 -->
             <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
                 <h4 class="ttl">欢迎加入车商猫</h4>
-                <h4 class="desc">100购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
+                <h4 class="desc">{{moneyVal}}元购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
                 <div class="btn-goApp" @click="downloadApp">前往APP</div>
             </div>
             <!-- 已经注册弹框 -->
@@ -213,8 +213,8 @@ export default {
               sum: "5"
           }
       ],
-      registerpopupState: false, // 注册弹窗
-      selectPopupState: true, // 购买弹窗状态  
+      registerpopupState: true, // 注册弹窗
+      selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: {}, //页面数据
@@ -228,10 +228,11 @@ export default {
       countdownText: '距离开始还剩', // 倒计时文案
       countdownState: true, // 倒计时文案状态
       countdownArr: [], // 倒计时数组
-      selectData: {
+      selectData: { // 用户选择订购车辆的信息
           selectColorIndex: 0,
           carNum: 1
-      }
+      },
+      moneyVal: 0 // 优惠券金额
     };
   },
   computed: {
@@ -312,7 +313,7 @@ export default {
             methods: 'GET'
         })
         .then(response => {
-            console.log(response.data.data)
+            this.moneyVal = response.data.data.price
         })
     },
     // 点击设置提醒按钮
@@ -602,8 +603,12 @@ export default {
             this.countdownText = '距离结束还剩'
             this.countdownState = true;
         })
-        this.addShareButton();
-        share(shareData);
+        if (this.isTcmApp) {
+            this.addShareButton();
+        } else {
+            console.log(shareData)
+            share(shareData);
+        }
     });
     this.setMoney();
     this.renderDom();
