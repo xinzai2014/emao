@@ -31,31 +31,16 @@
                 </div>
                 <!-- 详情 -->
                 <ul>
-                    <li>
-                        <span>可售范围：</span>
-                        <em>{{presellData.area}}</em>
-                    </li>
-                    <li>
-                        <span>到货时间：</span>
-                        <em>{{presellData.arrivalTime}}</em>
-                    </li>
-                    <li>
-                        <span>提货地点：</span>
-                         <em>{{presellData.deliveryPlace}}</em>
-                        <!--<em>广州</em>-->
-                    </li>
-                    <li>
-                        <span>车型颜色：</span>
-                        <em>{{presellData.autoColor}}</em>
-                    </li>
-                    <li>
-                        <span>生产日期：</span>
-                        <em>{{presellData.productionTime}}</em>
-                    </li>
+                    <li><span>可售范围：</span><a>{{presellData.area}}</a></li>
+                    <li><span>到货时间：</span><a>{{presellData.arrivalTime}}</a></li>
+                    <li><span>提货地点：</span><a>{{presellData.deliveryPlace}}</a></li>
+                    <li><span>车型颜色：</span><a>{{presellData.autoColor}}</a></li>
+                    <li><span>生产日期：</span><a>{{presellData.productionTime}}</a></li>
+                    <li><span>备注：</span><a>{{presellData.remark}}</a></li>
                 </ul>
                 <!-- 同城 -->
                 <div class="car-reserve" v-if="preSaleData.type == '2' ">
-                    <p class="car-reserve-title">同省订购每满12台，即可享受发车到省</p>
+                    <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
                     <p class="car-reserve-tips">
                         <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
                     </p>
@@ -463,8 +448,9 @@ export default {
             _this.popupShowWhich = 'success';
         })
         .catch((err) => {
-            let data = err.response.data;
-            _this.initAlert(data.msg, true);
+            console.log(err.statusText)
+            // let data = err.response.data;
+            _this.initAlert(err.statusText, true);
             _this.$store.dispatch("AJAX_LOADING", false)
             if (data.code === 400) {
             _this.showPopupTel = false
@@ -524,6 +510,14 @@ export default {
             this.windowOpen();
         })
         
+    },
+    initAlert (content) {
+        this.$store.dispatch("ALERT", // 通过store传值
+            {
+            flag:true,
+            text:content
+            }
+        );
     }
   },
   created() {
@@ -615,8 +609,9 @@ export default {
 .car-count-down span {display: block;}
 .car-count-down span:nth-of-type(2) {font-size: 0.3467rem;font-weight: bold;}
 .car-time-place ul li {margin-bottom: 0.267rem;}
-.car-time-place ul li span {font-size: 0.32rem;color: #999;}
-.car-time-place ul li em {font-size: 0.32rem;color: #333;}
+.car-time-place ul li:after {display: block; content: '';clear: both;width: 0} 
+.car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
+.car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
 .car-reserve {display: none;padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
 .car-reserve-title {line-height: 0.9333rem;font-size: 0.372rem;color: #000;text-align: center;}
 .car-reserve-tips {margin-bottom: 0.4rem;text-align: center;font-size: 0.3467rem;color: #ff5825;}
@@ -630,7 +625,7 @@ export default {
 .car-share img {width: 7.147rem;height: 1.68rem;}
 .car-batch-count {text-align: center;color: #2c2c2c;font-size: 0.32rem;}
 .car-presell-flow {margin-top: 0.4rem;padding-top: 0.533rem;padding-bottom: 0.533rem;text-align: center;background-color: #fff;}
-.car-presell-flow p {font-size: 0.372rem;color: #000;text-align: center;}
+.car-presell-flow p {font-size: 0.45333rem;color: #000;text-align: center;}
 .car-presell-flow img {width: 7.707rem;height: 1.88rem;margin-top: 0.867rem;}
 .car-presell-explain {margin-top: 0.4rem;margin-bottom: 1.4rem;padding: 0.533rem;background-color: #fff;}
 .presell-explain-title {margin-bottom: 0.6rem;font-size: 0.45333rem;color: #000;text-align: center}
