@@ -62,7 +62,8 @@ let share = (shareData) => {
           method: "post",
           url: 'https://tcmapi.emao.com/shop/wechat',
           params: {
-            url: encodeURIComponent(window.location.href.split('#')[0])
+            url: window.location.href
+            // url: encodeURIComponent(window.location.href.split('#')[0])
           }
         })
         .then((response) => {
