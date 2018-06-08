@@ -323,8 +323,8 @@ export default {
             return;
         }
         const params = {
-            token: this.$router.query.token,
-            activeId: this.$router.query.id
+            token: this.$route.query.token,
+            activeId: this.$route.query.id
         }
         this.$http({
             url: "preSale/setReminder",
@@ -566,6 +566,23 @@ export default {
   created() {
     /*文字滚动效果*/
     // setInterval(this.scroll, 2000);
+    const params = {
+            // token: this.$route.query.token,
+            token: '7d5a09c605e87c733f93242d7bee46e0',
+            activeId: this.$route.query.id
+        }
+        this.$http({
+            url: "preSale/setReminder",
+            methods: "GET",
+            params: params
+        }).then(function(response) {
+            const data = response.body.data;
+            this.setStoreAlert('设置成功！')
+            this.presellData.remindNum = data.remindNum;
+            this.presellData.isRemind = data.isRemind
+        }).catch((error) => {
+            this.setStoreAlert('设置失败！')
+        })
   },
   mounted() { 
     if (!sessionStorage.token) {
@@ -616,6 +633,7 @@ export default {
         }
     });
     this.setMoney();
+    
     this.renderDom();
   },
   components: {

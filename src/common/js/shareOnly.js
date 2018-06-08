@@ -5,7 +5,6 @@ let share = (shareData) => {
   let shareObj = {
     // 初始化分享
     initShare (arg) {
-      console.log(arg)
       let _this = this;
       this._wxReady().then(() => {
         // 朋友圈
