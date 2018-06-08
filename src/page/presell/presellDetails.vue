@@ -694,7 +694,6 @@ export default {
     .user-tit{font-weight:normal;}
     .declare-head{position:relative;}
     .declare-head em{position:absolute;right:.4rem;color:#d5aa5c;}
-    .car-info-wrap{padding:.53rem .4rem .4rem;  background-color:#fff;  }
     .car-parameter{padding-bottom:.4rem;border-bottom:1px solid #e0e0e0;}
     .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
     .car-price{position:relative;}
@@ -708,7 +707,6 @@ export default {
     .car-count-down span{display:block;}
     .car-count-down span:nth-of-type(2){font-size:.3467rem;font-weight:bold;}
     .car-parameter-tips{margin-top:.32rem;color:#ff825c;font-size:.3467rem;}
-    .car-time-place{padding-top:.4rem;}
     .car-time-place ul li{margin-bottom:.267rem;}
     .car-time-place ul li span{font-size:.32rem;color:#999;}
     .car-time-place ul li em{font-size:.32rem;color:#333;}
@@ -717,43 +715,7 @@ export default {
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
     .car-reserve-roll{overflow:hidden;height:1.8rem;}
-    /*.car-reserve-roll ul{height:.4267rem;}*/
     .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;text-align:center;color:#999;}
-    /*.car-reserve-roll ul li span:nth-of-type(2){margin-left:1.333rem;margin-right:1.0667rem;}*/
-
     .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}
     .car-understock{font-size:.32rem;text-align:center;color:#999;}
-    .car-share{text-align:center;}
-    .car-share img{width:7.147rem;height:1.68rem;}
-    .car-batch-count{text-align:center;color:#2c2c2c;font-size:.32rem;}
-    .car-presell-flow{margin-top:.4rem;padding-top:.533rem;padding-bottom:.533rem;text-align:center;background-color:#fff;}
-    .car-presell-flow p{font-size:.372rem;color:#000;text-align:center;}
-    .car-presell-flow img{width:7.707rem;height:1.88rem;margin-top:.867rem;}
-    /*.car-presell-explain{margin-top:.4rem;margin-bottom:.4rem;padding:.533rem;background-color:#fff;}*/
-    .car-presell-explain{margin-top:.4rem;margin-bottom:1.4rem;padding:.533rem;background-color:#fff;}
-    .presell-explain-title{margin-bottom:.6rem;font-size:.3467rem;color:#000;text-align:center;}
-    .presell-explain-con li{position:relative;margin-left:.6rem;margin-bottom:.267rem;color:#999;font-size:.4rem;line-height:.533rem;}
-    .presell-explain-con li span{position:absolute;left:-.6rem;}
-    .car-reserve-btn{display:inline-block;position:fixed;bottom:0;left:0;height:1.867rem;width:100%;margin:0 auto;background-color:#fff;line-height:1.867rem;text-align:center;border-top:1px solid #e7e7e7;}
-    .car-reserve-btn .car-presell-present{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#fff;border:none;border-radius:.5867rem;background-color:#d5aa5c;}
-    .car-reserve-btn .car-presell-present-disabled{display:inline-block;width:6.667rem;height:1.1733rem;margin:0 auto;text-align:center;line-height:1.17333rem;font-size:.4rem;color:#999;border:none;border-radius:.5867rem;background-color:#e6e6e6;}
-
-
-    /*#box{*/
-        /*width: 300px;*/
-        /*height: 32px;*/
-        /*overflow: hidden;*/
-        /*padding-left: 30px;*/
-        /*border: 1px solid black;*/
-    /*}*/
-    .anim{
-        transition: all 0.5s;
-        margin-top: -.4rem;
-    }
-    /*#con1 li{*/
-        /*list-style: none;*/
-        /*line-height: 30px;*/
-        /*height: 30px;*/
-    /*}*/
-
 </style>
