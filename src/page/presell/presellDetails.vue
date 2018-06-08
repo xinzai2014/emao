@@ -138,13 +138,13 @@
             <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
                 <h4 class="ttl">欢迎加入车商猫</h4>
                 <h4 class="desc">100购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
-                <div class="btn-goApp">前往APP</div>
+                <div class="btn-goApp" @click="downloadApp">前往APP</div>
             </div>
-            <!-- 注册成功内容 -->
-            <div class="registed-wrapper" v-show="popupShowWhich === 'registed '">
-                <h4 class="ttl">欢迎加入车商猫</h4>
-                <div class="btn-goApp">前往APP</div>
-            </div>  
+            <!-- 已经注册弹框 -->
+            <div class="register-success-wrapper" v-show="popupShowWhich === 'registed'">
+                <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
+                <div class="btn-goApp" @click="downloadApp">前往APP</div>
+            </div>
         </popup>
         <popup
             class="selectPopup"
@@ -297,6 +297,11 @@ export default {
   },
   
   methods: {
+    // 前往下载
+    downloadApp () {
+        window.location.href = `https://m.emao.com/csm.html`
+    },
+  
     // 设置优惠券金额
     setMoney () {
         this.$http({
@@ -483,15 +488,12 @@ export default {
             }
         })
         .then((res) => {
-            _this.initAlert('领取成功，请稍等', true);
             _this.popupShowWhich = 'success';
         })
         .catch((err) => {
-            console.log(err.data.msg)
-            _this.initAlert(err.data.msg, true);
             _this.$store.dispatch("AJAX_LOADING", false)
             if (err.data.code === 400) {
-                _this.registerpopupState = false
+                _this.popupShowWhich = 'registed'
             }
         })
     },
@@ -547,7 +549,6 @@ export default {
             alert('立即抢购');
             this.windowOpen();
         })
-        
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
