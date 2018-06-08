@@ -286,12 +286,15 @@ export default {
             }
             if (browser.versions.ios) {
                 //是否在IOS浏览器打开
+                return 7
             }
             if (browser.versions.android) {
                 //是否在安卓浏览器打开
+                return 7
             }
         } else {
             //否则就是PC浏览器打开
+            return 7
         }
     }
   },
