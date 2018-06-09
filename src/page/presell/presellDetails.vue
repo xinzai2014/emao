@@ -377,7 +377,8 @@ export default {
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[selectData.selectColorIndex].extColorId}&intColorId=${this.stock[selectData.selectColorIndex].intColorId}&presaleNum=${selectData.carNum}` // 要打开的链接
+        url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}` // 要打开的链接
+//        url:' emaotaochemao://push/PresaleConfirmOrder?eventId=' + this.$route.query.id + '&extColorId=' + this.stock[selectData.selectColorIndex].extColorId + '&intColorId=' + this.stock[selectData.selectColorIndex].intColorId + '&presaleNum=' + selectData.carNum;
       };
       this.tcmApp(obj);
     },
@@ -556,10 +557,19 @@ export default {
     },
     // 立即抢购函数
     snapUpFun () {
-        this.checkInventory().then(() => {
-            alert('立即抢购');
-            this.windowOpen();
-        })
+//        this.checkInventory().then(() => {
+//            alert('立即抢购');
+//            this.windowOpen();
+//        })
+
+
+    //        url:' emaotaochemao://push/PresaleConfirmOrder?eventId=' + this.$route.query.id + '&extColorId=' + this.stock[selectData.selectColorIndex].extColorId + '&intColorId=' + this.stock[selectData.selectColorIndex].intColorId + '&presaleNum=' + selectData.carNum;
+
+//    window.id = this.$route.query.id;
+//    window.extColorId = this.stock[selectData.selectColorIndex].extColorId;
+//    windwo.intColorId = this.stock[selectData.selectColorIndex].intColorId;
+//    window.carNum =
+    this.windowOpen();
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
