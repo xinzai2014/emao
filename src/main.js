@@ -163,33 +163,33 @@ Vue.directive('load-more', {
 
 Vue.http.interceptors.push(function(request, next) {
 	this.$store.dispatch("AJAX_LOADING", // 通过store传值
-		true
-	);
-	next(function(response) {
-		if (response.body) {
-			var code = response.body.code;
-			if (code == 4010) { //密码修改了
-				sessionStorage.clear();
-				this.$router.push('/login/account');
-				return false;
-			}
-			if (/^[3-5]/.test(code)) {
-				this.$store.dispatch("ALERT", // 通过store传值
-					{
-						flag: true,
-						text: response.body.msg
-					}
-				);
-			}
-		}
-		//console.log(response.status);
-		if (this.$store.state.ajaxLoading == true) {
-			this.$store.dispatch("AJAX_LOADING", // 通过store传值
-				false
-			);
-		}
-		return response;
-	})
+      true
+    );
+    next(function (response) {
+    	if(response.body){
+	    	var code = response.body.code;
+	    	// if(code == 4010){ //密码修改了
+			// 	sessionStorage.clear();
+			// 	this.$router.push('/login/account');
+			// 	return false;
+			// }
+	    	if(/^[3-5]/.test(code)){
+	    		this.$store.dispatch("ALERT", // 通过store传值
+			      {
+			      	flag:true,
+			      	text:response.body.msg
+			      }
+			    );
+	    	}
+    	}
+    	//console.log(response.status);
+    	if(this.$store.state.ajaxLoading == true){
+    		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+		      false
+		    );
+    	}
+        return response;
+    })
 })
 
 Vue.prototype.$axios = axios;
