@@ -6,7 +6,6 @@ class Countdown {
   }
   // 时间倒计时
   time (arg, update, end) {
-
     let _this = this;
     if (!arg.startTime) {
       console.error('arguments error:', 'startTime is not defined!');
@@ -29,15 +28,14 @@ class Countdown {
     let type = arg.type || 'double';
     const nowTime = new Date().getTime();
     alert(arg.startTime)
+    alert(new Date());
+    alert(endTime+'结束');
     if (endTime < startTime) {
       console.error('arguments error:', 'the "endTime" is should later than "startTime"');
       return;
     }
     let returnContent = [];
     const state = (nowTime > startTime && nowTime <= endTime) ? 'ing' : nowTime <= startTime ? 'start' : 'end';
-    alert(nowTime+'当前')
-    alert(startTime+'开始')
-    alert(endTime+'结束')
     returnContent.push(state);
     if (state === 'end') {
       if (type === 'double') {
@@ -117,7 +115,6 @@ class Countdown {
 
   // 补位
   padStart (num) {
-
     return num < 10 ? '0' + num : '' + num
   }
 }

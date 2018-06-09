@@ -607,9 +607,9 @@ export default {
       sessionStorage.token = this.$route.query.token;
     }
     this.getPresellDetails().then((presellData) => {
-        alert(presellData.preSaleStartTime)
-        const startTime = new Date(Number(presellData.preSaleStartTime));
+        const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(Number(presellData.preSaleEndTime));
+    alert(startTime)
         const shareInfo = presellData.shareInfo;
         const shareData = {
             title: shareInfo.shareText,
