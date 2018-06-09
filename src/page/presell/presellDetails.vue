@@ -324,10 +324,10 @@ export default {
         }
         const params = {
             token: this.$route.query.token,
-            activeId: this.$route.query.id
+            preSaleId: this.$route.query.id
         }
         this.$http({
-            url: "preSale/setReminder",
+            url: "order/preSale/setReminder",
             methods: "GET",
             params: params
         }).then(function(response) {
@@ -563,6 +563,24 @@ export default {
             }
         );
     }
+  },
+  created () {
+      const params = {
+            token: 'd6a46e596391669516a2c6fc9275e7b6',
+            preSaleId: 102
+        }
+        this.$http({
+            url: "order/preSale/setReminder",
+            methods: "GET",
+            params: params
+        }).then(function(response) {
+            const data = response.body.data;
+            this.setStoreAlert('设置成功！')
+            this.presellData.remindNum = data.remindNum;
+            this.presellData.isRemind = data.isRemind
+        }).catch((error) => {
+            this.setStoreAlert('设置失败！')
+        })
   },
   mounted() { 
     if (!sessionStorage.token) {

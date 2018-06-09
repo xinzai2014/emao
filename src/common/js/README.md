@@ -62,3 +62,21 @@
 
 #### 修改意见
   - 无 
+
+## shareOnly(分享)
+
+## 使用
+1. 引入
+    
+    ```javascript
+    import {timeCountdown, numberCountdown} from '../../common/js/shareOnly.js';
+
+    const shareData = {
+      title: shareInfo.shareText,
+      desc: shareInfo.shareDescription,
+      link: shareInfo.shareUrl,
+      imgUrl: shareInfo.shareImg
+    };
+
+    share(shareData);
+    ```
