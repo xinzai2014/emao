@@ -20,8 +20,8 @@
                 <!-- 名字和设置提醒 -->
                 <div class="car-name">
                     <h4 class="name-content">{{presellData.autoName}}</h4>
-                    <div class="set-warning" v-if="isTcmApp" @click="setWarningFun">
-                        <div class="btn-warning" :class="{'actived': tpresellData.isRemind == '1'}">
+                    <div class="set-warning" v-if="isTcmApp" @click="">
+                        <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
                             <span class="icon-warning"></span>
                             <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
                             <span class="text-warning" v-else>已醒我</span>
@@ -326,6 +326,12 @@ export default {
             token: this.$route.query.token,
             preSaleId: this.$route.query.id
         }
+
+
+//      const params = {
+//          token: "0ad833a6e88891c4dc21120ba3fb0c8e",
+//          preSaleId: 55
+//      }
         this.$http({
             url: "order/preSale/setReminder",
             methods: "GET",
@@ -565,22 +571,22 @@ export default {
     }
   },
   created () {
-      const params = {
-            token: 'd6a46e596391669516a2c6fc9275e7b6',
-            preSaleId: 102
-        }
-        this.$http({
-            url: "order/preSale/setReminder",
-            methods: "GET",
-            params: params
-        }).then(function(response) {
-            const data = response.body.data;
-            this.setStoreAlert('设置成功！')
-            this.presellData.remindNum = data.remindNum;
-            this.presellData.isRemind = data.isRemind
-        }).catch((error) => {
-            this.setStoreAlert('设置失败！')
-        })
+//      const params = {
+//            token: 'd6a46e596391669516a2c6fc9275e7b6',
+//            preSaleId: 102
+//        }
+//        this.$http({
+//            url: "order/preSale/setReminder",
+//            methods: "GET",
+//            params: params
+//        }).then(function(response) {
+//            const data = response.body.data;
+//            this.setStoreAlert('设置成功！')
+//            this.presellData.remindNum = data.remindNum;
+//            this.presellData.isRemind = data.isRemind
+//        }).catch((error) => {
+//            this.setStoreAlert('设置失败！')
+//        })
   },
   mounted() { 
     if (!sessionStorage.token) {
