@@ -27,8 +27,6 @@ class Countdown {
     let endTime = arg.endTime.getTime();
     let type = arg.type || 'double';
     const nowTime = new Date().getTime();
-    alert(startTime)
-    alert(endTime+'结束');
     if (endTime < startTime) {
       console.error('arguments error:', 'the "endTime" is should later than "startTime"');
       return;
@@ -80,7 +78,7 @@ class Countdown {
     }
     returnContent = returnContent.concat(timeArr)
     update(returnContent);
-    let timeTimer = setTimeout(() => {_this.time(arg, update, end)}, 10000)
+    let timeTimer = setTimeout(() => {_this.time(arg, update, end)}, 1000)
   }
   
   // 数字倒计时

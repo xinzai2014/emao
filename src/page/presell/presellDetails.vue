@@ -618,7 +618,6 @@ export default {
         };
         
         timeCountdown({startTime, endTime}, (update) => {
-
             this.countdownArr = update;
             if (update[0] === 'start') {
                 this.btnText = '等待抢购'
@@ -639,7 +638,6 @@ export default {
                 this.countdownState = false;
             }
         }, (end) => {
-    alert('我是结束')
             this.countdownArr = end;
             this.btnState = false;
             this.btnText = '已结束';
