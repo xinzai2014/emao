@@ -6,7 +6,7 @@ class Countdown {
   }
   // 时间倒计时
   time (arg, update, end) {
-    alert('ios倒计时')
+
     let _this = this;
     if (!arg.startTime) {
       console.error('arguments error:', 'startTime is not defined!');
@@ -34,6 +34,7 @@ class Countdown {
     }
     let returnContent = [];
     const state = (nowTime > startTime && nowTime <= endTime) ? 'ing' : nowTime <= startTime ? 'start' : 'end';
+    alert(state)
     returnContent.push(state);
     if (state === 'end') {
       if (type === 'double') {
@@ -113,6 +114,7 @@ class Countdown {
 
   // 补位
   padStart (num) {
+
     return num < 10 ? '0' + num : '' + num
   }
 }
