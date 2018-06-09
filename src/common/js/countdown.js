@@ -33,10 +33,10 @@ class Countdown {
       return;
     }
     let returnContent = [];
-    const state = (nowTime > startTime && nowTime <= startTime) ? 'ing' : nowTime <= startTime ? 'start' : 'end';
+    const state = (nowTime > startTime && nowTime <= endTime) ? 'ing' : nowTime <= startTime ? 'start' : 'end';
     alert(nowTime+'当前')
     alert(startTime+'开始')
-    alert(startTime+'结束')
+    alert(endTime+'结束')
     returnContent.push(state);
     if (state === 'end') {
       if (type === 'double') {
