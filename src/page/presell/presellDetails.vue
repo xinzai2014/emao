@@ -213,7 +213,7 @@ export default {
               sum: "5"
           }
       ],
-      registerpopupState: true, // 注册弹窗
+      registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
@@ -563,25 +563,6 @@ export default {
             }
         );
     }
-  },
-  created () {
-      const params = {
-            token: '7d5a09c605e87c733f93242d7bee46e0',
-            activeId: '102'
-        }
-        this.$http({
-            url: "preSale/setReminder",
-            methods: "GET",
-            params: params
-        }).then((response) => {
-            console.log(response)
-            const data = response.body.data;
-            this.setStoreAlert('设置成功！')
-            this.presellData.remindNum = data.remindNum;
-            this.presellData.isRemind = data.isRemind
-        }).catch((error) => {
-            this.setStoreAlert('设置失败！')
-        })
   },
   mounted() { 
     if (!sessionStorage.token) {
