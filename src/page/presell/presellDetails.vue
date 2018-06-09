@@ -569,7 +569,11 @@ export default {
 //    window.extColorId = this.stock[selectData.selectColorIndex].extColorId;
 //    windwo.intColorId = this.stock[selectData.selectColorIndex].intColorId;
 //    window.carNum =
-    this.windowOpen();
+    //this.windowOpen();
+
+    window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+
+
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
