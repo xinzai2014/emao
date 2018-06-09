@@ -6,6 +6,7 @@ class Countdown {
   }
   // 时间倒计时
   time (arg, update, end) {
+    alert('ios倒计时')
     let _this = this;
     if (!arg.startTime) {
       console.error('arguments error:', 'startTime is not defined!');
@@ -78,7 +79,7 @@ class Countdown {
     }
     returnContent = returnContent.concat(timeArr)
     update(returnContent);
-    let timeTimer = setTimeout(() => {_this.time(arg, update, end)}, 1000)
+    let timeTimer = setTimeout(() => {_this.time(arg, update, end)}, 10000)
   }
   
   // 数字倒计时
