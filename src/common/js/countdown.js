@@ -28,6 +28,7 @@ class Countdown {
     let endTime = arg.endTime.getTime();
     let type = arg.type || 'double';
     const nowTime = new Date().getTime();
+    alert(arg.startTime)
     if (endTime < startTime) {
       console.error('arguments error:', 'the "endTime" is should later than "startTime"');
       return;
