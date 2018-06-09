@@ -161,11 +161,11 @@ Vue.http.interceptors.push(function(request,next){
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;
-	    	if(code == 4010){ //密码修改了
-				sessionStorage.clear();
-				this.$router.push('/login/account');
-				return false;
-			}
+	    	// if(code == 4010){ //密码修改了
+			// 	sessionStorage.clear();
+			// 	this.$router.push('/login/account');
+			// 	return false;
+			// }
 	    	if(/^[3-5]/.test(code)){
 	    		this.$store.dispatch("ALERT", // 通过store传值
 			      {
