@@ -27,8 +27,7 @@ class Countdown {
     let endTime = arg.endTime.getTime();
     let type = arg.type || 'double';
     const nowTime = new Date().getTime();
-    alert(arg.startTime)
-    alert(new Date());
+    alert(startTime)
     alert(endTime+'结束');
     if (endTime < startTime) {
       console.error('arguments error:', 'the "endTime" is should later than "startTime"');

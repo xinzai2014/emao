@@ -608,8 +608,7 @@ export default {
     }
     this.getPresellDetails().then((presellData) => {
         const startTime = new Date(presellData.preSaleStartTime);
-        const endTime = new Date(Number(presellData.preSaleEndTime));
-    alert(startTime)
+        const endTime = new Date(presellData.preSaleEndTime);
         const shareInfo = presellData.shareInfo;
         const shareData = {
             title: shareInfo.shareText,
