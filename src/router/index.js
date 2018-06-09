@@ -178,11 +178,11 @@ Vue.use(Router)
 
 var router=new Router({
     routes: [
-        {
-            path: '*',
-            name: 'loading',
-            component: loading  //默认路由，匹配不到的时候跳转loading
-        },
+        // {
+        //     path: '*',
+        //     name: 'loading',
+        //     component: loading  //默认路由，匹配不到的时候跳转loading
+        // },
         {
             path: '/login',     //登录页面
             name: 'login',
