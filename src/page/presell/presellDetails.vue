@@ -698,7 +698,7 @@ export default {
 .car-time-place ul li:after {display: block; content: '';clear: both;width: 0} 
 .car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
 .car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
-.car-reserve {display: none;padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
+.car-reserve {padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
 .car-reserve-title {line-height: 0.9333rem;font-size: 0.372rem;color: #000;text-align: center;}
 .car-reserve-tips {margin-bottom: 0.4rem;text-align: center;font-size: 0.3467rem;color: #ff5825;}
 .car-reserve-tips i {font-weight: bold;font-style: normal;}
