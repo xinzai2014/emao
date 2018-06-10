@@ -156,7 +156,7 @@
             <div class="select-wrapper">
                 <h4 class="select-ttl">限时抢购</h4>
                 <h4 class="car-ttl">{{presellData.autoName}}</h4>
-                <div class="price-wrapper">抢购价：<span>{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
+                <div class="price-wrapper"><em>抢购价：</em><span>{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
                 <div class="color-select">
                     <h4>可选颜色</h4>
                     <ul class="color-wrapper">
@@ -166,7 +166,7 @@
                             v-for="(item, index) in stock" 
                             :key="index"
                             @click="selectColor(index)">
-                            {{stock[index]['extColor']}}/{{stock[index]['extColor']}}
+                            {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
                         </li>
                     </ul>
                 </div>
@@ -533,13 +533,14 @@ export default {
     checkInventory () {
         return new Promise(resolve => {
             this.$http({
-                url: '../',
+                url: 'order/preSale/preBuyCheck',
                 type: 'GET',
                 params: {
-                    eventId: this.$route.query.id,
-                    extColorId: this.stock[selectData.selectColorIndex].extColorId,
-                    intColorId: this.stock[selectData.selectColorIndex].intColorId,
-                    presaleNum: selectData.carNum
+                    token:this.$route.query.token,
+                    id: this.$route.query.id,
+                    extColorId: this.stock[this.selectData.selectColorIndex].extColorId,
+                    intColorId: this.stock[this.selectData.selectColorIndex].intColorId,
+                    number: this.selectData.carNum
                 }
             })
             .then(response => {
@@ -558,18 +559,11 @@ export default {
     // 立即抢购函数
     snapUpFun () {
 //        this.checkInventory().then(() => {
-//            alert('立即抢购');
-//            this.windowOpen();
-//        })
+//           // alert('立即抢购');
+//             window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+//
+//            })
 
-
-    //        url:' emaotaochemao://push/PresaleConfirmOrder?eventId=' + this.$route.query.id + '&extColorId=' + this.stock[selectData.selectColorIndex].extColorId + '&intColorId=' + this.stock[selectData.selectColorIndex].intColorId + '&presaleNum=' + selectData.carNum;
-
-//    window.id = this.$route.query.id;
-//    window.extColorId = this.stock[selectData.selectColorIndex].extColorId;
-//    windwo.intColorId = this.stock[selectData.selectColorIndex].intColorId;
-//    window.carNum =
-    //this.windowOpen();
 
     window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
 
@@ -738,6 +732,7 @@ export default {
 .select-wrapper .select-ttl {height: 0.53333rem;line-height: 0.53333rem;padding-left: .4rem;border-left: 0.05333rem solid #000;font-size: 0.50667rem;color: #000}
 .select-wrapper .car-ttl {margin: .8rem 0 .4rem; line-height: 0.6rem;font-size: 0.42667rem;color: #000}
 .select-wrapper .price-wrapper {margin-bottom: 0.5333rem; padding-bottom: 0.5333rem;border-bottom: 1px solid #eee; font-size: 0.37333rem; color: #fc3036}
+.select-wrapper .price-wrapper em {font-style:normal;font-weight:bold;font-size: 0.48rem;}
 .select-wrapper .price-wrapper span {font-size: 0.48rem;}
 .select-wrapper .color-select h4 {margin-bottom: .4rem;font-size: 0.34667rem;color: #2c2c2c}
 .select-wrapper .color-select ul li {display:inline-block;margin: 0 .2rem .2rem 0;padding: .2rem .4rem;background: #f6f6f7;border-radius:0.10667rem;font-size: 0.34667rem;color: #2c2c2c}
