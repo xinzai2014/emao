@@ -197,7 +197,7 @@ export default {
   name: "presellDetails",
   data() {
     return {
-      isBeforeActivity: true, // 是否是活动前
+      isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
@@ -592,7 +592,7 @@ export default {
                 this.countdownState = true;
                 this.isBeforeActivity = false;
             }
-            if (update[0] === 'ing' && presellData.preSale.endNum == 0) {
+            if (update[0] === 'ing' && presellData.state == 3) {
                 this.btnText = '已售罄'
                 this.btnState = false
                 this.countdownText = '已售罄'
