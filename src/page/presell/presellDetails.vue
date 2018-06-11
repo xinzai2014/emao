@@ -20,7 +20,7 @@
                 <!-- 名字和设置提醒 -->
                 <div class="car-name">
                     <h4 class="name-content">{{presellData.autoName}}</h4>
-                    <div class="set-warning" v-if="isTcmApp" @click="">
+                    <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun">
                         <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
                             <span class="icon-warning"></span>
                             <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
@@ -173,9 +173,9 @@
                 <div class="num-wrapper">
                     <h4>预定数量</h4>
                     <div class="num-select">
-                        <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['sum'])">-</span>
+                        <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
                         <span class="num-content">{{selectData.carNum}}</span>
-                        <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['sum'])">+</span>
+                        <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
                     </div> 
                 </div>
                 <div class="btn-go" @click="snapUpFun">立即抢购</div>
@@ -197,22 +197,8 @@ export default {
   name: "presellDetails",
   data() {
     return {
-      stock: [
-          {
-              extColor: "黑色",
-              extColorId: "1",
-              initColor: "米色",
-              initColorId: "3",
-              sum: "15"
-          },
-          {
-              extColor: "白色",
-              extColorId: "2",
-              initColor: "米色",
-              initColorId: "3",
-              sum: "5"
-          }
-      ],
+      isBeforeActivity: true, // 是否是活动前
+      stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
@@ -347,7 +333,6 @@ export default {
     },  
     // 设置弹窗状态
     changeState (state) {
-        console.log(state)
         this.registerpopupState = state;
     },
     //单行文字滚动
@@ -417,6 +402,9 @@ export default {
             subTitle: this.presellData.shareInfo.shareDescription,
             imgUrl: this.presellData.shareInfo.shareImg,
             url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
+            shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
+            uniqueId: this.presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
+            extra: this.$route.query.id //分享需要的额外字段,预售id
         };
         this.tcmApp(obj);
     },
@@ -558,43 +546,20 @@ export default {
     },
     // 立即抢购函数
     snapUpFun () {
-//        this.checkInventory().then(() => {
-//           // alert('立即抢购');
-//             window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
-//
-//            })
-
-
-    window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
-
-
+        // this.checkInventory().then(() => {
+        //     // alert('立即抢购');
+        //     window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+        // })
+        window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
             {
-            flag:true,
-            text:content
+                flag:true,
+                text:content
             }
         );
     }
-  },
-  created () {
-//      const params = {
-//            token: 'd6a46e596391669516a2c6fc9275e7b6',
-//            preSaleId: 102
-//        }
-//        this.$http({
-//            url: "order/preSale/setReminder",
-//            methods: "GET",
-//            params: params
-//        }).then(function(response) {
-//            const data = response.body.data;
-//            this.setStoreAlert('设置成功！')
-//            this.presellData.remindNum = data.remindNum;
-//            this.presellData.isRemind = data.isRemind
-//        }).catch((error) => {
-//            this.setStoreAlert('设置失败！')
-//        })
   },
   mounted() { 
     if (!sessionStorage.token) {
@@ -618,12 +583,14 @@ export default {
                 this.btnState = false
                 this.countdownText = '距离开始还剩'
                 this.countdownState = true;
+                this.isBeforeActivity = true
             }
             if (update[0] === 'ing') {
                 this.btnText = '立即抢购'
                 this.btnState = true
                 this.countdownText = '距离结束还剩'
                 this.countdownState = true;
+                this.isBeforeActivity = false;
             }
             if (update[0] === 'ing' && presellData.preSale.endNum === 0) {
                 this.btnText = '已售罄'
@@ -679,7 +646,7 @@ export default {
 
 .car-price{position:relative;display: flex; display: -webkit-flex;  align-items: center;color: #fff;height: 1.80667rem;}
 .car-price .price-wrapper {flex: 1;font-size: 0.34667rem;}
-.car-price .price-wrapper .true-price {margin-bottom: .16rem;font-size: 0.58667rem;}
+.car-price .price-wrapper .true-price {margin-bottom: .16rem;font-size: 0.58667rem;line-height: 0.58667rem;;}
 .car-price .price-wrapper .true-price span{font-size: 0.34667rem;}
 .car-price .countdown {flex: 0 0 2.26rem; text-align: center}
 .car-price .countdown .activeEnd {color: #fff; font-size: 0.37333rem}
@@ -732,22 +699,22 @@ export default {
 .select-wrapper .select-ttl {height: 0.53333rem;line-height: 0.53333rem;padding-left: .4rem;border-left: 0.05333rem solid #000;font-size: 0.50667rem;color: #000}
 .select-wrapper .car-ttl {margin: .8rem 0 .4rem; line-height: 0.6rem;font-size: 0.42667rem;color: #000}
 .select-wrapper .price-wrapper {margin-bottom: 0.5333rem; padding-bottom: 0.5333rem;border-bottom: 1px solid #eee; font-size: 0.37333rem; color: #fc3036}
-.select-wrapper .price-wrapper em {font-style:normal;font-weight:bold;font-size: 0.48rem;}
+.select-wrapper .price-wrapper em {font-style:normal;font-weight:bold;font-size: 0.37333rem;}
 .select-wrapper .price-wrapper span {font-size: 0.48rem;}
 .select-wrapper .color-select h4 {margin-bottom: .4rem;font-size: 0.34667rem;color: #2c2c2c}
 .select-wrapper .color-select ul li {display:inline-block;margin: 0 .2rem .2rem 0;padding: .2rem .4rem;background: #f6f6f7;border-radius:0.10667rem;font-size: 0.34667rem;color: #2c2c2c}
 .select-wrapper .color-select ul li.active {background: #d4a962;color: #fff}
 .select-wrapper .num-wrapper {display: flex; overflow: hidden;align-items: center; justify-content: space-between; margin-top: 0.49333rem; padding-bottom: .4rem;border-bottom: 1px solid #eee;}
 .select-wrapper .num-wrapper h4 { flex: 0 0 2rem;font-size: 0.37333rem;color: #000}
-.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 2rem; width: 2rem; height: 0.66667rem;}
-.select-wrapper .num-wrapper .num-select span {flex: 1; text-align: center; line-height: 0.66667rem; font-size: .4rem; color: #e6b255;}
-.select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 0.66667rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
+.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 3rem; width: 3rem; height: 0.8rem;}
+.select-wrapper .num-wrapper .num-select span {flex: 1; text-align: center; line-height: 0.8rem; font-size: .8rem; color: #e6b255;}
+.select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 1.2rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
 .select-wrapper .btn-go {margin: .8rem auto .4rem; width: 5.33333rem; height: 1.2rem; line-height: 1.2rem; border-radius: .6rem; text-align: center; background: #d4a962; font-size: 0.45333rem; color: #fff}
 .select-wrapper .btn-close {position: absolute; top:0;right:0;width: 1rem; height: 1rem;background: url('../../assets/presell_close.png') no-repeat center center; background-size: 0.32rem 0.32rem;}
     .user-tit{font-weight:normal;}
     .declare-head{position:relative;}
     .declare-head em{position:absolute;right:.4rem;color:#d5aa5c;}
-    .car-parameter{padding-bottom:.4rem;border-bottom:1px solid #e0e0e0;}
+    .car-parameter{border-bottom:1px solid #e0e0e0;}
     .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
     .car-price{position:relative;}
     .car-price p:nth-of-type(1) {color:#fc3036;font-size:.4rem;}
