@@ -384,7 +384,7 @@ export default {
             imgUrl:this.presellData.shareInfo.shareImg,
             url:this.presellData.shareInfo.shareUrl, //要分享内容的 url
             shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniquId: this.presellData.shareInfo.uniquId, //shareType为0时可空,分享统计id
+            uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
             extra: this.$route.query.id //分享需要的额外字段,预售id
         };
         this.tcmApp(obj);
@@ -404,7 +404,7 @@ export default {
             imgUrl: this.presellData.shareInfo.shareImg,
             url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
             shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniquId: this.presellData.shareInfo.uniquId, //shareType为0时可空,分享统计id
+            uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
             extra: this.$route.query.id //分享需要的额外字段,预售id
         };
         this.tcmApp(obj);
