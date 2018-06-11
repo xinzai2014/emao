@@ -370,7 +370,8 @@ export default {
     /*区分app与wap做不同的渲染*/
     renderDom() {
       if (this.isTcmApp) {
-        document.title = "限时抢购";
+          alert(this.isTcmApp)
+          document.title = "限时抢购";
       }
     },
     // 显示分享弹窗
