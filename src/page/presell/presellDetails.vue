@@ -200,7 +200,7 @@ export default {
       isBeforeActivity: true, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
-      selectPopupState: true, // 购买弹窗状态  
+      selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: {}, //页面数据
