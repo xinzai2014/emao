@@ -70,6 +70,11 @@
                                     <span>{{item.dealer}}</span>
                                     <span>{{item.num}}</span>
                                 </li>
+                                <li>
+                                    <span>{{preSaleData.buyList[0].time}}</span>
+                                    <span>{{preSaleData.buyList[0].dealer}}</span>
+                                    <span>{{preSaleData.buyList[0].num}}</span>
+                                </li>
                             </ul>
                         </div>
 
@@ -506,7 +511,7 @@ export default {
     // 选择颜色
     selectColor (index) {
         this.selectData.selectColorIndex = index
-        this.selectData.carNum = 0
+        this.selectData.carNum = 1
     },
     // 计算预定数量
     calculateFun (boolean, sum) {
@@ -514,7 +519,7 @@ export default {
             this.selectData.carNum = ++this.selectData.carNum > sum ? sum : this.selectData.carNum
             return
         }
-        this.selectData.carNum = --this.selectData.carNum < 0 ? 0 : this.selectData.carNum
+        this.selectData.carNum = --this.selectData.carNum < 1 ? 1 : this.selectData.carNum
     },
     // 校验库存
     checkInventory () {
@@ -560,7 +565,8 @@ export default {
         );
     }
   },
-  mounted() { 
+  mounted() {
+    setInterval(this.scroll,2000)   
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
@@ -663,8 +669,8 @@ export default {
 .car-reserve-title {line-height: 0.9333rem;font-size: 0.372rem;color: #000;text-align: center;}
 .car-reserve-tips {margin-bottom: 0.4rem;text-align: center;font-size: 0.3467rem;color: #ff5825;}
 .car-reserve-tips i {font-weight: bold;font-style: normal;}
-.car-reserve-roll {overflow: hidden;height: 1.8rem;}
-.car-reserve-roll ul li {height: 0.4rem;margin-bottom: 0.267rem;line-height: 0.4rem;font-size: 0.32rem;text-align: center;color: #999;}
+.car-reserve-roll {overflow: hidden;height: 1rem;}
+.car-reserve-roll ul li {margin-bottom: 0.267rem;line-height: 0.4rem;font-size: 0.32rem;text-align: center;color: #999;}
 
 .car-reserve-roll ul li span:nth-of-type(2) {margin-left: 0.5rem;margin-right: 0.5rem;}
 
@@ -735,8 +741,5 @@ export default {
     .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
-    .car-reserve-roll{overflow:hidden;height:1.8rem;}
-    .car-reserve-roll ul li{height:.4rem;margin-bottom:.267rem;line-height:.4rem;font-size:.32rem;text-align:center;color:#999;}
-    .car-reserve-roll ul li span:nth-of-type(2){margin-left:.5rem;margin-right:.5rem;}
     .car-understock{font-size:.32rem;text-align:center;color:#999;}
 </style>
