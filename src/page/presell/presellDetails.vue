@@ -289,7 +289,7 @@ export default {
   methods: {
     // 前往下载
     downloadApp () {
-        window.location.href = `https://m.emao.com/csm.html`
+        window.location.href = `http://url.cn/5Ne6oti`
     },
   
     // 设置优惠券金额
@@ -377,8 +377,8 @@ export default {
     showShareDialog() {
         var obj = {
             actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-            // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            actionid:"",//回调 ID：可选参数，与回调函数配套使用
+            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
             title: this.presellData.shareInfo.shareText,
             subTitle: this.presellData.shareInfo.shareDescription,
             imgUrl:this.presellData.shareInfo.shareImg,
@@ -394,10 +394,10 @@ export default {
         let _this = this;
         var obj = {
             actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            actionid:"messageId",//回调 ID：可选参数，与回调函数配套使用
-            // callback:callback,//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            actionid:"",//回调 ID：可选参数，与回调函数配套使用
+            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
             buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
-            // buttonImage:"url",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+            buttonImage:"",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
             title: this.presellData.shareInfo.shareText,
             subTitle: this.presellData.shareInfo.shareDescription,
             imgUrl: this.presellData.shareInfo.shareImg,
