@@ -384,13 +384,14 @@ export default {
             imgUrl:this.presellData.shareInfo.shareImg,
             url:this.presellData.shareInfo.shareUrl, //要分享内容的 url
             shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniqueId: this.presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
+            uniquId: this.presellData.shareInfo.uniquId, //shareType为0时可空,分享统计id
             extra: this.$route.query.id //分享需要的额外字段,预售id
         };
         this.tcmApp(obj);
     },
     //向导航条上添加分享按钮
     addShareButton() {
+        console.log(this.$route.query.id)
         let _this = this;
         var obj = {
             actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
@@ -403,7 +404,7 @@ export default {
             imgUrl: this.presellData.shareInfo.shareImg,
             url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
             shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniqueId: this.presellData.shareInfo.uniqueId, //shareType为0时可空,分享统计id
+            uniquId: this.presellData.shareInfo.uniquId, //shareType为0时可空,分享统计id
             extra: this.$route.query.id //分享需要的额外字段,预售id
         };
         this.tcmApp(obj);
