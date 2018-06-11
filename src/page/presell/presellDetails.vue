@@ -156,7 +156,7 @@
             <div class="select-wrapper">
                 <h4 class="select-ttl">限时抢购</h4>
                 <h4 class="car-ttl">{{presellData.autoName}}</h4>
-                <div class="price-wrapper"><em>抢购价：</em><span>{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
+                <div class="price-wrapper"><em>抢购价：</em><span v-if="stock.length > 0">{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
                 <div class="color-select">
                     <h4>可选颜色</h4>
                     <ul class="color-wrapper">
@@ -565,6 +565,7 @@ export default {
       sessionStorage.token = this.$route.query.token;
     }
     this.getPresellDetails().then((presellData) => {
+        console.log(presellData.preSale.endNum)
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
         const shareInfo = presellData.shareInfo;
@@ -591,7 +592,7 @@ export default {
                 this.countdownState = true;
                 this.isBeforeActivity = false;
             }
-            if (update[0] === 'ing' && presellData.preSale.endNum === 0) {
+            if (update[0] === 'ing' && presellData.preSale.endNum == 0) {
                 this.btnText = '已售罄'
                 this.btnState = false
                 this.countdownText = '已售罄'
@@ -675,6 +676,7 @@ export default {
 .car-presell-flow img {width: 7.707rem;height: 1.88rem;margin-top: 0.867rem;}
 .car-presell-explain {margin-top: 0.4rem;margin-bottom: 1.4rem;padding: 0.533rem;background-color: #fff;}
 .presell-explain-title {margin-bottom: 0.6rem;font-size: 0.45333rem;color: #000;text-align: center}
+.presell-explain-con {padding-bottom: 0.45rem}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
 .car-reserve-btn {display: inline-block;position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%;margin: 0 auto;background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
