@@ -64,14 +64,6 @@
         } else {
           document.body.removeEventListener('touchmove', this.preventFun);
         }
-      },
-      beforeEnter (el) {
-        el.style.transition = 'top 1s linear 1s';
-        el.style.top = '50%'
-      },
-      enter (el, done) {
-        el.style.top = '70%';
-        done();
       }
     },
     watch: {

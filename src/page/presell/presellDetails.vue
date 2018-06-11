@@ -200,7 +200,7 @@ export default {
       isBeforeActivity: true, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
-      selectPopupState: false, // 购买弹窗状态  
+      selectPopupState: true, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: {}, //页面数据
@@ -705,9 +705,9 @@ export default {
 .select-wrapper .color-select h4 {margin-bottom: .4rem;font-size: 0.34667rem;color: #2c2c2c}
 .select-wrapper .color-select ul li {display:inline-block;margin: 0 .2rem .2rem 0;padding: .2rem .4rem;background: #f6f6f7;border-radius:0.10667rem;font-size: 0.34667rem;color: #2c2c2c}
 .select-wrapper .color-select ul li.active {background: #d4a962;color: #fff}
-.select-wrapper .num-wrapper {display: flex; overflow: hidden;align-items: center; justify-content: space-between; margin-top: 0.49333rem; padding-bottom: .4rem;border-bottom: 1px solid #eee;}
+.select-wrapper .num-wrapper {display: flex; overflow: hidden;align-items: center; justify-content: space-between; padding: 0.49333rem 0 .4rem;border-bottom: 1px solid #eee;}
 .select-wrapper .num-wrapper h4 { flex: 0 0 2rem;font-size: 0.37333rem;color: #000}
-.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 3rem; width: 3rem; height: 0.8rem;}
+.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 3rem; width: 3rem;}
 .select-wrapper .num-wrapper .num-select span {flex: 1; text-align: center; line-height: 0.8rem; font-size: .8rem; color: #e6b255;}
 .select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 1.2rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
 .select-wrapper .btn-go {margin: .8rem auto .4rem; width: 5.33333rem; height: 1.2rem; line-height: 1.2rem; border-radius: .6rem; text-align: center; background: #d4a962; font-size: 0.45333rem; color: #fff}
