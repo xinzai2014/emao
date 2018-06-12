@@ -209,7 +209,7 @@ export default {
     return {
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
-      registerpopupState: true, // 注册弹窗
+      registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
@@ -217,7 +217,7 @@ export default {
       preSaleData: {}, //预售信息
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
-      popupShowWhich: 'pinban', // 显示哪个弹窗，register和success
+      popupShowWhich: 'register', // 显示哪个弹窗，register和success
       telVal: '', // 电话号码
       btnState: true, // 按钮状态
       btnText: '立即抢购', // 按钮文案
