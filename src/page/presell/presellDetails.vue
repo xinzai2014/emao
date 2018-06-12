@@ -150,6 +150,11 @@
                 <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
                 <div class="btn-goApp" @click="downloadApp">前往APP</div>
             </div>
+            <!-- 拼版失败弹框 -->
+            <div class="register-success-wrapper" v-show="popupShowWhich === 'pinban'">
+                <h4 class="desc">{{pinbanText}}</h4>
+                <div class="btn-goApp" @click="registerpopupState=false">知道了</div>
+            </div>
         </popup>
         <popup
             class="selectPopup"
@@ -204,7 +209,7 @@ export default {
     return {
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
-      registerpopupState: false, // 注册弹窗
+      registerpopupState: true, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
@@ -212,7 +217,7 @@ export default {
       preSaleData: {}, //预售信息
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
-      popupShowWhich: 'register', // 显示哪个弹窗，register和success
+      popupShowWhich: 'pinban', // 显示哪个弹窗，register和success
       telVal: '', // 电话号码
       btnState: true, // 按钮状态
       btnText: '立即抢购', // 按钮文案
@@ -223,7 +228,8 @@ export default {
           selectColorIndex: 0,
           carNum: 1
       },
-      moneyVal: 0 // 优惠券金额
+      moneyVal: 0, // 优惠券金额
+      pinbanText: '' // 拼版失文案
     };
   },
   computed: {
@@ -545,14 +551,21 @@ export default {
                 }
             })
             .then(response => {
+                this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum = response.body.number;
                 resolve()
             })
             .catch(error => {
-                const data = error.body.data;
-                const selectNum =  this.selectData.carNum;
-                const stockNum = this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum;
-                this.selectData.carNum = selectNum > data.num ? data.num : selectNum;
-                this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum = stockNum > data.num ? data.num : stockNum;
+                this.pinbanText = error.body.msg
+                this.registerpopupState = true;
+                this.popupShowWhich = 'pinban';
+                // 不满足拼版
+                if (error.body.code == '403101') {
+                }
+                // 库存不足
+                if (error.body.code == '409001') {
+                    this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum
+                    this.selectData.carNum = error.data.number
+                }
             })
         })
         
@@ -707,7 +720,7 @@ export default {
 .registerPopup .register-wrapper .input-tel .tel {padding: 0 .4rem;width: 6.8rem; height: 1.2rem; line-height: 0.5rem; border: 1px solid #999;font-size: .34667rem;}
 .registerPopup .register-wrapper .btn-register {margin: 1.2rem auto;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
 .registerPopup .register-success-wrapper .ttl {text-align: center;font-size: 0.64rem;color: #ff5825;}
-.registerPopup .register-success-wrapper .desc {margin: .53333rem auto 1.2rem;text-align: center;font-size: 0.4rem;color: #2c2c2c;}
+.registerPopup .register-success-wrapper .desc {margin: .53333rem auto 1.2rem;padding: 0 .4rem;text-align: center;font-size: 0.4rem;color: #2c2c2c;}
 .registerPopup .register-success-wrapper .btn-goApp {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
 
 .select-wrapper {position: relative; overflow: hidden; padding: 0.53333rem .4rem;}
