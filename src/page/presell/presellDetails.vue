@@ -419,7 +419,7 @@ export default {
             isDisplay:isDisplay, //0为不显示, 1为显示
             presaleId:presaleId //预售id
         };
-        tcmApp(obj);
+        this.tcmApp(obj);
     },
     /*立即预定*/
     presellReserve() {
