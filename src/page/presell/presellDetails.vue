@@ -412,6 +412,15 @@ export default {
         };
         this.tcmApp(obj);
     },
+    //抢购详情返回按钮信息
+    presaleBack(isDisplay, presaleId) {
+        let obj = {
+            actionname:"presaleBack",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+            isDisplay:isDisplay, //0为不显示, 1为显示
+            presaleId:presaleId //预售id
+        };
+        tcmApp(obj);
+    },
     /*立即预定*/
     presellReserve() {
       if (this.isTcmApp) {
@@ -580,7 +589,7 @@ export default {
             link: shareInfo.shareUrl,
             imgUrl: shareInfo.shareImg
         };
-        
+        this.presaleBack(presellData.isDisplay, this.$route.query.id);
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
             if (update[0] === 'start') {
