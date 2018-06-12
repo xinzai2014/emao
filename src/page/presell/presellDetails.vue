@@ -63,7 +63,7 @@
                         <p class="car-reserve-tips">
                             <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
                         </p>
-                        <div class="car-reserve-roll">
+                        <div class="car-reserve-roll" v-if="preSaleData.buyList > 0">
                             <ul ref="con1" :class="{anim:animate==true}">
                                 <li v-for="(item, index) in preSaleData.buyList" :key="index">
                                     <span>{{item.time}}</span>
@@ -571,7 +571,6 @@ export default {
       sessionStorage.token = this.$route.query.token;
     }
     this.getPresellDetails().then((presellData) => {
-        console.log(presellData.preSale.endNum)
         const startTime = new Date(presellData.preSaleStartTime);
         const endTime = new Date(presellData.preSaleEndTime);
         const shareInfo = presellData.shareInfo;
