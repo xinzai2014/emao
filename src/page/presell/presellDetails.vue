@@ -566,10 +566,10 @@ export default {
     },
     // 立即抢购函数
     snapUpFun () {
-        this.checkInventory().then(() => {
+        // this.checkInventory().then(() => {
             this.selectPopupState = false
             window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
-        })
+        // })
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
