@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="presellData !== null">
         <!--预售详情-图片滚动-->
         <swiper :circular="circular" v-if="circular.length"></swiper>
         <!-- 价格和倒计时 -->
@@ -213,7 +213,7 @@ export default {
       selectPopupState: false, // 购买弹窗状态  
       circular: [], //轮播图数据
       animate: false, //是否运动
-      presellData: {}, //页面数据
+      presellData: null, //页面数据
       preSaleData: {}, //预售信息
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
@@ -394,7 +394,6 @@ export default {
     },
     //向导航条上添加分享按钮
     addShareButton() {
-        console.log(this.$route.query.id)
         let _this = this;
         var obj = {
             actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
@@ -567,11 +566,10 @@ export default {
     },
     // 立即抢购函数
     snapUpFun () {
-        // this.checkInventory().then(() => {
-        //     // alert('立即抢购');
-        //     window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
-        // })
-        window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+        this.checkInventory().then(() => {
+            this.selectPopupState = false
+            window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+        })
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
