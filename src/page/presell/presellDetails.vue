@@ -324,11 +324,6 @@ export default {
             preSaleId: this.$route.query.id
         }
 
-
-//      const params = {
-//          token: "0ad833a6e88891c4dc21120ba3fb0c8e",
-//          preSaleId: 55
-//      }
         this.$http({
             url: "order/preSale/setReminder",
             methods: "GET",
@@ -374,7 +369,6 @@ export default {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
         url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}` // 要打开的链接
-//        url:' emaotaochemao://push/PresaleConfirmOrder?eventId=' + this.$route.query.id + '&extColorId=' + this.stock[selectData.selectColorIndex].extColorId + '&intColorId=' + this.stock[selectData.selectColorIndex].intColorId + '&presaleNum=' + selectData.carNum;
       };
       this.tcmApp(obj);
     },
@@ -538,6 +532,7 @@ export default {
     },
     // 校验库存
     checkInventory () {
+        let _this = this;
         return new Promise(resolve => {
             this.$http({
                 url: 'order/preSale/preBuyCheck',
@@ -587,8 +582,7 @@ export default {
         );
     }
   },
-  mounted() {
-    setInterval(this.scroll,2000)   
+  created() {  
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
@@ -602,7 +596,7 @@ export default {
             link: shareInfo.shareUrl,
             imgUrl: shareInfo.shareImg
         };
-        this.presaleBack(presellData.isDisplay, this.$route.query.id);
+        
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
             if (update[0] === 'start') {
@@ -637,6 +631,8 @@ export default {
         } else {
             share(shareData);
         }
+        setInterval(this.scroll,2000) 
+        this.presaleBack(presellData.isDisplay, this.$route.query.id);
     });
     this.setMoney();
     

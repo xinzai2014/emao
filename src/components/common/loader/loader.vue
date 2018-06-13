@@ -14,8 +14,8 @@
     z-index:999;
 }
 .loading-icon{
-    width:0.43rem;
-    height:0.43rem;
+    width:1rem;
+    height:1rem;
     position:absolute;
     left:0;
     top:0;
