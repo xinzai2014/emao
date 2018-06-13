@@ -13,9 +13,9 @@
         <!--首页-选择车型-车型按字母排序-->
         <section class="brand-content-list" id="brandWrap"  ref="brandWrapper">
             <ul>
-                <li v-for="(item,index) in brandList">
+                <li v-for="(item,index) in brandList" :key="index">
                     <p>{{item.name}}</p>
-                    <div class="brand-wrap" @click="openMarkDialog(e)" v-for="(e,i) in item.list">
+                    <div class="brand-wrap" @click="openMarkDialog(e)" v-for="(e,i) in item.list" :key="i">
                             <div class="brand-content-img">
                                  <img v-bind:src=e.logoUrl>
                             </div>
@@ -27,7 +27,7 @@
         </section>
         <section class="brand-list-letters">
              <ul>
-                <li v-for="(item,index) in brandList" @click.stop="srcllToIndex(index)">{{item.name}}</li>
+                <li v-for="(item,index) in brandList" @click.stop="srcllToIndex(index)" :key="index">{{item.name}}</li>
             </ul>
         </section>
 
@@ -37,7 +37,7 @@
         <div class="dialog" v-if="showMark" @click="showMark = false">
           <section class="brand-rank">
               <ul>
-                <li v-for="(item,index) in agencyList" @click="closeMarkDialog(item,index)">{{item.text}}</li>
+                <li v-for="(item,index) in agencyList" @click="closeMarkDialog(item,index)" :key="index">{{item.text}}</li>
               </ul>
           </section>
         </div>

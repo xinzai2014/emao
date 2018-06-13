@@ -3,7 +3,7 @@
    <div class="sample-ct">
         <div class="submit-lt">
             <div class="submit-img">
-                <div class="pic-box" v-for="(item,index) in files" @click="lookBigImg(item.src,index)">
+                <div class="pic-box" v-for="(item,index) in files" :key="index" @click="lookBigImg(item.src,index)">
                     <div class="pic-wrap">
                       <img :src = item.src v-if="item.src">
                     </div>
