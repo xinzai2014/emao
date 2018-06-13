@@ -161,6 +161,8 @@ const record = r => require.ensure([],() => r(require('../page/invitation/record
 //领取
 const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
+const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
+
 Vue.use(Router)
 
 var router=new Router({
@@ -555,7 +557,13 @@ var router=new Router({
             path:'/invitation/receive',     //领取
             name:'receive',
             component:receive
-        }  
+        }
+        ,
+        {
+            path:'/test',     //领取
+            name:'test',
+            component:test
+        } 
     ]
 })
 
