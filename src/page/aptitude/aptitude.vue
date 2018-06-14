@@ -30,7 +30,7 @@
             <div class="authen-limts">
                 <span>是否为一般纳税人</span>
                 <div class="authen-limts-con">
-                    <em v-for="(item,index) in authTag" :class='{active:item.tag}' @click="checkAuthTag(item,index)"><i ></i>{{item.text}}</em>
+                    <em v-for="(item,index) in authTag" :key="index" :class='{active:item.tag}' @click="checkAuthTag(item,index)"><i ></i>{{item.text}}</em>
                 </div>
             </div>
         </div>

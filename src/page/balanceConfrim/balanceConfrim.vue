@@ -115,7 +115,7 @@
             </div>
             <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(index,item.id)" :key="index">
                         <dl class="clearfix">
                             <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>

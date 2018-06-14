@@ -9,13 +9,13 @@
             <div class="brand-wrap">
                 <div class="brand-lt">
                     <ul id="brand-ul">
-                        <li v-for="(item,index) in brandData" :class="item.id== initData.brandId ? 'active':''" @click="changeBrand(item.id,item.name)"><em>{{item.name}}</em></li>
+                        <li v-for="(item,index) in brandData" :key="index" :class="item.id== initData.brandId ? 'active':''" @click="changeBrand(item.id,item.name)"><em>{{item.name}}</em></li>
                     </ul>
                 </div>
                 <div class="brand-rt">
                     <h4>共{{serieLength}}款车系在售</h4>
                     <div class="brand-ct">
-                        <div class="brand-item" v-for="(item,index) in serieData" @click="goSerie(item.id)">
+                        <div class="brand-item" v-for="(item,index) in serieData" :key="index" @click="goSerie(item.id)">
                             <img :src = item.imgUrl alt="">
                             <div class="brand-info">
                                 <p class="brand-info-tit">{{item.name}}</p>

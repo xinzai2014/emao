@@ -1,6 +1,7 @@
 <template>
+<!-- <div></div> -->
   <div class="login-bg">
-    <section class="login-in">
+     <section class="login-in">
         <p class="login-logo">
             <i></i>
         </p>
