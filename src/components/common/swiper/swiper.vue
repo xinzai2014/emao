@@ -3,7 +3,7 @@
 	<section class="look-slider">
 		<div class="swiper-container swiperWrap1">
 			<div class="swiper-wrapper">
-				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="lookFull()">
+				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="lookFull()" :key="index">
 					<img  :src=item.imgUrl  >
 				</a>
 			</div>
@@ -14,13 +14,13 @@
 		<div class="swiper-fullpage"  @click="closeFull" :class="{translateY:showFull}">
 			<div class="swiper-container swiperWrap2">
 				<div class="swiper-wrapper">
-					<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide">
+					<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" :key="index">
 						<img  :src=item.imgUrl  >
 					</a>
 				</div>
 			</div>
 			<ul class="fullpage-icon">
-	        	<li v-for="(item,index) in circular" :class='{active:activeIndex == index}'></li>
+	        	<li v-for="(item,index) in circular" :class='{active:activeIndex == index}' :key="index"></li>
 	        </ul>
 		</div>
 

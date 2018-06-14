@@ -13,7 +13,7 @@
     </section>
    <section class="book-car-info" v-if="serieData.length>0">
        <ul>
-           <li v-for="(item,index) in serieData">
+           <li v-for="(item,index) in serieData" :key="index">
                <p class="book-car-name">{{item.name}}</p>
                <div class="book-car-price-info clearfix">
                    <div class="book-car-price">
@@ -45,7 +45,7 @@
       <section class="good-detail-pic-wrap" v-if="goodsPicData.length>0">
           <p class="good-detail-pic-title">商品详情</p>
           <ul class="good-detail-pic-list">
-              <li v-for="(item,index) in goodsPicData"  @click="showFullScreen(item)">
+              <li v-for="(item,index) in goodsPicData" :key="index"  @click="showFullScreen(item)">
                   <img :src=item alt="">
               </li>
           </ul>
@@ -118,7 +118,7 @@
             <div class="book-order-colors">
                 <p>可选颜色</p>
                 <ul class="clearfix">
-                    <li class="choosable" @click.stop="updateFullIndex(index,item.sum)" :class="{unavailable:disabledFullIndex == index,active:ActiveIndex == index}" v-for="(item,index) in fullData.stock">{{item.color}}/{{item.inColor}}</li>
+                    <li class="choosable" @click.stop="updateFullIndex(index,item.sum)" :class="{unavailable:disabledFullIndex == index,active:ActiveIndex == index}" v-for="(item,index) in fullData.stock" :key="index">{{item.color}}/{{item.inColor}}</li>
                 </ul>
             </div>
             <section class="book-buy-now">
@@ -151,7 +151,7 @@
               <div class="book-order-colors">
                   <p>可选颜色</p>
                   <ul class="clearfix">
-                      <li class="choosable" @click.stop="updateExhibIndex(index,item.sum)" v-for="(item,index) in ExhibData.stock" :class="{unavailable:disabledExhibIndex == index,active:ActiveExhibIndex == index}">{{item.color}}/{{item.inColor}}</li>
+                      <li class="choosable" @click.stop="updateExhibIndex(index,item.sum)" v-for="(item,index) in ExhibData.stock" :key="index" :class="{unavailable:disabledExhibIndex == index,active:ActiveExhibIndex == index}">{{item.color}}/{{item.inColor}}</li>
                   </ul>
               </div>
               <section class="book-buy-now">
@@ -480,7 +480,6 @@ export default {
 /*商品详情图片*/
 .good-detail-pic-wrap{margin-bottom:.4rem;}
 .good-detail-pic-title{height: 1.4667rem;padding-left: .4rem;line-height: 1.4667rem;font-size: .4266rem;background-color: #fff;}
-.good-detail-pic-list{}
 .good-detail-pic-list li{width:100%;}
 .good-detail-pic-list li img{width:100%;}
 /*全屏展示*/
@@ -497,7 +496,6 @@ export default {
 .book-car-repertory{margin-top:.4rem;color:#999;font-size:.4rem;}
 .book-order-colors{margin:0 .4rem 2.667rem .4rem;padding:.5333rem 0;border-bottom:1px solid #ccc;}
 .book-order-colors p{color:#2c2c2c;font-size:.4rem;margin-bottom:.4rem;}
-.book-order-colors ul{}
 .book-order-colors li{float:left;height:.8533rem;margin-right:.4rem;margin-bottom:.4rem;padding:0 .2667rem;line-height:.8533rem;font-size:.3733rem;border-radius:.1333rem;}
 .book-order-colors li.choosable{background-color:#f5f5f5;color:#2c2c2c;}
 .book-order-colors li.active{background-color:#d5aa5c;color:#fff;}

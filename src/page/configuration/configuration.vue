@@ -10,11 +10,11 @@
         <div class="config" ref="carWrap">
             <div class="config-left-con">
 <!--                 <div class="config-nothing"></div> -->
-                <div class="config-param-names" v-for = "(item,index) in dataList.param">
+                <div class="config-param-names" v-for = "(item,index) in dataList.param" :key="index">
                     <div class="row-head row-heads">
                         <span class="cell-text" :class="{'head-fixed':scrollIndex == index}">{{item.name}}</span>
                     </div>
-                    <div class="row" v-for="(e,i) in item.list">
+                    <div class="row" v-for="(e,i) in item.list" :key="i">
                         <div class="cell">
                             <span class="cell-text">{{e.name}}</span>
                         </div>
@@ -23,18 +23,18 @@
             </div>
             <div class="config-right-con">
                  <div class="config-param-list">
-                    <template v-for = "(item,index) in dataList.param">
+                    <div v-for = "(item,index) in dataList.param" :key="index">
                         <div class="row_head">
                             <p :class="{'head-fixed':scrollIndex == index}">
                                 <span>●标配</span><span>○选配</span><span>-无</span>
                             </p>
                         </div>
-                        <div class="row" v-for="(e,i) in item.list">
+                        <div class="row" v-for="(e,i) in item.list" :key="i">
                             <div class="cell">
                                 <div class="cell-text">{{e.value}}</div>
                             </div>
                         </div>
-                    </template>
+                    </div>
                 </div>
             </div>
           <div class="con-msg">注：以上仅供参考,请以实车为准</div>

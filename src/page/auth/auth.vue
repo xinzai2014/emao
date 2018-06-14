@@ -55,7 +55,7 @@
                 <label>感兴趣的产品定位：</label>
             </p>
             <div class="product-positioning">
-                <div @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType">
+                <div @click="setActive(item)"  :class="{active:item['flag']}" v-for="(item,index) in manageType" :key="index">
                     <i>{{item.name}}</i>
                     <i>{{item.value}}</i>
                 </div>
@@ -66,7 +66,7 @@
             <div class="authen-limts">
                 <span>是否经过厂家品牌授权</span>
                 <div class="authen-limts-con">
-                    <em v-for="(item,index) in authTag" :class='{active:item.tag}' @click="checkAuthTag(item,index)"><i ></i>{{item.text}}</em>
+                    <em v-for="(item,index) in authTag" :class='{active:item.tag}' @click="checkAuthTag(item,index)" :key="index"><i ></i>{{item.text}}</em>
                 </div>
             </div>
             <div class="authen-limts-list clearfix" v-if="showAuthBrandList&&authBrandList.length" @click="showBrand = true">
@@ -74,7 +74,7 @@
                     <dt>授权品牌</dt>
                     <dt>品牌级别</dt>
                 </dl>
-                <dl v-for="(item,index) in authBrandList">
+                <dl v-for="(item,index) in authBrandList" :key="index">
                     <dd>{{item.name}}</dd>
                     <dd>{{item.text}}</dd>
                 </dl>
@@ -84,7 +84,7 @@
             <span>是否具备维修条件</span>
             <div class="authen-condition-nav clearfix">
                 <ul>
-                    <li v-for="(item,index) in conditions" @click="chooseConditions(item,index)" :class='{"active":item.flag}'>{{item.text}}</li>
+                    <li v-for="(item,index) in conditions" @click="chooseConditions(item,index)" :class='{"active":item.flag}' :key="index">{{item.text}}</li>
                 </ul>
             </div>
             <div class="authen-condition-con clearfix">

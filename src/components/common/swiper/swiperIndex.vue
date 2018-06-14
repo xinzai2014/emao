@@ -3,7 +3,7 @@
 	<section class="index-slider">
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
-				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="refresh(item.url)">
+				<a v-for="(item,index) in circular" :key="index" :circuid=item.id  class="swiper-slide" @click="refresh(item.url)">
 					<img  :src=item.imgUrl  >
 				</a>
 			</div>
