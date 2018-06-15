@@ -513,11 +513,12 @@ export default {
         .catch((err) => {
             _this.$store.dispatch("AJAX_LOADING", false)
             if (err.data.code === 400) {
-                _this.popupShowWhich = 'registed'
+                _this.popupShowWhich = 'registed';
+                return
             }
             this.$store.dispatch("ALERT", {
                 flag:true,
-                text:response.body.msg
+                text:err.data.msg
             });
         })
     },
@@ -545,7 +546,6 @@ export default {
     checkInventory () {
         let _this = this;
         return new Promise((resolve, reject) => {
-            
             this.$http.post('preSale/checkDealerState', {
                 token:this.$route.query.token,
                 id: this.$route.query.id
@@ -554,10 +554,10 @@ export default {
                 resolve()
             })
             .catch(error => {
-                this.pinbanText = error.body.msg
+                this.pinbanText = error.data.msg
                 this.registerpopupState = true;
                 this.popupShowWhich = 'pinban';
-                if (error.response.data.data.code === 400 || error.response.data.data.code === 401406) {
+                if (error.data.code === 400 || error.data.code === 401406) {
                     this.btnTypeOfCheck = 'update'
                 } else {
                     this.btnTypeOfCheck = 'know'
