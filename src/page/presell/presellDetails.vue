@@ -97,7 +97,7 @@
             <p class="presell-explain-title">关于限时抢购</p>
             <ul class="presell-explain-con">
                 <li><span>1.</span>定金将在提车完成后，退回原支付账户；</li>
-                <li><span>2.</span>支付定金可锁定车源，车辆入库后补齐尾款，前往指定地点提车；</li>
+                <li><span>2.</span>支付定金可锁定车源，车辆入库后支付全款。提车完成后，定金退回原支付账户。</li>
                 <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
                 <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源；</li>
                 <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还；</li>
@@ -589,7 +589,7 @@ export default {
             link: shareInfo.shareUrl,
             imgUrl: shareInfo.shareImg
         };
-        if (preSaleData.buyList.length > 1) {
+        if (presellData.preSale.buyList.length > 1) {
           setInterval(this.scroll,2000);
         }
         timeCountdown({startTime, endTime}, (update) => {
@@ -621,12 +621,15 @@ export default {
             this.countdownText = '距离结束还剩'
             this.countdownState = true;
         })
+        
         if (this.isTcmApp) {
             this.addShareButton();
         } else {
             share(shareData);
         }
+
         this.presaleBack(presellData.isDisplay, this.$route.query.id);
+
     });
     this.setMoney();
     
