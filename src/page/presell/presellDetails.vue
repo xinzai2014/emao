@@ -557,7 +557,7 @@ export default {
                 this.pinbanText = error.data.msg
                 this.registerpopupState = true;
                 this.popupShowWhich = 'pinban';
-                if (error.data.code === 400 || error.data.code === 401406) {
+                if (error.data.code == 400 || error.data.code == 401406) {
                     this.btnTypeOfCheck = 'update'
                 } else {
                     this.btnTypeOfCheck = 'know'
