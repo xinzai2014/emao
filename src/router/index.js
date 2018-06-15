@@ -152,6 +152,8 @@ const authorize = r => require.ensure([], () => r(require('../page/storesH5/auth
 
 //预售详情
 const presellDetails = r => require.ensure([], () => r(require('../page/presell/presellDetails')),'presellDetails')
+// 新预售详情
+const detail = r => require.ensure([], () => r(require('../page/presell/detail')),'detail')
 
 //预售确认预定
 const presellReserve = r => require.ensure([], () => r(require('../page/presell/presellReserve')),'presellReserve')
@@ -535,6 +537,11 @@ var router=new Router({
             path:'/presell/presellDetails/:id',  //预售详情页
             name:'presellDetails',
             component:presellDetails
+        },
+        {
+            path:'/presell/detail',  //预售详情页
+            name:'detail',
+            component:detail
         },
         {
             path:'/presell/presellReserve/:id',   //预售确认预定
