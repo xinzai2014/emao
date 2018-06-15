@@ -173,14 +173,14 @@ Vue.http.interceptors.push(function(request, next) {
 			// 	this.$router.push('/login/account');
 			// 	return false;
 			// }
-	    	if(/^[3-5]/.test(code)){
-	    		this.$store.dispatch("ALERT", // 通过store传值
-			      {
-			      	flag:true,
-			      	text:response.body.msg
-			      }
-			    );
-	    	}
+	    	// if(/^[3-5]/.test(code)){
+	    	// 	this.$store.dispatch("ALERT", // 通过store传值
+			  //     {
+			  //     	flag:true,
+			  //     	text:response.body.msg
+			  //     }
+			  //   );
+	    	// }
     	}
     	//console.log(response.status);
     	if(this.$store.state.ajaxLoading == true){

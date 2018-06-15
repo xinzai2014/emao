@@ -148,7 +148,8 @@
             <!-- 拼版失败弹框 -->
             <div class="register-success-wrapper" v-show="popupShowWhich === 'pinban'">
                 <h4 class="desc">{{pinbanText}}</h4>
-                <div class="btn-goApp" @click="registerpopupState=false">知道了</div>
+                <div class="btn-goApp" v-if="btnTypeOfCheck === 'update'" @click="goUpdate">前往升级</div>
+                <div class="btn-goApp" v-else @click="registerpopupState = false">知道了</div>
             </div>
         </popup>
         <popup
@@ -197,11 +198,11 @@ import VerificationCode from '../../components/common/verificationCode/verificat
 import {timeCountdown} from '../../common/js/countdown.js'; 
 import share from '../../common/js/shareOnly.js';
 
-
 export default {
   name: "presellDetails",
   data() {
     return {
+      btnTypeOfCheck: 'update',
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
@@ -292,6 +293,15 @@ export default {
     }
   },
   methods: {
+    // 前往升级
+    goUpdate () {
+        this.registerpopupState = false
+        var obj = {
+            actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+            url: `https://tcm.m.emao.com/#/storesH5/authorize` // 要打开的链接
+        };
+        this.tcmApp(obj);
+    },
     // 前往下载
     downloadApp () {
         window.location.href = `http://url.cn/5Ne6oti`
@@ -490,7 +500,7 @@ export default {
         }
         this.$http({
             url: 'withoutAuth/passport/registerWithoutCode',
-            method: 'POST',
+            method: 'GET',
             params: {
                 phone: _this.telVal,
                 invite: _this.$route.query.invite,
@@ -505,6 +515,10 @@ export default {
             if (err.data.code === 400) {
                 _this.popupShowWhich = 'registed'
             }
+            this.$store.dispatch("ALERT", {
+                flag:true,
+                text:response.body.msg
+            });
         })
     },
     //设置store
@@ -543,6 +557,11 @@ export default {
                 this.pinbanText = error.body.msg
                 this.registerpopupState = true;
                 this.popupShowWhich = 'pinban';
+                if (error.response.data.data.code === 400 || error.response.data.data.code === 401406) {
+                    this.btnTypeOfCheck = 'update'
+                } else {
+                    this.btnTypeOfCheck = 'know'
+                }
                 reject();
             })
         })
