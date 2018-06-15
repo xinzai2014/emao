@@ -1,6 +1,6 @@
 <template>
-<!-- <div></div> -->
-  <div class="login-bg">
+<div></div>
+  <!-- <div class="login-bg">
      <section class="login-in">
         <p class="login-logo">
             <i></i>
@@ -15,7 +15,7 @@
               </transition>
           </div>
     </section>
-</div>
+</div> -->
 </template>
 
 <script>
