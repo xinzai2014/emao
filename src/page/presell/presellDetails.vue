@@ -581,7 +581,8 @@ export default {
     }
   },
   created() {
-    setInterval(this.scroll,2000)
+    setInterval(this.scroll,2000);
+    console.log("编译");
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
