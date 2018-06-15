@@ -96,13 +96,13 @@
         <section class="car-presell-explain">
             <p class="presell-explain-title">关于限时抢购</p>
             <ul class="presell-explain-con">
-                <li><span>1.</span>定金将在提车完成后，退回原支付账户；</li>
-                <li><span>2.</span>支付定金可锁定车源，车辆入库后支付全款。提车完成后，定金退回原支付账户。</li>
+                <li><span>1.</span>支付定金可锁定车源，车辆入库后支付全款。</li>
+                <li><span>2.</span>提车完成后，定金退回原支付账户。</li>
                 <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
-                <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源；</li>
-                <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还；</li>
-                <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券；</li>
-                <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致；</li>
+                <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源。</li>
+                <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还。</li>
+                <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券。</li>
+                <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致。</li>
                 <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
             </ul>
         </section>
@@ -291,18 +291,16 @@ export default {
         }
     }
   },
-  
   methods: {
     // 前往下载
     downloadApp () {
         window.location.href = `http://url.cn/5Ne6oti`
     },
-  
     // 设置优惠券金额
     setMoney () {
         this.$http({
             url: 'https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew',
-            methods: 'GET'
+            method: 'GET'
         })
         .then(response => {
             this.moneyVal = response.data.data.price
@@ -321,7 +319,7 @@ export default {
 
         this.$http({
             url: "order/preSale/setReminder",
-            methods: "GET",
+            method: "GET",
             params: params
         }).then(function(response) {
             const data = response.body.data;
@@ -418,7 +416,12 @@ export default {
     /*立即预定*/
     presellReserve() {
       if (this.isTcmApp) {
-        this.selectPopupState = true;
+        this.checkInventory().then(() => {
+            this.selectPopupState = true;
+        }).catch(() => {
+            return
+        })
+        
       } else {
         this.registerpopupState = true;
       }
@@ -439,7 +442,7 @@ export default {
         }
         this.$http({
             url: "preSale/detail",
-            methods: "GET",
+            method: "GET",
             params: params
         }).then(function(response) {
             let data = response.body.data;
@@ -487,7 +490,7 @@ export default {
         }
         this.$http({
             url: 'withoutAuth/passport/registerWithoutCode',
-            type: 'POST',
+            method: 'POST',
             params: {
                 phone: _this.telVal,
                 invite: _this.$route.query.invite,
@@ -524,47 +527,31 @@ export default {
         }
         this.selectData.carNum = --this.selectData.carNum < 1 ? 1 : this.selectData.carNum
     },
-    // 校验库存
+    // 校验是否是经销商
     checkInventory () {
         let _this = this;
-        return new Promise(resolve => {
-            this.$http({
-                url: 'order/preSale/preBuyCheck',
-                type: 'GET',
-                params: {
-                    token:this.$route.query.token,
-                    id: this.$route.query.id,
-                    extColorId: this.stock[this.selectData.selectColorIndex].extColorId,
-                    intColorId: this.stock[this.selectData.selectColorIndex].intColorId,
-                    number: this.selectData.carNum
-                }
+        return new Promise((resolve, reject) => {
+            
+            this.$http.post('preSale/checkDealerState', {
+                token:this.$route.query.token,
+                id: this.$route.query.id
             })
             .then(response => {
-                this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum = response.body.number;
                 resolve()
             })
             .catch(error => {
                 this.pinbanText = error.body.msg
                 this.registerpopupState = true;
                 this.popupShowWhich = 'pinban';
-                // 不满足拼版
-                if (error.body.code == '403101') {
-                }
-                // 库存不足
-                if (error.body.code == '409001') {
-                    this.presellData.preSaleList[this.selectData.selectColorIndex].stockNum
-                    this.selectData.carNum = error.data.number
-                }
+                reject();
             })
         })
         
     },
     // 立即抢购函数
     snapUpFun () {
-        // this.checkInventory().then(() => {
-            this.selectPopupState = false
-            window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
-        // })
+        this.selectPopupState = false
+        window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
     },
     initAlert (content) {
         this.$store.dispatch("ALERT", // 通过store传值
