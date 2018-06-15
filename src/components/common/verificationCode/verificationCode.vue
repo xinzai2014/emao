@@ -72,7 +72,7 @@
         
         this.$http({
           url: this.options.url,
-          type: 'GET',
+          method: 'GET',
           params: this.options.params
         })
         .then((res) => {
