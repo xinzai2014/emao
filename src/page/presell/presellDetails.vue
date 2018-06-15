@@ -63,7 +63,7 @@
                         <p class="car-reserve-tips">
                             <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
                         </p>
-                        <div class="car-reserve-roll" v-if="preSaleData.buyList > 0">
+                        <div class="car-reserve-roll" v-if="preSaleData.buyList.length > 0">
                             <ul ref="con1" :class="{anim:animate==true}">
                                 <li v-for="(item, index) in preSaleData.buyList" :key="index">
                                     <span>{{item.time}}</span>
@@ -580,7 +580,8 @@ export default {
         );
     }
   },
-  created() {  
+  created() {
+    setInterval(this.scroll,2000)
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
@@ -629,7 +630,6 @@ export default {
         } else {
             share(shareData);
         }
-        setInterval(this.scroll,2000) 
         this.presaleBack(presellData.isDisplay, this.$route.query.id);
     });
     this.setMoney();
