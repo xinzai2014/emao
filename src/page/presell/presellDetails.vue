@@ -70,11 +70,6 @@
                                     <span>{{item.dealer}}</span>
                                     <span>{{item.num}}</span>
                                 </li>
-                                <li>
-                                    <span>{{preSaleData.buyList[0].time}}</span>
-                                    <span>{{preSaleData.buyList[0].dealer}}</span>
-                                    <span>{{preSaleData.buyList[0].num}}</span>
-                                </li>
                             </ul>
                         </div>
 
@@ -581,8 +576,6 @@ export default {
     }
   },
   created() {
-    setInterval(this.scroll,2000);
-    console.log("编译");
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
@@ -596,7 +589,9 @@ export default {
             link: shareInfo.shareUrl,
             imgUrl: shareInfo.shareImg
         };
-        
+        if (preSaleData.buyList.length > 1) {
+          setInterval(this.scroll,2000);
+        }
         timeCountdown({startTime, endTime}, (update) => {
             this.countdownArr = update;
             if (update[0] === 'start') {
