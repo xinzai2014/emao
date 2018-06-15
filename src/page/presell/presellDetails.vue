@@ -580,7 +580,8 @@ export default {
         );
     }
   },
-  created() {  
+  created() {
+    setInterval(this.scroll,2000)
     if (!sessionStorage.token) {
       sessionStorage.token = this.$route.query.token;
     }
@@ -629,7 +630,6 @@ export default {
         } else {
             share(shareData);
         }
-        setInterval(this.scroll,2000) 
         this.presaleBack(presellData.isDisplay, this.$route.query.id);
     });
     this.setMoney();
