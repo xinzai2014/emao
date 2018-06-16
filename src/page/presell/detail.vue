@@ -310,8 +310,7 @@ export default {
     setMoney () {
         this.$http({
             url: 'https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew',
-            method: 'GET',
-            headers: {"Accept":"application/json; version=2.11.0"}
+            method: 'GET'
         })
         .then(response => {
             this.moneyVal = response.data.data.price
@@ -331,7 +330,8 @@ export default {
         this.$http({
             url: "order/preSale/setReminder",
             method: "GET",
-            params: params
+            params: params,
+            headers: {"Accept":"application/json; version=2.11.0"}
         }).then(function(response) {
             const data = response.body.data;
             this.setStoreAlert('设置成功！')
@@ -454,7 +454,8 @@ export default {
         this.$http({
             url: "preSale/detail",
             method: "GET",
-            params: params
+            params: params,
+            headers: {"Accept":"application/json; version=2.11.0"}
         }).then(function(response) {
             let data = response.body.data;
             this.presellData = data;
