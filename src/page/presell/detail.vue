@@ -310,7 +310,8 @@ export default {
     setMoney () {
         this.$http({
             url: 'https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew',
-            method: 'GET'
+            method: 'GET',
+            headers: {"Accept":"application/json; version=2.11.0"}
         })
         .then(response => {
             this.moneyVal = response.data.data.price

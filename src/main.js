@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/'
+import axios from 'axios'
 
 //无限滚动加载
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -48,7 +49,7 @@ Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //};
 
 Vue.http.headers.common = {
-	Accept:"application/json; version=2.11.0"
+	Accept:"application/json; version=2.10.0"
 };
 
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
