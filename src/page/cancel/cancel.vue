@@ -6,7 +6,7 @@
 		</header>
 		<!--退订展车-->
 	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load" @click="cancelUrl">
-	        <div class="bought-item" v-for="(item,index) in infoData">
+	        <div class="bought-item" v-for="(item,index) in infoData" :key="index">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
 		            <div class="bought-ct bought-bt">
 		                <p class="bought-tit">{{item.name}}</p>

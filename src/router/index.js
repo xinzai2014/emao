@@ -109,7 +109,6 @@ const soldCarDetail = r => require.ensure([],() => r(require('../page/soldCarDet
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
 const resultSuccess = r => require.ensure([], () => r(require('../page/orderConfrim/children/resultSuccess')), 'resultSuccess')
 
-
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
 
@@ -118,12 +117,6 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
-
-
-
-
-
-
 
 //后期淘车猫加入专题
 const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
@@ -143,12 +136,9 @@ const empowerAudit = r => require.ensure([], () => r(require('../page/empower/em
 //授权店审核通过
 const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
 
-
 //app1.5.0加盟店H5
-
 const problem = r => require.ensure([], () => r(require('../page/storesH5/problem')), 'problem')
 const authorize = r => require.ensure([], () => r(require('../page/storesH5/authorize')), 'authorize')
-
 
 //预售详情
 const presellDetails = r => require.ensure([], () => r(require('../page/presell/presellDetails')),'presellDetails')
@@ -173,8 +163,7 @@ const record = r => require.ensure([],() => r(require('../page/invitation/record
 //领取
 const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
-
-
+const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
 
 Vue.use(Router)
 
@@ -532,12 +521,7 @@ var router=new Router({
             path: '/storesH5/authorize',  //授权店
             name: 'authorize',
             component: authorize
-        },
-        {
-            path:'/presell/presellDetails/:id',  //预售详情页
-            name:'presellDetails',
-            component:presellDetails
-        },
+        } ,
         {
             path:'/presell/detail',  //预售详情页
             name:'detail',
@@ -547,6 +531,11 @@ var router=new Router({
             path:'/presell/presellReserve/:id',   //预售确认预定
             name:'presellReserve',
             component:presellReserve
+        },
+        {
+            path:'/presell/presellDetails',   //预售确认预定
+            name:'presellDetails',
+            component:presellDetails
         },
         {
             path:'/presell/presellSuccess',  //预定成功
@@ -576,7 +565,12 @@ var router=new Router({
             name:'receive',
             component:receive
         }
-        
+        ,
+        {
+            path:'/test',     //领取
+            name:'test',
+            component:test
+        } 
     ]
 })
 
@@ -598,8 +592,8 @@ router.beforeEach((to, from, next) => {
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    //如何做登录完了回到某个页面去呢
-    if(to.name=='receive'||to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"||to.name == "receive"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
+    //如何做登录完了回到某个页面去呢  
+    if(to.name=='receive'||to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"||to.name == "receive"||to.name == "presellDetails"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
         next();
     }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
         next();

@@ -1,7 +1,6 @@
 <template>
     <div class="alet_container fadeIn">
         <section class="tip_text_container">
-
             <p class="tip_text">{{alertTextState}}</p>
         </section>
     </div>
@@ -46,7 +45,7 @@
 .tip_text{
     background: #666;
     color: white;
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.5rem;
     position: fixed;
     left:50%;
     transform:translateX(-50%);
@@ -54,5 +53,6 @@
     font-size: 0.35rem;
     background:rgba(0,0,0,0.75);
     white-space:nowrap;
+    border-radius: .12rem
 }
 </style>
