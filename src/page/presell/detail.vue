@@ -11,7 +11,7 @@
                 </div>
                 <div class="countdown">
                     <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
-                    <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div> 
+                    <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div>
                 </div>
             </div>
         </section>
@@ -154,7 +154,7 @@
         </popup>
         <popup
             class="selectPopup"
-            :showPopup="selectPopupState" 
+            :showPopup="selectPopupState"
             :contentStyleObj="{
                 background: '#fff'
             }"
@@ -166,10 +166,10 @@
                 <div class="color-select">
                     <h4>可选颜色</h4>
                     <ul class="color-wrapper">
-                        <li 
-                            class="color-item" 
+                        <li
+                            class="color-item"
                             :class="{'active': selectData['selectColorIndex'] === index}"
-                            v-for="(item, index) in stock" 
+                            v-for="(item, index) in stock"
                             :key="index"
                             @click="selectColor(index)">
                             {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
@@ -182,11 +182,11 @@
                         <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
                         <span class="num-content">{{selectData.carNum}}</span>
                         <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
-                    </div> 
+                    </div>
                 </div>
                 <div class="btn-go" @click="snapUpFun">立即抢购</div>
                 <span class="btn-close" @click="selectPopupState = false"></span>
-            </div>   
+            </div>
         </popup>
     </div>
 </template>
@@ -195,7 +195,7 @@ import swiper from "../../components/common/swiper/swiper";
 import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
 import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
-import {timeCountdown} from '../../common/js/countdown.js'; 
+import {timeCountdown} from '../../common/js/countdown.js';
 import share from '../../common/js/shareOnly.js';
 
 export default {
@@ -206,7 +206,7 @@ export default {
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
-      selectPopupState: false, // 购买弹窗状态  
+      selectPopupState: false, // 购买弹窗状态
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: null, //页面数据
@@ -330,7 +330,8 @@ export default {
         this.$http({
             url: "order/preSale/setReminder",
             method: "GET",
-            params: params
+            params: params,
+            headers: {"Accept":"application/json; version=2.11.0"}
         }).then(function(response) {
             const data = response.body.data;
             this.setStoreAlert('设置成功！')
@@ -339,7 +340,7 @@ export default {
         }).catch((error) => {
             this.setStoreAlert('设置失败！')
         })
-    },  
+    },
     // 设置弹窗状态
     changeState (state) {
         this.registerpopupState = state;
@@ -431,7 +432,7 @@ export default {
         }).catch(() => {
             return
         })
-        
+
       } else {
         this.registerpopupState = true;
       }
@@ -453,7 +454,8 @@ export default {
         this.$http({
             url: "preSale/detail",
             method: "GET",
-            params: params
+            params: params,
+            headers: {"Accept":"application/json; version=2.11.0"}
         }).then(function(response) {
             let data = response.body.data;
             this.presellData = data;
@@ -468,7 +470,7 @@ export default {
             window.deliveryPlace = data.deliveryPlace;
             localStorage.setItem("deliveryPlace", data.deliveryPlace);
         });
-      })  
+      })
     },
     twoDetial (x) {
         let f = parseFloat(x)
@@ -549,6 +551,10 @@ export default {
             this.$http.post('preSale/checkDealerState', {
                 token:this.$route.query.token,
                 id: this.$route.query.id
+            }, {
+                headers: {
+                    "Accept":"application/json; version=2.11.0"
+                }
             })
             .then(response => {
                 resolve()
@@ -565,7 +571,7 @@ export default {
                 reject();
             })
         })
-        
+
     },
     // 立即抢购函数
     snapUpFun () {
@@ -627,7 +633,7 @@ export default {
             this.countdownText = '距离结束还剩'
             this.countdownState = true;
         })
-        
+
         if (this.isTcmApp) {
             this.addShareButton();
         } else {
@@ -638,7 +644,7 @@ export default {
 
     });
     this.setMoney();
-    
+
     this.renderDom();
   },
   components: {
@@ -682,7 +688,7 @@ export default {
 .car-count-down span {display: block;}
 .car-count-down span:nth-of-type(2) {font-size: 0.3467rem;font-weight: bold;}
 .car-time-place ul li {margin-bottom: 0.267rem;}
-.car-time-place ul li:after {display: block; content: '';clear: both;width: 0} 
+.car-time-place ul li:after {display: block; content: '';clear: both;width: 0}
 .car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
 .car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
 .car-reserve {padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
