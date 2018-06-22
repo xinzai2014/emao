@@ -246,7 +246,7 @@ export default {
       },
       moneyVal: 0, // 优惠券金额
       cityData: [], // 城市信息
-      cityIndex: 1, // 选择的是第几个省份
+      cityIndex: null, // 选择的是第几个省份
       isDealers: false, // 是否是经销商
     };
   },
@@ -441,7 +441,7 @@ export default {
     presellReserve() {
       if (this.isTcmApp) {
         if (this.isDealers) {
-            this.selectPopupState = true;
+            this.selectPopupState = false;
         } else {
             this.cityPopupState = true;
         }
@@ -572,6 +572,7 @@ export default {
             })
             .then(response => {
                 this.isDealers = true
+                this.cityPopupState = false;
             })
             .catch(error => {
                 this.isDealers = false;
@@ -623,8 +624,7 @@ export default {
                 provinceId: provinceId
             })
             .then(response => {
-                alert(1)
-                window.location.reload();
+                window.location.href = window.location.href
             })
         }
     },
@@ -691,13 +691,10 @@ export default {
         })
 
         // 测试
-        this.getCityData();
-        this.checkInventory();
         if (this.isTcmApp) {
             this.addShareButton();
             this.getCityData();
             this.checkInventory();
-            this.cityPopupState = true;
         } else {
             share(shareData);
         }
@@ -741,7 +738,7 @@ export default {
 .cityWrapper .shadow-top {top: 0}
 .cityWrapper .shadow-bottom{bottom: 0}
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
-.cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border:1px solid #999; border-radius: .12rem; font-size: .4rem; color: #fff}
+.cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
 
 .car-info-wrap{ padding:0 .4rem .4rem; background: #fff;}
 .car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
