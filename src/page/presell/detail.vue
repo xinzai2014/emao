@@ -202,13 +202,11 @@
                 <div class="provinceWrapper" ref="provinceWrapper">
                     <ul class="provinceInner">
                         <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
-                        <li>1111</li>
                     </ul>
                 </div>
                 <div class="cityWrapper" ref="cityWrapper">
                     <ul class="cityInner">
                         <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
-                        <li>11111</li>
                     </ul>
                 </div>
                 <div class="shadow shadow-top"></div>
@@ -782,7 +780,7 @@ export default {
 
 <style>
 .citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
-.provinceWrapper,.cityWrapper {flex: 0 0 4rem;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
+.provinceWrapper,.cityWrapper {flex: 0 0 4.4rem;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
 .provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
 .provinceWrapper .provinceInner li {text-align: right;}
 .cityWrapper .cityInner li {text-align: left}
