@@ -182,7 +182,7 @@
                     </div>
                     <div class="btn-go" @click="snapUpFun">立即抢购</div>
                     <span class="btn-close" @click="selectPopupState = false"></span>
-                </div>   
+                </div>
             </popup>
         </div>
         
@@ -198,13 +198,23 @@
             position="center"
             @changePopupState="changeState">
             <div class="ttl">请选择您所在的省份</div>
-            <div class="cityWrapper" ref="cityWrapper">
-                <ul class="cityInner">
-                    <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
-                </ul>
-                <div class="shadow shadow-top"></div>
-                <div class="shadow shadow-bottom"></div>
+            <div class="citySelectWrapper">
+                <div class="provinceWrapper" ref="provinceWrapper">
+                    <ul class="provinceInner">
+                        <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
+                    </ul>
+                    <div class="shadow shadow-top"></div>
+                    <div class="shadow shadow-bottom"></div>
+                </div>
+                <div class="cityWrapper" ref="cityWrapper">
+                    <ul class="cityInner">
+                        <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
+                    </ul>
+                    <div class="shadow shadow-top"></div>
+                    <div class="shadow shadow-bottom"></div>
+                </div>
             </div>
+            
             <div class="btn" @click="confirmCity">确定</div> 
         </popup>    
     </div>
@@ -245,8 +255,9 @@ export default {
           carNum: 1
       },
       moneyVal: 0, // 优惠券金额
-      cityData: [], // 城市信息
-      cityIndex: 0, // 选择的是第几个省份
+      provinceData: [], // 城市信息
+      provinceIndex: 0, // 选择的是第几个省份
+      cityIndex: 0, // 选择的是第几个城市
       isDealers: false, // 是否是经销商
     };
   },
@@ -312,6 +323,12 @@ export default {
             //否则就是PC浏览器打开
             return 7
         }
+    },
+    cityData () {
+        if (this.provinceData.length > 0) {
+            return this.provinceData[this.provinceIndex].city
+        }
+        return []
     }
   },
   methods: {
@@ -567,7 +584,8 @@ export default {
                 method: 'GET',
                 params: {
                     token:this.$route.query.token,
-                    province: 'NotNull'
+                    province: 'notNull',
+                    city: 'notNull'
                 } 
             })
             .then(response => {
@@ -594,7 +612,7 @@ export default {
             }
         );
     },
-    // 省份选择滚动窗
+    // 城市选择滚动
     initCityScroll () {
         let _this = this
         this.cityScroll = new BScroll(_this.$refs.cityWrapper, {
@@ -607,21 +625,44 @@ export default {
             this.cityIndex = null
         })
         this.cityScroll.on('scrollEnd', (length) => {
-            let itemLength = _this.$refs.cityWrapper.children[0].children[0].offsetHeight;
+            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
             let scrollEndNum = Math.abs(length.y);
             let num = Math.round(scrollEndNum / itemLength);
             this.cityScroll.scrollTo(0, -(num * itemLength), 200);
             this.cityIndex = num
         })
     },
+    // 省份选择滚动窗
+    initprovinceScroll () {
+        let _this = this
+        this.provinceScroll = new BScroll(_this.$refs.provinceWrapper, {
+            probeType: 1,
+            click: true,
+            momentumLimitTime:50,
+            momentumLimitDistance:1,
+        })
+        this.provinceScroll.on('scroll', (length) => {
+            this.provinceIndex = null
+        })
+        this.provinceScroll.on('scrollEnd', (length) => {
+            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
+            let scrollEndNum = Math.abs(length.y);
+            let num = Math.round(scrollEndNum / itemLength);
+            this.provinceScroll.scrollTo(0, -(num * itemLength), 200);
+            this.provinceIndex = num
+            this.cityScroll.scrollTo(0, 0)
+        })
+    },
     // 确认选择城市
     confirmCity (id) {
         this.cityPopupState = false
-        if (this.cityIndex !== null) {
-            const provinceId = this.cityData[this.cityIndex].id
+        if (this.provinceIndex !== null) {
+            const provinceId = this.provinceData[this.provinceIndex].id
+            const cityId = this.provinceData[this.provinceIndex].city[this.cityIndex].id
             this.$http.post('dealerInfo/area', {
                 token: this.$route.query.token,
-                provinceId: provinceId
+                provinceId: provinceId,
+                cityId: cityId
             })
             .then(response => {
                 this.loadData();
@@ -629,7 +670,7 @@ export default {
         }
     },
     //获取城市信息
-    getCityData () {
+    getprovinceData () {
         let token = this.$route.query.token
         this.$http({
             url: 'area',
@@ -639,7 +680,7 @@ export default {
             } 
         })
         .then((res) => {
-            this.cityData = res.body.data
+            this.provinceData = res.body.data
         })
     },
     // 加载信息
@@ -689,11 +730,10 @@ export default {
                 this.countdownText = '距离结束还剩'
                 this.countdownState = true;
             })
-
             // 测试
             if (this.isTcmApp) {
                 this.addShareButton();
-                this.getCityData();
+                this.getprovinceData();
                 this.checkInventory();
             } else {
                 share(shareData);
@@ -713,16 +753,23 @@ export default {
   mounted: function () {
     this.$nextTick(function () {
         setTimeout(() => {
+            this.initprovinceScroll()
             this.initCityScroll()
         }, 1000)
     })
   },
   update () {
+      if (this.provinceScroll) {
+          this.provinceScroll.refresh()
+      } else {
+          this.initprovinceScroll()
+      }
       if (this.cityScroll) {
           this.cityScroll.refresh()
       } else {
           this.initCityScroll()
       }
+
   },
   components: {
     swiper,
@@ -734,13 +781,16 @@ export default {
 </script>
 
 <style>
-.cityWrapper {position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
-.cityWrapper .cityInner {padding: 2.4rem 0;}
-.cityWrapper .cityInner li{line-height: 1.2rem; text-align: center; font-size: .4rem; color: #2c2c2c}
-.cityWrapper .cityInner li:not(:last-child) {border-bottom: 1px solid #999}
-.cityWrapper .shadow {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
-.cityWrapper .shadow-top {top: 0}
-.cityWrapper .shadow-bottom{bottom: 0}
+.citySelectWrapper {display: flex}
+.provinceWrapper,.cityWrapper {flex:1;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
+.provinceWrapper .provinceInner {margin-left: 1.5rem}
+.cityWrapper .cityInner {margin-right: 1.5rem}
+.provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
+.provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; text-align: center; font-size: .4rem; color: #2c2c2c}
+.provinceWrapper .shadow,.cityWrapper .shadow  {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
+.provinceWrapper .shadow-top,.cityWrapper .shadow-top {top: 0;border-bottom: 1px solid #999}
+.provinceWrapper .shadow-bottom, .cityWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #999}
+
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
 .cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
 
