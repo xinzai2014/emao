@@ -591,7 +591,7 @@ export default {
             })
             .then(response => {
                 this.isDealers = true
-                this.cityPopupState = true;
+                this.cityPopupState = false;
             })
             .catch(error => {
                 this.isDealers = false;
@@ -732,8 +732,6 @@ export default {
                 this.countdownState = true;
             })
             // 测试
-            this.getprovinceData();
-                this.checkInventory();
             if (this.isTcmApp) {
                 this.addShareButton();
                 this.getprovinceData();
