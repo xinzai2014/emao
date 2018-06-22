@@ -781,14 +781,14 @@ export default {
 
 <style>
 .citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
-.provinceWrapper,.cityWrapper {flex: 1;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
+.provinceWrapper,.cityWrapper {flex: 1;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #b8b6b6; border-bottom: 1px solid #b8b6b6}
 .provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
 .provinceWrapper .provinceInner li {margin-right:.4rem;text-align: right;}
 .cityWrapper .cityInner li {margin-left:.4rem;text-align: left}
 .provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; font-size: .34rem; color: #2c2c2c}
 .citySelectWrapper .shadow {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
-.citySelectWrapper .shadow-top{top: 0;border-bottom: 1px solid #b8b6b6}
-.citySelectWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #b8b6b6}
+.citySelectWrapper .shadow-top{top: 0;border-bottom: 1px solid #999}
+.citySelectWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #999}
 
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
 .cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
