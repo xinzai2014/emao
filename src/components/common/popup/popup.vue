@@ -2,19 +2,19 @@
   <!-- 弹窗 -->
   <section class="popup-wrapper" v-show="showPopup" data-around="false" @click="popupAround">
     <transition :name="position">
-      <div 
-        class="popup-content" 
+      <div
+        class="popup-content"
         :class="{
           'popup-content-center': position === 'center',
           'popup-content-bottom': position === 'bottom',
           'popup-content-top': position === 'top'
-        }" 
-        v-show="showPopup" 
+        }"
+        v-show="showPopup"
         :style="contentStyleObj">
         <slot></slot>
-      </div>  
+      </div>
     </transition>
-  </section> 
+  </section>
 </template>
 
 <script>
@@ -23,7 +23,7 @@
       // 方向
       position: {
         type: String,
-        default: 'down'
+        default: 'center'
       },
       // 是否显示弹窗
       showPopup: {
@@ -49,7 +49,7 @@
       // 点击弹窗周围，弹窗消失
       popupAround (e) {
         if (this.clickAroundHide && e.target.getAttribute('data-around') === 'false') {
-          this.$emit('changePopupState', false)
+          this.$emit('changePopupState', false);
           this.noScrollWithPopup(false);
         }
       },
@@ -64,6 +64,14 @@
         } else {
           document.body.removeEventListener('touchmove', this.preventFun);
         }
+      },
+      beforeEnter (el) {
+        el.style.transition = 'top 1s linear 1s';
+        el.style.top = '50%'
+      },
+      enter (el, done) {
+        el.style.top = '70%';
+        done();
       }
     },
     watch: {
@@ -77,7 +85,7 @@
 <style scoped>
   .popup-wrapper {position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 10; background: rgba(0, 0, 0, 0.5);}
   .popup-content {overflow: hidden;position: fixed;z-index: 10000;}
-  .popup-content-center {top: 50%; left: 0.4rem; right: 0.4rem; transform: translateY(-50%);}
+  .popup-content-center {top: 50%; left: 50%; transform: translate(-50%, -50%);}
   .popup-content-bottom {bottom: 0; left: 0;right:0}
   .popup-content-top {top: 0; left: 0;right:0}
 
@@ -85,7 +93,7 @@
     transition: all .3s ease;
   }
   .center-enter, .center-leave-to {
-    transform: translateY(10px);
+    transform: translate(-50%, -30%);
     opacity: 0;
   }
   .bottom-enter-active {

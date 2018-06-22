@@ -1,193 +1,220 @@
 <template>
-    <div v-if="presellData !== null">
-        <!--预售详情-图片滚动-->
-        <swiper :circular="circular" v-if="circular.length"></swiper>
-        <!-- 价格和倒计时 -->
-        <section class="car-parameter">
-            <div class="car-price">
-                <div class="price-wrapper">
-                <h4 class="true-price">{{presellData.prePrice}} <span>万</span></h4>
-                <h4 class="guided-price">指导价：{{presellData.guidePrice}}万 / {{presellData.disparityPrice}}万</h4>
+    <div>
+        <div v-if="presellData !== null">
+            <!--预售详情-图片滚动-->
+            <swiper :circular="circular" v-if="circular.length"></swiper>
+            <!-- 价格和倒计时 -->
+            <section class="car-parameter">
+                <div class="car-price">
+                    <div class="price-wrapper">
+                    <h4 class="true-price">{{presellData.prePrice}} <span>万</span></h4>
+                    <h4 class="guided-price">指导价：{{presellData.guidePrice}}万 / {{presellData.disparityPrice}}万</h4>
+                    </div>
+                    <div class="countdown">
+                        <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
+                        <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div> 
+                    </div>
                 </div>
-                <div class="countdown">
-                    <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
-                    <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div>
-                </div>
-            </div>
-        </section>
-        <section class="car-info-wrap">
-            <div class="car-time-place">
-                <!-- 名字和设置提醒 -->
-                <div class="car-name">
-                    <h4 class="name-content">{{presellData.autoName}}</h4>
-                    <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun">
-                        <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
-                            <span class="icon-warning"></span>
-                            <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
-                            <span class="text-warning" v-else>已醒我</span>
+            </section>
+            <section class="car-info-wrap">
+                <div class="car-time-place">
+                    <!-- 名字和设置提醒 -->
+                    <div class="car-name">
+                        <h4 class="name-content">{{presellData.autoName}}</h4>
+                        <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun">
+                            <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
+                                <span class="icon-warning"></span>
+                                <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
+                                <span class="text-warning" v-else>已醒我</span>
+                            </div>
+                            <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
                         </div>
-                        <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
                     </div>
-                </div>
-                <!-- 详情 -->
-                <ul>
-                    <li>
-                        <span>可售范围：</span>
-                        <a>{{presellData.area}}</a>
-                    </li>
-                    <li>
-                        <span>到货时间：</span>
-                        <a>{{presellData.arrivalTime}}</a>
-                    </li>
-                    <li>
-                        <span>提货地点：</span>
-                         <a>{{presellData.deliveryPlace}}</a>
-                    </li>
-                    <li>
-                        <span>车型颜色：</span>
-                        <a>{{presellData.autoColor}}</a>
-                    </li>
-                    <li>
-                        <span>生产日期：</span>
-                        <a>{{presellData.productionTime}}</a>
-                    </li>
-                    <li v-if="presellData.remark != '' ">
-                        <span>备注：</span>
-                        <a>{{presellData.remark}}</a>
-                    </li>
-                </ul>
-                <!-- 同城 -->
-                <div class="car-reserve" v-if="preSaleData.type == '2' ">
-                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
-                        <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
-                        <p class="car-reserve-tips">
-                            <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
-                        </p>
-                        <div class="car-reserve-roll" v-if="preSaleData.buyList.length > 0">
-                            <ul ref="con1" :class="{anim:animate==true}">
-                                <li v-for="(item, index) in preSaleData.buyList" :key="index">
-                                    <span>{{item.time}}</span>
-                                    <span>{{item.dealer}}</span>
-                                    <span>{{item.num}}</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <p class="car-share" v-if="isTcmApp"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
-                        <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
-                    </div>
-
-                    <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
-                        <p class="car-reserve-tips">
-                            已有<i>{{preSaleData.batch}}</i>批车辆发往 <span>{{preSaleData.city}}</span>
-                        </p>
-                        <p class="car-understock">剩余库存已不足拼版</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <section class="car-presell-flow">
-            <p>抢购流程</p>
-            <img src="../../assets/car-presell-flow.1.9.3.png" alt="">
-        </section>
-
-        <section class="car-presell-explain">
-            <p class="presell-explain-title">关于限时抢购</p>
-            <ul class="presell-explain-con">
-                <li><span>1.</span>支付定金可锁定车源，车辆入库后支付全款。</li>
-                <li><span>2.</span>提车完成后，定金退回原支付账户。</li>
-                <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
-                <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源。</li>
-                <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还。</li>
-                <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券。</li>
-                <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致。</li>
-                <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
-            </ul>
-        </section>
-        <!-- 按钮 -->
-        <section class="car-reserve-btn">
-            <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
-            <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
-            <div v-else class="car-presell-present-disabled">{{btnText}}</div>
-        </section>
-
-        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
-        <popup
-            class="registerPopup"
-            :showPopup="registerpopupState"
-            :clickAroundHide="true"
-            :contentStyleObj="{
-                background: `#fff url(${alertBg}) no-repeat`,
-                backgroundSize: '100% auto',
-                borderRadius: '.13333rem',
-            }"
-            @changePopupState="changeState"
-            position="center">
-            <div class="single"></div>
-            <!-- 注册内容 -->
-            <div class="register-wrapper" v-show="popupShowWhich === 'register'">
-                <h4 class="ttl">新注册立得<span>{{moneyVal}}元券</span></h4>
-                <div class="input-tel">
-                    <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
-                </div>
-                <div class="btn-register" @click="registerFun">立即领取</div>
-            </div>
-            <!-- 注册成功内容 -->
-            <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
-                <h4 class="ttl">欢迎加入车商猫</h4>
-                <h4 class="desc">{{moneyVal}}元购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
-                <div class="btn-goApp" @click="downloadApp">前往APP</div>
-            </div>
-            <!-- 已经注册弹框 -->
-            <div class="register-success-wrapper" v-show="popupShowWhich === 'registed'">
-                <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
-                <div class="btn-goApp" @click="downloadApp">前往APP</div>
-            </div>
-            <!-- 拼版失败弹框 -->
-            <div class="register-success-wrapper" v-show="popupShowWhich === 'pinban'">
-                <h4 class="desc">{{pinbanText}}</h4>
-                <div class="btn-goApp" v-if="btnTypeOfCheck === 'update'" @click="goUpdate">前往升级</div>
-                <div class="btn-goApp" v-else @click="registerpopupState = false">知道了</div>
-            </div>
-        </popup>
-        <popup
-            class="selectPopup"
-            :showPopup="selectPopupState"
-            :contentStyleObj="{
-                background: '#fff'
-            }"
-            position="bottom">
-            <div class="select-wrapper">
-                <h4 class="select-ttl">限时抢购</h4>
-                <h4 class="car-ttl">{{presellData.autoName}}</h4>
-                <div class="price-wrapper"><em>抢购价：</em><span v-if="stock.length > 0">{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
-                <div class="color-select">
-                    <h4>可选颜色</h4>
-                    <ul class="color-wrapper">
-                        <li
-                            class="color-item"
-                            :class="{'active': selectData['selectColorIndex'] === index}"
-                            v-for="(item, index) in stock"
-                            :key="index"
-                            @click="selectColor(index)">
-                            {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
+                    <!-- 详情 -->
+                    <ul>
+                        <li>
+                            <span>可售范围：</span>
+                            <a>{{presellData.area}}</a>
+                        </li>
+                        <li>
+                            <span>到货时间：</span>
+                            <a>{{presellData.arrivalTime}}</a>
+                        </li>
+                        <li>
+                            <span>提货地点：</span>
+                            <a>{{presellData.deliveryPlace}}</a>
+                        </li>
+                        <li>
+                            <span>车型颜色：</span>
+                            <a>{{presellData.autoColor}}</a>
+                        </li>
+                        <li>
+                            <span>生产日期：</span>
+                            <a>{{presellData.productionTime}}</a>
+                        </li>
+                        <li v-if="presellData.remark != '' ">
+                            <span>备注：</span>
+                            <a>{{presellData.remark}}</a>
                         </li>
                     </ul>
-                </div>
-                <div class="num-wrapper">
-                    <h4>预定数量</h4>
-                    <div class="num-select">
-                        <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
-                        <span class="num-content">{{selectData.carNum}}</span>
-                        <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
+                    <!-- 同城 -->
+                    <div class="car-reserve" v-if="preSaleData.type == '2' ">
+                        <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
+                            <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
+                            <p class="car-reserve-tips">
+                                <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
+                            </p>
+                            <div class="car-reserve-roll" v-if="preSaleData.buyList.length > 0">
+                                <ul ref="con1" :class="{anim:animate==true}">
+                                    <li v-for="(item, index) in preSaleData.buyList" :key="index">
+                                        <span>{{item.time}}</span>
+                                        <span>{{item.dealer}}</span>
+                                        <span>{{item.num}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <p class="car-share" v-if="isTcmApp"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
+                            <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
+                        </div>
+
+                        <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
+                            <p class="car-reserve-tips">
+                                已有<i>{{preSaleData.batch}}</i>批车辆发往 <span>{{preSaleData.city}}</span>
+                            </p>
+                            <p class="car-understock">剩余库存已不足拼版</p>
+                        </div>
+
                     </div>
                 </div>
-                <div class="btn-go" @click="snapUpFun">立即抢购</div>
-                <span class="btn-close" @click="selectPopupState = false"></span>
+            </section>
+
+            <section class="car-presell-flow">
+                <p>抢购流程</p>
+                <img src="../../assets/car-presell-flow.png" alt="">
+            </section>
+
+            <section class="car-presell-explain">
+                <p class="presell-explain-title">关于限时抢购</p>
+                <ul class="presell-explain-con">
+                    <li><span>1.</span>支付定金可锁定车源，车辆入库后支付全款。</li>
+                    <li><span>2.</span>提车完成后，定金退回原支付账户。</li>
+                    <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
+                    <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源。</li>
+                    <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还。</li>
+                    <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券。</li>
+                    <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致。</li>
+                    <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
+                </ul>
+            </section>
+            <!-- 按钮 -->
+            <section class="car-reserve-btn">
+                <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
+                <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
+                <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+            </section>
+
+            <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+            <popup
+                class="registerPopup"
+                :showPopup="registerpopupState"
+                :clickAroundHide="true"
+                :contentStyleObj="{
+                    width: '9.2rem',
+                    background: `#fff url(${alertBg}) no-repeat`,
+                    backgroundSize: '100% auto',
+                    borderRadius: '.13333rem',
+                }"
+                @changePopupState="changeState"
+                position="center">
+                <div class="single"></div>
+                <!-- 注册内容 -->
+                <div class="register-wrapper" v-show="popupShowWhich === 'register'">
+                    <h4 class="ttl">新注册立得<span>{{moneyVal}}元券</span></h4>
+                    <div class="input-tel">
+                        <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
+                    </div>
+                    <div class="btn-register" @click="registerFun">立即领取</div>
+                </div>
+                <!-- 注册成功内容 -->
+                <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
+                    <h4 class="ttl">欢迎加入车商猫</h4>
+                    <h4 class="desc">{{moneyVal}}元购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
+                    <div class="btn-goApp" @click="downloadApp">前往APP</div>
+                </div>
+                <!-- 已经注册弹框 -->
+                <div class="register-success-wrapper" v-show="popupShowWhich === 'registed'">
+                    <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
+                    <div class="btn-goApp" @click="downloadApp">前往APP</div>
+                </div>
+            </popup>
+            <popup
+                class="selectPopup"
+                :showPopup="selectPopupState" 
+                :contentStyleObj="{
+                    background: '#fff'
+                }"
+                position="bottom">
+                <div class="select-wrapper">
+                    <h4 class="select-ttl">限时抢购</h4>
+                    <h4 class="car-ttl">{{presellData.autoName}}</h4>
+                    <div class="price-wrapper"><em>抢购价：</em><span v-if="stock.length > 0">{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
+                    <div class="color-select">
+                        <h4>可选颜色</h4>
+                        <ul class="color-wrapper">
+                            <li 
+                                class="color-item" 
+                                :class="{'active': selectData['selectColorIndex'] === index}"
+                                v-for="(item, index) in stock" 
+                                :key="index"
+                                @click="selectColor(index)">
+                                {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="num-wrapper">
+                        <h4>预定数量</h4>
+                        <div class="num-select">
+                            <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
+                            <span class="num-content">{{selectData.carNum}}</span>
+                            <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
+                        </div> 
+                    </div>
+                    <div class="btn-go" @click="snapUpFun">立即抢购</div>
+                    <span class="btn-close" @click="selectPopupState = false"></span>
+                </div>
+            </popup>
+        </div>
+        
+        <popup
+            class="cityPopup"
+            :showPopup="cityPopupState" 
+            :clickAroundHide="true"
+            :contentStyleObj="{
+                background: '#fff',
+                width: '9.2rem',
+                borderRadius: '.2rem'
+            }"
+            position="center"
+            @changePopupState="changeState">
+            <div class="ttl">请选择您所在的省份</div>
+            <div class="citySelectWrapper">
+                <div class="provinceWrapper" ref="provinceWrapper">
+                    <ul class="provinceInner">
+                        <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
+                    </ul>
+                </div>
+                <div class="cityWrapper" ref="cityWrapper">
+                    <ul class="cityInner">
+                        <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
+                    </ul>
+                </div>
+                <div class="shadow shadow-top"></div>
+                <div class="shadow shadow-bottom"></div>
             </div>
-        </popup>
+            
+            <div class="btn" @click="confirmCity">确定</div> 
+        </popup>    
     </div>
 </template>
 <script>
@@ -195,18 +222,19 @@ import swiper from "../../components/common/swiper/swiper";
 import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
 import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
-import {timeCountdown} from '../../common/js/countdown.js';
+import {timeCountdown} from '../../common/js/countdown.js'; 
 import share from '../../common/js/shareOnly.js';
+import BScroll from 'better-scroll';
 
 export default {
   name: "presellDetails",
   data() {
     return {
-      btnTypeOfCheck: 'update',
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
-      selectPopupState: false, // 购买弹窗状态
+      selectPopupState: false, // 购买弹窗状态  
+      cityPopupState: false, // 城市选择弹窗
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: null, //页面数据
@@ -225,7 +253,10 @@ export default {
           carNum: 1
       },
       moneyVal: 0, // 优惠券金额
-      pinbanText: '' // 拼版失文案
+      provinceData: [], // 城市信息
+      provinceIndex: 0, // 选择的是第几个省份
+      cityIndex: 0, // 选择的是第几个城市
+      isDealers: false, // 是否是经销商
     };
   },
   computed: {
@@ -290,18 +321,15 @@ export default {
             //否则就是PC浏览器打开
             return 7
         }
+    },
+    cityData () {
+        if (this.provinceData.length > 0) {
+            return this.provinceData[this.provinceIndex].city
+        }
+        return []
     }
   },
   methods: {
-    // 前往升级
-    goUpdate () {
-        this.registerpopupState = false
-        var obj = {
-            actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            url: `https://tcm.m.emao.com/#/storesH5/authorize` // 要打开的链接
-        };
-        this.tcmApp(obj);
-    },
     // 前往下载
     downloadApp () {
         window.location.href = `http://url.cn/5Ne6oti`
@@ -330,8 +358,7 @@ export default {
         this.$http({
             url: "order/preSale/setReminder",
             method: "GET",
-            params: params,
-            headers: {"Accept":"application/json; version=2.11.0"}
+            params: params
         }).then(function(response) {
             const data = response.body.data;
             this.setStoreAlert('设置成功！')
@@ -340,10 +367,11 @@ export default {
         }).catch((error) => {
             this.setStoreAlert('设置失败！')
         })
-    },
+    },  
     // 设置弹窗状态
     changeState (state) {
         this.registerpopupState = state;
+        this.cityPopupState = state;
     },
     //单行文字滚动
     scroll() {
@@ -368,7 +396,7 @@ export default {
         window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
       }
     },
-    //用 JS 函数在新窗口打开指定链接
+    // 用 JS 函数在新窗口打开指定链接
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
@@ -427,12 +455,11 @@ export default {
     /*立即预定*/
     presellReserve() {
       if (this.isTcmApp) {
-        this.checkInventory().then(() => {
+        if (this.isDealers) {
             this.selectPopupState = true;
-        }).catch(() => {
-            return
-        })
-
+        } else {
+            this.cityPopupState = true;
+        }
       } else {
         this.registerpopupState = true;
       }
@@ -445,7 +472,7 @@ export default {
             id: this.$route.query.id
         };
         if (this.isTcmApp) {
-            params.token = dataToken
+            params.token = this.$route.query.token
         } else {
             params.provinceId = this.$route.query.provinceId
             params.type = 6
@@ -454,8 +481,7 @@ export default {
         this.$http({
             url: "preSale/detail",
             method: "GET",
-            params: params,
-            headers: {"Accept":"application/json; version=2.11.0"}
+            params: params
         }).then(function(response) {
             let data = response.body.data;
             this.presellData = data;
@@ -469,8 +495,11 @@ export default {
             window.presellPrice = data.prePrice;
             window.deliveryPlace = data.deliveryPlace;
             localStorage.setItem("deliveryPlace", data.deliveryPlace);
+        })
+        .catch(error => {
+            this.setStoreAlert(error.body.msg);
         });
-      })
+      })  
     },
     twoDetial (x) {
         let f = parseFloat(x)
@@ -548,30 +577,25 @@ export default {
     checkInventory () {
         let _this = this;
         return new Promise((resolve, reject) => {
-            this.$http.post('preSale/checkDealerState', {
-                token:this.$route.query.token,
-                id: this.$route.query.id
-            }, {
-                headers: {
-                    "Accept":"application/json; version=2.11.0"
-                }
+            this.$http({
+                url: 'dealerInfo/area', 
+                method: 'GET',
+                params: {
+                    token:this.$route.query.token,
+                    province: 'notNull',
+                    city: 'notNull'
+                } 
             })
             .then(response => {
-                resolve()
+                this.isDealers = true
+                this.cityPopupState = false;
             })
             .catch(error => {
-                this.pinbanText = error.data.msg
-                this.registerpopupState = true;
-                this.popupShowWhich = 'pinban';
-                if (error.data.code == 400 || error.data.code == 401406) {
-                    this.btnTypeOfCheck = 'update'
-                } else {
-                    this.btnTypeOfCheck = 'know'
-                }
-                reject();
+                this.isDealers = false;
+                this.cityPopupState = true;
             })
         })
-
+        
     },
     // 立即抢购函数
     snapUpFun () {
@@ -585,67 +609,163 @@ export default {
                 text:content
             }
         );
+    },
+    // 城市选择滚动
+    initCityScroll () {
+        let _this = this
+        this.cityScroll = new BScroll(_this.$refs.cityWrapper, {
+            probeType: 1,
+            click: true,
+            momentumLimitTime:50,
+            momentumLimitDistance:1,
+        })
+        this.cityScroll.on('scroll', (length) => {
+            this.cityIndex = null
+        })
+        this.cityScroll.on('scrollEnd', (length) => {
+            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
+            let scrollEndNum = Math.abs(length.y);
+            let num = Math.round(scrollEndNum / itemLength);
+            this.cityScroll.scrollTo(0, -(num * itemLength), 200);
+            this.cityIndex = num
+        })
+    },
+    // 省份选择滚动窗
+    initprovinceScroll () {
+        let _this = this
+        this.provinceScroll = new BScroll(_this.$refs.provinceWrapper, {
+            probeType: 1,
+            click: true,
+            momentumLimitTime:50,
+            momentumLimitDistance:1,
+        })
+        this.provinceScroll.on('scroll', (length) => {
+            this.provinceIndex = null
+        })
+        this.provinceScroll.on('scrollEnd', (length) => {
+            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
+            let scrollEndNum = Math.abs(length.y);
+            let num = Math.round(scrollEndNum / itemLength);
+            this.provinceScroll.scrollTo(0, -(num * itemLength), 200);
+            this.provinceIndex = num
+            this.cityScroll.scrollTo(0, 0)
+        })
+    },
+    // 确认选择城市
+    confirmCity (id) {
+        this.cityPopupState = false
+        if (this.provinceIndex !== null) {
+            const provinceId = this.provinceData[this.provinceIndex].id
+            const cityId = this.provinceData[this.provinceIndex].city[this.cityIndex].id
+            this.$http.post('dealerInfo/area', {
+                token: this.$route.query.token,
+                provinceId: provinceId,
+                cityId: cityId
+            })
+            .then(response => {
+                this.loadData();
+            })
+        }
+    },
+    //获取城市信息
+    getprovinceData () {
+        let token = this.$route.query.token
+        this.$http({
+            url: 'area',
+            method: 'GET',
+            params: {
+                token: token
+            } 
+        })
+        .then((res) => {
+            this.provinceData = res.body.data
+        })
+    },
+    // 加载信息
+    loadData () {
+        if (!sessionStorage.token) {
+            sessionStorage.token = this.$route.query.token;
+        }
+        this.getPresellDetails().then((presellData) => {
+            const startTime = new Date(presellData.preSaleStartTime);
+            const endTime = new Date(presellData.preSaleEndTime);
+            const shareInfo = presellData.shareInfo;
+            const shareData = {
+                title: shareInfo.shareText,
+                desc: shareInfo.shareDescription,
+                link: shareInfo.shareUrl,
+                imgUrl: shareInfo.shareImg
+            };
+            if (presellData.preSale.buyList.length > 1) {
+            setInterval(this.scroll,2000);
+            }
+            timeCountdown({startTime, endTime}, (update) => {
+                this.countdownArr = update;
+                if (update[0] === 'start') {
+                    this.btnText = '等待抢购'
+                    this.btnState = false
+                    this.countdownText = '距离开始还剩'
+                    this.countdownState = true;
+                    this.isBeforeActivity = true
+                }
+                if (update[0] === 'ing') {
+                    this.btnText = '立即抢购'
+                    this.btnState = true
+                    this.countdownText = '距离结束还剩'
+                    this.countdownState = true;
+                    this.isBeforeActivity = false;
+                }
+                if (update[0] === 'ing' && presellData.state == 3) {
+                    this.btnText = '已售罄'
+                    this.btnState = false
+                    this.countdownText = '已售罄'
+                    this.countdownState = false;
+                }
+            }, (end) => {
+                this.countdownArr = end;
+                this.btnState = false;
+                this.btnText = '已结束';
+                this.countdownText = '距离结束还剩'
+                this.countdownState = true;
+            })
+            // 测试
+            if (this.isTcmApp) {
+                this.addShareButton();
+                this.getprovinceData();
+                this.checkInventory();
+            } else {
+                share(shareData);
+            }
+            this.presaleBack(presellData.isDisplay, this.$route.query.id);
+        });
+        this.setMoney();
+        
+        this.renderDom();
     }
   },
   created() {
-    if (!sessionStorage.token) {
-      sessionStorage.token = this.$route.query.token;
-    }
-    this.getPresellDetails().then((presellData) => {
-        const startTime = new Date(presellData.preSaleStartTime);
-        const endTime = new Date(presellData.preSaleEndTime);
-        const shareInfo = presellData.shareInfo;
-        const shareData = {
-            title: shareInfo.shareText,
-            desc: shareInfo.shareDescription,
-            link: shareInfo.shareUrl,
-            imgUrl: shareInfo.shareImg
-        };
-        if (presellData.preSale.buyList.length > 1) {
-          setInterval(this.scroll,2000);
-        }
-        timeCountdown({startTime, endTime}, (update) => {
-            this.countdownArr = update;
-            if (update[0] === 'start') {
-                this.btnText = '等待抢购'
-                this.btnState = false
-                this.countdownText = '距离开始还剩'
-                this.countdownState = true;
-                this.isBeforeActivity = true
-            }
-            if (update[0] === 'ing') {
-                this.btnText = '立即抢购'
-                this.btnState = true
-                this.countdownText = '距离结束还剩'
-                this.countdownState = true;
-                this.isBeforeActivity = false;
-            }
-            if (update[0] === 'ing' && presellData.state == 3) {
-                this.btnText = '已售罄'
-                this.btnState = false
-                this.countdownText = '已售罄'
-                this.countdownState = false;
-            }
-        }, (end) => {
-            this.countdownArr = end;
-            this.btnState = false;
-            this.btnText = '已结束';
-            this.countdownText = '距离结束还剩'
-            this.countdownState = true;
-        })
+    this.loadData();
+  },
+  mounted: function () {
+    this.$nextTick(function () {
+        setTimeout(() => {
+            this.initprovinceScroll()
+            this.initCityScroll()
+        }, 1000)
+    })
+  },
+  update () {
+      if (this.provinceScroll) {
+          this.provinceScroll.refresh()
+      } else {
+          this.initprovinceScroll()
+      }
+      if (this.cityScroll) {
+          this.cityScroll.refresh()
+      } else {
+          this.initCityScroll()
+      }
 
-        if (this.isTcmApp) {
-            this.addShareButton();
-        } else {
-            share(shareData);
-        }
-
-        this.presaleBack(presellData.isDisplay, this.$route.query.id);
-
-    });
-    this.setMoney();
-
-    this.renderDom();
   },
   components: {
     swiper,
@@ -657,6 +777,19 @@ export default {
 </script>
 
 <style>
+.citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
+.provinceWrapper,.cityWrapper {flex: 0 0 4.4rem;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
+.provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
+.provinceWrapper .provinceInner li {text-align: right;}
+.cityWrapper .cityInner li {text-align: left}
+.provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; font-size: .34rem; color: #2c2c2c}
+.citySelectWrapper .shadow {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
+.citySelectWrapper .shadow-top{top: 0;border-bottom: 1px solid #eee}
+.citySelectWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #eee}
+
+.cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
+.cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
+
 .car-info-wrap{ padding:0 .4rem .4rem; background: #fff;}
 .car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
 .car-time-place .car-name { margin: 0 -.4rem .5rem; padding: 0.2rem .4rem;min-height:1.1rem;border-bottom: 1px solid #e0e0e0;display: flex; display: -webkit-flex;  align-items: center;
@@ -688,7 +821,7 @@ export default {
 .car-count-down span {display: block;}
 .car-count-down span:nth-of-type(2) {font-size: 0.3467rem;font-weight: bold;}
 .car-time-place ul li {margin-bottom: 0.267rem;}
-.car-time-place ul li:after {display: block; content: '';clear: both;width: 0}
+.car-time-place ul li:after {display: block; content: '';clear: both;width: 0} 
 .car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
 .car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
 .car-reserve {padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
