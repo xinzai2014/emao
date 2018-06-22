@@ -234,7 +234,7 @@ export default {
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
-      cityPopupState: true, // 城市选择弹窗
+      cityPopupState: false, // 城市选择弹窗
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: null, //页面数据
@@ -729,8 +729,6 @@ export default {
                 this.countdownState = true;
             })
             // 测试
-            this.getprovinceData();
-                this.checkInventory();
             if (this.isTcmApp) {
                 this.addShareButton();
                 this.getprovinceData();
