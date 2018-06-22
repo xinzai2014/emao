@@ -624,7 +624,7 @@ export default {
                 provinceId: provinceId
             })
             .then(response => {
-                window.location.href = window.location.href
+                this.loadData();
             })
         }
     },
@@ -641,70 +641,74 @@ export default {
         .then((res) => {
             this.cityData = res.body.data
         })
+    },
+    // 加载信息
+    loadData () {
+        if (!sessionStorage.token) {
+            sessionStorage.token = this.$route.query.token;
+        }
+        this.getPresellDetails().then((presellData) => {
+            const startTime = new Date(presellData.preSaleStartTime);
+            const endTime = new Date(presellData.preSaleEndTime);
+            const shareInfo = presellData.shareInfo;
+            const shareData = {
+                title: shareInfo.shareText,
+                desc: shareInfo.shareDescription,
+                link: shareInfo.shareUrl,
+                imgUrl: shareInfo.shareImg
+            };
+            if (presellData.preSale.buyList.length > 1) {
+            setInterval(this.scroll,2000);
+            }
+            timeCountdown({startTime, endTime}, (update) => {
+                this.countdownArr = update;
+                if (update[0] === 'start') {
+                    this.btnText = '等待抢购'
+                    this.btnState = false
+                    this.countdownText = '距离开始还剩'
+                    this.countdownState = true;
+                    this.isBeforeActivity = true
+                }
+                if (update[0] === 'ing') {
+                    this.btnText = '立即抢购'
+                    this.btnState = true
+                    this.countdownText = '距离结束还剩'
+                    this.countdownState = true;
+                    this.isBeforeActivity = false;
+                }
+                if (update[0] === 'ing' && presellData.state == 3) {
+                    this.btnText = '已售罄'
+                    this.btnState = false
+                    this.countdownText = '已售罄'
+                    this.countdownState = false;
+                }
+            }, (end) => {
+                this.countdownArr = end;
+                this.btnState = false;
+                this.btnText = '已结束';
+                this.countdownText = '距离结束还剩'
+                this.countdownState = true;
+            })
+
+            // 测试
+            if (this.isTcmApp) {
+                this.addShareButton();
+                this.getCityData();
+                this.checkInventory();
+            } else {
+                share(shareData);
+            }
+
+            this.presaleBack(presellData.isDisplay, this.$route.query.id);
+
+        });
+        this.setMoney();
+        
+        this.renderDom();
     }
   },
   created() {
-    if (!sessionStorage.token) {
-      sessionStorage.token = this.$route.query.token;
-    }
-    this.getPresellDetails().then((presellData) => {
-        const startTime = new Date(presellData.preSaleStartTime);
-        const endTime = new Date(presellData.preSaleEndTime);
-        const shareInfo = presellData.shareInfo;
-        const shareData = {
-            title: shareInfo.shareText,
-            desc: shareInfo.shareDescription,
-            link: shareInfo.shareUrl,
-            imgUrl: shareInfo.shareImg
-        };
-        if (presellData.preSale.buyList.length > 1) {
-          setInterval(this.scroll,2000);
-        }
-        timeCountdown({startTime, endTime}, (update) => {
-            this.countdownArr = update;
-            if (update[0] === 'start') {
-                this.btnText = '等待抢购'
-                this.btnState = false
-                this.countdownText = '距离开始还剩'
-                this.countdownState = true;
-                this.isBeforeActivity = true
-            }
-            if (update[0] === 'ing') {
-                this.btnText = '立即抢购'
-                this.btnState = true
-                this.countdownText = '距离结束还剩'
-                this.countdownState = true;
-                this.isBeforeActivity = false;
-            }
-            if (update[0] === 'ing' && presellData.state == 3) {
-                this.btnText = '已售罄'
-                this.btnState = false
-                this.countdownText = '已售罄'
-                this.countdownState = false;
-            }
-        }, (end) => {
-            this.countdownArr = end;
-            this.btnState = false;
-            this.btnText = '已结束';
-            this.countdownText = '距离结束还剩'
-            this.countdownState = true;
-        })
-
-        // 测试
-        if (this.isTcmApp) {
-            this.addShareButton();
-            this.getCityData();
-            this.checkInventory();
-        } else {
-            share(shareData);
-        }
-
-        this.presaleBack(presellData.isDisplay, this.$route.query.id);
-
-    });
-    this.setMoney();
-    
-    this.renderDom();
+    this.loadData();
   },
   mounted: function () {
     this.$nextTick(function () {
