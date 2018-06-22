@@ -591,7 +591,7 @@ export default {
             })
             .then(response => {
                 this.isDealers = true
-                this.cityPopupState = false;
+                this.cityPopupState = true;
             })
             .catch(error => {
                 this.isDealers = false;
@@ -732,6 +732,8 @@ export default {
                 this.countdownState = true;
             })
             // 测试
+            this.getprovinceData();
+                this.checkInventory();
             if (this.isTcmApp) {
                 this.addShareButton();
                 this.getprovinceData();
@@ -781,7 +783,9 @@ export default {
 
 <style>
 .citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
-.provinceWrapper,.cityWrapper {flex: 1;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #b8b6b6; border-bottom: 1px solid #b8b6b6}
+.provinceWrapper {flex: 0 0 4rem;}
+.cityWrapper{flex: 1;}
+.provinceWrapper,.cityWrapper {position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #b8b6b6; border-bottom: 1px solid #b8b6b6}
 .provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
 .provinceWrapper .provinceInner li {margin-right:.4rem;text-align: right;}
 .cityWrapper .cityInner li {margin-left:.4rem;text-align: left}
