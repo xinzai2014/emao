@@ -202,17 +202,17 @@
                 <div class="provinceWrapper" ref="provinceWrapper">
                     <ul class="provinceInner">
                         <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
+                        <li>1111</li>
                     </ul>
-                    <div class="shadow shadow-top"></div>
-                    <div class="shadow shadow-bottom"></div>
                 </div>
                 <div class="cityWrapper" ref="cityWrapper">
                     <ul class="cityInner">
                         <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
+                        <li>11111</li>
                     </ul>
-                    <div class="shadow shadow-top"></div>
-                    <div class="shadow shadow-bottom"></div>
                 </div>
+                <div class="shadow shadow-top"></div>
+                <div class="shadow shadow-bottom"></div>
             </div>
             
             <div class="btn" @click="confirmCity">确定</div> 
@@ -236,7 +236,7 @@ export default {
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
       selectPopupState: false, // 购买弹窗状态  
-      cityPopupState: false, // 城市选择弹窗
+      cityPopupState: true, // 城市选择弹窗
       circular: [], //轮播图数据
       animate: false, //是否运动
       presellData: null, //页面数据
@@ -474,7 +474,7 @@ export default {
             id: this.$route.query.id
         };
         if (this.isTcmApp) {
-            params.token = dataToken
+            params.token = this.$route.query.token
         } else {
             params.provinceId = this.$route.query.provinceId
             params.type = 6
@@ -731,6 +731,8 @@ export default {
                 this.countdownState = true;
             })
             // 测试
+            this.getprovinceData();
+                this.checkInventory();
             if (this.isTcmApp) {
                 this.addShareButton();
                 this.getprovinceData();
@@ -738,9 +740,7 @@ export default {
             } else {
                 share(shareData);
             }
-
             this.presaleBack(presellData.isDisplay, this.$route.query.id);
-
         });
         this.setMoney();
         
@@ -781,15 +781,15 @@ export default {
 </script>
 
 <style>
-.citySelectWrapper {display: flex}
-.provinceWrapper,.cityWrapper {flex:1;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
-.provinceWrapper .provinceInner {margin-left: 1.5rem}
-.cityWrapper .cityInner {margin-right: 1.5rem}
+.citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
+.provinceWrapper,.cityWrapper {flex: 0 0 4rem;position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #999; border-bottom: 1px solid #999}
 .provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
-.provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; text-align: center; font-size: .4rem; color: #2c2c2c}
-.provinceWrapper .shadow,.cityWrapper .shadow  {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
-.provinceWrapper .shadow-top,.cityWrapper .shadow-top {top: 0;border-bottom: 1px solid #999}
-.provinceWrapper .shadow-bottom, .cityWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #999}
+.provinceWrapper .provinceInner li {text-align: right;}
+.cityWrapper .cityInner li {text-align: left}
+.provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; font-size: .34rem; color: #2c2c2c}
+.citySelectWrapper .shadow {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
+.citySelectWrapper .shadow-top{top: 0;border-bottom: 1px solid #eee}
+.citySelectWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #eee}
 
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
 .cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
