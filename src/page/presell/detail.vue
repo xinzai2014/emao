@@ -656,8 +656,9 @@ export default {
     },
     // 确认选择城市
     confirmCity (id) {
-        this.cityPopupState = false
-        if (this.provinceIndex !== null) {
+        let _this = this
+        
+        if (this.provinceIndex !== null && this.cityIndex !== null) {
             const provinceId = this.provinceData[this.provinceIndex].id
             const cityId = this.provinceData[this.provinceIndex].city[this.cityIndex].id
             this.$http.post('dealerInfo/area', {
@@ -666,7 +667,8 @@ export default {
                 cityId: cityId
             })
             .then(response => {
-                this.loadData();
+                _this.loadData();
+                _this.cityPopupState = false
             })
         }
     },
@@ -732,6 +734,8 @@ export default {
                 this.countdownState = true;
             })
             // 测试
+            this.getprovinceData();
+                this.checkInventory();
             if (this.isTcmApp) {
                 this.addShareButton();
                 this.getprovinceData();
