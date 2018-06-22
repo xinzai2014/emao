@@ -441,7 +441,7 @@ export default {
     presellReserve() {
       if (this.isTcmApp) {
         if (this.isDealers) {
-            this.selectPopupState = false;
+            this.selectPopupState = true;
         } else {
             this.cityPopupState = true;
         }
