@@ -246,7 +246,7 @@ export default {
       },
       moneyVal: 0, // 优惠券金额
       cityData: [], // 城市信息
-      cityIndex: null, // 选择的是第几个省份
+      cityIndex: 0, // 选择的是第几个省份
       isDealers: false, // 是否是经销商
     };
   },
