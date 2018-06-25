@@ -262,6 +262,7 @@ export default {
       provinceIndex: 0, // 选择的是第几个省份
       cityIndex: 0, // 选择的是第几个城市
       isDealers: false, // 是否是经销商
+      isWatched: false, // 是否监测
     };
   },
   computed: {
@@ -459,6 +460,7 @@ export default {
     },
     /*立即预定*/
     presellReserve() {
+      this.doWatch();
       if (this.isTcmApp) {
         if (this.isDealers) {
             this.selectPopupState = true;
@@ -748,6 +750,32 @@ export default {
         this.setMoney();
         
         this.renderDom();
+    },
+    // 根据检测标识进行监测
+    doWatch (){
+        let token = this.$route.query.token;
+        let id = this.$route.query.id;
+        let params = null;
+        if (this.isTcmApp) {
+            params = {
+                token: token,
+                id: id
+            }
+        } else {
+            params = {
+                id: id
+            }
+        }
+        if (!this.isWatched) {
+            this.$http({
+                url: 'preSale/confirmButton',
+                method: 'GET',
+                params: params 
+            })
+            .then((res) => {
+                this.isWatched = true;
+            })
+        }
     }
   },
   created() {
