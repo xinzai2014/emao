@@ -164,6 +164,9 @@ const record = r => require.ensure([],() => r(require('../page/invitation/record
 const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
 const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
+//竞拍
+const biding = r => require.ensure([],() => r(require('../page/biding/biding')),'biding')
+
 
 Vue.use(Router)
 
@@ -570,6 +573,11 @@ var router=new Router({
             path:'/test',     //领取
             name:'test',
             component:test
+        } ,
+        {
+            path:'/biding',     //竞拍
+            name:'biding',
+            component:biding
         } 
     ]
 })
