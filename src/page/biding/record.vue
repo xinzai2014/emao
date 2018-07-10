@@ -72,6 +72,7 @@ export default {
 #record {
     box-sizing: border-box;
     padding: 0.53333rem 0.4rem;
+    background: #fff;
 }
 .record_title {
     line-height: 0.533333rem;
