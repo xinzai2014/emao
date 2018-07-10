@@ -17,7 +17,7 @@
                     <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
                 </div>
                 <div class="infom-mid">
-                    <span class="b-price">起拍价：7.6万{{currentPrice}}</span> 
+                    <span class="b-price">当前价：7.6万{{currentPrice}}</span> 
                     <span class="g-price">指导价：10.05万{{guidePrice}}</span>
                 </div>            
                 <div class="infom-down">
@@ -164,7 +164,7 @@ export default {
       bottomBtnText: "交保证金报名",
       bidderSatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
       startTime: "2018/07/10 20:23:23", //活动开始时间;
-      endTime: "2018/07/11 20:23:23", //活动结束时间;
+      endTime: "2018/07/10 21:51:30", //活动结束时间;
       timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
       remindStatus: "1", //闹钟状态(只有bidderSatus=1时显示):1-未设置 2:已设置
       isPay: 0,
@@ -185,33 +185,33 @@ export default {
         url: "https://tcmapi.emao.com/bidder/bidderDetail",
         method: "GET",
         params: params
-      }).then(function(response) {
-        const data = response.body.data;
-        this.sowingMap = data.sowingMap; //轮播图
-        for(var i=0;i<this.sowingMap.length;i++){
-            this.circular[i]={
-                id:i,
-                imgUrl:this.sowingMap[i]
-            }
-        };
-        this.autoName=data.autoName;
-        this.currentPrice=data.currentPrice;
-        this.guidePrice=data.guidePrice;
-        this.enrolment=data.enrolment;
-        this.settingRemind=data.settingRemind;
-        this.platformNum=data.platformNum;
-        this.deposit=data.deposit;
-        this.increasePrice=data.increasePrice;
-        this.saleArea=data.saleArea;
-        this.packUpPlace=data.packUpPlace;
-        this.produceTime=data.produceTime;
-        this.carColor=data.carColor;
-        this.shopInfo=data.shopInfo;
-
-
-      }).catch((error)=>{
-          console.log(error)
-      });
+      })
+        .then(function(response) {
+          const data = response.body.data;
+          this.sowingMap = data.sowingMap; //轮播图
+          for (var i = 0; i < this.sowingMap.length; i++) {
+            this.circular[i] = {
+              id: i,
+              imgUrl: this.sowingMap[i]
+            };
+          }
+          this.autoName = data.autoName;
+          this.currentPrice = data.currentPrice;
+          this.guidePrice = data.guidePrice;
+          this.enrolment = data.enrolment;
+          this.settingRemind = data.settingRemind;
+          this.platformNum = data.platformNum;
+          this.deposit = data.deposit;
+          this.increasePrice = data.increasePrice;
+          this.saleArea = data.saleArea;
+          this.packUpPlace = data.packUpPlace;
+          this.produceTime = data.produceTime;
+          this.carColor = data.carColor;
+          this.shopInfo = data.shopInfo;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     // 设置竞拍导航
     setBidingTip() {
@@ -229,17 +229,16 @@ export default {
         let startTime = new Date(this.startTime);
         let endTime = new Date(this.endTime);
         let type = "double";
-        let that = this;
         timeCountdown(
           { startTime, endTime, type },
           update => {
             // 倒计时更新触发的操作写在这里
-            
-            that.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
+            this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
           },
           end => {
             // 倒计时结束触发的操作写在这里
             console.log(end);
+            this.bidderSatus = "4";
           }
         );
         return false;
@@ -256,12 +255,14 @@ export default {
           { startTime, endTime, type },
           update => {
             // 倒计时更新触发的操作写在这里
-            
-            that.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
+            this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
           },
           end => {
             // 倒计时结束触发的操作写在这里
             console.log(end);
+            this.bidderSatus = "4";
+            this.setBidingTip();
+            this.setBottomBtn();
           }
         );
         return false;
@@ -480,7 +481,6 @@ export default {
   width: 100%;
   margin: 0 auto 0.2rem;
 }
-
 
 .biding-tip {
   background: #00c385;
