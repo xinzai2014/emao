@@ -166,7 +166,10 @@ const receive = r => require.ensure([],() => r(require('../page/invitation/recei
 const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
 //竞拍
 const biding = r => require.ensure([],() => r(require('../page/biding/biding')),'biding')
-
+//保证金规则详情页
+const ruledetails = r => require.ensure([],() => r(require('../page/biding/ruledetails')),'ruledetails')
+//竞拍记录列表详情页
+const recordlist = r => require.ensure([],() => r(require('../page/biding/recordlist')),'recordlist')
 
 Vue.use(Router)
 
@@ -578,7 +581,17 @@ var router=new Router({
             path:'/biding',     //竞拍
             name:'biding',
             component:biding
-        } 
+        },
+        {
+            path:'/ruledetails',     //保证金规则详情页
+            name:'ruledetails',
+            component:ruledetails
+        },
+        {
+            path:'/recordlist',     //竞拍记录列表详情页
+            name:'recordlist',
+            component:recordlist
+        }
     ]
 })
 
