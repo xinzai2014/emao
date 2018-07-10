@@ -61,6 +61,10 @@
                 </li>
             </ul>
         </section>
+        <!-- 竞拍记录 -->
+        <section class="record">
+          <Record></Record>
+        </section>
         <!-- 竞拍流程 -->
         <section class="process">
             <div class="process-text">
@@ -69,6 +73,9 @@
             </div>
             
             <img src="./images/record.png" alt="">
+        </section>
+        <section class="rulebond">
+          <Rulebond></Rulebond>
         </section>
         <!-- 商品介绍 -->
         <section class="product">
@@ -122,6 +129,8 @@
 <script>
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
+import Record from "./record.vue";
+import Rulebond from "./rulebond.vue";
 //引入倒计时
 import { timeCountdown, numberCountdown } from "../../common/js/countdown.js";
 import swiper from "../../components/common/swiper/swiper";
@@ -313,7 +322,9 @@ export default {
 
   components: {
     swiper,
-    Popup
+    Popup,
+    Record,
+    Rulebond
   }
 };
 </script>

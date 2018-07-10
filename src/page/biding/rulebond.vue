@@ -32,7 +32,6 @@ export default {
 <style scoped>
     #rulebond {
         box-sizing: border-box;
-        padding-top: 0.77333rem;
         padding-bottom: 1.06666rem;
         padding-left: 0.4rem;
         padding-right: 0.4rem;
