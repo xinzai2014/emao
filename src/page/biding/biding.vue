@@ -14,16 +14,16 @@
         <section class="infom">
             <div class="infom-left">
                 <div class="infom-up">
-                    <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型</div>
+                    <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
                 </div>
                 <div class="infom-mid">
-                    <span class="b-price">起拍价：7.6万</span> 
-                    <span class="g-price">指导价：10.05万</span>
+                    <span class="b-price">起拍价：7.6万{{currentPrice}}</span> 
+                    <span class="g-price">指导价：10.05万{{guidePrice}}</span>
                 </div>            
                 <div class="infom-down">
-                    <span class="apply">15人报名</span>
+                    <span class="apply">15人报名{{enrolment}}</span>
                     <span>   |   </span>
-                    <span class="remind">18人设置提醒</span>
+                    <span class="remind">18人设置提醒{{settingRemind}}</span>
                 </div>
               </div>
                <div class="infom-right">
@@ -37,27 +37,27 @@
             <ul>
                 <li class="car-num">
                     <span class="left">台数</span>
-                    <span class="right">1</span>  
+                    <span class="right">1{{platformNum}}</span>  
                 </li>
                 <li class="car-money">
                     <span class="left">保证金</span>
-                    <span class="right">2000</span>
+                    <span class="right">2000{{deposit}}</span>
                 </li>
                 <li class="car-range">
                     <span class="left">可售范围</span>
-                    <span class="right">全国</span>
+                    <span class="right">全国{{saleArea}}</span>
                 </li>
                 <li class="car-place">
                     <span class="left" >提车地点</span>
-                    <span class="right">广州</span>
+                    <span class="right">广州{{packUpPlace}}</span>
                 </li>
                 <li class="car-date" >
                     <span class="left">生产日期</span>
-                    <span class="right">2018-7</span>
+                    <span class="right">2018-7{{produceTime}}</span>
                 </li>
                 <li>
                     <span class="left">车身颜色</span>
-                    <span class="right">红色</span>
+                    <span class="right">红色{{carColor}}</span>
                 </li>
             </ul>
         </section>
@@ -188,6 +188,29 @@ export default {
       }).then(function(response) {
         const data = response.body.data;
         this.sowingMap = data.sowingMap; //轮播图
+        for(var i=0;i<this.sowingMap.length;i++){
+            this.circular[i]={
+                id:i,
+                imgUrl:this.sowingMap[i]
+            }
+        };
+        this.autoName=data.autoName;
+        this.currentPrice=data.currentPrice;
+        this.guidePrice=data.guidePrice;
+        this.enrolment=data.enrolment;
+        this.settingRemind=data.settingRemind;
+        this.platformNum=data.platformNum;
+        this.deposit=data.deposit;
+        this.increasePrice=data.increasePrice;
+        this.saleArea=data.saleArea;
+        this.packUpPlace=data.packUpPlace;
+        this.produceTime=data.produceTime;
+        this.carColor=data.carColor;
+        this.shopInfo=data.shopInfo;
+
+
+      }).catch((error)=>{
+          console.log(error)
       });
     },
     // 设置竞拍导航
@@ -211,7 +234,7 @@ export default {
           { startTime, endTime, type },
           update => {
             // 倒计时更新触发的操作写在这里
-            console.log(update);
+            
             that.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
           },
           end => {
@@ -233,7 +256,7 @@ export default {
           { startTime, endTime, type },
           update => {
             // 倒计时更新触发的操作写在这里
-            console.log(update);
+            
             that.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
           },
           end => {
