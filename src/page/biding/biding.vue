@@ -483,17 +483,6 @@ export default {
         }
       );
     },
-    /*判断是否是App*/
-    isTcmApp() {
-      if (
-        typeof this.$route.query.token == "undefined" ||
-        this.$route.query.token == ""
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    },
     /**
      * 按钮统计方法
      * params: buttonType 按钮类型[必传]
@@ -511,7 +500,7 @@ export default {
       let buttonType = buttonType;
       let url = "";
       let params = null;
-      if (isTcmApp) {
+      if (this.isTcmApp) {
         url = "https://tcmapi.emao.com/bidder/browseAppLog";
         params = {
           token: token,
