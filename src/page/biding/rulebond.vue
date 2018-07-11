@@ -41,8 +41,8 @@ export default {
         padding-bottom: 0.53333rem;
     }
     .title_left {
-        font-size: 0.46666rem;
-        font-weight: bold;
+        font-size: 0.50667rem;
+        font-weight: 700;
     }
     .title_more {
         float: right;
