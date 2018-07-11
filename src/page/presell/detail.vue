@@ -21,7 +21,10 @@
                     <!-- 名字和设置提醒 -->
                     <div class="car-name">
                         <h4 class="name-content">{{presellData.autoName}}</h4>
-                        <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun">
+                        <!-- 在app内并且活动未开始才会显示 -->
+                        <!-- <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun"> -->
+                        <!-- 始终不显示 -->
+                        <div class="set-warning" v-if="false" @click="setWarningFun">
                             <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
                                 <span class="icon-warning"></span>
                                 <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
