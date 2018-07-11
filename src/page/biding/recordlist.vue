@@ -6,11 +6,13 @@
             <p>竞拍价</p>
             <p>时间</p>
         </div>
-        <div class="list_cont" v-for="(item, index) in list" :key="index">
-            <p>{{item.state}}</p>
-            <p>{{item.user}}</p>
-            <p>{{item.prize}}</p>
-            <p>{{item.time}}</p>
+        <div class="listBox">
+            <div class="list_cont" v-for="(item, index) in list" :key="index">
+                <p>{{item.state}}</p>
+                <p>{{item.user}}</p>
+                <p>{{item.prize}}</p>
+                <p>{{item.time}}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -35,7 +37,103 @@ export default {
                 },
                 {
                     state: '出局',
-                    user: 'cuc020280',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
                     prize: '7.99万',
                     time: '10:25:22 05/06'
                 },
@@ -60,15 +158,37 @@ export default {
         // .then((res) => {
         //   console.log(res)
         // })
+
+        var cont = document.getElementById("recordlist");
+        console.log(cont.offsetHeight)
     }
 }
 </script>
 
 <style scoped>
+#recordlist {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
 .list_title {
     font-size: 0.33333rem;
     line-height: 1.1333rem;
     border-bottom: 1px solid #e0e0e0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.listBox {
+    width: 100%;
+    position: absolute;
+    top: 1.1333rem;
+    left: 0;
+    bottom: 0;
+    /* overflow-y: scroll; */
+    overflow: hidden;
 }
 .list_title, .list_cont {
     width: 100%;
@@ -87,10 +207,10 @@ export default {
     width: 31%;
 }
 .list_title p:nth-child(3) {
-    width: 19%;
+    width: 16%;
 }
 .list_title p:nth-child(4) {
-    width: 23%;
+    width: 26%;
     text-align: right;
 }
 
@@ -108,15 +228,15 @@ export default {
     width: 31%;
 }
 .list_cont p:nth-child(3) {
-    width: 19%;
+    width: 16%;
 }
 .list_cont p:nth-child(4) {
-    width: 23%;
+    width: 26%;
     text-align: right;
 }
 
 .list_cont {
-    line-height: 0.66667rem;
+    line-height: 0.76667rem;
     font-size: 0.26666rem;
 }
 </style>
