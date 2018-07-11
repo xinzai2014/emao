@@ -494,10 +494,10 @@ export default {
      * 15=竞拍订单,16=支付全款,17=我要参加,
      * 18=去看看其他场次竞拍,19=弹窗-立即下载,20=弹窗-关闭
      */
-    setBtnClickLog(buttonType) {
+    setBtnClickLog(btnType) {
       let token = this.$route.query.token;
       let bidderId = this.$route.query.bidderId;
-      let buttonType = buttonType;
+      let buttonType = btnType;
       let url = "";
       let params = null;
       if (this.isTcmApp) {
