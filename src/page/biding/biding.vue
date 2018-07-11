@@ -107,7 +107,7 @@
     <popup :showPopup="popupState" :clickAroundHide="true" :contentStyleObj="{
                 background: '#fff',
             }" position="bottom" @changePopupState="changePopupState">
-      <div class="popup-content">
+      <div class="popup-container">
         <div class="close-icon" @click="closePopup"></div>
         <div class="current-price">
           <span>当前价：
@@ -174,10 +174,10 @@ export default {
       bottomBtnText: "交保证金报名",
       bidderSatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
       startTime: "2018/07/11 00:00:00", //活动开始时间;
-      endTime: "2018/07/11 18:26:30", //活动结束时间;
+      endTime: "2018/07/11 21:26:30", //活动结束时间;
       timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
       remindStatus: "1", //闹钟状态(只有bidderSatus=1时显示):1-未设置 2:已设置
-      isPay: 0,
+      isPay: 1, //0 未支付  1 已支付
       isBtnDisable: false,
       popupState: false,
       increasePrice: "200", //加价幅度
@@ -377,7 +377,8 @@ export default {
     btnClick() {
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
-           // 跳转到app交保证金页面
+          this.setBtnClickLog(1);
+          // 跳转到app交保证金页面
           /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
           window.location.href = `emaotaochemao://push/ensureBidder&bidderId=${
             this.bidderId
@@ -385,6 +386,7 @@ export default {
           return false;
         }
         if (this.bottomBtnText === "我要出价") {
+          this.setBtnClickLog(2);
           console.log("我要出价");
           this.popupState = true;
         }
@@ -400,11 +402,32 @@ export default {
       console.log("减价");
       if (this.myAddPrice > this.increasePrice) {
         this.myAddPrice = this.myAddPrice - (this.increasePrice - 0);
+      } else {
+        this.tost(`加价幅度不能小于${this.increasePrice}`);
       }
     },
     //出价
     bidingHandle() {
+      this.setBtnClickLog(3);
       console.log(this.myAddPrice);
+      let params = {
+        token: this.$route.query.token,
+        bidderId: this.$route.query.bidderId,
+        increasePrice: this.myAddPrice
+      };
+      this.$http({
+        url: "https://tcmapi.emao.com/bidder/increasePrice",
+        method: "GET",
+        params: params
+      })
+        .then(function(res) {
+          console.log(res);
+          this.tost("加价成功");
+        })
+        .catch(error => {
+          console.log(error);
+          this.tost(error.body.msg);
+        });
     },
     // 关闭弹窗
     closePopup() {
@@ -414,10 +437,11 @@ export default {
     setClock() {
       console.log(this.clockText);
       if (this.clockText === "设置提醒") {
+        this.setBtnClickLog(4);
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
-          remindStatus: "1"
+          remindStatus: "2" // 参数 2 为设置提醒
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
@@ -427,6 +451,7 @@ export default {
           .then(function(res) {
             console.log(res);
             this.tost("设置提醒成功，将在开拍和结束前10分钟提醒您");
+            this.clockText = "取消提醒";
           })
           .catch(error => {
             console.log(error);
@@ -434,10 +459,11 @@ export default {
             this.tost("设置失败");
           });
       } else {
+        this.setBtnClickLog(4);
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
-          remindStatus: "1"
+          remindStatus: "1" // 参数 1 为取消提醒
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
@@ -447,6 +473,7 @@ export default {
           .then(function(res) {
             console.log(res);
             this.tost("取消成功");
+            this.clockText = "设置提醒";
           })
           .catch(error => {
             console.log(error);
@@ -721,11 +748,11 @@ export default {
 .btnDisable {
   background: #cccccc;
 }
-.popup-content {
+.popup-container {
   position: relative;
   height: 4.42667rem;
 }
-.popup-content .popup-btn {
+.popup-container .popup-btn {
   position: absolute;
   bottom: 0;
   width: 100%;
