@@ -81,7 +81,7 @@ export default {
 }
 .title_left {
     color: #000;
-    font-size: 0.46666rem;
+    font-size: 0.50667rem;
     font-weight: 700;
 }
 .title_more {
