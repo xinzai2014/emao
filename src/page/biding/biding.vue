@@ -213,6 +213,9 @@ export default {
           console.log(error);
         });
     },
+    // 分享相关开始
+
+    // 分享相关结束
     // 设置竞拍导航
     setBidingTip() {
       console.log(this.bidderSatus);
@@ -361,12 +364,16 @@ export default {
   padding: 0.13333rem 0.3rem 0.3rem;
   background: #fff;
   overflow: hidden;
+  display: flex
 }
 
 .infom-left {
+  flex: 1;
   float: left;
+  
 }
 .infom-right {
+ 
   height: 3rem;
   padding: 0.3rem 0.2rem 0.3rem 0.35rem;
   float: right;
@@ -376,6 +383,7 @@ export default {
   display: block;
   margin-top: 0.4rem;
   margin-left: 0.2rem;
+  width: 1.3rem
 }
 .infom-right .clock {
   display: block;
@@ -383,7 +391,7 @@ export default {
   margin-top: 0.5rem;
 }
 .infom-up {
-  margin-top: 0.2rem;
+  
   overflow: hidden;
 }
 .infom-up .type {
@@ -401,7 +409,7 @@ export default {
 }
 .infom-mid span {
   display: inline-block;
-  margin-right: 0.3rem;
+  
 }
 .infom-mid .b-price {
   font-size: 0.6rem;
@@ -459,11 +467,13 @@ export default {
 .car-data ul li .right {
   color: #000;
 }
-.process,
+.rulebond,.record{
+  margin-bottom: 0.3rem;
+}
+.process,.rulebond,
 .product {
   background: #fff;
   padding: 0.3rem 0.25rem;
-  margin-bottom: 0.3rem;
 }
 .process-text,
 .product-text {
