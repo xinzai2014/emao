@@ -159,8 +159,8 @@ export default {
         //   console.log(res)
         // })
 
-        var cont = document.getElementById("recordlist");
-        console.log(cont.offsetHeight)
+        // var cont = document.getElementById("recordlist");
+        // console.log(cont.offsetHeight)
     }
 }
 </script>

@@ -5,6 +5,11 @@
       <swiper :circular="circular" v-if="circular.length"></swiper>
     </section>
 
+    <!-- 小喇叭模块 -->
+    <section>
+      <Notice></Notice>
+    </section>
+
     <!-- 竞拍提醒 -->
     <div class="biding-tip" :class="{bidingTipActive: bidderSatus=='3',bidingTipOver:bidderSatus=='4'}">
       <span class="text">{{bidingTipText}}</span>
@@ -130,8 +135,12 @@
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
 import alertTip from "../../components/common/alertTip/alertTip";
+// 引入竞拍记录模块
 import Record from "./record.vue";
+// 引入保证金规则模块
 import Rulebond from "./rulebond.vue";
+// 引入小喇叭模块
+import Notice from "./notice.vue";
 //引入倒计时
 import { timeCountdown, numberCountdown } from "../../common/js/countdown.js";
 import swiper from "../../components/common/swiper/swiper";
@@ -539,6 +548,7 @@ export default {
     Popup,
     Record,
     Rulebond,
+    Notice,
     alertTip
   }
 };
