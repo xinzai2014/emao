@@ -174,7 +174,19 @@ export default {
       myAddPrice: 200 //出价金额
     };
   },
-  computed: {},
+  computed: {
+    // 判断是否是APP
+    isTcmApp () {
+        if (
+            typeof this.$route.query.token == "undefined" ||
+            this.$route.query.token == ""
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+  },
   methods: {
     //获取数据
     getdata() {
@@ -213,9 +225,41 @@ export default {
           console.log(error);
         });
     },
-    // 分享相关开始
-
-    // 分享相关结束
+    /*向App传值*/
+    tcmApp(obj) {
+      //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+      //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+      //或者由服务器判断响应不同的平台脚本
+      if (navigator.userAgent.indexOf("iPhone") > 0) {
+        window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
+      } else {
+        window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
+      }
+    },
+     /*区分app与wap做不同的渲染*/
+    renderDom() {
+        document.title = "竞拍";
+    },
+    // 分享按钮添加
+     addShareButton() {
+        let _this = this;
+        var obj = {
+            actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+            actionid:"",//回调 ID：可选参数，与回调函数配套使用
+            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
+            buttonImage:"",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+            title: "分享信息标题",
+            subTitle: "分享副标题",
+            imgUrl: '',//分享信息图片链接
+            url: '', //要分享内容的 url
+            shareType:"2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
+            uniqId: '', //shareType为0时可空,分享统计id
+            extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
+        };
+        this.tcmApp(obj);
+    },
+    // 分享按钮添加
     // 设置竞拍导航
     setBidingTip() {
       console.log(this.bidderSatus);
