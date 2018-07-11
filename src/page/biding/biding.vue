@@ -1,134 +1,135 @@
 <template>
-    <div class="biding">
-        <!-- 轮播图部分 -->
-        <section>
-             <swiper :circular="circular" v-if="circular.length"></swiper>
-        </section>
+  <div class="biding">
+    <!-- 轮播图部分 -->
+    <section>
+      <swiper :circular="circular" v-if="circular.length"></swiper>
+    </section>
 
-        <!-- 竞拍提醒 -->
-        <div class="biding-tip"  :class="{bidingTipActive: bidderSatus=='3',bidingTipOver:bidderSatus=='4'}">
-            <span class="text">{{bidingTipText}}</span><span class="time"><span v-if="bidderSatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
-        </div>
-        
-        <!-- 车辆信息 -->
-        <section class="infom">
-            <div class="infom-left">
-                <div class="infom-up">
-                    <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
-                </div>
-                <div class="infom-mid">
-                    <span class="b-price">当前价：7.6万{{currentPrice}}</span> 
-                    <span class="g-price">指导价：10.05万{{guidePrice}}</span>
-                </div>            
-                <div class="infom-down">
-                    <span class="apply">15人报名{{enrolment}}</span>
-                    <span>   |   </span>
-                    <span class="remind">18人设置提醒{{settingRemind}}</span>
-                </div>
-              </div>
-               <div class="infom-right">
-                   <img src="./images/clock.png" alt="设置提醒">
-                   <span class="clock">设置提醒</span>
-                   </div> 
-                      
-        </section>
-        <!-- 具体参数 -->
-        <section class="car-data">
-            <ul>
-                <li class="car-num">
-                    <span class="left">台数</span>
-                    <span class="right">1{{platformNum}}</span>  
-                </li>
-                <li class="car-money">
-                    <span class="left">保证金</span>
-                    <span class="right">2000{{deposit}}</span>
-                </li>
-                <li class="car-range">
-                    <span class="left">可售范围</span>
-                    <span class="right">全国{{saleArea}}</span>
-                </li>
-                <li class="car-place">
-                    <span class="left" >提车地点</span>
-                    <span class="right">广州{{packUpPlace}}</span>
-                </li>
-                <li class="car-date" >
-                    <span class="left">生产日期</span>
-                    <span class="right">2018-7{{produceTime}}</span>
-                </li>
-                <li>
-                    <span class="left">车身颜色</span>
-                    <span class="right">红色{{carColor}}</span>
-                </li>
-            </ul>
-        </section>
-        <!-- 竞拍记录 -->
-        <section class="record">
-          <Record></Record>
-        </section>
-        <!-- 竞拍流程 -->
-        <section class="process">
-            <div class="process-text">
-            <span>|</span>
-            <span >竞拍流程</span>
-            </div>
-            
-            <img src="./images/record.png" alt="">
-        </section>
-        <section class="rulebond">
-          <Rulebond></Rulebond>
-        </section>
-        <!-- 商品介绍 -->
-        <section class="product">
-            <div class="product-text">
-            <span>|</span>
-            <span >商品介绍</span>
-            </div>
-            <ul>
-                <li>
-                    <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt="">
-                </li>
-                <li>
-                    <img src="./images/text.png" alt="">
-                </li>
-            </ul>
-        </section>
-        <!-- 底部按钮 -->
-        <div class="bottom-btn" :class="{btnDisable:isBtnDisable}" @click="btnClick">
-            {{bottomBtnText}}
-        </div>
-        <!-- 出价弹窗 -->
-        <popup 
-            :showPopup="popupState"
-            :clickAroundHide="true"
-            :contentStyleObj="{
-                background: '#fff',
-            }"
-            position="bottom"
-            @changePopupState="changePopupState">
-            <div class="popup-content">
-                <div class="close-icon" @click="closePopup"></div>
-                <div class="current-price">
-                    <span>当前价：<span class="price-num">7.39</span></span> <font>万</font>
-                </div>
-                <div class="change-price">
-                    <div class="c-p-title">加价幅度</div>
-                    <div class="c-p-box">
-                        <span class="subtract-icon" @click="subtractPrice"></span>
-                        <span class="add-range">{{myAddPrice}}</span>
-                        <span class="add-icon" @click="addPrice"></span>
-                    </div>
-                </div>
-                <div class="popup-btn" @click="bidingHandle">
-                    立即出价
-                </div>
-            </div>
-        </popup>
-        
+    <!-- 竞拍提醒 -->
+    <div class="biding-tip" :class="{bidingTipActive: bidderSatus=='3',bidingTipOver:bidderSatus=='4'}">
+      <span class="text">{{bidingTipText}}</span>
+      <span class="time">
+        <span v-if="bidderSatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
     </div>
+
+    <!-- 车辆信息 -->
+    <section class="infom">
+      <div class="infom-left">
+        <div class="infom-up">
+          <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
+        </div>
+        <div class="infom-mid">
+          <span class="b-price">当前价：7.6万{{currentPrice}}</span>
+          <span class="g-price">指导价：10.05万{{guidePrice}}</span>
+        </div>
+        <div class="infom-down">
+          <span class="apply">15人报名{{enrolment}}</span>
+          <span> | </span>
+          <span class="remind">18人设置提醒{{settingRemind}}</span>
+        </div>
+      </div>
+      <div v-if="isClockShow" class="infom-right" @click="setClock">
+        <img src="./images/clock.png" alt="设置提醒">
+        <span class="clock">{{clockText}}</span>
+      </div>
+
+    </section>
+    <!-- 具体参数 -->
+    <section class="car-data">
+      <ul>
+        <li class="car-num">
+          <span class="left">台数</span>
+          <span class="right">1{{platformNum}}</span>
+        </li>
+        <li class="car-money">
+          <span class="left">保证金</span>
+          <span class="right">2000{{deposit}}</span>
+        </li>
+        <li class="car-range">
+          <span class="left">可售范围</span>
+          <span class="right">全国{{saleArea}}</span>
+        </li>
+        <li class="car-place">
+          <span class="left">提车地点</span>
+          <span class="right">广州{{packUpPlace}}</span>
+        </li>
+        <li class="car-date">
+          <span class="left">生产日期</span>
+          <span class="right">2018-7{{produceTime}}</span>
+        </li>
+        <li>
+          <span class="left">车身颜色</span>
+          <span class="right">红色{{carColor}}</span>
+        </li>
+      </ul>
+    </section>
+    <!-- 竞拍记录 -->
+    <section class="record">
+      <Record></Record>
+    </section>
+    <!-- 竞拍流程 -->
+    <section class="process">
+      <div class="process-text">
+        <span>|</span>
+        <span>竞拍流程</span>
+      </div>
+
+      <img src="./images/record.png" alt="">
+    </section>
+    <section class="rulebond">
+      <Rulebond></Rulebond>
+    </section>
+    <!-- 商品介绍 -->
+    <section class="product">
+      <div class="product-text">
+        <span>|</span>
+        <span>商品介绍</span>
+      </div>
+      <ul>
+        <li>
+          <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt="">
+        </li>
+        <li>
+          <img src="./images/text.png" alt="">
+        </li>
+      </ul>
+    </section>
+    <!-- 底部按钮 -->
+    <div class="bottom-btn" :class="{btnDisable:isBtnDisable}" @click="btnClick">
+      {{bottomBtnText}}
+    </div>
+    <!-- 出价弹窗 -->
+    <popup :showPopup="popupState" :clickAroundHide="true" :contentStyleObj="{
+                background: '#fff',
+            }" position="bottom" @changePopupState="changePopupState">
+      <div class="popup-content">
+        <div class="close-icon" @click="closePopup"></div>
+        <div class="current-price">
+          <span>当前价：
+            <span class="price-num">7.39</span>
+          </span>
+          <font>万</font>
+        </div>
+        <div class="change-price">
+          <div class="c-p-title">加价幅度</div>
+          <div class="c-p-box">
+            <span class="subtract-icon" @click="subtractPrice"></span>
+            <span class="add-range">{{myAddPrice}}</span>
+            <span class="add-icon" @click="addPrice"></span>
+          </div>
+        </div>
+        <div class="popup-btn" @click="bidingHandle">
+          立即出价
+        </div>
+      </div>
+    </popup>
+
+  </div>
 </template>
 <script>
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
+import alertTip from "../../components/common/alertTip/alertTip";
 import Record from "./record.vue";
 import Rulebond from "./rulebond.vue";
 //引入倒计时
@@ -163,28 +164,32 @@ export default {
       bidingTipTime: "20小时08分04秒",
       bottomBtnText: "交保证金报名",
       bidderSatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
-      startTime: "2018/07/10 20:23:23", //活动开始时间;
-      endTime: "2018/07/10 21:51:30", //活动结束时间;
+      startTime: "2018/07/11 00:00:00", //活动开始时间;
+      endTime: "2018/07/11 18:26:30", //活动结束时间;
       timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
       remindStatus: "1", //闹钟状态(只有bidderSatus=1时显示):1-未设置 2:已设置
       isPay: 0,
       isBtnDisable: false,
       popupState: false,
       increasePrice: "200", //加价幅度
-      myAddPrice: 200 //出价金额
+      myAddPrice: 200, //出价金额
+      isClockShow: true,
+      clockText: "设置提醒",
+      bidderMoney: 2000,
+      bidderId: 1
     };
   },
   computed: {
     // 判断是否是APP
-    isTcmApp () {
-        if (
-            typeof this.$route.query.token == "undefined" ||
-            this.$route.query.token == ""
-        ) {
-            return false;
-        } else {
-            return true;
-        }
+    isTcmApp() {
+      if (
+        typeof this.$route.query.token == "undefined" ||
+        this.$route.query.token == ""
+      ) {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   methods: {
@@ -236,28 +241,28 @@ export default {
         window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
       }
     },
-     /*区分app与wap做不同的渲染*/
+    /*区分app与wap做不同的渲染*/
     renderDom() {
-        document.title = "竞拍";
+      document.title = "竞拍";
     },
     // 分享按钮添加
-     addShareButton() {
-        let _this = this;
-        var obj = {
-            actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            actionid:"",//回调 ID：可选参数，与回调函数配套使用
-            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-            buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
-            buttonImage:"",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-            title: "分享信息标题",
-            subTitle: "分享副标题",
-            imgUrl: '',//分享信息图片链接
-            url: '', //要分享内容的 url
-            shareType:"2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
-            uniqId: '', //shareType为0时可空,分享统计id
-            extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
-        };
-        this.tcmApp(obj);
+    addShareButton() {
+      let _this = this;
+      var obj = {
+        actionname: "addShareButton", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+        actionid: "", //回调 ID：可选参数，与回调函数配套使用
+        callback: "", //回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+        buttonTitle: "分享", //分享按钮的标题；可选参数，与 buttonImage 二选一
+        buttonImage: "", //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+        title: "分享信息标题",
+        subTitle: "分享副标题",
+        imgUrl: "", //分享信息图片链接
+        url: "", //要分享内容的 url
+        shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
+        uniqId: "", //shareType为0时可空,分享统计id
+        extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
+      };
+      this.tcmApp(obj);
     },
     // 分享按钮添加
     // 设置竞拍导航
@@ -301,6 +306,12 @@ export default {
         timeCountdown(
           { startTime, endTime, type },
           update => {
+            // console.log(
+            //   update[1] === "00" && update[2] === "00" && update[3] < 10
+            // );
+            if (update[1] === "00" && update[2] === "00" && update[3] < 10) {
+              this.isClockShow = false;
+            }
             // 倒计时更新触发的操作写在这里
             this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
           },
@@ -357,7 +368,11 @@ export default {
     btnClick() {
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
-          console.log("交保证金报名");
+           // 跳转到app交保证金页面
+          /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
+          window.location.href = `emaotaochemao://push/ensureBidder&bidderId=${
+            this.bidderId
+          }&bidderMoney=${this.bidderMoney}`;
           return false;
         }
         if (this.bottomBtnText === "我要出价") {
@@ -382,11 +397,150 @@ export default {
     bidingHandle() {
       console.log(this.myAddPrice);
     },
+    // 关闭弹窗
     closePopup() {
       this.popupState = false;
+    },
+    // 设置提醒
+    setClock() {
+      console.log(this.clockText);
+      if (this.clockText === "设置提醒") {
+        let params = {
+          token: this.$route.query.token,
+          bidderId: this.$route.query.bidderId,
+          remindStatus: "1"
+        };
+        this.$http({
+          url: "https://tcmapi.emao.com/bidder/setingRemind",
+          method: "GET",
+          params: params
+        })
+          .then(function(res) {
+            console.log(res);
+            this.tost("设置提醒成功，将在开拍和结束前10分钟提醒您");
+          })
+          .catch(error => {
+            console.log(error);
+            // this.$store.state.alert.text||this.alertText;
+            this.tost("设置失败");
+          });
+      } else {
+        let params = {
+          token: this.$route.query.token,
+          bidderId: this.$route.query.bidderId,
+          remindStatus: "1"
+        };
+        this.$http({
+          url: "https://tcmapi.emao.com/bidder/setingRemind",
+          method: "GET",
+          params: params
+        })
+          .then(function(res) {
+            console.log(res);
+            this.tost("取消成功");
+          })
+          .catch(error => {
+            console.log(error);
+            // this.$store.state.alert.text||this.alertText;
+            this.tost("取消失败");
+          });
+      }
+    },
+    // 设置闹钟提示样式
+    setClockUI() {
+      // 判断是否设置提醒 1-未设置 2-已设置
+      if (this.remindStatus === "1") {
+        console.log("1-未设置");
+        //1.竞拍未开始状态
+        if (this.bidderSatus === "1" || this.bidderSatus === "2") {
+          this.clockText = "设置提醒";
+        }
+        //2.竞拍进行中
+        if (this.bidderSatus === "3") {
+          this.clockText = "设置提醒";
+        }
+        return false;
+      }
+      if (this.remindStatus === "2") {
+        console.log("2-已设置");
+        //1.竞拍未开始状态
+        if (this.bidderSatus === "1" || this.bidderSatus === "2") {
+          this.clockText = "取消提醒";
+        }
+        if (this.bidderSatus === "3") {
+          this.clockText = "设置提醒";
+        }
+        return false;
+      }
+    },
+    // Tost提醒
+    tost(content) {
+      this.$store.dispatch(
+        "ALERT", // 通过store传值
+        {
+          flag: true,
+          text: content
+        }
+      );
+    },
+    /*判断是否是App*/
+    isTcmApp() {
+      if (
+        typeof this.$route.query.token == "undefined" ||
+        this.$route.query.token == ""
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    /**
+     * 按钮统计方法
+     * params: buttonType 按钮类型[必传]
+     * 1=支付保证金,2=我要出价, 3=立即出价,
+     * 4=设置提醒,5=取消提醒,6=查看全部,
+     * 7=查看细则,8=导航右上角分享,9=分享类型,
+     * 10=出价失败弹窗-知道了,11=出价失败弹窗-关闭,
+     * 12=选择自提点,13=确认支付,14=提交汇款凭证,
+     * 15=竞拍订单,16=支付全款,17=我要参加,
+     * 18=去看看其他场次竞拍,19=弹窗-立即下载,20=弹窗-关闭
+     */
+    setBtnClickLog(buttonType) {
+      let token = this.$route.query.token;
+      let bidderId = this.$route.query.bidderId;
+      let buttonType = buttonType;
+      let url = "";
+      let params = null;
+      if (isTcmApp) {
+        url = "https://tcmapi.emao.com/bidder/browseAppLog";
+        params = {
+          token: token,
+          bidderId: bidderId,
+          buttonType: buttonType
+        };
+      } else {
+        url = "https://tcmapi.emao.com/bidder/browseWapLog";
+        params = {
+          bidderId: bidderId,
+          buttonType: buttonType
+        };
+      }
+
+      this.$http({
+        url: url,
+        method: "GET",
+        params: params
+      })
+        .then(function(res) {
+          // console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   created() {
+    this.setClockUI();
     this.setBidingTip();
     this.setBottomBtn();
   },
@@ -395,7 +549,8 @@ export default {
     swiper,
     Popup,
     Record,
-    Rulebond
+    Rulebond,
+    alertTip
   }
 };
 </script>
@@ -408,16 +563,14 @@ export default {
   padding: 0.13333rem 0.3rem 0.3rem;
   background: #fff;
   overflow: hidden;
-  display: flex
+  display: flex;
 }
 
 .infom-left {
   flex: 1;
   float: left;
-  
 }
 .infom-right {
- 
   height: 3rem;
   padding: 0.3rem 0.2rem 0.3rem 0.35rem;
   float: right;
@@ -427,7 +580,7 @@ export default {
   display: block;
   margin-top: 0.4rem;
   margin-left: 0.2rem;
-  width: 1.3rem
+  width: 1.3rem;
 }
 .infom-right .clock {
   display: block;
@@ -435,7 +588,6 @@ export default {
   margin-top: 0.5rem;
 }
 .infom-up {
-  
   overflow: hidden;
 }
 .infom-up .type {
@@ -453,7 +605,6 @@ export default {
 }
 .infom-mid span {
   display: inline-block;
-  
 }
 .infom-mid .b-price {
   font-size: 0.6rem;
@@ -511,10 +662,12 @@ export default {
 .car-data ul li .right {
   color: #000;
 }
-.rulebond,.record{
+.rulebond,
+.record {
   margin-bottom: 0.3rem;
 }
-.process,.rulebond,
+.process,
+.rulebond,
 .product {
   background: #fff;
   padding: 0.3rem 0.25rem;
