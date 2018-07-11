@@ -57,7 +57,7 @@ export default {
     methods: {
         recordlist () {
             console.log('查看竞拍记录列表详情')
-            this.$router.push('/recordlist')
+            this.$router.push('/biding/recordlist')
         }
     },
     created () {

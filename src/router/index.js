@@ -583,12 +583,12 @@ var router=new Router({
             component:biding
         },
         {
-            path:'/ruledetails',     //保证金规则详情页
+            path:'/biding/ruledetails',     //保证金规则详情页
             name:'ruledetails',
             component:ruledetails
         },
         {
-            path:'/recordlist',     //竞拍记录列表详情页
+            path:'/biding/recordlist',     //竞拍记录列表详情页
             name:'recordlist',
             component:recordlist
         }

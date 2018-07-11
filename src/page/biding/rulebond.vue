@@ -23,7 +23,7 @@ export default {
     methods: {
         checkrules () {
             console.log('查看细则')
-            this.$router.push('/ruledetails')
+            this.$router.push('/biding/ruledetails')
         }
     }
 }
