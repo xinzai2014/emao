@@ -24,7 +24,7 @@
           <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
         </div>
         <div class="infom-mid">
-          <span class="b-price">当前价：7.6万{{currentPrice}}</span>
+          <span class="b-price">当前价：{{currentPrice}}</span>
           <span class="g-price">指导价：10.05万{{guidePrice}}</span>
         </div>
         <div class="infom-down">
@@ -129,6 +129,17 @@
       </div>
     </popup>
 
+    <!-- 出价提示弹窗 -->
+    <popup :showPopup="popupStatePrice" :clickAroundHide="true" :contentStyleObj="{
+                background: '#fff',
+                borderRadius: '0.13333rem'
+            }" position="center" @changePopupState="changePopupStatePrice">
+      <div class="pricePopupContent">
+        <h2>出价失败</h2>
+        <h4>{{bidingErrorText}}</h4>
+        <div class="iKnow" @click="iKnowHandle">我知道了</div>
+      </div>
+    </popup>
   </div>
 </template>
 <script>
@@ -150,7 +161,7 @@ export default {
     return {
       sowingMap: [],//轮播图
       autoName: "", //车型全称
-      currentPrice: "", //当前价格
+      currentPrice: "7.39", //当前价格
       guidePrice: "", //指导价格
       enrolment: "", //报名人数
       settingRemind: "", //设置闹钟人数
@@ -173,11 +184,10 @@ export default {
       bidingTipTime: "20小时08分04秒",
       bottomBtnText: "交保证金报名",
       bidderSatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
-      startTime: "2018/07/11 00:00:00", //活动开始时间;
-      endTime: "2018/07/11 21:26:30", //活动结束时间;
+      startTime: "2018/07/13 00:00:00", //活动开始时间;
+      endTime: "2018/07/14 21:26:30", //活动结束时间;
       timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
       remindStatus: "1", //闹钟状态(只有bidderSatus=1时显示):1-未设置 2:已设置
-      isPay: 1, //0 未支付  1 已支付
       isBtnDisable: false,
       popupState: false,
       increasePrice: "200", //加价幅度
@@ -187,7 +197,10 @@ export default {
       bidderMoney: 2000,
       bidderId: 1,
       bidderRecord:[],
-      shareInfo:[]
+      shareInfo:[],
+      depositStatus : "1", //定金状态:1-已付; 2-未付
+      popupStatePrice: false,
+      bidingErrorText: "竞拍已结束，关注一下其他场次吧"
     };
   },
   computed: {
@@ -328,13 +341,19 @@ export default {
         timeCountdown(
           { startTime, endTime, type },
           update => {
+           console.log(update);
             // 倒计时更新触发的操作写在这里
             this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
+            if (update[0] === "ing") {
+              this.bidderSatus = "3";
+              this.setClockUI();
+              this.setBidingTip();
+              this.setBottomBtn();
+            }
           },
           end => {
             // 倒计时结束触发的操作写在这里
             console.log(end);
-            this.bidderSatus = "4";
           }
         );
         return false;
@@ -379,9 +398,9 @@ export default {
     setBottomBtn() {
       //1.竞拍未开始状态
       if (this.bidderSatus === "1" || this.bidderSatus === "2") {
-        console.log(this.isPay);
+        console.log(this.depositStatus);
         //是否支付保证金
-        if (this.isPay) {
+        if (this.depositStatus==='1') {
           this.bottomBtnText = "已交保证金，等待开拍";
           this.isBtnDisable = true;
         } else {
@@ -392,7 +411,7 @@ export default {
       //2.竞拍进行中
       if (this.bidderSatus === "3") {
         //是否支付保证金
-        if (this.isPay) {
+        if (this.depositStatus==='1') {
           this.bottomBtnText = "我要出价";
           this.isBtnDisable = false;
         } else {
@@ -408,6 +427,15 @@ export default {
     },
     changePopupState(popupState) {
       this.popupState = popupState;
+    },
+    changePopupStatePrice(popupState) {
+      this.setBtnClickLog(10);
+      this.popupStatePrice = popupState;
+    },
+    // 出价失败-我知道了
+    iKnowHandle() {
+      this.setBtnClickLog(10);
+      this.popupStatePrice = false;
     },
     btnClick() {
       if (!this.isBtnDisable) {
@@ -458,10 +486,12 @@ export default {
         .then(function(res) {
           console.log(res);
           this.tost("加价成功");
+          this.popupState = flase;
         })
         .catch(error => {
           console.log(error);
-          this.tost(error.body.msg);
+          this.popupState = false;
+          this.popupStatePrice = true;
         });
     },
     // 关闭弹窗
@@ -862,6 +892,27 @@ export default {
   height: 0.37333rem;
   top: -0.2rem;
   right: 0.4rem;
+}
+
+.pricePopupContent {
+  width: 7.2rem;
+  text-align: center;
+}
+.pricePopupContent h2 {
+  margin-top: 0.8rem;
+  font-size: 0.48rem;
+}
+.pricePopupContent h4 {
+  margin-top: 0.37333rem;
+  margin-bottom: 0.45333rem;
+  font-size: 0.4rem;
+}
+.pricePopupContent .iKnow {
+  height: 1.17333rem;
+  line-height: 1.17333rem;
+  background: #d7ac4d;
+  color: #ffffff;
+  font-size: 0.45333rem;
 }
 </style>
 
