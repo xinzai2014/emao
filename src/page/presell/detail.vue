@@ -736,7 +736,7 @@ export default {
             }, (end) => {
                 this.countdownArr = end;
                 this.btnState = false;
-                this.btnText = '已结束';
+                this.btnText = '已售罄';
                 this.countdownText = '距离结束还剩'
                 this.countdownState = true;
             })
