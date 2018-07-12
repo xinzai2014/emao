@@ -2,7 +2,7 @@
     <div id="rulebond">
         <p class="rule_title">
             <span class="title_left">保证金规则</span>
-            <span class="title_more" @click="checkrules">查看细则 ></span>
+            <span class="title_more" @click="checkrules(7)">查看细则 ></span>
         </p>
         <div class="rulelist">
             <p>1.支付竞拍保证金，即可参与竞拍活动；</p>
@@ -20,9 +20,53 @@ export default {
 
         }
     },
+    computed: {
+        // 判断是否是APP
+        isTcmApp() {
+            if (
+                typeof this.$route.query.token == "undefined" ||
+                this.$route.query.token == ""
+            ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
     methods: {
         checkrules () {
             console.log('查看细则')
+            // 添加监测
+            // let token = this.$route.query.token;
+            // let bidderId = this.$route.query.bidderId;
+            // let buttonType = btnType;
+            // let url = "";
+            // let params = null;
+            // if (this.isTcmApp) {
+            //     url = "https://tcmapi.emao.com/bidder/browseAppLog";
+            //     params = {
+            //     token: token,
+            //     bidderId: bidderId,
+            //     buttonType: buttonType
+            //     };
+            // } else {
+            //     url = "https://tcmapi.emao.com/bidder/browseWapLog";
+            //     params = {
+            //     bidderId: bidderId,
+            //     buttonType: buttonType
+            //     };
+            // }
+            // this.$http({
+            //     url: url,
+            //     method: "GET",
+            //     params: params
+            // })
+            // .then(function(res) {
+            //     // console.log(res);
+            // })
+            // .catch(error => {
+            //     console.log(error);
+            // });
             this.$router.push('/biding/ruledetails')
         }
     }

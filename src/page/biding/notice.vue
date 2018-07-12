@@ -34,6 +34,17 @@ export default {
     methods: {
         getdata () {
             console.log('aaa')
+            // var bidderId = this.$route.query.bidderId;
+            // this.$axios({
+            //   url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
+            //   type: 'GET',
+            //   params: {
+            //     bidderId: bidderId
+            //   }
+            // })
+            // .then((res) => {
+            //   console.log(res)
+            // })
         }
     }
 }
