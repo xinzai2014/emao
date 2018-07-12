@@ -13,6 +13,7 @@
                 <p>{{item.prize}}</p>
                 <p>{{item.time}}</p>
             </div>
+            <div class="list_text">最多显示20条数据</div>
         </div>
     </div>
 </template>
@@ -142,22 +143,57 @@ export default {
                     user: 'cu20280',
                     prize: '7.99万',
                     time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cu20280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
                 }
             ]
         }
     },
+    methods: {
+        getdata () {
+            // var bidderId = this.$route.query.bidderId;
+            // this.$axios({
+            //   url: 'https://tcmapi.emao.com/bidder/bidderRecord',
+            //   type: 'GET',
+            //   params: {
+            //     bidderId: 8
+            //   }
+            // })
+            // .then((res) => {
+            //   console.log(res)
+            // })
+            let len = this.list.length
+            console.log(len)
+            if (len > 20) {
+                this.list = this.list.slice(0, 20)
+            }
+            console.log(this.list.length)
+        }
+    },
     created () {
-        // var bidderId = this.$route.query.bidderId;
-        // this.$axios({
-        //   url: 'https://tcmapi.emao.com/bidder/bidderRecord',
-        //   type: 'GET',
-        //   params: {
-        //     bidderId: 8
-        //   }
-        // })
-        // .then((res) => {
-        //   console.log(res)
-        // })
+        this.getdata()
     }
 }
 </script>
@@ -184,8 +220,15 @@ export default {
     top: 1.1333rem;
     left: 0;
     bottom: 0;
-    /* overflow-y: scroll; */
-    overflow: hidden;
+    overflow-y: scroll;
+    background: #f1f1f1;
+    /* overflow: hidden; */
+}
+.list_text {
+    padding-top: 0.5666rem;
+    text-align: center;
+    font-size: 0.29333rem;
+    color: #999;
 }
 .list_title, .list_cont {
     width: 100%;
