@@ -50,6 +50,12 @@ export default {
                     user: 'cu20280',
                     prize: '7.99万',
                     time: '10:25:22 05/06'
+                },
+                {
+                    state: '出局',
+                    user: 'cuc020280',
+                    prize: '7.99万',
+                    time: '10:25:22 05/06'
                 }
             ]
         }
@@ -58,12 +64,22 @@ export default {
         recordlist () {
             console.log('查看竞拍记录列表详情')
             this.$router.push('/biding/recordlist')
+        },
+        getdata () {
+            let len = this.list.length
+            console.log(len)
+            if (len > 5) {
+                this.list = this.list.slice(0, 5)
+            }
+            console.log(this.list.length)
         }
     },
     created () {
         console.log('获取竞拍id')
         var bidderId = this.$route.query.bidderId
         console.log(bidderId)
+        console.log("竞拍记录模块长度")
+        this.getdata()
     }
 }
 </script>
@@ -110,10 +126,10 @@ export default {
     width: 31%;
 }
 .list_title p:nth-child(3) {
-    width: 19%;
+    width: 16%;
 }
 .list_title p:nth-child(4) {
-    width: 23%;
+    width: 26%;
     text-align: right;
 }
 
@@ -127,10 +143,10 @@ export default {
     width: 31%;
 }
 .list_cont p:nth-child(3) {
-    width: 19%;
+    width: 16%;
 }
 .list_cont p:nth-child(4) {
-    width: 23%;
+    width: 26%;
     text-align: right;
 }
 
