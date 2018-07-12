@@ -2,7 +2,7 @@
     <div id="record">
         <p class="record_title">
             <span class="title_left">竞拍记录</span>
-            <span class="title_more" @click="recordlist">查看更多 ></span>
+            <span class="title_more" @click="recordlist(6)">查看更多 ></span>
         </p>
         <div class="record_list">
             <div class="list_title">
@@ -60,12 +60,67 @@ export default {
             ]
         }
     },
+    computed: {
+        // 判断是否是APP
+        isTcmApp() {
+            if (
+                typeof this.$route.query.token == "undefined" ||
+                this.$route.query.token == ""
+            ) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
     methods: {
-        recordlist () {
+        recordlist (btnType) {
             console.log('查看竞拍记录列表详情')
+            // 添加监测
+            // let token = this.$route.query.token;
+            // let bidderId = this.$route.query.bidderId;
+            // let buttonType = btnType;
+            // let url = "";
+            // let params = null;
+            // if (this.isTcmApp) {
+            //     url = "https://tcmapi.emao.com/bidder/browseAppLog";
+            //     params = {
+            //     token: token,
+            //     bidderId: bidderId,
+            //     buttonType: buttonType
+            //     };
+            // } else {
+            //     url = "https://tcmapi.emao.com/bidder/browseWapLog";
+            //     params = {
+            //     bidderId: bidderId,
+            //     buttonType: buttonType
+            //     };
+            // }
+            // this.$http({
+            //     url: url,
+            //     method: "GET",
+            //     params: params
+            // })
+            // .then(function(res) {
+            //     // console.log(res);
+            // })
+            // .catch(error => {
+            //     console.log(error);
+            // });
             this.$router.push('/biding/recordlist')
         },
         getdata () {
+            // var bidderId = this.$route.query.bidderId;
+            // this.$axios({
+            //   url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
+            //   type: 'GET',
+            //   params: {
+            //     bidderId: bidderId
+            //   }
+            // })
+            // .then((res) => {
+            //   console.log(res)
+            // })
             let len = this.list.length
             console.log(len)
             if (len > 5) {
