@@ -33,7 +33,7 @@
           <span class="remind">18人设置提醒{{settingRemind}}</span>
         </div>
       </div>
-      <div v-if="isClockShow" class="infom-right" @click="setClock">
+      <div v-if="isClockShow&&isTcmApp" class="infom-right" @click="setClock">
         <img src="./images/clock.png" alt="设置提醒">
         <span class="clock">{{clockText}}</span>
       </div>
@@ -148,7 +148,7 @@ export default {
   name: "biding",
   data() {
     return {
-      sowingMap: [],
+      sowingMap: [],//轮播图
       autoName: "", //车型全称
       currentPrice: "", //当前价格
       guidePrice: "", //指导价格
@@ -185,7 +185,9 @@ export default {
       isClockShow: true,
       clockText: "设置提醒",
       bidderMoney: 2000,
-      bidderId: 1
+      bidderId: 1,
+      bidderRecord:[],
+      shareInfo:[]
     };
   },
   computed: {
@@ -204,16 +206,42 @@ export default {
   methods: {
     //获取数据
     getdata() {
-      const params = {
+      let params;
+      let data;
+      if(this.isTcmApp){
+         params = {
+        token:this.$route.query.token,
         bidderId: this.$route.query.bidderId
       };
-      this.$http({
+       this.$http({
+        url: "https://tcmapi.emao.com/bidder/privateBidderDetail",
+        method: "GET",
+        params: params
+      })
+      .then(function(response){
+          data=response.body.data;
+      })
+      .catch(error => {
+          console.log(error);
+          tost(error.body.msg)
+        });
+      }else{
+        params = {
+        bidderId: this.$route.query.bidderId
+      }
+        this.$http({
         url: "https://tcmapi.emao.com/bidder/bidderDetail",
         method: "GET",
         params: params
       })
         .then(function(response) {
-          const data = response.body.data;
+           data = response.body.data;
+           })
+        .catch(error => {
+          console.log(error);
+        });
+        }
+        if(data){
           this.sowingMap = data.sowingMap; //轮播图
           for (var i = 0; i < this.sowingMap.length; i++) {
             this.circular[i] = {
@@ -221,6 +249,15 @@ export default {
               imgUrl: this.sowingMap[i]
             };
           }
+          this.bidderId=data.bidderId;
+          this.bidderSatus=data.bidderSatus;
+          this.depositStatus=data.depositStatus;
+          this.startTime=data.startTime;
+          this.endTime=data.endTime;
+          this.timeStr=data.timeStr;
+          this.remindStatus=data.remindStatus;
+          this.bidderRecord=data.bidderRecord;//竞拍记录
+
           this.autoName = data.autoName;
           this.currentPrice = data.currentPrice;
           this.guidePrice = data.guidePrice;
@@ -234,10 +271,8 @@ export default {
           this.produceTime = data.produceTime;
           this.carColor = data.carColor;
           this.shopInfo = data.shopInfo;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+          this.shareInfo=data.shareInfo
+        }  
     },
     /*向App传值*/
     tcmApp(obj) {
@@ -261,10 +296,10 @@ export default {
         actionname: "addShareButton", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
         actionid: "", //回调 ID：可选参数，与回调函数配套使用
         callback: "", //回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-        buttonTitle: "分享", //分享按钮的标题；可选参数，与 buttonImage 二选一
-        buttonImage: "", //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-        title: "分享信息标题",
-        subTitle: "分享副标题",
+        buttonTitle: "", //分享按钮的标题；可选参数，与 buttonImage 二选一
+        buttonImage: this.shareInfo.icon, //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+        title: this.shareInfo.Title,
+        subTitle: this.shareInfo.note,
         imgUrl: "", //分享信息图片链接
         url: "", //要分享内容的 url
         shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
@@ -568,6 +603,9 @@ export default {
     this.setClockUI();
     this.setBidingTip();
     this.setBottomBtn();
+    this.getdata();
+    this.renderDom();
+    if(this.isTcmApp){this.addShareButton()}
   },
 
   components: {
