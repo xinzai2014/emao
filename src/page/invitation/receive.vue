@@ -1,6 +1,6 @@
 <template>
 	<div class="receive">
-		<header class="brand-list-header header-fixed" v-show="">
+		<header class="brand-list-header header-fixed">
 			<i class="white-lt brand-left-cion"></i> 
 			<strong class="brand-list-title">来自好友的邀请</strong>
 		</header>
@@ -560,18 +560,17 @@ body,html{
 	min-height:17.786667rem;
 	background: url('../../assets/share.png') no-repeat #241e2a;
 	background-size:100%;
-	padding-top: 7.5rem;
+	padding-top: 7.2rem;
 	box-sizing: border-box;
 	width: 10rem;
     margin: auto;
 }
 .receive .center2{
-	width:7.2rem;
+	width:7.5rem;
 	text-align: center;
 	font-size: 0.4rem;
 	margin:auto;
 	line-height: 0.6rem;
-	height: 0.6rem;
 }
 .receive .center2.font4{
 	font-size: 0.49rem;
