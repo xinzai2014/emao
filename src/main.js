@@ -47,10 +47,16 @@ Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //Vue.http.headers.common = {
 //	Accept:"application/json; version=2.1.0"
 //};
+if(sessionStorage.apiVersion){
+	Vue.http.headers.common = {
+		Accept: "application/json; version=" + sessionStorage.apiVersion
+	};
+}else{
+	Vue.http.headers.common = {
+		Accept: "application/json; version=3.3.0"
+	};
+}
 
-Vue.http.headers.common = {
-	Accept: "application/json; version=3.3.0"
-};
 
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
