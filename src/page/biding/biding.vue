@@ -159,7 +159,7 @@ export default {
   name: "biding",
   data() {
     return {
-      sowingMap: [],//轮播图
+      sowingMap: [], //轮播图
       autoName: "", //车型全称
       currentPrice: "7.39", //当前价格
       guidePrice: "", //指导价格
@@ -196,9 +196,9 @@ export default {
       clockText: "设置提醒",
       bidderMoney: 2000,
       bidderId: 1,
-      bidderRecord:[],
-      shareInfo:[],
-      depositStatus : "1", //定金状态:1-已付; 2-未付
+      bidderRecord: [],
+      shareInfo: [],
+      depositStatus: "1", //定金状态:1-已付; 2-未付
       popupStatePrice: false,
       bidingErrorText: "竞拍已结束，关注一下其他场次吧"
     };
@@ -221,71 +221,71 @@ export default {
     getdata() {
       let params;
       let data;
-      if(this.isTcmApp){
-         params = {
-        token:this.$route.query.token,
-        bidderId: this.$route.query.bidderId
-      };
-       this.$http({
-        url: "https://tcmapi.emao.com/bidder/privateBidderDetail",
-        method: "GET",
-        params: params
-      })
-      .then(function(response){
-          data=response.body.data;
-      })
-      .catch(error => {
-          console.log(error);
-          tost(error.body.msg)
-        });
-      }else{
+      if (this.isTcmApp) {
         params = {
-        bidderId: this.$route.query.bidderId
-      }
+          token: this.$route.query.token,
+          bidderId: this.$route.query.bidderId
+        };
         this.$http({
-        url: "https://tcmapi.emao.com/bidder/bidderDetail",
-        method: "GET",
-        params: params
-      })
-        .then(function(response) {
-           data = response.body.data;
-           })
-        .catch(error => {
-          console.log(error);
-        });
+          url: "https://tcmapi.emao.com/bidder/privateBidderDetail",
+          method: "GET",
+          params: params
+        })
+          .then(function(response) {
+            data = response.body.data;
+          })
+          .catch(error => {
+            console.log(error);
+            tost(error.body.msg);
+          });
+      } else {
+        params = {
+          bidderId: this.$route.query.bidderId
+        };
+        this.$http({
+          url: "https://tcmapi.emao.com/bidder/bidderDetail",
+          method: "GET",
+          params: params
+        })
+          .then(function(response) {
+            data = response.body.data;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      if (data) {
+        this.sowingMap = data.sowingMap; //轮播图
+        for (var i = 0; i < this.sowingMap.length; i++) {
+          this.circular[i] = {
+            id: i,
+            imgUrl: this.sowingMap[i]
+          };
         }
-        if(data){
-          this.sowingMap = data.sowingMap; //轮播图
-          for (var i = 0; i < this.sowingMap.length; i++) {
-            this.circular[i] = {
-              id: i,
-              imgUrl: this.sowingMap[i]
-            };
-          }
-          this.bidderId=data.bidderId;
-          this.bidderSatus=data.bidderSatus;
-          this.depositStatus=data.depositStatus;
-          this.startTime=data.startTime;
-          this.endTime=data.endTime;
-          this.timeStr=data.timeStr;
-          this.remindStatus=data.remindStatus;
-          this.bidderRecord=data.bidderRecord;//竞拍记录
+        this.bidderId = data.bidderId;
+        this.bidderSatus = data.bidderSatus;
+        this.depositStatus = data.depositStatus;
+        this.startTime = data.startTime;
+        this.endTime = data.endTime;
+        this.timeStr = data.timeStr;
+        this.remindStatus = data.remindStatus;
+        this.bidderRecord = data.bidderRecord; //竞拍记录
 
-          this.autoName = data.autoName;
-          this.currentPrice = data.currentPrice;
-          this.guidePrice = data.guidePrice;
-          this.enrolment = data.enrolment;
-          this.settingRemind = data.settingRemind;
-          this.platformNum = data.platformNum;
-          this.deposit = data.deposit;
-          this.increasePrice = data.increasePrice;
-          this.saleArea = data.saleArea;
-          this.packUpPlace = data.packUpPlace;
-          this.produceTime = data.produceTime;
-          this.carColor = data.carColor;
-          this.shopInfo = data.shopInfo;
-          this.shareInfo=data.shareInfo
-        }  
+        this.autoName = data.autoName;
+        this.currentPrice = data.currentPrice;
+        this.guidePrice = data.guidePrice;
+        this.enrolment = data.enrolment;
+        this.settingRemind = data.settingRemind;
+        this.platformNum = data.platformNum;
+        this.deposit = data.deposit;
+        this.increasePrice = data.increasePrice;
+        this.saleArea = data.saleArea;
+        this.packUpPlace = data.packUpPlace;
+        this.produceTime = data.produceTime;
+        this.carColor = data.carColor;
+        this.shopInfo = data.shopInfo;
+        this.shareInfo = data.shareInfo;
+      }
     },
     /*向App传值*/
     tcmApp(obj) {
@@ -341,7 +341,7 @@ export default {
         timeCountdown(
           { startTime, endTime, type },
           update => {
-           console.log(update);
+            console.log(update);
             // 倒计时更新触发的操作写在这里
             this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
             if (update[0] === "ing") {
@@ -400,7 +400,7 @@ export default {
       if (this.bidderSatus === "1" || this.bidderSatus === "2") {
         console.log(this.depositStatus);
         //是否支付保证金
-        if (this.depositStatus==='1') {
+        if (this.depositStatus === "1") {
           this.bottomBtnText = "已交保证金，等待开拍";
           this.isBtnDisable = true;
         } else {
@@ -411,7 +411,7 @@ export default {
       //2.竞拍进行中
       if (this.bidderSatus === "3") {
         //是否支付保证金
-        if (this.depositStatus==='1') {
+        if (this.depositStatus === "1") {
           this.bottomBtnText = "我要出价";
           this.isBtnDisable = false;
         } else {
@@ -599,6 +599,7 @@ export default {
       let token = this.$route.query.token;
       let bidderId = this.$route.query.bidderId;
       let buttonType = btnType;
+      let dealerId = this.$route.query.dealerId;
       let url = "";
       let params = null;
       if (this.isTcmApp) {
@@ -612,7 +613,8 @@ export default {
         url = "https://tcmapi.emao.com/bidder/browseWapLog";
         params = {
           bidderId: bidderId,
-          buttonType: buttonType
+          buttonType: buttonType,
+          dealerId: dealerId
         };
       }
 
@@ -635,7 +637,9 @@ export default {
     this.setBottomBtn();
     this.getdata();
     this.renderDom();
-    if(this.isTcmApp){this.addShareButton()}
+    if (this.isTcmApp) {
+      this.addShareButton();
+    }
   },
 
   components: {
