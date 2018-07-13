@@ -7,7 +7,7 @@
             <p>时间</p>
         </div>
         <div class="listBox">
-            <div class="list_cont" v-for="(item, index) in list" :key="index">
+            <div class="list_cont" v-for="(item, index) in list" :key="index" :style="{'color': index==0? 'red':'#000'}">
                 <p>{{item.state}}</p>
                 <p>{{item.user}}</p>
                 <p>{{item.prize}}</p>

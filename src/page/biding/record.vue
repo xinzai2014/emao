@@ -11,7 +11,7 @@
                 <p>竞拍价</p>
                 <p>时间</p>
             </div>
-            <div class="list_cont" v-for="(item, index) in list" :key="index">
+            <div class="list_cont" v-for="(item, index) in list" :key="index" :style="{'color': index==0? 'red':'#000'}">
                 <p>{{item.state}}</p>
                 <p>{{item.user}}</p>
                 <p>{{item.prize}}</p>
@@ -209,5 +209,8 @@ export default {
 .list_cont {
     line-height: 0.66667rem;
     font-size: 0.26666rem;
+}
+.list_cont:nth-child(1) {
+    color: red;
 }
 </style>
