@@ -589,6 +589,14 @@ router.beforeEach((to, from, next) => {
                     token = href.substr(str+6,str+38);
                 }  
         }
+    };
+    var href = window.location.href,
+        str = href.indexOf('apiVersion=');
+    if(str != -1){
+        var apiVersion = href.substr(str+11);
+        sessionStorage.apiVersion = apiVersion;
+    }else{
+        sessionStorage.apiVersion = '';
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
