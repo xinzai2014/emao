@@ -593,7 +593,7 @@ router.beforeEach((to, from, next) => {
     var href = window.location.href,
         str = href.indexOf('apiVersion=');
     if(str != -1){
-        var apiVersion = href.substr(str+11,str+5);
+        var apiVersion = href.substr(str+11,5);
         sessionStorage.apiVersion = apiVersion;
     }else{
         sessionStorage.apiVersion = '';
