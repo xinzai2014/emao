@@ -365,7 +365,7 @@ export default {
         //   _this.getnewdata()
         // }, 1000);
         return;
-      } else if (this.bidderStatus !== '3' && this.bidderStatus !== '4') {
+      } else if (this.bidderStatus === '1' || this.bidderStatus === '2') {
         // 如果活动状态为结束前，定时请求广播数据
         this.getnewdata()
         // var _this = this
@@ -612,7 +612,7 @@ export default {
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
-          method: "GET",
+          method: "POST",
           params: params
         })
           .then(function(res) {
@@ -634,7 +634,7 @@ export default {
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
-          method: "GET",
+          method: "POST",
           params: params
         })
           .then(function(res) {
@@ -722,7 +722,7 @@ export default {
 
       this.$http({
         url: url,
-        method: "GET",
+        method: "POST",
         params: params
       })
         .then(function(res) {
@@ -735,7 +735,7 @@ export default {
     // 竞拍记录查看更多按钮点击
     recordlist (btnType) {
       this.setBtnClickLog(btnType)
-      this.$router.push('/biding/recordlist')
+      this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
     }
   },
   created() {

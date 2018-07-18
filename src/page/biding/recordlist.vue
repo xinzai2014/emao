@@ -7,13 +7,13 @@
             <p>时间</p>
         </div>
         <div class="listBox">
-            <div class="list_cont" v-for="(item, index) in list" :key="index" :style="{'color': index==0? 'red':'#000'}">
-                <p>{{item.state}}</p>
-                <p>{{item.user}}</p>
-                <p>{{item.prize}}</p>
-                <p>{{item.time}}</p>
+            <div class="list_cont" v-for="(item, index) in bidderRecord" :key="index" :style="{'color': index==0? 'red':'#000'}">
+                <p>{{item.status}}</p>
+                <p>{{item.bidderUser}}</p>
+                <p>{{item.bidderPrice}}</p>
+                <p>{{item.bidderTime}}</p>
             </div>
-            <div class="list_text">最多显示20条数据</div>
+            <div class="list_text">最多显示{{num}}条数据</div>
         </div>
     </div>
 </template>
@@ -23,152 +23,8 @@ export default {
     name: 'recordlist',
     data () {
         return {
-            list: [
-                {
-                    state: '领先',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                }
-            ]
+            num: '20',
+            bidderRecord: []
         }
     },
     methods: {
@@ -182,14 +38,17 @@ export default {
               }
             })
             .then((res) => {
-              console.log(res)
+                this.bidderRecord = res.body.data
+                let len = this.bidderRecord.length
+                console.log(len)
+                if (len > 20) {
+                    this.bidderRecord = this.bidderRecord.slice(0, 20)
+                    this.num = 20
+                } else {
+                    this.num = len
+                }
+                console.log(this.bidderRecord.length)
             })
-            let len = this.list.length
-            console.log(len)
-            if (len > 20) {
-                this.list = this.list.slice(0, 20)
-            }
-            console.log(this.list.length)
         }
     },
     created () {
