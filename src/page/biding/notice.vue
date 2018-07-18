@@ -27,15 +27,16 @@ export default {
     },
     created () {
         var _this = this
-        setInterval(() => {
+        setTimeout(() => {
             _this.getdata()
         }, 1000);
     },
     methods: {
         getdata () {
             console.log('aaa')
+            console.log(this.$http)
             var bidderId = this.$route.query.bidderId;
-            this.$axios({
+            this.$http({
               url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
               type: 'GET',
               params: {
@@ -43,7 +44,7 @@ export default {
               }
             })
             .then((res) => {
-              console.log(res)
+            //   console.log(res)
             })
         }
     }

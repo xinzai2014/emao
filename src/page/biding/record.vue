@@ -113,7 +113,7 @@ export default {
         },
         getdata () {
             var bidderId = this.$route.query.bidderId;
-            this.$axios({
+            this.$http({
               url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
               type: 'GET',
               params: {
