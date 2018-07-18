@@ -77,50 +77,52 @@ export default {
         recordlist (btnType) {
             console.log('查看竞拍记录列表详情')
             // 添加监测
-            // let token = this.$route.query.token;
-            // let bidderId = this.$route.query.bidderId;
-            // let buttonType = btnType;
-            // let url = "";
-            // let params = null;
-            // if (this.isTcmApp) {
-            //     url = "https://tcmapi.emao.com/bidder/browseAppLog";
-            //     params = {
-            //     token: token,
-            //     bidderId: bidderId,
-            //     buttonType: buttonType
-            //     };
-            // } else {
-            //     url = "https://tcmapi.emao.com/bidder/browseWapLog";
-            //     params = {
-            //     bidderId: bidderId,
-            //     buttonType: buttonType
-            //     };
-            // }
-            // this.$http({
-            //     url: url,
-            //     method: "GET",
-            //     params: params
-            // })
-            // .then(function(res) {
-            //     // console.log(res);
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            // });
+            let token = this.$route.query.token;
+            let bidderId = this.$route.query.bidderId;
+               let uniqId=this.$route.query.uniqId;
+            let buttonType = btnType;
+            let url = "";
+            let params = null;
+            if (this.isTcmApp) {
+                url = "https://tcmapi.emao.com/bidder/browseAppLog";
+                params = {
+                token: token,
+                bidderId: bidderId,
+                buttonType: buttonType
+                };
+            } else {
+                url = "https://tcmapi.emao.com/bidder/browseWapLog";
+                params = {
+                bidderId: bidderId,
+                uniqId:uniqId,
+                buttonType: buttonType
+                };
+            }
+            this.$http({
+                url: url,
+                method: "GET",
+                params: params
+            })
+            .then(function(res) {
+                // console.log(res);
+            })
+            .catch(error => {
+                console.log(error);
+            });
             this.$router.push('/biding/recordlist')
         },
         getdata () {
-            // var bidderId = this.$route.query.bidderId;
-            // this.$axios({
-            //   url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
-            //   type: 'GET',
-            //   params: {
-            //     bidderId: bidderId
-            //   }
-            // })
-            // .then((res) => {
-            //   console.log(res)
-            // })
+            var bidderId = this.$route.query.bidderId;
+            this.$axios({
+              url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
+              type: 'GET',
+              params: {
+                bidderId: bidderId
+              }
+            })
+            .then((res) => {
+              console.log(res)
+            })
             let len = this.list.length
             console.log(len)
             if (len > 5) {

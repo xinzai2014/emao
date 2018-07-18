@@ -37,36 +37,37 @@ export default {
         checkrules () {
             console.log('查看细则')
             // 添加监测
-            // let token = this.$route.query.token;
-            // let bidderId = this.$route.query.bidderId;
-            // let buttonType = btnType;
-            // let url = "";
-            // let params = null;
-            // if (this.isTcmApp) {
-            //     url = "https://tcmapi.emao.com/bidder/browseAppLog";
-            //     params = {
-            //     token: token,
-            //     bidderId: bidderId,
-            //     buttonType: buttonType
-            //     };
-            // } else {
-            //     url = "https://tcmapi.emao.com/bidder/browseWapLog";
-            //     params = {
-            //     bidderId: bidderId,
-            //     buttonType: buttonType
-            //     };
-            // }
-            // this.$http({
-            //     url: url,
-            //     method: "GET",
-            //     params: params
-            // })
-            // .then(function(res) {
-            //     // console.log(res);
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            // });
+            let token = this.$route.query.token;
+            let bidderId = this.$route.query.bidderId;
+            let buttonType = btnType;
+            let url = "";
+            let params = null;
+            if (this.isTcmApp) {
+                url = "https://tcmapi.emao.com/bidder/browseAppLog";
+                params = {
+                token: token,
+                bidderId: bidderId,
+                buttonType: buttonType
+                };
+            } else {
+                url = "https://tcmapi.emao.com/bidder/browseWapLog";
+                params = {
+                bidderId: bidderId,
+                buttonType: buttonType,
+                   uniqId:uniqId
+                };
+            }
+            this.$http({
+                url: url,
+                method: "GET",
+                params: params
+            })
+            .then(function(res) {
+                // console.log(res);
+            })
+            .catch(error => {
+                console.log(error);
+            });
             this.$router.push('/biding/ruledetails')
         }
     }

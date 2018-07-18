@@ -26,25 +26,25 @@ export default {
         }
     },
     created () {
-        // var _this = this
-        // setInterval(() => {
-        //     _this.getdata()
-        // }, 1000);
+        var _this = this
+        setInterval(() => {
+            _this.getdata()
+        }, 1000);
     },
     methods: {
         getdata () {
             console.log('aaa')
-            // var bidderId = this.$route.query.bidderId;
-            // this.$axios({
-            //   url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
-            //   type: 'GET',
-            //   params: {
-            //     bidderId: bidderId
-            //   }
-            // })
-            // .then((res) => {
-            //   console.log(res)
-            // })
+            var bidderId = this.$route.query.bidderId;
+            this.$axios({
+              url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
+              type: 'GET',
+              params: {
+                bidderId: bidderId
+              }
+            })
+            .then((res) => {
+              console.log(res)
+            })
         }
     }
 }

@@ -609,7 +609,7 @@ export default {
       let token = this.$route.query.token;
       let bidderId = this.$route.query.bidderId;
       let buttonType = btnType;
-      let dealerId = this.$route.query.dealerId;
+      let uniqId = this.$route.query.uniqId;
       let url = "";
       let params = null;
       if (this.isTcmApp) {
@@ -624,7 +624,7 @@ export default {
         params = {
           bidderId: bidderId,
           buttonType: buttonType,
-          dealerId: dealerId
+          uniqId: uniqId
         };
       }
 

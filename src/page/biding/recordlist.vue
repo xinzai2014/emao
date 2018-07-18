@@ -173,17 +173,17 @@ export default {
     },
     methods: {
         getdata () {
-            // var bidderId = this.$route.query.bidderId;
-            // this.$axios({
-            //   url: 'https://tcmapi.emao.com/bidder/bidderRecord',
-            //   type: 'GET',
-            //   params: {
-            //     bidderId: 8
-            //   }
-            // })
-            // .then((res) => {
-            //   console.log(res)
-            // })
+            var bidderId = this.$route.query.bidderId;
+            this.$axios({
+              url: 'https://tcmapi.emao.com/bidder/bidderRecord',
+              type: 'GET',
+              params: {
+                bidderId: 8
+              }
+            })
+            .then((res) => {
+              console.log(res)
+            })
             let len = this.list.length
             console.log(len)
             if (len > 20) {
