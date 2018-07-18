@@ -61,7 +61,7 @@ export default {
             // 添加监测
             let token = this.$route.query.token;
             let bidderId = this.$route.query.bidderId;
-               let uniqId=this.$route.query.uniqId;
+            let uniqId=this.$route.query.uniqId;
             let buttonType = btnType;
             let url = "";
             let params = null;

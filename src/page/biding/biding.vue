@@ -269,6 +269,10 @@ export default {
           .then(function(response) {
            let data = response.body.data;
            this.assignment(data)
+           this.getrecordlist();
+           this.setClockUI();
+           this.setBidingTip();
+           this.setBottomBtn();
           })
           .catch(error => {
             console.log(error);
@@ -286,6 +290,10 @@ export default {
           .then(function(response) {
             let data = response.body.data;
             this.assignment(data)
+            this.getrecordlist();
+            this.setClockUI();
+            this.setBidingTip();
+            this.setBottomBtn();
           })
           .catch(error => {
             console.log(error);
@@ -348,12 +356,19 @@ export default {
     // 获取详情页竞拍记录列表数据（进行中）
     getrecordlist () {
       if (this.bidderStatus === '3') {
+        this.bidderRecord=[];
         // 如果活动状态为进行中，定时请求数据
         this.getnewdata()
         // var _this = this
         // setInterval(() => {
         //   _this.getnewdata()
         // }, 1000);
+        return;
+      }
+       let len = this.bidderRecord.length
+      console.log(len)
+      if (len > 5) {
+        this.bidderRecord = this.bidderRecord.slice(0,5)
       }
     },
     // 定时请求竞拍记录数据
@@ -369,13 +384,14 @@ export default {
       })
       .then((res) => {
         this.bidderRecord = res.body.data.bidderRecord
-      })
-      let len = this.bidderRecord.length
+       let len = this.bidderRecord.length
       console.log(len)
       if (len > 5) {
-        this.bidderRecord = this.bidderRecord.slice(0, 5)
+        this.bidderRecord = this.bidderRecord.slice(0,5)
       }
       console.log(this.bidderRecord.length)
+      })
+     
     },
     // 分享按钮添加
     addShareButton() {
@@ -715,10 +731,7 @@ export default {
   },
   created() {
     this.getdata();
-    this.getrecordlist();
-    this.setClockUI();
-    this.setBidingTip();
-    this.setBottomBtn();
+    
     this.renderDom();
     if (this.isTcmApp) {
       this.addShareButton();
