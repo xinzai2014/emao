@@ -7,7 +7,12 @@
 
     <!-- 小喇叭模块 -->
     <section>
-      <Notice></Notice>
+      <div id="notice">
+        <p class="message">
+            <img src="./images/notice.png" alt="">
+            <span>JP12345678用户刚刚加价</span>
+        </p>
+      </div>
     </section>
 
     <!-- 竞拍提醒 -->
@@ -70,7 +75,26 @@
     </section>
     <!-- 竞拍记录 -->
     <section class="record">
-      <Record></Record>
+      <div id="record">
+        <p class="record_title">
+            <span class="title_left">竞拍记录</span>
+            <span class="title_more" @click="recordlist(6)">查看更多 ></span>
+        </p>
+        <div class="record_list">
+            <div class="list_title">
+                <p>状态</p>
+                <p>竞拍用户</p>
+                <p>竞拍价</p>
+                <p>时间</p>
+            </div>
+            <div class="list_cont" v-for="(item, index) in bidderRecord" :key="index" :style="{'color': index==0? 'red':'#000'}">
+                <p>{{item.temporaryState}}</p>
+                <p>{{item.bidders}}</p>
+                <p>{{item.bidderPrice}}</p>
+                <p>{{item.bidderTime}}</p>
+            </div>
+        </div>
+      </div>
     </section>
     <!-- 竞拍流程 -->
     <section class="process">
@@ -81,6 +105,7 @@
 
       <img src="./images/record.png" alt="">
     </section>
+    <!-- 保证金规则 -->
     <section class="rulebond">
       <Rulebond></Rulebond>
     </section>
@@ -146,12 +171,8 @@
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
 import alertTip from "../../components/common/alertTip/alertTip";
-// 引入竞拍记录模块
-import Record from "./record.vue";
 // 引入保证金规则模块
 import Rulebond from "./rulebond.vue";
-// 引入小喇叭模块
-import Notice from "./notice.vue";
 //引入倒计时
 import { timeCountdown, numberCountdown } from "../../common/js/countdown.js";
 import swiper from "../../components/common/swiper/swiper";
@@ -200,7 +221,21 @@ export default {
       shareInfo: [],
       depositStatus: "1", //定金状态:1-已付; 2-未付
       popupStatePrice: false,
-      bidingErrorText: "竞拍已结束，关注一下其他场次吧"
+      bidingErrorText: "竞拍已结束，关注一下其他场次吧",
+      list: [
+        {
+            temporaryState: '领先',
+            bidders: 'cu20280',
+            bidderPrice: '7.99万',
+            bidderTime: '10:25:22 05/06'
+        },
+        {
+            temporaryState: '出局',
+            bidders: 'cu20280',
+            bidderPrice: '7.99万',
+            bidderTime: '10:25:22 05/06'
+        }
+      ]  // 竞拍记录5条数据列表
     };
   },
   computed: {
@@ -309,6 +344,38 @@ export default {
     /*区分app与wap做不同的渲染*/
     renderDom() {
       document.title = "竞拍";
+    },
+    // 获取详情页竞拍记录列表数据（进行中）
+    getrecordlist () {
+      if (this.bidderStatus === '3') {
+        // 如果活动状态为进行中，定时请求数据
+        this.getnewdata()
+        // var _this = this
+        // setInterval(() => {
+        //   _this.getnewdata()
+        // }, 1000);
+      }
+    },
+    // 定时请求竞拍记录数据
+    getnewdata () {
+      console.log("定时请求的数据")
+      console.log(this.bidderId)
+      this.$http({
+        url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
+        type: 'GET',
+        params: {
+          bidderId: this.bidderId
+        }
+      })
+      .then((res) => {
+        this.bidderRecord = res.body.data.bidderRecord
+      })
+      let len = this.bidderRecord.length
+      console.log(len)
+      if (len > 5) {
+        this.bidderRecord = this.bidderRecord.slice(0, 5)
+      }
+      console.log(this.bidderRecord.length)
     },
     // 分享按钮添加
     addShareButton() {
@@ -639,10 +706,16 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    // 竞拍记录查看更多按钮点击
+    recordlist (btnType) {
+      this.setBtnClickLog(btnType)
+      this.$router.push('/biding/recordlist')
     }
   },
   created() {
     this.getdata();
+    this.getrecordlist();
     this.setClockUI();
     this.setBidingTip();
     this.setBottomBtn();
@@ -655,14 +728,118 @@ export default {
   components: {
     swiper,
     Popup,
-    Record,
     Rulebond,
-    Notice,
     alertTip
   }
 };
 </script>
 <style>
+
+/* 小喇叭样式 */
+#notice {
+    height: 0.8rem;
+    font-size: 0.32rem;
+    color: #fff;
+    padding-right: 0.26667rem;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    z-index: 9;
+}
+.message {
+    height: 0.8rem;
+}
+.message img {
+    display: inline-block;
+    width: 0.66667rem;
+    float: left;
+}
+.message span {
+    height: 0.8rem;
+    line-height: 0.8rem;
+}
+
+
+
+/* 竞拍记录模块样式 */
+#record {
+    box-sizing: border-box;
+    padding: 0.53333rem 0.4rem;
+    background: #fff;
+}
+.record_title {
+    line-height: 0.533333rem;
+    border-left: 0.05333rem solid #000;
+    padding-left: 0.34666rem;
+}
+.title_left {
+    color: #000;
+    font-size: 0.50667rem;
+    font-weight: 700;
+}
+.title_more {
+    float: right;
+    font-size: 0.32rem;
+    color: #999;
+}
+.record_list {
+    padding-top: 0.66667rem;
+}
+.list_title {
+    padding-bottom: 0.56rem;
+    font-size: 0.33333rem;
+}
+.list_title, .list_cont {
+    width: 100%;
+    display: flex;
+}
+.list_title p {
+    display: inline-block;
+}
+.list_title p:nth-child(1) {
+    width: 18%;
+}
+.list_title p:nth-child(2) {
+    width: 36%;
+}
+.list_title p:nth-child(3) {
+    width: 16%;
+}
+.list_title p:nth-child(4) {
+    width: 30%;
+    text-align: right;
+}
+
+.list_cont p {
+    display: inline-block;
+}
+.list_cont p:nth-child(1) {
+    width: 18%;
+}
+.list_cont p:nth-child(2) {
+    width: 36%;
+}
+.list_cont p:nth-child(3) {
+    width: 16%;
+}
+.list_cont p:nth-child(4) {
+    width: 30%;
+    text-align: right;
+}
+
+
+.list_cont {
+    line-height: 0.66667rem;
+    font-size: 0.26666rem;
+}
+.list_cont:nth-child(1) {
+    color: red;
+}
+
+
+
+
 .biding {
   width: 100%;
   padding-bottom: 1.41333rem;

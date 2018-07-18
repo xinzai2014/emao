@@ -38,24 +38,6 @@ export default {
                     user: 'cu20280',
                     prize: '7.99万',
                     time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cuc020280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cu20280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
-                },
-                {
-                    state: '出局',
-                    user: 'cuc020280',
-                    prize: '7.99万',
-                    time: '10:25:22 05/06'
                 }
             ]
         }

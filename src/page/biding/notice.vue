@@ -27,7 +27,7 @@ export default {
     },
     created () {
         var _this = this
-        setTimeout(() => {
+        setInterval(() => {
             _this.getdata()
         }, 1000);
     },

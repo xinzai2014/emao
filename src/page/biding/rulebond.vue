@@ -34,11 +34,12 @@ export default {
         }
     },
     methods: {
-        checkrules () {
+        checkrules (btnType) {
             console.log('查看细则')
             // 添加监测
             let token = this.$route.query.token;
             let bidderId = this.$route.query.bidderId;
+            let uniqId = this.$route.query.uniqId;
             let buttonType = btnType;
             let url = "";
             let params = null;
