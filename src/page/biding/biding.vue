@@ -6,11 +6,11 @@
     </section>
 
     <!-- 小喇叭模块 -->
-    <section>
+    <section v-if="broadcast">
       <div id="notice">
         <p class="message">
             <img src="./images/notice.png" alt="">
-            <span>JP12345678用户刚刚加价</span>
+            <span>{{broadcast}}</span>
         </p>
       </div>
     </section>
@@ -180,6 +180,7 @@ export default {
   name: "biding",
   data() {
     return {
+      broadcast: '', //广播数据
       sowingMap: [], //轮播图
       autoName: "", //车型全称
       currentPrice: "", //当前价格
@@ -357,15 +358,22 @@ export default {
     getrecordlist () {
       if (this.bidderStatus === '3') {
         this.bidderRecord=[];
-        // 如果活动状态为进行中，定时请求数据
+        // 如果活动状态为进行中，定时请求竞拍记录列表数据
         this.getnewdata()
         // var _this = this
         // setInterval(() => {
         //   _this.getnewdata()
         // }, 1000);
         return;
+      } else if (this.bidderStatus !== '3' && this.bidderStatus !== '4') {
+        // 如果活动状态为结束前，定时请求广播数据
+        this.getnewdata()
+        // var _this = this
+        // setInterval(() => {
+        //   _this.getnewdata()
+        // }, 1000);
       }
-       let len = this.bidderRecord.length
+      let len = this.bidderRecord.length
       console.log(len)
       if (len > 5) {
         this.bidderRecord = this.bidderRecord.slice(0,5)
@@ -384,6 +392,7 @@ export default {
       })
       .then((res) => {
         this.bidderRecord = res.body.data.bidderRecord
+        this.broadcast = res.body.data.broadcast
        let len = this.bidderRecord.length
       console.log(len)
       if (len > 5) {
