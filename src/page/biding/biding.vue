@@ -11,26 +11,26 @@
     </section>
 
     <!-- 竞拍提醒 -->
-    <div class="biding-tip" :class="{bidingTipActive: bidderSatus=='3',bidingTipOver:bidderSatus=='4'}">
+    <div class="biding-tip" :class="{bidingTipActive: bidderStatus=='3',bidingTipOver:bidderStatus=='4'}">
       <span class="text">{{bidingTipText}}</span>
       <span class="time">
-        <span v-if="bidderSatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
+        <span v-if="bidderStatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
     </div>
 
     <!-- 车辆信息 -->
     <section class="infom">
       <div class="infom-left">
         <div class="infom-up">
-          <div class="type">2014新款 东风标致 经典版 1.6L 手动优尚型{{autoName}}</div>
+          <div class="type">{{autoName}}</div>
         </div>
         <div class="infom-mid">
-          <span class="b-price">当前价：{{currentPrice}}</span>
-          <span class="g-price">指导价：10.05万{{guidePrice}}</span>
+          <span class="b-price">当前价：{{currentPrice}}万</span>
+          <span class="g-price">指导价：{{guidePrice}}万</span>
         </div>
         <div class="infom-down">
-          <span class="apply">15人报名{{enrolment}}</span>
+          <span class="apply">{{enrolment}}人报名</span>
           <span> | </span>
-          <span class="remind">18人设置提醒{{settingRemind}}</span>
+          <span class="remind">{{settingRemind}}人设置提醒</span>
         </div>
       </div>
       <div v-if="isClockShow&&isTcmApp" class="infom-right" @click="setClock">
@@ -44,27 +44,27 @@
       <ul>
         <li class="car-num">
           <span class="left">台数</span>
-          <span class="right">1{{platformNum}}</span>
+          <span class="right">{{platformNum}}</span>
         </li>
         <li class="car-money">
           <span class="left">保证金</span>
-          <span class="right">2000{{deposit}}</span>
+          <span class="right">{{deposit}}</span>
         </li>
         <li class="car-range">
           <span class="left">可售范围</span>
-          <span class="right">全国{{saleArea}}</span>
+          <span class="right">{{saleArea}}</span>
         </li>
         <li class="car-place">
           <span class="left">提车地点</span>
-          <span class="right">广州{{packUpPlace}}</span>
+          <span class="right">{{packUpPlace}}</span>
         </li>
         <li class="car-date">
           <span class="left">生产日期</span>
-          <span class="right">2018-7{{produceTime}}</span>
+          <span class="right">{{produceTime}}</span>
         </li>
         <li>
           <span class="left">车身颜色</span>
-          <span class="right">红色{{carColor}}</span>
+          <span class="right">{{carColor}}</span>
         </li>
       </ul>
     </section>
@@ -161,7 +161,7 @@ export default {
     return {
       sowingMap: [], //轮播图
       autoName: "", //车型全称
-      currentPrice: "7.39", //当前价格
+      currentPrice: "", //当前价格
       guidePrice: "", //指导价格
       enrolment: "", //报名人数
       settingRemind: "", //设置闹钟人数
@@ -183,11 +183,11 @@ export default {
       bidingTipText: "正在竞拍",
       bidingTipTime: "20小时08分04秒",
       bottomBtnText: "交保证金报名",
-      bidderSatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
+      bidderStatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
       startTime: "2018/07/13 00:00:00", //活动开始时间;
       endTime: "2018/07/14 21:26:30", //活动结束时间;
       timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
-      remindStatus: "1", //闹钟状态(只有bidderSatus=1时显示):1-未设置 2:已设置
+      remindStatus: "1", //闹钟状态(只有bidderStatus=1时显示):1-未设置 2:已设置
       isBtnDisable: false,
       popupState: false,
       increasePrice: "200", //加价幅度
@@ -219,10 +219,10 @@ export default {
   methods: {
     //获取数据
     getdata() {
-      let params;
-      let data;
+      // let params;
+      // let data;
       if (this.isTcmApp) {
-        params = {
+        let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId
         };
@@ -232,14 +232,15 @@ export default {
           params: params
         })
           .then(function(response) {
-            data = response.body.data;
+           let data = response.body.data;
+           this.assignment(data)
           })
           .catch(error => {
             console.log(error);
             tost(error.body.msg);
           });
       } else {
-        params = {
+        let params = {
           bidderId: this.$route.query.bidderId
         };
         this.$http({
@@ -248,13 +249,20 @@ export default {
           params: params
         })
           .then(function(response) {
-            data = response.body.data;
+            let data = response.body.data;
+            this.assignment(data)
           })
           .catch(error => {
             console.log(error);
           });
       }
-      if (data) {
+     
+   
+    },
+    //data赋值
+    assignment(data){
+           if (data) {
+        console.log(data)
         this.sowingMap = data.sowingMap; //轮播图
         for (var i = 0; i < this.sowingMap.length; i++) {
           this.circular[i] = {
@@ -263,7 +271,7 @@ export default {
           };
         }
         this.bidderId = data.bidderId;
-        this.bidderSatus = data.bidderSatus;
+        this.bidderStatus = data.bidderStatus;
         this.depositStatus = data.depositStatus;
         this.startTime = data.startTime;
         this.endTime = data.endTime;
@@ -324,15 +332,15 @@ export default {
     // 分享按钮添加
     // 设置竞拍导航
     setBidingTip() {
-      console.log(this.bidderSatus);
+      console.log(this.bidderStatus);
       // 活动状态:1-未开始(>24h);
-      if (this.bidderSatus === "1") {
+      if (this.bidderStatus === "1") {
         this.bidingTipText = "即将开始";
         this.bidingTipTime = this.timeStr;
         return false;
       }
       // 2-未开始(<24h)
-      if (this.bidderSatus === "2") {
+      if (this.bidderStatus === "2") {
         this.bidingTipText = "即将开始";
         this.bidingTipTime = "20小时08分04秒";
         let startTime = new Date(this.startTime);
@@ -345,7 +353,7 @@ export default {
             // 倒计时更新触发的操作写在这里
             this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
             if (update[0] === "ing") {
-              this.bidderSatus = "3";
+              this.bidderStatus = "3";
               this.setClockUI();
               this.setBidingTip();
               this.setBottomBtn();
@@ -359,11 +367,12 @@ export default {
         return false;
       }
       // 3-进行中
-      if (this.bidderSatus === "3") {
+      if (this.bidderStatus === "3") {
         this.bidingTipText = "正在竞拍";
         this.bidingTipTime = "20小时08分04秒";
         let startTime = new Date(this.startTime);
         let endTime = new Date(this.endTime);
+        console.log(startTime,endTime)
         let type = "double";
         let that = this;
         timeCountdown(
@@ -381,7 +390,7 @@ export default {
           end => {
             // 倒计时结束触发的操作写在这里
             console.log(end);
-            this.bidderSatus = "4";
+            this.bidderStatus = "4";
             this.setBidingTip();
             this.setBottomBtn();
           }
@@ -389,15 +398,16 @@ export default {
         return false;
       }
       // 4-已结束
-      if (this.bidderSatus === "4") {
+      if (this.bidderStatus === "4") {
         this.bidingTipText = "已结束-拍卖成交";
         this.bidingTipTime = "";
       }
     },
     // 设置底部按钮
     setBottomBtn() {
+      console.log(this.bidderStatus);
       //1.竞拍未开始状态
-      if (this.bidderSatus === "1" || this.bidderSatus === "2") {
+      if (this.bidderStatus === "1" || this.bidderStatus === "2") {
         console.log(this.depositStatus);
         //是否支付保证金
         if (this.depositStatus === "1") {
@@ -409,7 +419,7 @@ export default {
         }
       }
       //2.竞拍进行中
-      if (this.bidderSatus === "3") {
+      if (this.bidderStatus === "3") {
         //是否支付保证金
         if (this.depositStatus === "1") {
           this.bottomBtnText = "我要出价";
@@ -420,7 +430,7 @@ export default {
         }
       }
       //3.竞拍结束
-      if (this.bidderSatus === "4") {
+      if (this.bidderStatus === "4") {
         this.bottomBtnText = "已结束";
         this.isBtnDisable = true;
       }
@@ -553,11 +563,11 @@ export default {
       if (this.remindStatus === "1") {
         console.log("1-未设置");
         //1.竞拍未开始状态
-        if (this.bidderSatus === "1" || this.bidderSatus === "2") {
+        if (this.bidderStatus === "1" || this.bidderStatus === "2") {
           this.clockText = "设置提醒";
         }
         //2.竞拍进行中
-        if (this.bidderSatus === "3") {
+        if (this.bidderStatus === "3") {
           this.clockText = "设置提醒";
         }
         return false;
@@ -565,10 +575,10 @@ export default {
       if (this.remindStatus === "2") {
         console.log("2-已设置");
         //1.竞拍未开始状态
-        if (this.bidderSatus === "1" || this.bidderSatus === "2") {
+        if (this.bidderStatus === "1" || this.bidderStatus === "2") {
           this.clockText = "取消提醒";
         }
-        if (this.bidderSatus === "3") {
+        if (this.bidderStatus === "3") {
           this.clockText = "设置提醒";
         }
         return false;
@@ -632,10 +642,10 @@ export default {
     }
   },
   created() {
+    this.getdata();
     this.setClockUI();
     this.setBidingTip();
     this.setBottomBtn();
-    this.getdata();
     this.renderDom();
     if (this.isTcmApp) {
       this.addShareButton();
