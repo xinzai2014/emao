@@ -432,7 +432,7 @@ export default {
         title: this.shareInfo.Title,
         subTitle: this.shareInfo.note,
         imgUrl: "", //分享信息图片链接
-        url: "", //要分享内容的 url
+        url: this.shareInfo.url, //要分享内容的 url
         shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
         uniqId: "", //shareType为0时可空,分享统计id
         extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
@@ -561,12 +561,13 @@ export default {
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
           this.setBtnClickLog(1);
+          
+          
           // 跳转到app交保证金页面
           /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
-          window.location = `emaotaochemao://push/ensureBidder&bidderId=${
-            this.bidderId
-          }&bidderMoney=${this.bidderMoney}`;
-          return false;
+          window.location= `emaotaochemao://push/ensureBidder?bidderId=${this.bidderId}
+            &bidderMoney=${this.bidderMoney}`;
+          // return false;  
         }
         if (this.bottomBtnText === "我要出价") {
           this.setBtnClickLog(2);
