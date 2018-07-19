@@ -110,18 +110,19 @@
       <Rulebond></Rulebond>
     </section>
     <!-- 商品介绍 -->
-    <section class="product">
+    <section class="product" v-if="this.shopInfo.length">
       <div class="product-text">
         <span>|</span>
         <span>商品介绍</span>
       </div>
       <ul>
-        <li>
-          <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt="">
+        <li v-for="(item,index) in this.shopInfo" :key="index">
+            <img :src="item" alt="">
+          <!-- <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt=""> -->
         </li>
-        <li>
+        <!-- <li>
           <img src="./images/text.png" alt="">
-        </li>
+        </li> -->
       </ul>
     </section>
     <!-- 底部按钮 -->
@@ -427,14 +428,14 @@ export default {
         actionname: "addShareButton", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
         actionid: "", //回调 ID：可选参数，与回调函数配套使用
         callback: "", //回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-        buttonTitle: "", //分享按钮的标题；可选参数，与 buttonImage 二选一
-        buttonImage: this.shareInfo.icon, //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-        title: this.shareInfo.Title,
+        buttonTitle: "分享", //分享按钮的标题；可选参数，与 buttonImage 二选一
+        buttonImage: '', //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+        title: this.shareInfo.title,
         subTitle: this.shareInfo.note,
-        imgUrl: "", //分享信息图片链接
+        imgUrl: this.shareInfo.icon, //分享信息图片链接
         url: this.shareInfo.url, //要分享内容的 url
         shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
-        uniqId: "", //shareType为0时可空,分享统计id
+        uniqId: this.$route.query.uniqId, //shareType为0时可空,分享统计id
         extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
       };
       this.tcmApp(obj);
