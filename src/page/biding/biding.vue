@@ -6,8 +6,8 @@
     </section>
 
     <!-- 小喇叭模块 -->
-    <section v-if="this.broadcast">
-      <div id="notice">
+    <section>
+      <div id="notice" v-if="this.broadcast">
         <p class="message">
             <img src="./images/notice.png" alt="">
             <span>{{broadcast}}</span>
@@ -789,6 +789,31 @@ export default {
     top: 0.4rem;
     left: 0.4rem;
     z-index: 9;
+    animation: fadeout 1s;
+}
+
+@keyframes fadeout {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+    top: 0.4rem;
+  }
+  25% {
+    background: rgba(0, 0, 0, 0.5);
+    top: 0.2rem;
+  }
+  50% {
+    background: rgba(0, 0, 0, 0.3);
+    top: 0rem;
+  }
+  75% {
+    background: rgba(0, 0, 0, 0.1);
+    top: -1rem;
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+    top: -2rem;
+  }
+  
 }
 .message {
     height: 0.8rem;
