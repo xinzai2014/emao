@@ -550,7 +550,7 @@ export default {
           this.setBtnClickLog(1);
           // 跳转到app交保证金页面
           /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
-          window.location.href = `emaotaochemao://push/ensureBidder&bidderId=${
+          window.location = `emaotaochemao://push/ensureBidder&bidderId=${
             this.bidderId
           }&bidderMoney=${this.bidderMoney}`;
           return false;
