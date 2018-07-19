@@ -60,7 +60,7 @@ export default {
             }
             this.$http({
                 url: url,
-                method: "GET",
+                method: "POST",
                 params: params
             })
             .then(function(res) {

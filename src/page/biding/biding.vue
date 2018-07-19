@@ -78,7 +78,7 @@
       <div id="record">
         <p class="record_title">
             <span class="title_left">竞拍记录</span>
-            <span class="title_more" @click="recordlist(6)">查看更多 ></span>
+            <span class="title_more" @click="recordlist(6)"  v-if="this.isTcmApp">查看更多 ></span>
         </p>
         <div class="record_list">
             <div class="list_title">
@@ -355,52 +355,57 @@ export default {
       document.title = "竞拍";
     },
     // 获取详情页竞拍记录列表数据（进行中）
-    getrecordlist () {
-      if (this.bidderStatus === '3') {
-        this.bidderRecord=[];
-        // 如果活动状态为进行中，定时请求竞拍记录列表数据
-        this.getnewdata()
-        // var _this = this
-        // setInterval(() => {
+    getrecordlist(){
+      if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
+        //定时器 获取广播数据
+         var _this = this
+        // this.timer=setInterval(() => {
+        //   console.log("定时器")
         //   _this.getnewdata()
         // }, 1000);
-        return;
-      } else if (this.bidderStatus === '1' || this.bidderStatus === '2') {
-        // 如果活动状态为结束前，定时请求广播数据
-        this.getnewdata()
-        // var _this = this
-        // setInterval(() => {
-        //   _this.getnewdata()
-        // }, 1000);
-      }
-      let len = this.bidderRecord.length
-      console.log(len)
-      if (len > 5) {
-        this.bidderRecord = this.bidderRecord.slice(0,5)
       }
     },
-    // 定时请求竞拍记录数据
-    getnewdata () {
-      console.log("定时请求的数据")
-      console.log(this.bidderId)
-      this.$http({
+    getnewdata(){
+          this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
         type: 'GET',
         params: {
           bidderId: this.bidderId
         }
       })
-      .then((res) => {
-        this.bidderRecord = res.body.data.bidderRecord
-        this.broadcast = res.body.data.broadcast
-       let len = this.bidderRecord.length
+      .then((res)=>{
+       let data = res.body.data
+       this.enrolment=data.enrolment; //报名人数
+       this.settingRemind=data.settingRemind;//设置闹钟人数
+       if(this.bidderStatus === '4'){
+         
+          let len = this.bidderRecord.length
       console.log(len)
       if (len > 5) {
         this.bidderRecord = this.bidderRecord.slice(0,5)
       }
-      console.log(this.bidderRecord.length)
+      }
+      if(this.bidderStatus === '3'){
+        //定时器 获取广播数据和竞拍记录
+        this.bidderRecord = data.bidderRecord//广播记录
+        this.broadcast =data.broadcast//广播数据
+        let len = this.bidderRecord.length
+      console.log(len)
+      if (len > 5) {
+        this.bidderRecord = this.bidderRecord.slice(0,5)
+      }
+        
+      }
+      if(this.bidderStatus === '1'||this.bidderStatus === '2'){
+        //定时器 获取广播数据
+         this.broadcast =data.broadcast;//广播数据
+
+      }
       })
-     
+      .catch((e)=>{
+        console.log("返回500",this.timer)
+        if(this.timer){clearInterval(this.timer)}
+      })
     },
     // 分享按钮添加
     addShareButton() {
@@ -716,7 +721,8 @@ export default {
         params = {
           bidderId: bidderId,
           buttonType: buttonType,
-          uniqId: uniqId
+          uniqId: uniqId,
+          
         };
       }
 
