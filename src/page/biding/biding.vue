@@ -74,7 +74,7 @@
       </ul>
     </section>
     <!-- 竞拍记录 -->
-    <section class="record" v-if="this.bidderRecord == []">
+    <section class="record" v-if="this.bidderRecord">
       <div id="record">
         <p class="record_title">
             <span class="title_left">竞拍记录</span>
@@ -358,9 +358,9 @@ export default {
     getrecordlist(){
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         //定时器 获取广播数据
-        this.bidderRecord = []
-        // console.log(this.bidderRecord)
         this.getnewdata()
+      } else {
+        console.log(this.bidderRecord)
       }
     },
     getnewdata(){
