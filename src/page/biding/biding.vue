@@ -6,7 +6,7 @@
     </section>
 
     <!-- 小喇叭模块 -->
-    <section v-if="broadcast">
+    <section v-if="this.broadcast">
       <div id="notice">
         <p class="message">
             <img src="./images/notice.png" alt="">
@@ -74,7 +74,7 @@
       </ul>
     </section>
     <!-- 竞拍记录 -->
-    <section class="record">
+    <section class="record" v-if="this.bidderRecord == []">
       <div id="record">
         <p class="record_title">
             <span class="title_left">竞拍记录</span>
@@ -168,6 +168,8 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
+
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
 import alertTip from "../../components/common/alertTip/alertTip";
@@ -300,8 +302,6 @@ export default {
             console.log(error);
           });
       }
-     
-   
     },
     //data赋值
     assignment(data){
@@ -358,53 +358,66 @@ export default {
     getrecordlist(){
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         //定时器 获取广播数据
-         var _this = this
-        // this.timer=setInterval(() => {
-        //   console.log("定时器")
-        //   _this.getnewdata()
-        // }, 1000);
+        this.bidderRecord = []
+        // console.log(this.bidderRecord)
+        this.getnewdata()
       }
     },
     getnewdata(){
-          this.$http({
+
+      this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
         type: 'GET',
         params: {
-          bidderId: this.bidderId
+          bidderId: this.bidderId,
+          noLoading: true
         }
       })
       .then((res)=>{
-       let data = res.body.data
-       this.enrolment=data.enrolment; //报名人数
-       this.settingRemind=data.settingRemind;//设置闹钟人数
-       if(this.bidderStatus === '4'){
-         
+        let data = res.body.data
+        this.enrolment=data.enrolment; //报名人数
+        this.settingRemind=data.settingRemind;//设置闹钟人数
+        // 如果活动结束，竞拍记录列表数据为详情接口（全局）数据
+        if(this.bidderStatus === '4'){
           let len = this.bidderRecord.length
-      console.log(len)
-      if (len > 5) {
-        this.bidderRecord = this.bidderRecord.slice(0,5)
-      }
-      }
-      if(this.bidderStatus === '3'){
-        //定时器 获取广播数据和竞拍记录
-        this.bidderRecord = data.bidderRecord//广播记录
-        this.broadcast =data.broadcast//广播数据
-        let len = this.bidderRecord.length
-      console.log(len)
-      if (len > 5) {
-        this.bidderRecord = this.bidderRecord.slice(0,5)
-      }
-        
-      }
-      if(this.bidderStatus === '1'||this.bidderStatus === '2'){
-        //定时器 获取广播数据
-         this.broadcast =data.broadcast;//广播数据
-
-      }
+          console.log(len)
+          if (len > 5) {
+            this.bidderRecord = this.bidderRecord.slice(0,5)
+          }
+        }
+        // 如果活动进行时，同时获取广播数据和竞拍记录数据，竞拍记录列表数据为定时接口（res.body.data.bidderRecord）数据
+        if(this.bidderStatus === '3'){
+          // 清空全局记录数据,再赋值定时接口的数据
+          this.bidderRecord = []
+          //定时器 获取广播数据和竞拍记录
+          this.bidderRecord = data.bidderRecord//竞拍记录
+          this.broadcast =data.broadcast//广播数据
+          let len = this.bidderRecord.length
+          if (len > 5) {
+            this.bidderRecord = this.bidderRecord.slice(0,5)
+          }
+        }
+        if(this.bidderStatus === '1'||this.bidderStatus === '2'){
+          //定时器 获取广播数据
+          this.broadcast =data.broadcast;//广播数据
+        }
+        this.getnewdata()
       })
       .catch((e)=>{
-        console.log("返回500",this.timer)
-        if(this.timer){clearInterval(this.timer)}
+        
+        this.$store.dispatch("ALERT", // 通过store传值
+          {
+            flag:false,
+            text:""
+          }
+        );
+        console.log("报错了error======错误码")
+        console.log(e.body.code)
+        var errorcode = e.body.code
+        if (errorcode == '500') {
+          console.log("500正常，可以重新请求数据")
+        }
+        this.getnewdata()
       })
     },
     // 分享按钮添加
