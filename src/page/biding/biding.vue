@@ -110,7 +110,7 @@
       <Rulebond></Rulebond>
     </section>
     <!-- 商品介绍 -->
-    <section class="product" v-if="shopInfo">
+    <section class="product" v-if="shopInfo.length">
       <div class="product-text">
         <span>|</span>
         <span>商品介绍</span>
@@ -809,7 +809,7 @@ export default {
       this.setBtnClickLog(btnType)
       this.windowOpen()
       // this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
-      // document.title="竞拍记录"
+      document.title="竞拍记录"
     }
   },
   created() {
