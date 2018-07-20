@@ -162,7 +162,7 @@ Vue.directive('load-more', {
 })
 
 Vue.http.interceptors.push(function(request, next) {
-	console.log('request', request)
+	// console.log('request', request)
 	if (!request.params.noLoading) {
 		this.$store.dispatch("AJAX_LOADING", // 通过store传值
 			true

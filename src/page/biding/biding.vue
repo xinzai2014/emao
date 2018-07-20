@@ -7,7 +7,7 @@
 
     <!-- 小喇叭模块 -->
     <section>
-      <div id="notice" v-if="this.broadcast">
+      <div :class="{notice:broadcast}" v-if="broadcast">
         <p class="message">
             <img src="./images/notice.png" alt="">
             <span>{{broadcast}}</span>
@@ -368,13 +368,13 @@ export default {
     getrecordlist(){
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         //定时器 获取广播数据
-        this.getnewdata()
+        // this.getnewdata()
       } else {
         console.log(this.bidderRecord)
       }
     },
     getnewdata(){
-
+      // this.broadcast='';
       this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
         type: 'GET',
@@ -411,7 +411,7 @@ export default {
           //定时器 获取广播数据
           this.broadcast =data.broadcast;//广播数据
         }
-        this.getnewdata()
+        // this.getnewdata()
       })
       .catch((e)=>{
         
@@ -427,7 +427,7 @@ export default {
         // if (errorcode == '500') {
         //   console.log("500正常，可以重新请求数据")
         // }
-        this.getnewdata()
+        // this.getnewdata()
       })
     },
     // 分享按钮添加
@@ -617,12 +617,28 @@ export default {
       })
         .then(function(res) {
           console.log(res);
-          this.tost("加价成功");
+            this.tost(res.body.msg)
+          if(res.body.code==200){
+
+          }
+          if(res.body.code==403){
+            
+          }
+          this.currentPrice=res.body.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
+    
         })
         .catch(error => {
+          if(error.body.code==500){
+
+          }
+          if(error.body.code==403){
+            
+          }
+
           console.log(error);
+          this.bidingErrorText = error.body.msg
           this.popupState = false;
           this.popupStatePrice = true;
         });
@@ -788,7 +804,7 @@ export default {
 <style>
 
 /* 小喇叭样式 */
-#notice {
+.notice {
     height: 0.8rem;
     font-size: 0.32rem;
     color: #fff;
@@ -805,6 +821,7 @@ export default {
   0% {
     background: rgba(0, 0, 0, 0.7);
     top: 0.4rem;
+    display: block;
   }
   25% {
     background: rgba(0, 0, 0, 0.5);
@@ -821,6 +838,7 @@ export default {
   100% {
     background: rgba(0, 0, 0, 0);
     top: -2rem;
+    display: none
   }
   
 }
