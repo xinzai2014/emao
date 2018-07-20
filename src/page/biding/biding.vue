@@ -110,13 +110,13 @@
       <Rulebond></Rulebond>
     </section>
     <!-- 商品介绍 -->
-    <section class="product" v-if="this.shopInfo.length">
+    <section class="product" v-if="shopInfo">
       <div class="product-text">
         <span>|</span>
         <span>商品介绍</span>
       </div>
       <ul>
-        <li v-for="(item,index) in this.shopInfo" :key="index">
+        <li v-for="(item,index) in shopInfo" :key="index">
             <img :src="item" alt="">
           <!-- <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt=""> -->
         </li>
@@ -137,7 +137,7 @@
         <div class="close-icon" @click="closePopup"></div>
         <div class="current-price">
           <span>当前价：
-            <span class="price-num">7.39</span>
+            <span class="price-num">{{this.currentPrice}}</span>
           </span>
           <font>万</font>
         </div>
@@ -199,11 +199,11 @@ export default {
       carColor: "", //车型颜色
       shopInfo: [], //商品详情
       circular: [
-        {
-          id: 2,
-          imgUrl:
-            "http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg"
-        }
+        // {
+        //   id: 2,
+        //   imgUrl:
+        //     "http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg"
+        // }
       ], //轮播图数据
       bidingTipText: "正在竞拍",
       bidingTipTime: "",
@@ -295,6 +295,7 @@ export default {
           params: params
         })
           .then(function(response) {
+            
             let data = response.body.data;
             this.assignment(data)
             this.getrecordlist();
@@ -321,7 +322,7 @@ export default {
             id: i,
             imgUrl: this.sowingMap[i]
           };
-        }
+        }   
         this.bidderId = data.bidderId;
         this.bidderStatus = data.bidderStatus;
         this.depositStatus = data.depositStatus;
@@ -420,12 +421,12 @@ export default {
             text:""
           }
         );
-        console.log("报错了error======错误码")
-        console.log(e.body.code)
-        var errorcode = e.body.code
-        if (errorcode == '500') {
-          console.log("500正常，可以重新请求数据")
-        }
+        // console.log("报错了error======错误码")
+        // console.log(e.body.code)
+        // var errorcode = e.body.code
+        // if (errorcode == '500') {
+        //   console.log("500正常，可以重新请求数据")
+        // }
         this.getnewdata()
       })
     },
@@ -588,13 +589,13 @@ export default {
     //加价
     addPrice() {
       console.log("加价");
-      this.myAddPrice = this.myAddPrice + (this.increasePrice - 0);
+      this.myAddPrice = (this.myAddPrice - 0) + (this.increasePrice - 0);
     },
     //减价
     subtractPrice() {
       console.log("减价");
       if (this.myAddPrice > this.increasePrice) {
-        this.myAddPrice = this.myAddPrice - (this.increasePrice - 0);
+        this.myAddPrice = (this.myAddPrice - 0) - (this.increasePrice - 0);
       } else {
         this.tost(`加价幅度不能小于${this.increasePrice}`);
       }
@@ -606,6 +607,7 @@ export default {
       let params = {
         token: this.$route.query.token,
         bidderId: this.$route.query.bidderId,
+        currentPrice:this.currentPrice,
         increasePrice: this.myAddPrice
       };
       this.$http({
@@ -617,6 +619,7 @@ export default {
           console.log(res);
           this.tost("加价成功");
           this.popupState = flase;
+          this.myAddPrice=this.increasePrice;//加价成功我的加价重置
         })
         .catch(error => {
           console.log(error);
@@ -795,7 +798,7 @@ export default {
     top: 0.4rem;
     left: 0.4rem;
     z-index: 9;
-    animation: fadeout 1s;
+    animation: fadeout 2s linear infinite;
 }
 
 @keyframes fadeout {
