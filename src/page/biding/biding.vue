@@ -206,39 +206,39 @@ export default {
         }
       ], //轮播图数据
       bidingTipText: "正在竞拍",
-      bidingTipTime: "20小时08分04秒",
+      bidingTipTime: "",
       bottomBtnText: "交保证金报名",
-      bidderStatus: "3", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
-      startTime: "2018/07/13 00:00:00", //活动开始时间;
-      endTime: "2018/07/14 21:26:30", //活动结束时间;
-      timeStr: "05月04日  10:20 开拍", //活动开始时间(bidderId=1时显示);
-      remindStatus: "1", //闹钟状态(只有bidderStatus=1时显示):1-未设置 2:已设置
+      bidderStatus: "", //活动状态:1-未开始(>24h);2-未开始(<24h);3-进行中;4-已结束
+      startTime: "", //活动开始时间;
+      endTime: "", //活动结束时间;
+      timeStr: "", //活动开始时间(bidderId=1时显示);
+      remindStatus: "", //闹钟状态(只有bidderStatus=1时显示):1-未设置 2:已设置
       isBtnDisable: false,
       popupState: false,
-      increasePrice: "200", //加价幅度
-      myAddPrice: 200, //出价金额
+      increasePrice: "", //加价幅度
+      myAddPrice: '', //出价金额
       isClockShow: true,
       clockText: "设置提醒",
-      bidderMoney: 2000,
-      bidderId: 1,
+      bidderMoney: '',
+      bidderId: '',
       bidderRecord: [],
       shareInfo: [],
-      depositStatus: "1", //定金状态:1-已付; 2-未付
+      depositStatus: "", //定金状态:1-已付; 2-未付
       popupStatePrice: false,
       bidingErrorText: "竞拍已结束，关注一下其他场次吧",
       list: [
-        {
-            temporaryState: '领先',
-            bidders: 'cu20280',
-            bidderPrice: '7.99万',
-            bidderTime: '10:25:22 05/06'
-        },
-        {
-            temporaryState: '出局',
-            bidders: 'cu20280',
-            bidderPrice: '7.99万',
-            bidderTime: '10:25:22 05/06'
-        }
+        // {
+        //     temporaryState: '领先',
+        //     bidders: 'cu20280',
+        //     bidderPrice: '7.99万',
+        //     bidderTime: '10:25:22 05/06'
+        // },
+        // {
+        //     temporaryState: '出局',
+        //     bidders: 'cu20280',
+        //     bidderPrice: '7.99万',
+        //     bidderTime: '10:25:22 05/06'
+        // }
       ]  // 竞拍记录5条数据列表
     };
   },
@@ -277,6 +277,9 @@ export default {
            this.setClockUI();
            this.setBidingTip();
            this.setBottomBtn();
+           this.addShareButton();
+           console.log(this.shareInfo,this.shareInfo.title,this.shareInfo.note,this.shareInfo.icon)
+
           })
           .catch(error => {
             console.log(error);
@@ -298,6 +301,10 @@ export default {
             this.setClockUI();
             this.setBidingTip();
             this.setBottomBtn();
+            
+   
+      
+    
           })
           .catch(error => {
             console.log(error);
@@ -326,18 +333,19 @@ export default {
 
         this.autoName = data.autoName;
         this.currentPrice = data.currentPrice;
-        this.guidePrice = data.guidePrice;
+        this.guidePrice = Number(data.guidePrice);
         this.enrolment = data.enrolment;
         this.settingRemind = data.settingRemind;
         this.platformNum = data.platformNum;
         this.deposit = data.deposit;
-        this.increasePrice = data.increasePrice;
+        this.increasePrice = Number(data.increasePrice);
         this.saleArea = data.saleArea;
         this.packUpPlace = data.packUpPlace;
         this.produceTime = data.produceTime;
         this.carColor = data.carColor;
         this.shopInfo = data.shopInfo;
         this.shareInfo = data.shareInfo;
+        this.myAddPrice=Number(this.increasePrice);
       }
     },
     /*向App传值*/
@@ -453,7 +461,7 @@ export default {
       // 2-未开始(<24h)
       if (this.bidderStatus === "2") {
         this.bidingTipText = "即将开始";
-        this.bidingTipTime = "20小时08分04秒";
+        this.bidingTipTime = "";
         let startTime = new Date(this.startTime);
         let endTime = new Date(this.endTime);
         let type = "double";
@@ -480,7 +488,7 @@ export default {
       // 3-进行中
       if (this.bidderStatus === "3") {
         this.bidingTipText = "正在竞拍";
-        this.bidingTipTime = "20小时08分04秒";
+        this.bidingTipTime = "";
         let startTime = new Date(this.startTime);
         let endTime = new Date(this.endTime);
         console.log(startTime,endTime)
@@ -496,7 +504,7 @@ export default {
               this.isClockShow = false;
             }
             // 倒计时更新触发的操作写在这里
-            this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
+            this.bidingTipTime = `${update[1]}天${update[2]}小时${update[3]}分${update[4]}秒`;
           },
           end => {
             // 倒计时结束触发的操作写在这里
@@ -763,9 +771,7 @@ export default {
     this.getdata();
     
     this.renderDom();
-    if (this.isTcmApp) {
-      this.addShareButton();
-    }
+ 
   },
 
   components: {

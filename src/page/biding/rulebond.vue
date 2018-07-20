@@ -7,7 +7,7 @@
         <div class="rulelist">
             <p>1.支付竞拍保证金，即可参与竞拍活动；</p>
             <p>2.未拍到将全额退还保证金；</p>
-            <p>3.如有疑问请查看细则或联系客服<span>400-825-2368</span>;</p>
+            <p>3.如有疑问请查看细则或联系客服<a class="tel" href="tel:400-825-2368" >400-825-2368</a>;</p>
         </div>
     </div>
 </template>
@@ -34,6 +34,23 @@ export default {
         }
     },
     methods: {
+        tcmApp(obj) {
+      //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+      //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+      //或者由服务器判断响应不同的平台脚本
+      if (navigator.userAgent.indexOf("iPhone") > 0) {
+        window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
+      } else {
+        window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
+      }
+      },
+        windowOpen() {
+            var obj = {
+            actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+             url:  `https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`// 要打开的链接
+             };
+             tcmApp(obj);
+            },
         checkrules (btnType) {
             console.log('查看细则')
             // 添加监测
@@ -50,6 +67,7 @@ export default {
                 bidderId: bidderId,
                 buttonType: buttonType
                 };
+                this.$router.push('/biding/ruledetails')
             } else {
                 url = "https://tcmapi.emao.com/bidder/browseWapLog";
                 params = {
@@ -57,6 +75,8 @@ export default {
                 buttonType: buttonType,
                    uniqId:uniqId
                 };
+                this.windowOpen()
+
             }
             this.$http({
                 url: url,
@@ -69,7 +89,8 @@ export default {
             .catch(error => {
                 console.log(error);
             });
-            this.$router.push('/biding/ruledetails')
+           
+            document.title="保证金规则"
         }
     }
 }
@@ -99,7 +120,7 @@ export default {
         font-size: 0.33333rem;
         line-height: 0.64rem;
     }
-    .rulelist p span {
+    .rulelist p a{
         color: #d6ab55;
     }
 </style>
