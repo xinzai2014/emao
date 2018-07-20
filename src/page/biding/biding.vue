@@ -722,7 +722,7 @@ export default {
           this.clockText = "取消提醒";
         }
         if (this.bidderStatus === "3") {
-          this.clockText = "设置提醒";
+          this.clockText = "取消提醒";
         }
 
         return false;
