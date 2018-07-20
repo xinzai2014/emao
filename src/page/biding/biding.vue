@@ -240,6 +240,8 @@ export default {
         //     bidderTime: '10:25:22 05/06'
         // }
       ]  // 竞拍记录5条数据列表
+      ,
+      uniqId:''
     };
   },
   computed: {
@@ -348,6 +350,7 @@ export default {
         this.shareInfo = data.shareInfo;
         this.myAddPrice=Number(this.increasePrice);
         this.bidderMoney=this.deposit;
+        this.uniqId=data.uniqId
       }
     },
     /*向App传值*/
@@ -445,7 +448,7 @@ export default {
         imgUrl: this.shareInfo.icon, //分享信息图片链接
         url: this.shareInfo.url, //要分享内容的 url
         shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
-        uniqId: this.$route.query.uniqId, //shareType为0时可空,分享统计id
+        uniqId: this.uniqId, //shareType为0时可空,分享统计id
         extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
       };
       this.tcmApp(obj);
@@ -620,7 +623,7 @@ export default {
           console.log(res);
             this.tost(res.body.msg)
           if(res.body.code==200){
-
+          
           }
           if(res.body.code==403){
             
