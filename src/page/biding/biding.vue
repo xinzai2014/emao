@@ -16,7 +16,7 @@
     </section>
 
     <!-- 竞拍提醒 -->
-    <div class="biding-tip" :class="{bidingTipActive: bidderStatus=='3',bidingTipOver:bidderStatus=='4'}" v-if="bidderStatus!==4">
+    <div class="biding-tip" :class="{bidingTipActive: bidderStatus=='3',bidingTipOver:bidderStatus=='4'}" >
       <span class="text">{{bidingTipText}}</span>
       <span class="time">
         <span v-if="bidderStatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
@@ -38,7 +38,7 @@
           <span class="remind">{{settingRemind}}人设置提醒</span>
         </div>
       </div>
-      <div v-if="isClockShow&&isTcmApp" class="infom-right" @click="setClock">
+      <div v-if="isClockShow&&isTcmApp&&bidderStatus!=='4'" class="infom-right" @click="setClock">
         <img src="./images/clock.png" alt="设置提醒">
         <span class="clock">{{clockText}}</span>
       </div>
