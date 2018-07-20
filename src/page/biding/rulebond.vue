@@ -2,7 +2,7 @@
     <div id="rulebond">
         <p class="rule_title">
             <span class="title_left">保证金规则</span>
-            <span class="title_more" @click="checkrules(7)">查看细则 ></span>
+            <span class="title_more" @click="checkrules('7')">查看细则 ></span>
         </p>
         <div class="rulelist">
             <p>1.支付竞拍保证金，即可参与竞拍活动；</p>
