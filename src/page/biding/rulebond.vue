@@ -47,7 +47,7 @@ export default {
         windowOpen() {
             var obj = {
             actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-             url:  `https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`// 要打开的链接
+             url:  `https://tcm.m.emao.com/#/biding/ruledetails?bidderId=${this.$route.query.bidderId}`// 要打开的链接
              };
              this.tcmApp(obj);
             },
@@ -67,7 +67,8 @@ export default {
                 bidderId: bidderId,
                 buttonType: buttonType
                 };
-                this.$router.push('/biding/ruledetails')
+                 this.windowOpen()
+                
             } else {
                 url = "https://tcmapi.emao.com/bidder/browseWapLog";
                 params = {
@@ -75,7 +76,7 @@ export default {
                 buttonType: buttonType,
                    uniqId:uniqId
                 };
-                this.windowOpen()
+                this.$router.push('/biding/ruledetails')
                 // window.location=`https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`
                 // console.log(55,this.$route.query.uniqId)
                 // window.open(`https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`)

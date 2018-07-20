@@ -16,7 +16,7 @@
     </section>
 
     <!-- 竞拍提醒 -->
-    <div class="biding-tip" :class="{bidingTipActive: bidderStatus=='3',bidingTipOver:bidderStatus=='4'}">
+    <div class="biding-tip" :class="{bidingTipActive: bidderStatus=='3',bidingTipOver:bidderStatus=='4'}" v-if="bidderStatus!==4">
       <span class="text">{{bidingTipText}}</span>
       <span class="time">
         <span v-if="bidderStatus==='2'">距开拍&nbsp;&nbsp;</span>{{bidingTipTime}}</span>
@@ -724,6 +724,7 @@ export default {
         if (this.bidderStatus === "3") {
           this.clockText = "设置提醒";
         }
+
         return false;
       }
     },
@@ -784,10 +785,31 @@ export default {
           console.log(error);
         });
     },
+
+     tcmApp(obj) {
+      //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+      //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+      //或者由服务器判断响应不同的平台脚本
+      if (navigator.userAgent.indexOf("iPhone") > 0) {
+        window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
+      } else {
+        window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
+      }
+      },
+        windowOpen() {
+            var obj = {
+            actionname: "windowOpen",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+             url:  `https://tcm.m.emao.com/#/biding/recordlist?bidderId=${this.$route.query.bidderId}`// 要打开的链接
+             };
+             this.tcmApp(obj);
+            },
+
     // 竞拍记录查看更多按钮点击
     recordlist (btnType) {
       this.setBtnClickLog(btnType)
-      this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
+      this.windowOpen()
+      // this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
+      // document.title="竞拍记录"
     }
   },
   created() {
