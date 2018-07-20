@@ -623,7 +623,7 @@ export default {
           console.log(res);
             this.tost(res.body.msg)
           if(res.body.code==200){
-          
+          this.currentPrice=res.body.currentPrice//出价成功后当前价格变化
           }
           if(res.body.code==403){
             
