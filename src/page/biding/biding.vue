@@ -347,6 +347,7 @@ export default {
         this.shopInfo = data.shopInfo;
         this.shareInfo = data.shareInfo;
         this.myAddPrice=Number(this.increasePrice);
+        this.bidderMoney=this.deposit;
       }
     },
     /*向App传值*/
