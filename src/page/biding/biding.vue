@@ -285,7 +285,7 @@ export default {
           })
           .catch(error => {
             console.log(error);
-            tost(error.body.msg);
+            this.tost(error.body.msg);
           });
       } else {
         let params = {
@@ -659,7 +659,7 @@ export default {
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
-          remindStatus: "2" // 参数 2 为设置提醒
+          remindStatus: 2 // 参数 2 为设置提醒
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
@@ -681,7 +681,7 @@ export default {
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
-          remindStatus: "1" // 参数 1 为取消提醒
+          remindStatus: 1 // 参数 1 为取消提醒
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/setingRemind",
