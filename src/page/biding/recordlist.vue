@@ -53,6 +53,7 @@ export default {
     },
     created () {
         this.getdata()
+        document.title="竞拍记录"
     }
 }
 </script>

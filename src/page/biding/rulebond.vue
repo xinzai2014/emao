@@ -93,7 +93,7 @@ export default {
                 console.log(error);
             });
            
-            document.title="保证金规则"
+            
         }
     }
 }

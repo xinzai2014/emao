@@ -22,6 +22,9 @@ export default {
         return {
 
         }
+    },
+    created(){
+        document.title="保证金细则"
     }
 }
 </script>

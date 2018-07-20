@@ -802,6 +802,7 @@ export default {
              url:  `https://tcm.m.emao.com/#/biding/recordlist?bidderId=${this.$route.query.bidderId}`// 要打开的链接
              };
              this.tcmApp(obj);
+             
             },
 
     // 竞拍记录查看更多按钮点击
@@ -809,7 +810,7 @@ export default {
       this.setBtnClickLog(btnType)
       this.windowOpen()
       // this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
-      document.title="竞拍记录"
+      
     }
   },
   created() {
