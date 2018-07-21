@@ -372,13 +372,13 @@ export default {
     getrecordlist(){
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         //定时器 获取广播数据
-        // this.getnewdata()
+        this.getnewdata()
       } else {
         console.log(this.bidderRecord)
       }
     },
     getnewdata(){
-      // this.broadcast='';
+      this.broadcast='';
       this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
         type: 'GET',
@@ -415,7 +415,7 @@ export default {
           //定时器 获取广播数据
           this.broadcast =data.broadcast;//广播数据
         }
-        // this.getnewdata()
+        this.getnewdata()
       })
       .catch((e)=>{
         
@@ -431,7 +431,7 @@ export default {
         // if (errorcode == '500') {
         //   console.log("500正常，可以重新请求数据")
         // }
-        // this.getnewdata()
+        this.getnewdata()
       })
     },
     // 分享按钮添加
@@ -575,7 +575,7 @@ export default {
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
           this.setBtnClickLog(1);
-          
+          console.log("交保证金报名")
           
           // 跳转到app交保证金页面
           /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
