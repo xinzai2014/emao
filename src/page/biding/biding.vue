@@ -621,14 +621,15 @@ export default {
       })
         .then(function(res) {
           console.log(res);
-            this.tost(res.body.msg)
-          if(res.body.code==200){
-          this.currentPrice=res.body.currentPrice//出价成功后当前价格变化
-          }
-          if(res.body.code==403){
+            this.tost(res.body.data.msg)
+          // if(res.body.code==200){
+          // this.currentPrice=res.body.data.currentPrice//出价成功后当前价格变化
+
+          // }
+          // if(res.body.data.code==403){
             
-          }
-          this.currentPrice=res.body.currentPrice
+          // }
+          this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
     
@@ -779,7 +780,8 @@ export default {
         params: params
       })
         .then(function(res) {
-          // console.log(res);
+          //按钮统计
+          console.log(res);
         })
         .catch(error => {
           console.log(error);
