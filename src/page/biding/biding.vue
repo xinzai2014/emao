@@ -371,15 +371,25 @@ export default {
     },
     // 获取详情页竞拍记录列表数据（进行中）
     getrecordlist(){
+       let len = this.bidderRecord.length
+          console.log(len)
+          if (len > 5) {
+            this.bidderRecord = this.bidderRecord.slice(0,5)
+          }
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         //定时器 获取广播数据
         this.getnewdata()
       } else {
-        console.log(this.bidderRecord)
+       
+       return;
       }
     },
     getnewdata(){
       this.broadcast='';
+      if(this.bidderStatus === '4'){
+        return;
+      }
+      
       this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
         type: 'GET',
@@ -392,30 +402,20 @@ export default {
         let data = res.body.data
         this.enrolment=data.enrolment; //报名人数
         this.settingRemind=data.settingRemind;//设置闹钟人数
-        // 如果活动结束，竞拍记录列表数据为详情接口（全局）数据
-        if(this.bidderStatus === '4'){
-          let len = this.bidderRecord.length
-          console.log(len)
-          if (len > 5) {
-            this.bidderRecord = this.bidderRecord.slice(0,5)
-          }
-        }
-        // 如果活动进行时，同时获取广播数据和竞拍记录数据，竞拍记录列表数据为定时接口（res.body.data.bidderRecord）数据
+        this.currentPrice=data.currentPrice;
+        this.settingRemind=data.settingRemind;
+        this.broadcast =data.broadcast; //广播
+        // 如果活动进行时，同时获取广播数据和竞拍记录数据，竞拍记录列表数据为定时接口
         if(this.bidderStatus === '3'){
           // 清空全局记录数据,再赋值定时接口的数据
-          this.bidderRecord = []
-          //定时器 获取广播数据和竞拍记录
-          this.bidderRecord = data.bidderRecord//竞拍记录
-          this.broadcast =data.broadcast//广播数据
+          // this.bidderRecord = []
+          this.bidderRecord = data.bidderRecord//竞拍记录  
           let len = this.bidderRecord.length
           if (len > 5) {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
         }
-        if(this.bidderStatus === '1'||this.bidderStatus === '2'){
-          //定时器 获取广播数据
-          this.broadcast =data.broadcast;//广播数据
-        }
+       
         this.getnewdata()
       })
       .catch((e)=>{
@@ -510,7 +510,7 @@ export default {
               this.isClockShow = false;
             }
             // 倒计时更新触发的操作写在这里
-            this.bidingTipTime = `${update[1]}天${update[2]}小时${update[3]}分${update[4]}秒`;
+            this.bidingTipTime = `${update[1]}天${update[2]}小时${update[3]}分${update[4]}秒结束`;
           },
           end => {
             // 倒计时结束触发的操作写在这里
@@ -659,6 +659,7 @@ export default {
         })
           .then(function(res) {
             console.log(res);
+            this.settingRemind=res.body.data.settingRemind;
             this.tost("设置提醒成功，将在开拍和结束前10分钟提醒您");
             this.clockText = "取消提醒";
           })
@@ -668,7 +669,7 @@ export default {
             this.tost("设置失败");
           });
       } else {
-        this.setBtnClickLog(4);
+        this.setBtnClickLog(5);
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
@@ -681,6 +682,7 @@ export default {
         })
           .then(function(res) {
             console.log(res);
+            this.settingRemind=res.body.data.settingRemind;
             this.tost("取消成功");
             this.clockText = "设置提醒";
           })
