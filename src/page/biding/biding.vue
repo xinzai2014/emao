@@ -29,7 +29,7 @@
           <div class="type">{{autoName}}</div>
         </div>
         <div class="infom-mid">
-          <span class="b-price">当前价：{{currentPrice}}万</span>
+          <span class="b-price">{{current_price}}：{{currentPrice}}万</span>
           <span class="g-price">指导价：{{guidePrice}}万</span>
         </div>
         <div class="infom-down">
@@ -183,6 +183,7 @@ export default {
   name: "biding",
   data() {
     return {
+      current_price:'当前价',
       broadcast: '', //广播数据
       sowingMap: [], //轮播图
       autoName: "", //车型全称
@@ -555,7 +556,8 @@ export default {
       }
       //3.竞拍结束
       if (this.bidderStatus === "4") {
-        this.bottomBtnText = "已结束";
+        this.bottomBtnText = "竞拍已结束";
+        this.current_price='成交价'
         this.isBtnDisable = true;
       }
     },
@@ -622,11 +624,12 @@ export default {
         .then(function(res) {
           console.log(res);
             this.tost(res.body.data.msg)
-          // if(res.body.code==200){
+            
+          // if(res.body.status==200){
           // this.currentPrice=res.body.data.currentPrice//出价成功后当前价格变化
 
           // }
-          // if(res.body.data.code==403){
+          // if(res.body.data.status==403){
             
           // }
           this.currentPrice=res.body.data.currentPrice
