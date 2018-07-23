@@ -120,9 +120,6 @@
             <img :src="item" alt="">
           <!-- <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt=""> -->
         </li>
-        <!-- <li>
-          <img src="./images/text.png" alt="">
-        </li> -->
       </ul>
     </section>
     <!-- 底部按钮 -->
@@ -166,6 +163,7 @@
         <div class="iKnow" @click="iKnowHandle">我知道了</div>
       </div>
     </popup>
+    
   </div>
 </template>
 <script>
@@ -285,7 +283,7 @@ export default {
 
           })
           .catch(error => {
-            console.log(error);
+            console.log(3,error);
             this.tost(error.body.msg);
           });
       } else {
@@ -420,12 +418,14 @@ export default {
       })
       .catch((e)=>{
         
-        this.$store.dispatch("ALERT", // 通过store传值
-          {
-            flag:false,
-            text:""
-          }
-        );
+        // this.$store.dispatch("ALERT", // 通过store传值
+        //   {
+        //     flag:false,
+        //     text:""
+        //   }
+        // );
+
+
         // console.log("报错了error======错误码")
         // console.log(e.body.code)
         // var errorcode = e.body.code
