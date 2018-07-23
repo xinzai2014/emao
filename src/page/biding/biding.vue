@@ -53,7 +53,7 @@
         </li>
         <li class="car-money">
           <span class="left">保证金</span>
-          <span class="right">{{deposit}}</span>
+          <span class="right">{{deposit}}元</span>
         </li>
         <li class="car-range">
           <span class="left">可售范围</span>
@@ -623,27 +623,14 @@ export default {
       })
         .then(function(res) {
           console.log(res);
-            this.tost(res.body.data.msg)
-            
-          // if(res.body.status==200){
-          // this.currentPrice=res.body.data.currentPrice//出价成功后当前价格变化
-
-          // }
-          // if(res.body.data.status==403){
-            
-          // }
+          this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
     
         })
         .catch(error => {
-          if(error.body.code==500){
-
-          }
-          if(error.body.code==403){
-            
-          }
+  
 
           console.log(error);
           this.bidingErrorText = error.body.msg
