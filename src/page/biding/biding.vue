@@ -163,7 +163,22 @@
         <div class="iKnow" @click="iKnowHandle">我知道了</div>
       </div>
     </popup>
-    
+    <!-- 前往下载 -->
+    <popup class="" :showPopup="download_pup"  :clickAroundHide="true" :contentStyleObj="{
+                    background:'white',
+                    width: '8.5rem',
+                    backgroundSize: '100% auto',
+                    borderRadius: '.13333rem',
+                    height:'5rem'
+                }"
+                @changePopupState="downState"
+                position="center">
+                <div class="download">
+                  <img src="./images/app.png" alt="">
+                  <div class="download_text">请下载车商猫APP参与竞拍，即刻下载还可获得购车红包</div>
+                  <div class="btn-goApp" @click="downloadApp">立即下载</div>
+                </div>            
+            </popup>
   </div>
 </template>
 <script>
@@ -240,7 +255,8 @@ export default {
         // }
       ]  // 竞拍记录5条数据列表
       ,
-      uniqId:''
+      uniqId:'',
+      download_pup:false
     };
   },
   computed: {
@@ -303,10 +319,6 @@ export default {
             this.setClockUI();
             this.setBidingTip();
             this.setBottomBtn();
-            
-   
-      
-    
           })
           .catch(error => {
             console.log(error);
@@ -417,21 +429,7 @@ export default {
         this.getnewdata()
       })
       .catch((e)=>{
-        
-        // this.$store.dispatch("ALERT", // 通过store传值
-        //   {
-        //     flag:false,
-        //     text:""
-        //   }
-        // );
 
-
-        // console.log("报错了error======错误码")
-        // console.log(e.body.code)
-        // var errorcode = e.body.code
-        // if (errorcode == '500') {
-        //   console.log("500正常，可以重新请求数据")
-        // }
         this.getnewdata()
       })
     },
@@ -574,6 +572,10 @@ export default {
       this.popupStatePrice = false;
     },
     btnClick() {
+      if(!this.isTcmApp){
+        this.downState(true)
+        return;
+      }
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
           this.setBtnClickLog(1);
@@ -805,6 +807,13 @@ export default {
       this.windowOpen()
       // this.$router.push({path: "/biding/recordlist",query:{bidderId: this.bidderId}})
       
+    },
+    //下载APP弹窗
+     downState(download_pup){
+      this.download_pup=download_pup;
+    },
+    downloadApp(){
+      window.location=`http://url.cn/5Ne6oti`;
     }
   },
   created() {
@@ -830,17 +839,17 @@ export default {
     font-size: 0.32rem;
     color: #fff;
     padding-right: 0.26667rem;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0);
     position: absolute;
-    top: 0.4rem;
+    top: -2rem;
     left: 0.4rem;
     z-index: 9;
-    animation: fadeout 2s linear infinite;
+    animation: fadeout 2s linear ;
 }
 
 @keyframes fadeout {
-  0% {
-    background: rgba(0, 0, 0, 0.7);
+  0%{
+     background: rgba(0, 0, 0, 0.7);
     top: 0.4rem;
     display: block;
   }
@@ -859,7 +868,7 @@ export default {
   100% {
     background: rgba(0, 0, 0, 0);
     top: -2rem;
-    display: none
+    
   }
   
 }
@@ -1221,6 +1230,23 @@ export default {
   color: #ffffff;
   font-size: 0.45333rem;
 }
+.download{
+  width:100%;
+  height: 100%;
+}
+.download .download_text{
+  font-size: .4rem;
+  width: 7rem;
+  text-align: center;
+  margin: .5rem auto;
+}
+.download img{
+width: 3rem;
+height: 1rem;
+display: block;
+margin: .5rem auto;
+}
+.btn-goApp {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
 </style>
 
 
