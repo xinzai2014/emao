@@ -77,9 +77,7 @@ export default {
                    uniqId:uniqId
                 };
                 this.$router.push('/biding/ruledetails')
-                // window.location=`https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`
-                // console.log(55,this.$route.query.uniqId)
-                // window.open(`https://tcm.m.emao.com/#/biding?bidderId=${this.$route.query.bidderId}&uniqId=${this.$route.query.uniqId}`)
+                
             }
             this.$http({
                 url: url,

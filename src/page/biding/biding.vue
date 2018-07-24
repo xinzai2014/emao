@@ -429,7 +429,7 @@ export default {
         
       })
       .catch((e)=>{
-        
+
          setTimeout(this.getnewdata,1000)
       })
     },
@@ -777,7 +777,7 @@ export default {
       })
         .then(function(res) {
           //按钮统计
-          console.log(res);
+          console.log(res);     
         })
         .catch(error => {
           console.log(error);
