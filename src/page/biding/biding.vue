@@ -614,23 +614,16 @@ export default {
         .then(function(res) {
            console.log("成功",res); 
           this.tost(res.body.data.msg)
-          console.log(1)
           this.currentPrice=res.body.data.currentPrice
-          console.log(2)
-          this.popupState = flase;
-          console.log(3)
+          this.popupState = false;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
-          // console.log(500,this.increasePrice,_this.increasePrice)
-          console.log(3.4)
+
         })
         .catch(error => {
           console.log(error,"出价错")
           this.bidingErrorText = error.body.msg
-          console.log(4)
           this.popupState = false;
-          console.log(5)
           this.popupStatePrice = true;  
-          console.log(6)
         });
     },
     // 关闭弹窗
