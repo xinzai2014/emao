@@ -613,8 +613,8 @@ export default {
       })
         .then(function(res) {
            console.log("成功",res);
-          console.log(this.currentPrice,_this.currentPrice,this.popupState,_this.popupState,this.myAddPrice,_this.myAddPrice)
-
+          // console.log(this.currentPrice,_this.currentPrice,this.popupState,_this.popupState,this.myAddPrice,_this.myAddPrice)
+          console.log(this,_this)
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
