@@ -613,20 +613,21 @@ export default {
       })
         .then(function(res) {
            console.log("成功",res);
-          console.log("出价成功")
-          console.log(this.isTcmApp)
+          
+
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
           // console.log(500,this.increasePrice,_this.increasePrice)
-    
+          console.log(this.currentPrice,_this.currentPrice,this.popupState,_this.popupState,this.myAddPrice,_this.myAddPrice)
         })
         .catch(error => {
           console.log(error,"出价错")
           this.bidingErrorText = error.body.msg
           this.popupState = false;
           this.popupStatePrice = true;
+          console.log(this.bidingErrorText,_this.bidingErrorText,this.popupState,_this.popupState,this.popupStatePrice,this.popupStatePrice)
         });
     },
     // 关闭弹窗
