@@ -425,12 +425,12 @@ export default {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
         }
-       setTimeout(this.getnewdata,1000)
+       setTimeout(this.getnewdata,20000)
         
       })
       .catch((e)=>{
 
-         setTimeout(this.getnewdata,1000)
+         setTimeout(this.getnewdata,20000)
       })
     },
     // 分享按钮添加
@@ -529,10 +529,12 @@ export default {
     // 设置底部按钮
     setBottomBtn() {
       console.log(this.bidderStatus);
+      if(this.isTcmApp){}
       //1.竞拍未开始状态
       if (this.bidderStatus === "1" || this.bidderStatus === "2") {
         console.log(this.depositStatus);
-        //是否支付保证金
+        if(this.isTcmApp){
+           //是否支付保证金
         if (this.depositStatus === "1") {
           this.bottomBtnText = "已交保证金，等待开拍";
           this.isBtnDisable = true;
@@ -540,10 +542,15 @@ export default {
           this.bottomBtnText = "交保证金报名";
           this.isBtnDisable = false;
         }
+        }else{
+          this.bottomBtnText = "我要参加"
+        }
+       
       }
       //2.竞拍进行中
       if (this.bidderStatus === "3") {
-        //是否支付保证金
+        if(this.isTcmApp){
+           //是否支付保证金
         if (this.depositStatus === "1") {
           this.bottomBtnText = "我要出价";
           this.isBtnDisable = false;
@@ -551,13 +558,23 @@ export default {
           this.bottomBtnText = "交保证金报名";
           this.isBtnDisable = false;
         }
+        }else{
+           this.bottomBtnText ="我要出价"
+        }
+       
       }
       //3.竞拍结束
       if (this.bidderStatus === "4") {
-        this.bottomBtnText = "竞拍已结束";
-        this.current_price='成交价'
-        this.isBtnDisable = true;
+        if(this.isTcmApp){
+           this.bottomBtnText = "竞拍已结束";
+           this.current_price='成交价'
+           this.isBtnDisable = true;
+        }else{
+          this.bottomBtnText ="去看看其他场次竞拍"
+        }
+       
       }
+      
     },
     changePopupState(popupState) {
       this.popupState = popupState;
