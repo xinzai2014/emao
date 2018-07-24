@@ -118,7 +118,6 @@
       <ul>
         <li v-for="(item,index) in shopInfo" :key="index">
             <img :src="item" alt="">
-          <!-- <img src="http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg" alt=""> -->
         </li>
       </ul>
     </section>
@@ -212,13 +211,7 @@ export default {
       produceTime: "", //生产日期
       carColor: "", //车型颜色
       shopInfo: [], //商品详情
-      circular: [
-        // {
-        //   id: 2,
-        //   imgUrl:
-        //     "http://img.zcool.cn/community/01f09e577b85450000012e7e182cf0.jpg@1280w_1l_2o_100sh.jpg"
-        // }
-      ], //轮播图数据
+      circular: [], //轮播图数据
       bidingTipText: "正在竞拍",
       bidingTipTime: "",
       bottomBtnText: "交保证金报名",
@@ -240,21 +233,7 @@ export default {
       depositStatus: "", //定金状态:1-已付; 2-未付
       popupStatePrice: false,
       bidingErrorText: "竞拍已结束，关注一下其他场次吧",
-      list: [
-        // {
-        //     temporaryState: '领先',
-        //     bidders: 'cu20280',
-        //     bidderPrice: '7.99万',
-        //     bidderTime: '10:25:22 05/06'
-        // },
-        // {
-        //     temporaryState: '出局',
-        //     bidders: 'cu20280',
-        //     bidderPrice: '7.99万',
-        //     bidderTime: '10:25:22 05/06'
-        // }
-      ]  // 竞拍记录5条数据列表
-      ,
+      list: [],  // 竞拍记录5条数据列表
       uniqId:'',
       download_pup:false
     };
@@ -275,8 +254,6 @@ export default {
   methods: {
     //获取数据
     getdata() {
-      // let params;
-      // let data;
       if (this.isTcmApp) {
         let params = {
           token: this.$route.query.token,
@@ -295,11 +272,9 @@ export default {
            this.setBidingTip();
            this.setBottomBtn();
            this.addShareButton();
-           console.log(this.shareInfo,this.shareInfo.title,this.shareInfo.note,this.shareInfo.icon)
-
           })
           .catch(error => {
-            console.log(3,error);
+            console.log(error,"app获取数据错")
             this.tost(error.body.msg);
           });
       } else {
@@ -312,7 +287,7 @@ export default {
           params: params
         })
           .then(function(response) {
-            
+      
             let data = response.body.data;
             this.assignment(data)
             this.getrecordlist();
@@ -321,7 +296,7 @@ export default {
             this.setBottomBtn();
           })
           .catch(error => {
-            console.log(error);
+            console.log(error,"wap获取数据错")
           });
       }
     },
@@ -382,7 +357,7 @@ export default {
     // 获取详情页竞拍记录列表数据（进行中）
     getrecordlist(){
        let len = this.bidderRecord.length
-          console.log(len)
+          
           if (len > 5) {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
@@ -452,10 +427,10 @@ export default {
       };
       this.tcmApp(obj);
     },
-    // 分享按钮添加
+    
     // 设置竞拍导航
     setBidingTip() {
-      console.log(this.bidderStatus);
+      
       // 活动状态:1-未开始(>24h);
       if (this.bidderStatus === "1") {
         this.bidingTipText = "即将开始";
@@ -472,7 +447,7 @@ export default {
         timeCountdown(
           { startTime, endTime, type },
           update => {
-            console.log(update);
+            
             // 倒计时更新触发的操作写在这里
             this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒`;
             if (update[0] === "ing") {
@@ -484,7 +459,7 @@ export default {
           },
           end => {
             // 倒计时结束触发的操作写在这里
-            console.log(end);
+            
           }
         );
         return false;
@@ -494,16 +469,12 @@ export default {
         this.bidingTipText = "正在竞拍";
         this.bidingTipTime = "";
         let startTime = new Date(this.startTime);
-        let endTime = new Date(this.endTime);
-        console.log(startTime,endTime)
+        let endTime = new Date(this.endTime);   
         let type = "double";
         let that = this;
         timeCountdown(
           { startTime, endTime, type },
           update => {
-            // console.log(
-            //   update[1] === "00" && update[2] === "00" && update[3] < 10
-            // );
             if (update[1] === "00" && update[2] === "00" && update[3] < 10) {
               this.isClockShow = false;
             }
@@ -512,7 +483,6 @@ export default {
           },
           end => {
             // 倒计时结束触发的操作写在这里
-            console.log(end);
             this.bidderStatus = "4";
             this.setBidingTip();
             this.setBottomBtn();
@@ -528,11 +498,9 @@ export default {
     },
     // 设置底部按钮
     setBottomBtn() {
-      console.log(this.bidderStatus);
       if(this.isTcmApp){}
       //1.竞拍未开始状态
       if (this.bidderStatus === "1" || this.bidderStatus === "2") {
-        console.log(this.depositStatus);
         if(this.isTcmApp){
            //是否支付保证金
         if (this.depositStatus === "1") {
@@ -629,7 +597,7 @@ export default {
     bidingHandle() {
       let _this=this;
       this.setBtnClickLog(3);
-      console.log(this.myAddPrice);
+      // console.log(this.myAddPrice);
       let params = {
         token: this.$route.query.token,
         bidderId: this.$route.query.bidderId,
@@ -642,18 +610,16 @@ export default {
         params: params
       })
         .then(function(res) {
-          console.log(res);
+          // console.log(res);
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
-          console.log(500,this.increasePrice,_this.increasePrice)
+          // console.log(500,this.increasePrice,_this.increasePrice)
     
         })
         .catch(error => {
-  
-
-          console.log(error);
+          console.log(error,"出价错")
           this.bidingErrorText = error.body.msg
           this.popupState = false;
           this.popupStatePrice = true;
@@ -665,7 +631,7 @@ export default {
     },
     // 设置提醒
     setClock() {
-      console.log(this.clockText);
+      
       if (this.clockText === "设置提醒") {
         this.setBtnClickLog(4);
         let params = {
@@ -679,14 +645,13 @@ export default {
           params: params
         })
           .then(function(res) {
-            console.log(res);
+            
             this.settingRemind=res.body.data.settingRemind;
             this.tost("设置提醒成功，将在开拍和结束前10分钟提醒您");
             this.clockText = "取消提醒";
           })
           .catch(error => {
-            console.log(error);
-            // this.$store.state.alert.text||this.alertText;
+            console.log(error,"设置提醒错")
             this.tost("设置失败");
           });
       } else {
@@ -702,14 +667,13 @@ export default {
           params: params
         })
           .then(function(res) {
-            console.log(res);
+            
             this.settingRemind=res.body.data.settingRemind;
             this.tost("取消成功");
             this.clockText = "设置提醒";
           })
           .catch(error => {
-            console.log(error);
-            // this.$store.state.alert.text||this.alertText;
+            console.log(error,"取消提醒错")
             this.tost("取消失败");
           });
       }
@@ -794,10 +758,10 @@ export default {
       })
         .then(function(res) {
           //按钮统计
-          console.log(res);     
+               
         })
         .catch(error => {
-          console.log(error);
+          console.log(error,"按钮统计错",buttonType)
         });
     },
 

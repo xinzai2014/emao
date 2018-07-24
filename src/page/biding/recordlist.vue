@@ -40,14 +40,14 @@ export default {
             .then((res) => {
                 this.bidderRecord = res.body.data
                 let len = this.bidderRecord.length
-                console.log(len)
+                
                 if (len > 20) {
                     this.bidderRecord = this.bidderRecord.slice(0, 20)
                     this.num = 20
                 } else {
                     this.num = len
                 }
-                console.log(this.bidderRecord.length)
+                
             })
         }
     },
