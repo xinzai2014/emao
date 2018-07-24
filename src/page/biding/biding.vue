@@ -429,7 +429,7 @@ export default {
         
       })
       .catch((e)=>{
-
+        
          setTimeout(this.getnewdata,1000)
       })
     },
@@ -610,6 +610,7 @@ export default {
     },
     //出价
     bidingHandle() {
+      let _this=this;
       this.setBtnClickLog(3);
       console.log(this.myAddPrice);
       let params = {
@@ -629,6 +630,7 @@ export default {
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
+          console.log(500,this.increasePrice,_this.increasePrice)
     
         })
         .catch(error => {
