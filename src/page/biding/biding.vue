@@ -614,7 +614,7 @@ export default {
         .then(function(res) {
            console.log("成功",res);
           console.log("出价成功")
-          console.log(this.currentPrice)
+          console.log(this.isTcmApp)
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
