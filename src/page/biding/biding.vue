@@ -565,9 +565,9 @@ export default {
       }
       //3.竞拍结束
       if (this.bidderStatus === "4") {
+        this.current_price='成交价'
         if(this.isTcmApp){
            this.bottomBtnText = "竞拍已结束";
-           this.current_price='成交价'
            this.isBtnDisable = true;
         }else{
           this.bottomBtnText ="去看看其他场次竞拍"
