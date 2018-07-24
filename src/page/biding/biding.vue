@@ -612,23 +612,25 @@ export default {
         params: params
       })
         .then(function(res) {
-           console.log("成功",res);
-          // console.log(this.currentPrice,_this.currentPrice,this.popupState,_this.popupState,this.myAddPrice,_this.myAddPrice)
-          console.log(this,_this)
+           console.log("成功",res); 
           this.tost(res.body.data.msg)
+          console.log(1)
           this.currentPrice=res.body.data.currentPrice
+          console.log(2)
           this.popupState = flase;
+          console.log(3)
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
           // console.log(500,this.increasePrice,_this.increasePrice)
-          
+          console.log(3.4)
         })
         .catch(error => {
           console.log(error,"出价错")
-          console.log(this.bidingErrorText,_this.bidingErrorText,this.popupState,_this.popupState,this.popupStatePrice,this.popupStatePrice)
           this.bidingErrorText = error.body.msg
+          console.log(4)
           this.popupState = false;
-          this.popupStatePrice = true;
-          
+          console.log(5)
+          this.popupStatePrice = true;  
+          console.log(6)
         });
     },
     // 关闭弹窗
