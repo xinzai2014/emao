@@ -387,7 +387,9 @@ export default {
         let data = res.body.data
         this.enrolment=data.enrolment; //报名人数
         this.settingRemind=data.settingRemind;//设置闹钟人数
-        this.currentPrice=data.currentPrice;
+        
+        this.currentPrice=(data.currentPrice-0)>(this.currentPrice-0)?data.currentPrice:this.currentPrice;//看获取当前价是否大于页面价格
+
         this.settingRemind=data.settingRemind;
         this.broadcast =data.broadcast; //广播
         // 如果活动进行时，同时获取广播数据和竞拍记录数据，竞拍记录列表数据为定时接口
