@@ -612,7 +612,8 @@ export default {
         params: params
       })
         .then(function(res) {
-          // console.log(res);
+           console.log("成功",res);
+          console.log("出价成功")
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = flase;
