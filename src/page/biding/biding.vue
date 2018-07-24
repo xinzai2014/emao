@@ -827,7 +827,7 @@ export default {
     top: -2rem;
     left: 0.4rem;
     z-index: 9;
-    animation: fadeout 2s linear ;
+    animation: fadeout 1s linear ;
 }
 
 @keyframes fadeout {
