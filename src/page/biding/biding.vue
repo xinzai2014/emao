@@ -425,12 +425,12 @@ export default {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
         }
-       
-        this.getnewdata()
+       setTimeout(this.getnewdata,1000)
+        
       })
       .catch((e)=>{
 
-        this.getnewdata()
+         setTimeout(this.getnewdata,1000)
       })
     },
     // 分享按钮添加
