@@ -362,7 +362,7 @@ export default {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
-        //定时器 获取广播数据
+        // 获取广播数据
         this.getnewdata()
       } else {
        
@@ -400,12 +400,12 @@ export default {
             this.bidderRecord = this.bidderRecord.slice(0,5)
           }
         }
-       setTimeout(this.getnewdata,20000)
+       setTimeout(this.getnewdata,1500)
         
       })
       .catch((e)=>{
-
-         setTimeout(this.getnewdata,20000)
+        console.log(e,"获取数据错")
+         setTimeout(this.getnewdata,1500)
       })
     },
     // 分享按钮添加
