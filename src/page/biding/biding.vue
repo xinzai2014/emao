@@ -117,7 +117,7 @@
       </div>
       <ul>
         <li v-for="(item,index) in shopInfo" :key="index">
-            <img :src="item" alt="">
+            <img :src="item" alt=""  @click="picView(item)">
         </li>
       </ul>
     </section>
@@ -179,11 +179,14 @@
                   <div class="btn-goApp" @click="downloadApp">立即下载</div>
                 </div>            
             </popup>
+            <!-- 查看大图 -->
+            <pic-view v-show="showBigImg" @closeTip="showBigImg = false" :bigImg="bigImg"></pic-view>
   </div>
 </template>
 <script>
 import Vue from 'vue';
-
+//引入查看大图组件
+import picView from '../../components/common/picView/picView'
 //引入弹窗
 import Popup from "../../components/common/popup/popup.vue";
 import alertTip from "../../components/common/alertTip/alertTip";
@@ -236,7 +239,9 @@ export default {
       bidingErrorText: "竞拍已结束，关注一下其他场次吧",
       list: [],  // 竞拍记录5条数据列表
       uniqId:'',
-      download_pup:false
+      download_pup:false,
+      bigImg:'',
+      showBigImg:false
     };
   },
   computed: {
@@ -253,6 +258,10 @@ export default {
     }
   },
   methods: {
+    picView(src){
+      this.bigImg=src;
+      this.showBigImg=true;
+    },
     //获取数据
     getdata() {
       if (this.isTcmApp) {
@@ -831,7 +840,8 @@ export default {
     swiper,
     Popup,
     Rulebond,
-    alertTip
+    alertTip,
+    picView
   }
 };
 </script>
