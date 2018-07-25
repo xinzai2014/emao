@@ -173,6 +173,7 @@
                 @changePopupState="downState"
                 position="center">
                 <div class="download">
+                  <div class="close-icon close-download" @click="closeDownload"></div>
                   <img src="./images/app.png" alt="">
                   <div class="download_text">请下载车商猫APP参与竞拍，即刻下载还可获得购车红包</div>
                   <div class="btn-goApp" @click="downloadApp">立即下载</div>
@@ -550,7 +551,7 @@ export default {
       this.popupState = popupState;
     },
     changePopupStatePrice(popupState) {
-      this.setBtnClickLog(10);
+      this.setBtnClickLog(11);//出价失败弹窗
       this.popupStatePrice = popupState;
     },
     // 出价失败-我知道了
@@ -560,7 +561,17 @@ export default {
     },
     btnClick() {
       if(!this.isTcmApp){
+         if (this.bidderStatus === "1" || this.bidderStatus === "2"){
+           this.setBtnClickLog(17)//我要参加
+         }
+         if (this.bidderStatus === "3"){
+           this.setBtnClickLog(2)//我要出价
+         }
+         if (this.bidderStatus === "4")[
+            this.setBtnClickLog(18)//去看其他场次
+         ]
         this.downState(true)
+
         return;
       }
       if (!this.isBtnDisable) {
@@ -794,10 +805,19 @@ export default {
     },
     //下载APP弹窗
      downState(download_pup){
+       if(download_pup===false){
+         this.setBtnClickLog(20)//点击周围弹窗关闭
+       }
       this.download_pup=download_pup;
     },
     downloadApp(){
+      this.setBtnClickLog(19)//立即下载
       window.location=`http://url.cn/5Ne6oti`;
+    },
+    closeDownload(){
+      this.setBtnClickLog(20)//弹窗关闭
+      this.download_pup=false;
+      
     }
   },
   created() {
@@ -1217,6 +1237,9 @@ export default {
 .download{
   width:100%;
   height: 100%;
+}
+.download .close-download{
+  top: 0.2rem;
 }
 .download .download_text{
   font-size: .4rem;
