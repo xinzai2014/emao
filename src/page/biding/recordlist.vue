@@ -23,7 +23,7 @@ export default {
     name: 'recordlist',
     data () {
         return {
-            num: '20',
+            num: '25',
             bidderRecord: []
         }
     },
@@ -41,9 +41,9 @@ export default {
                 this.bidderRecord = res.body.data
                 let len = this.bidderRecord.length
                 
-                if (len > 20) {
-                    this.bidderRecord = this.bidderRecord.slice(0, 20)
-                    this.num = 20
+                if (len > 25) {
+                    this.bidderRecord = this.bidderRecord.slice(0, 25)
+                    this.num = 25
                 } else {
                     this.num = len
                 }
