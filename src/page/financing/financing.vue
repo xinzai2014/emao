@@ -302,6 +302,7 @@ export default {
         }
     },
     created () {
+        document.title = "融资购车"
         this.getData()
     },
     mounted () {

@@ -17,6 +17,9 @@
 <script>
 export default {
     name: 'subsuccess',
+    created () {
+        document.title = "提交成功"
+    },
     methods: {
         addFn (buttonType) {
             var token = this.$route.query.token;
