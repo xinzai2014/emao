@@ -10,21 +10,21 @@
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in cityData" :class="{active:defaultData.defaultProcinveID == item.id}"  @click.stop="getCityData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in cityData" :key="index" :class="{active:defaultData.defaultProcinveID == item.id}"  @click.stop="getCityData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="cityWrap">
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in perCityData" :class="{active:defaultData.defaultCityID == item.id}" @click.stop="getAreaData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in perCityData" :key="index" :class="{active:defaultData.defaultCityID == item.id}" @click.stop="getAreaData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="areaWrap">
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in perAreaData" :class="{active:defaultData.defaultAreaID == item.id}" @click.stop="updateAreaData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in perAreaData" :key="index" :class="{active:defaultData.defaultAreaID == item.id}" @click.stop="updateAreaData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
             </div>
