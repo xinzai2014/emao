@@ -168,7 +168,7 @@
                     width: '8.5rem',
                     backgroundSize: '100% auto',
                     borderRadius: '.13333rem',
-                    height:'5rem'
+                    height:'6rem'
                 }"
                 @changePopupState="downState"
                 position="center">
@@ -1247,6 +1247,7 @@ export default {
 .download{
   width:100%;
   height: 100%;
+  overflow: hidden;
 }
 .download .close-download{
   top: 0.2rem;
@@ -1263,7 +1264,15 @@ height: 1rem;
 display: block;
 margin: .5rem auto;
 }
-.btn-goApp {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
+.btn-goApp {
+  margin: 1rem auto .8rem;
+  width: 6.66667rem;
+  line-height: 1.2rem;
+  background: #d5aa5c; 
+  border-radius: .6rem;
+  text-align: center;
+  font-size: 0.45333rem;
+  color: #fff}
 </style>
 
 

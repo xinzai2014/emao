@@ -86,6 +86,7 @@ export default {
 }
 .list_text {
     padding-top: 0.5666rem;
+    padding-bottom: 0.5rem;
     text-align: center;
     font-size: 0.29333rem;
     color: #999;
