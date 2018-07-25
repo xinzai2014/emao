@@ -169,7 +169,7 @@ export default {
                 this.citydata.district_id = postData.areaData["id"]
                 this.citydata.district_name = postData.areaData["name"]
                 // 表单选择区域展示文字
-                this.financingInfo.city = postData.provinceData["name"] + '-' + postData.cityData["name"] + '-' + postData.areaData["name"]
+                this.financingInfo.city = postData.provinceData["name"] + '/' + postData.cityData["name"] + '/' + postData.areaData["name"]
             };
         },
         // 提交表单并校验
