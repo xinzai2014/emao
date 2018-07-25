@@ -1,6 +1,6 @@
 <template>
     <div id="financing">
-        <div class="form-scroll-box">
+        <div id="scrollbox" @touchmove="cancelkey" class="form-scroll-box">
             <keep-alive>
                 <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData" :showCity="showCity"></city>
             </keep-alive>
@@ -46,14 +46,14 @@
                         <span :style="{'color':financingInfo.city.trim() ? '#000':'red'}">*</span>
                         <span>城市：</span>
                     </p>
-                    <input type="text" placeholder="请选择城市" v-model="financingInfo.city" @click="getDialogCity"></p>
+                    <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
                 </div>
                 <div class="shopname-item">
                     <p>
                         <span :style="{'color':financingInfo.shopname.trim() ? '#000':'red'}">*</span>
                         <span>店名：</span>
                     </p>
-                    <textarea type="text" placeholder="请填写提供车源的店名" v-model="financingInfo.shopname"></textarea>
+                    <textarea @click="getPage" type="text" placeholder="请填写提供车源的店名" v-model="financingInfo.shopname"></textarea>
                 </div>
             </div>
             <div class="form-box">
@@ -132,6 +132,47 @@ export default {
         }
     },
     methods: {
+        cancelkey () {
+            // var screenHeight = document.getElementById("financing").offsetHeight;
+            // var scrollbox = document.getElementById("scrollbox")
+            // var height = scrollbox.scrollTop
+            // console.log("screenHeight", screenHeight)
+            // console.log("height", height)
+            // if (height > screenHeight) {
+            //     console.log('取消键盘')
+            //     console.log('a')
+            // }
+            // console.log('手指滑动屏幕了')
+            var input = document.getElementsByTagName("input")
+            for (var i = 0; i < input.length; i++) {
+                input[i].blur()
+                // console.log('键盘抬起消失')
+            }
+            var textarea = document.getElementsByTagName("textarea")
+            for (var i = 0; i < textarea.length; i++) {
+                textarea[i].blur()
+                // console.log('键盘抬起消失')
+            }
+        },
+        // 获取用户点击input的位置
+        getPage (e) {
+            var halfHeight = window.screen.height / 2;
+            var screenPos = e.screenY;
+            console.log(halfHeight)
+            console.log(e.screenY)
+            if (screenPos > halfHeight) {
+                console.log('盒子上移')
+            }
+        },
+        // 判断用户当前操作系统是否为Android
+        isAndroid () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) {
+                return true
+            }
+        },
         // token获取，页面初始化数据
         getData () {
             var token = this.$route.query.token;
@@ -304,10 +345,12 @@ export default {
     created () {
         document.title = "融资购车"
         this.getData()
+        this.cancelkey()
     },
     mounted () {
         // sessionStorage.token = 'c9ed53c8ad5487d7aa69fd836fb43727';
         sessionStorage.token = this.$route.query.token;
+        this.cancelkey()
     },
     components:{
         city,
@@ -317,6 +360,13 @@ export default {
 </script>
 
 <style scoped>
+#financing {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
 .pos-bottom {
     position: absolute;
     bottom: 0;
@@ -394,6 +444,7 @@ export default {
     flex: 1;
     border: none;
     outline: none;
+    resize:none;
     /* background: pink; */
     padding-left: 0.2rem;
     padding-right: 0.2rem;
@@ -401,7 +452,8 @@ export default {
     box-sizing: border-box;
     color: #000;
 }
-.form-box-item>input {
+.form-box-item>input, .input {
+    line-height: 1.4rem;
     flex: 1;
     border: none;
     outline: none;

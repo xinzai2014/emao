@@ -52,7 +52,6 @@ export default {
     width: 1.6rem;
     height: 1.6rem;
     border-radius: 100%;
-    border: 1px solid #ccc;
     margin: 0.4rem auto;
 }
 .tip-pic img {
