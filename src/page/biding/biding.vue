@@ -315,12 +315,18 @@ export default {
            if (data) {
         console.log(data)
         this.sowingMap = data.sowingMap; //轮播图
-        for (var i = 0; i < this.sowingMap.length; i++) {
+        if(this.sowingMap.length){
+          for (var i = 0; i < this.sowingMap.length; i++) {
           this.circular[i] = {
             id: i,
             imgUrl: this.sowingMap[i]
           };
-        }   
+        }  
+        }else{
+          this.circular=[{id:1}];
+          this.circular[0].imgUrl=require('./images/holder.png');
+        }
+         
         this.bidderId = data.bidderId;
         this.bidderStatus = data.bidderStatus;
         this.depositStatus = data.depositStatus;
