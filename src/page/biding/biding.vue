@@ -355,6 +355,49 @@ export default {
         this.uniqId=data.uniqId
       }
     },
+    getEndData() {
+      if (this.isTcmApp) {
+        let params = {
+          token: this.$route.query.token,
+          bidderId: this.$route.query.bidderId,
+         
+        };
+        this.$http({
+          url: "https://tcmapi.emao.com/bidder/privateBidderDetail",
+          method: "GET",
+          params: params
+        })
+          .then(function(response) {
+           let data = response.body.data;
+           this.newdata(data)
+           
+          })
+          
+      } else {
+        let params = {
+          bidderId: this.$route.query.bidderId
+        };
+        this.$http({
+          url: "https://tcmapi.emao.com/bidder/bidderDetail",
+          method: "GET",
+          params: params
+        })
+          .then(function(response) {
+            let data = response.body.data;
+          this.newdata(data)
+           
+          })
+          
+      }
+    },
+    newdata(data){
+       this.currentPrice=(data.currentPrice-0)>(this.currentPrice-0)?data.currentPrice:this.currentPrice;//看获取当前价是否大于页面价格
+           this.bidderRecord = data.bidderRecord==[]?this.bidderRecord:data.bidderRecord;//竞拍记录  
+          let len = this.bidderRecord.length
+          if (len > 5) {
+            this.bidderRecord = this.bidderRecord.slice(0,5)
+          }
+    },
     /*向App传值*/
     tcmApp(obj) {
       //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
@@ -380,16 +423,13 @@ export default {
       if(this.bidderStatus === '1'||this.bidderStatus === '2'||this.bidderStatus === '3'){
         // 获取广播数据
         this.getnewdata()
-      } else {
-       
+      } else {  
        return;
       }
     },
     getnewdata(){
       this.broadcast='';
-      if(this.bidderStatus === '4'){
-        return;
-      }
+     
       
       this.$http({
         url: 'https://tcmapi.emao.com/bidder/asynclBidderChange',
@@ -400,6 +440,7 @@ export default {
         }
       })
       .then((res)=>{
+        if(this.bidderStatus!==4){
         let data = res.body
         console.log("广播数据",res)
         this.enrolment=data.enrolment; //报名人数
@@ -420,10 +461,13 @@ export default {
           }
         }
        setTimeout(this.getnewdata,1500)
-        
+         }else{
+           this.broadcast =res.body.broadcast||""; //广播
+         }
       })
       .catch((e)=>{
-        console.log(e,"获取数据错")
+        // console.log(e,"获取数据错")
+        
          setTimeout(this.getnewdata,1500)
       })
     },
@@ -502,9 +546,11 @@ export default {
           },
           end => {
             // 倒计时结束触发的操作写在这里
-            this.bidderStatus = "4";
+            this.bidderStatus = "4";            
             this.setBidingTip();
             this.setBottomBtn();
+            //重新请求数据
+            this.getEndData();
           }
         );
         return false;
@@ -837,6 +883,7 @@ export default {
       this.download_pup=false;
       
     }
+    
   },
   created() {
     this.getdata();
@@ -858,8 +905,9 @@ export default {
 
 /* 小喇叭样式 */
 .notice {
-    height: 0.8rem;
-    font-size: 0.32rem;
+    height: 1rem;
+    font-size: 0.4rem;
+    vertical-align: center;
     color: #fff;
     padding-right: 0.26667rem;
     background: rgba(0, 0, 0, 0);
@@ -867,7 +915,7 @@ export default {
     top: -2rem;
     left: 0.4rem;
     z-index: 9;
-    animation: fadeout 1s linear ;
+    animation: fadeout 2s linear ;
 }
 
 @keyframes fadeout {
