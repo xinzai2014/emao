@@ -360,7 +360,7 @@ export default {
         let params = {
           token: this.$route.query.token,
           bidderId: this.$route.query.bidderId,
-         
+          noLoading: true
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/privateBidderDetail",
@@ -375,7 +375,8 @@ export default {
           
       } else {
         let params = {
-          bidderId: this.$route.query.bidderId
+          bidderId: this.$route.query.bidderId,
+          noLoading: true
         };
         this.$http({
           url: "https://tcmapi.emao.com/bidder/bidderDetail",
