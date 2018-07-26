@@ -53,7 +53,7 @@ if(sessionStorage.apiVersion){
 	};
 }else{
 	Vue.http.headers.common = {
-		Accept: "application/json; version=3.3.0"
+		Accept: "application/json; version=3.4.0"
 	};
 }
 
@@ -168,9 +168,11 @@ Vue.directive('load-more', {
 })
 
 Vue.http.interceptors.push(function(request, next) {
-	this.$store.dispatch("AJAX_LOADING", // 通过store传值
-      true
-    );
+	if (!request.params.noLoading) {
+		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+			true
+		);
+	}
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;

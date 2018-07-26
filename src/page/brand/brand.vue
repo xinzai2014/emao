@@ -68,7 +68,7 @@ import car from '../index/car'
                         this.countHeight();
                     },100)
                   }).catch(function (error) {
-                  });
+                });
             },
             getDataByBrandID(){  //根据品牌获取车系
                 this.$http({
