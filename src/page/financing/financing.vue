@@ -22,7 +22,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="number" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
+                <input @input="getLength(financingInfo.phone)" type="tel" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
         </div>
         <div class="form-box">
@@ -39,7 +39,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="number" maxlength="11" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
+                <input type="tel" maxlength="11" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
             </div>
             <div class="form-box-item">
                 <p class="item-name">
@@ -162,7 +162,7 @@ export default {
                 var financing = document.getElementById("financing");
                 console.log(domHeight > halfHeight)
                 if (domHeight > halfHeight) {
-                    financing.style.transform = `translateY(-${transformHeight + 30}px)`
+                    financing.style.transform = `translateY(-${transformHeight + 60}px)`
                 }
             }
         },
@@ -211,6 +211,12 @@ export default {
                 // 表单选择区域展示文字
                 this.financingInfo.city = postData.provinceData["name"] + '/' + postData.cityData["name"] + '/' + postData.areaData["name"]
             };
+        },
+        getLength (phone) {
+            console.log(phone.length)
+            if (phone.length > 11) {
+                phone = phone.substr(0, 11)
+            }
         },
         // 提交表单并校验
         suresub (buttonType) {
@@ -270,7 +276,6 @@ export default {
                     return false
                 } else if (!phonereg.test(this.financingInfo.carphone)) {
                     this.toast("请填写正确的手机号或电话号码")
-                    this.financingInfo.carphone = ''
                     return false
                 } else if (!numreg.test(this.financingInfo.num)) {
                     this.toast('请填写台数')
@@ -283,7 +288,7 @@ export default {
                     return false
                 } else {
                     console.log('数据校验正确，走接口提交数据')
-                    this.postFormInfo()
+                    this.postFormInfo(buttonType)
                 }
             }
         },
@@ -317,8 +322,8 @@ export default {
             });
         },
         // 提交数据
-        postFormInfo () {
-            console.log(this.financingInfo)
+        postFormInfo (buttonType) {
+            // console.log(this.financingInfo)
             var other = {
                 "dealer_id": this.id,
                 "dealer_name": this.dealername,
@@ -349,6 +354,7 @@ export default {
                 method:"POST",
                 params: params
             }).then(function (response) {
+                console.log('成功！！！')
                 console.log(response.data.submitStatus)
                 if (response.data.submitStatus == 0) {
                     this.addFn(buttonType)
@@ -474,6 +480,7 @@ export default {
     display: inline-block;
     height: 1.4rem;
     line-height: 1.4rem;
+    font-size: .38rem
 }
 .form-box-item>input, .input {
     caret-color:blue;
