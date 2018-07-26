@@ -165,6 +165,10 @@ const receive = r => require.ensure([],() => r(require('../page/invitation/recei
 
 const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
 
+//融资购车页面
+const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
+const subsuccess = r => require.ensure([], () => r(require('../page/financing/subsuccess')), 'subsuccess')
+
 Vue.use(Router)
 
 var router=new Router({
@@ -570,6 +574,16 @@ var router=new Router({
             path:'/test',     //领取
             name:'test',
             component:test
+        },
+        {
+            path:'/financing',     //融资购车
+            name:'financing',
+            component:financing
+        },
+        {
+            path:'/financing/subsuccess',     //融资购车提交成功
+            name:'subsuccess',
+            component:subsuccess
         } 
     ]
 })
