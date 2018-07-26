@@ -74,7 +74,7 @@
       </ul>
     </section>
     <!-- 竞拍记录 -->
-    <section class="record" v-if="this.bidderRecord">
+    <section class="record" v-if="this.bidderRecord.length&&this.bidderStatus!==1&&this.bidderStatus!==2">
       <div id="record">
         <p class="record_title">
             <span class="title_left">竞拍记录</span>
@@ -400,7 +400,8 @@ export default {
         }
       })
       .then((res)=>{
-        let data = res.body.data
+        let data = res.body
+        console.log("广播数据",res)
         this.enrolment=data.enrolment; //报名人数
         this.settingRemind=data.settingRemind;//设置闹钟人数
         
@@ -412,7 +413,7 @@ export default {
         if(this.bidderStatus === '3'){
           // 清空全局记录数据,再赋值定时接口的数据
           // this.bidderRecord = []
-          this.bidderRecord = data.bidderRecord//竞拍记录  
+          this.bidderRecord = data.bidderRecord==[]?this.bidderRecord:data.bidderRecord;//竞拍记录  
           let len = this.bidderRecord.length
           if (len > 5) {
             this.bidderRecord = this.bidderRecord.slice(0,5)
