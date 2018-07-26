@@ -168,9 +168,11 @@ Vue.directive('load-more', {
 })
 
 Vue.http.interceptors.push(function(request, next) {
-	this.$store.dispatch("AJAX_LOADING", // 通过store传值
-      true
-    );
+	if (!request.params.noLoading) {
+		this.$store.dispatch("AJAX_LOADING", // 通过store传值
+			true
+		);
+	}
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;

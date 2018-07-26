@@ -1,9 +1,9 @@
 <template>
-    <div id="financing">
-        <!-- <div id="scrollbox" @touchmove="cancelkey" class="form-scroll-box"></div> -->
-        <keep-alive>
-            <city  v-show="showCity" @closeCity="closeDialogCity" :token="tokenData" :defaultCityData="defaultCityData" :showCity="showCity"></city>
-        </keep-alive>
+<div>
+    <keep-alive>
+        <city  v-show="showCity" @closeCity="closeDialogCity" :token="tokenData" :defaultCityData="defaultCityData" :showCity="showCity"></city>
+    </keep-alive>
+    <div id="financing" @touchmove="cancelkey">
         <div class="tip">
             <p class="tip-p">申请融资购车、完善以下信息</p>
             <span>带*为必填项</span>
@@ -12,14 +12,14 @@
             <p class="form-box-title">联系人</p>
             <div class="form-box-item">
                 <p class="item-name">
-                    <span :style="{'color':financingInfo.name.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>姓名：</span>
                 </p>
                 <input type="text" placeholder="请填写姓名" v-model="financingInfo.name">
             </div>
             <div class="form-box-item">
                 <p>
-                    <span :style="{'color':financingInfo.phone.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
                 <input type="text" placeholder="请填写联系方式" v-model="financingInfo.phone">
@@ -29,28 +29,28 @@
             <p class="form-box-title">车源方</p>
             <div class="form-box-item">
                 <p class="item-name">
-                    <span :style="{'color':financingInfo.carname.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>姓名：</span>
                 </p>
                 <input type="text" placeholder="请填写姓名" v-model="financingInfo.carname">
             </div>
             <div class="form-box-item">
                 <p>
-                    <span :style="{'color':financingInfo.carphone.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
                 <input type="text" @click="focus" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
             </div>
             <div class="form-box-item">
                 <p>
-                    <span :style="{'color':financingInfo.city.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>城市：</span>
                 </p>
                 <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
             </div>
             <div class="shopname-item">
                 <p>
-                    <span :style="{'color':financingInfo.shopname.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>店名：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="请填写提供车源的店名" v-model="financingInfo.shopname"></textarea>
@@ -60,28 +60,28 @@
             <p class="form-box-title">车型信息</p>
             <div class="shopname-item">
                 <p class="item-name">
-                    <span :style="{'color':financingInfo.car.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>车型：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
             </div>
             <div class="shopname-item">
                 <p>
-                    <span :style="{'color':financingInfo.color.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>颜色：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：金黑/深色内饰" v-model="financingInfo.color"></textarea>
             </div>
             <div class="form-box-item">
                 <p>
-                    <span :style="{'color':financingInfo.num.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>台数：</span>
                 </p>
                 <input type="text" @click="focus" @blur="blur" placeholder="请填写台数" v-model="financingInfo.num">台
             </div>
             <div class="form-box-item">
                 <p>
-                    <span :style="{'color':financingInfo.money.trim() ? '#000':'red'}">*</span>
+                    <span class="red">*</span>
                     <span>金额：</span>
                 </p>
                 <input ref="money" @click="focus" @blur="blur" type="text" placeholder="请填写所需金额" v-model="financingInfo.money">元
@@ -95,6 +95,8 @@
             </p>
         </div>
     </div>
+</div>
+    
 </template>
 
 <script>
@@ -133,51 +135,38 @@ export default {
     },
     methods: {
         // 手指滑动dom时，键盘抬起取消
-        // cancelkey () {
-        //     // console.log('手指滑动屏幕了')
-        //     var input = document.getElementsByTagName("input")
-        //     for (var i = 0; i < input.length; i++) {
-        //         input[i].blur()
-        //         // console.log('键盘抬起消失')
-        //     }
-        //     var textarea = document.getElementsByTagName("textarea")
-        //     for (var i = 0; i < textarea.length; i++) {
-        //         textarea[i].blur()
-        //         // console.log('键盘抬起消失')
-        //     }
-        // },
-        focus (e) {
-            let halfHeight = e.pageY / 2;
-            let domHeight = e.y;
-            let transformHeight = domHeight > halfHeight ? domHeight - halfHeight : 0;
-            var financing = document.getElementById("financing");
-            console.log(domHeight > halfHeight)
-            if (domHeight > halfHeight) {
-                financing.style.transform = `translateY(-${transformHeight}px)`
+        cancelkey () {
+            // console.log('手指滑动屏幕了')
+            var input = document.getElementsByTagName("input")
+            for (var i = 0; i < input.length; i++) {
+                input[i].blur()
+                // console.log('键盘抬起消失')
             }
-console.log(e)
-            // let dom = this.$refs[name];
-            // var financing = document.getElementById("financing").scrollTop;
-            // console.log(financing)
-            // console.log(dom.offsetHeight)
-            // var screenHeight = window.screen.height;
-            // console.log(screenHeight)
-            // setTimeout(function() {
-            //     dom.scrollIntoViewIfNeeded(true);
-            //     dom.scrollIntoView(true);
-            // }, 500);
+            var textarea = document.getElementsByTagName("textarea")
+            for (var i = 0; i < textarea.length; i++) {
+                textarea[i].blur()
+                // console.log('键盘抬起消失')
+            }
         },
-        blur (e) {var financing = document.getElementById("financing");
-            financing.style.transform = `translateY(0px)`
-        },
-        // 判断用户当前操作系统是否为Android
-        isAndroid () {
+        focus (e) {
+            // 判断用户操作是否为Android
             var u = navigator.userAgent, app = navigator.appVersion;
             var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
             var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
             if (isAndroid) {
-                return true
+                let halfHeight = e.pageY / 2;
+                let domHeight = e.y;
+                let transformHeight = domHeight > halfHeight ? domHeight - halfHeight : 0;
+                var financing = document.getElementById("financing");
+                console.log(domHeight > halfHeight)
+                if (domHeight > halfHeight) {
+                    financing.style.transform = `translateY(-${transformHeight + 30}px)`
+                }
             }
+        },
+        blur (e) {
+            var financing = document.getElementById("financing");
+            financing.style.transform = `translateY(0px)`
         },
         // token获取，页面初始化数据
         getData () {
@@ -222,8 +211,8 @@ console.log(e)
         // 提交表单并校验
         suresub (buttonType) {
             console.log("提交表单")
-            // 按钮监测
             this.addFn(buttonType)
+            // 按钮监测
             var flag = false;
             for (var key in this.financingInfo) {
                 if (this.financingInfo[key].trim() === '') {
@@ -254,12 +243,16 @@ console.log(e)
                         this.toast("请填写车型")
                         return false
                     }
+                    else if (key == 'color') {
+                        this.toast("请填写颜色")
+                        return false
+                    }
                     else if (key == 'num') {
-                        this.toast("请填写台数，只允许填写大于0的正整数")
+                        this.toast("请填写台数")
                         return false
                     }
                     else if (key == 'money') {
-                        this.toast("请填写所需金额，只允许填写大于0的数")
+                        this.toast("请填写所需金额")
                         return false
                     }
                     flag = true
@@ -273,10 +266,10 @@ console.log(e)
                     this.toast("请填写正确的手机号或电话号码")
                     return false
                 } else if (!numreg.test(this.financingInfo.num)) {
-                    this.toast('请填写台数，只允许填写大于0的正整数')
+                    this.toast('请填写台数')
                     return false
                 } else if (!moneyreg.test(this.financingInfo.money)) {
-                    this.toast('请填写所需金额，只允许填写大于0的数')
+                    this.toast('请填写所需金额')
                     return false
                 } else {
                     console.log('数据校验正确，走接口提交数据')
@@ -300,7 +293,8 @@ console.log(e)
                 token: token,
                 openPage: '1',
                 extendType: '5',
-                projectType: buttonType
+                projectType: buttonType,
+                noLoading: true
             }
             this.$http({
                 url:"finance/appBrowseBlog",
@@ -354,7 +348,6 @@ console.log(e)
         this.tokenData = this.$route.query.token;
     },
     mounted () {
-        // sessionStorage.token = 'c9ed53c8ad5487d7aa69fd836fb43727';
         sessionStorage.token = this.$route.query.token;
         console.log('页面', sessionStorage.token)
     },
@@ -367,16 +360,9 @@ console.log(e)
 
 <style scoped>
 #financing {
-    /* position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: auto; */
-    /* transform: translateY(-40%) */
+    transition: all .5s;
 }
 .pos-bottom {
-    /* position: absolute;
-    bottom: 0; */
     width: 100%;
     height: 3rem;
     background: #fff;
@@ -477,6 +463,9 @@ console.log(e)
 }
 .item-name {
     display: inline-block;
+}
+.red {
+    color: red;
 }
 </style>
 
