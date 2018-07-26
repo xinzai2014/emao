@@ -278,6 +278,9 @@ export default {
                 } else if (!moneyreg.test(this.financingInfo.money)) {
                     this.toast('请填写所需金额')
                     return false
+                } else if (this.financingInfo.money < 50000) {
+                    this.toast('申请金额不能小于50000元')
+                    return false
                 } else {
                     console.log('数据校验正确，走接口提交数据')
                     this.postFormInfo()
@@ -484,14 +487,19 @@ export default {
     box-sizing: border-box;
     color: #000;
 }
+.input  {
+    font-size: 0.35rem;
+}
 
 
 
-
-
+.shopname-item ::-webkit-input-placeholder { /* WebKit browsers */
+    color: #b7b7b7;
+    /* font-size: .32rem; */
+}
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    font-size: .18667rem;
+    /* font-size: 0.32rem; */
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
