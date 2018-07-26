@@ -6,7 +6,7 @@
     <div id="financing" @touchmove="cancelkey">
         <div class="tip">
             <p class="tip-p">申请融资购车，完善以下信息</p>
-            <span>带*为必填项</span>
+            <span>带<span class="red">*</span>为必填项</span>
         </div>
         <div class="form-box">
             <p class="form-box-title">申请人</p>
@@ -210,6 +210,7 @@ export default {
                 this.citydata.district_name = postData.areaData["name"]
                 // 表单选择区域展示文字
                 this.financingInfo.city = postData.provinceData["name"] + '/' + postData.cityData["name"] + '/' + postData.areaData["name"]
+                console.log(this.financingInfo.city)
             };
         },
         getLength (phone) {
@@ -278,10 +279,10 @@ export default {
                     this.toast("请填写正确的手机号或电话号码")
                     return false
                 } else if (!numreg.test(this.financingInfo.num)) {
-                    this.toast('请填写台数')
+                    this.toast('请填写正确的台数')
                     return false
                 } else if (!moneyreg.test(this.financingInfo.money)) {
-                    this.toast('请填写所需金额')
+                    this.toast('请填写正确的金额')
                     return false
                 } else if (this.financingInfo.money < 50000) {
                     this.toast('申请金额不能小于50000元')

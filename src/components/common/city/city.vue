@@ -153,7 +153,7 @@
                 this.defaultData.defaultCityID = id;
                 this.scrollToElement("cityScroll","cityWrap",index);
                 this.scrollToElement("areaScroll","areaWrap",0);
-                this.postData["areaData"] = {
+                this.postData["cityData"] = {
                     id:id,
                     name:name
                 };
