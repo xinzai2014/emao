@@ -224,6 +224,8 @@ export default {
             // 按钮监测
             var flag = false;
             for (var key in this.financingInfo) {
+                console.log('台数')
+                console.log(this.financingInfo.num)
                 if (this.financingInfo[key].trim() === '') {
                     console.log(key + '没填')
                     if (key == 'name') {
@@ -258,11 +260,11 @@ export default {
                         return false
                     }
                     else if (key == 'num') {
-                        this.toast("请填写台数")
+                        this.toast("请填写正确的台数")
                         return false
                     }
                     else if (key == 'money') {
-                        this.toast("请填写所需金额")
+                        this.toast("请填写正确的金额")
                         return false
                     }
                     flag = true
@@ -279,6 +281,7 @@ export default {
                     this.toast("请填写正确的车源方手机号")
                     return false
                 } else if (!numreg.test(this.financingInfo.num)) {
+                    console.log('请填写正确的台数')
                     this.toast('请填写正确的台数')
                     return false
                 } else if (!moneyreg.test(this.financingInfo.money)) {
