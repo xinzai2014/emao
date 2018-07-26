@@ -474,7 +474,7 @@ export default {
     resize:none;
     box-sizing: border-box;
     color: #000;
-    line-height: 0.3rem;
+    line-height: 0.4rem;
 }
 
 
