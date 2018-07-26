@@ -492,6 +492,7 @@ export default {
 
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
+    font-size: .18667rem;
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
