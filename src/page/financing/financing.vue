@@ -18,7 +18,7 @@
                 <input type="text" placeholder="请填写姓名" v-model="financingInfo.name">
             </div>
             <div class="form-box-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
@@ -227,18 +227,18 @@ export default {
                 if (this.financingInfo[key].trim() === '') {
                     console.log(key + '没填')
                     if (key == 'name') {
-                        this.toast("请填写姓名")
+                        this.toast("请填写申请人的姓名")
                         return false
                     } else if (key == 'phone') {
-                        this.toast("请填写联系方式")
+                        this.toast("请填写申请人的联系方式")
                         return false
                     }
                      else if (key == 'carname') {
-                        this.toast("请填写姓名")
+                        this.toast("请填写车源方的姓名")
                         return false
                     }
                      else if (key == 'carphone') {
-                        this.toast("请填写联系方式")
+                        this.toast("请填写车源方的联系方式")
                         return false
                     }
                      else if (key == 'city') {
@@ -273,10 +273,10 @@ export default {
                 var numreg = /^[1-9]\d*$/;
                 var moneyreg = /^([1-9]\d*(\.\d*[1-9])?)|(0\.\d*[1-9])$/;
                 if (!phonereg.test(this.financingInfo.phone)) {
-                    this.toast("请填写正确的手机号或电话号码")
+                    this.toast("请填写正确的申请人手机号")
                     return false
                 } else if (!phonereg.test(this.financingInfo.carphone)) {
-                    this.toast("请填写正确的手机号或电话号码")
+                    this.toast("请填写正确的车源方手机号")
                     return false
                 } else if (!numreg.test(this.financingInfo.num)) {
                     this.toast('请填写正确的台数')
@@ -474,6 +474,7 @@ export default {
     resize:none;
     box-sizing: border-box;
     color: #000;
+    line-height: 0.3rem;
 }
 
 
