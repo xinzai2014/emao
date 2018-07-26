@@ -22,7 +22,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="text" @input="getLength" placeholder="请填写联系方式" v-model="financingInfo.phone">
+                <input type="number" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
         </div>
         <div class="form-box">
@@ -35,21 +35,21 @@
                 <input type="text" placeholder="请填写姓名" v-model="financingInfo.carname">
             </div>
             <div class="form-box-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="text" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
+                <input type="number" maxlength="11" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
             </div>
             <div class="form-box-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>城市：</span>
                 </p>
                 <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
             </div>
             <div class="shopname-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>店名：</span>
                 </p>
@@ -66,25 +66,25 @@
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
             </div>
             <div class="shopname-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>颜色：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：金黑/深色内饰" v-model="financingInfo.color"></textarea>
             </div>
             <div class="form-box-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>台数：</span>
                 </p>
-                <input type="text" @click="focus" @blur="blur" placeholder="请填写台数" v-model="financingInfo.num">台
+                <input type="number" @click="focus" @blur="blur" placeholder="请填写台数" v-model="financingInfo.num">台
             </div>
             <div class="form-box-item">
-                <p>
+                <p class="item-name">
                     <span class="red">*</span>
                     <span>金额：</span>
                 </p>
-                <input ref="money" @click="focus" @blur="blur" type="text" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
+                <input ref="money" @click="focus" @blur="blur" type="number" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
             </div>
         </div>
         <div class="pos-bottom">
@@ -188,10 +188,6 @@ export default {
             }).catch(function (error) {
                 console.log(error)
             });
-        },
-        // 获取联系方式长度，超过11位不显示
-        getLength (e) {
-            console.log(e)
         },
         // 展示城市控件
         getDialogCity(){
@@ -320,29 +316,30 @@ export default {
         // 提交数据
         postFormInfo () {
             console.log(this.financingInfo)
+            var other = {
+                "dealer_id": this.id,
+                "dealer_name": this.dealername,
+                "dealer_city_name": this.cityname,
+                "source_name": this.financingInfo.carname,
+                "source_phone": this.financingInfo.carphone,
+                "province_id": this.citydata.province_id,
+                "province_name": this.citydata.province_name,
+                "city_id": this.citydata.city_id,
+                "city_name": this.citydata.city_name,
+                "district_id": this.citydata.district_id,
+                "district_name": this.citydata.district_name,
+                "shop_name": this.financingInfo.shopname,
+                "color": this.financingInfo.color,
+                "number": this.financingInfo.num,
+                "price": this.financingInfo.money
+            }
             var params = {
                 zt_name: "融资购车",
                 zt_id: "246",
                 name: this.financingInfo.name,
                 phone: this.financingInfo.phone,
                 auto_name: this.financingInfo.car,
-                other: {
-                    "dealer_id": this.id,
-                    "dealer_name": this.dealername,
-                    "dealer_city_name": this.cityname,
-                    "source_name": this.financingInfo.carname,
-                    "source_phone": this.financingInfo.carphone,
-                    "province_id": this.citydata.province_id,
-                    "province_name": this.citydata.province_name,
-                    "city_id": this.citydata.city_id,
-                    "city_name": this.citydata.city_name,
-                    "district_id": this.citydata.district_id,
-                    "district_name": this.citydata.district_name,
-                    "shop_name": this.financingInfo.shopname,
-                    "color": this.financingInfo.color,
-                    "number": this.financingInfo.num,
-                    "price": this.financingInfo.money
-                }
+                other: JSON.stringify(other)
             }
             this.$http({
                 url:"https://zt.m.emao.com/manage/addapply",
@@ -376,6 +373,7 @@ export default {
 </script>
 
 <style scoped>
+
 #financing {
     transition: all .5s;
 }
@@ -438,33 +436,47 @@ export default {
     font-size: 0.4rem;
     font-weight: 700;
 }
+
+
 .form-box-item {
-    line-height: 1.44rem;
+    height: 1.44rem;
     border-bottom: 1px solid #e0e0e0;
     display: flex;
+    align-items: center;
 }
+
+
 .shopname-item {
-    height: 1.44rem;
+    min-height: 1.44rem;
     width: 100%;
     display: flex;
-    padding-top: 0.5rem;
+    align-items: center;
     box-sizing: border-box;
     border-bottom: 1px solid #e0e0e0;
 }
 .shopname-item textarea {
+    background: lightgreen;
+    caret-color:blue;
+    padding: 0 .2rem;
+    margin-top: .3rem;
     flex: 1;
     border: none;
     outline: none;
     resize:none;
-    /* background: pink; */
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
-    padding-bottom: 0.2rem;
     box-sizing: border-box;
     color: #000;
 }
-.form-box-item>input, .input {
+
+
+.item-name {
+    display: inline-block;
+    height: 1.4rem;
     line-height: 1.4rem;
+}
+.form-box-item>input, .input {
+    caret-color:blue;
+    height: .7rem;
+    line-height: .7rem;
     flex: 1;
     border: none;
     outline: none;
@@ -473,15 +485,18 @@ export default {
     box-sizing: border-box;
     color: #000;
 }
+
+
+
+
+
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
 }
-.item-name {
-    display: inline-block;
-}
+
 .red {
     color: red;
 }
