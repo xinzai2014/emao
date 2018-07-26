@@ -1,91 +1,90 @@
 <template>
     <div id="financing">
-        <div id="scrollbox" @touchmove="cancelkey" class="form-scroll-box">
-            <keep-alive>
-                <city  v-show="showCity" @closeCity="closeDialogCity" :defaultCityData="defaultCityData" :showCity="showCity"></city>
-            </keep-alive>
-            <div class="tip">
-                <p class="tip-p">申请融资购车、完善以下信息</p>
-                <span>带*为必填项</span>
+        <!-- <div id="scrollbox" @touchmove="cancelkey" class="form-scroll-box"></div> -->
+        <keep-alive>
+            <city  v-show="showCity" @closeCity="closeDialogCity" :token="tokenData" :defaultCityData="defaultCityData" :showCity="showCity"></city>
+        </keep-alive>
+        <div class="tip">
+            <p class="tip-p">申请融资购车、完善以下信息</p>
+            <span>带*为必填项</span>
+        </div>
+        <div class="form-box">
+            <p class="form-box-title">联系人</p>
+            <div class="form-box-item">
+                <p class="item-name">
+                    <span :style="{'color':financingInfo.name.trim() ? '#000':'red'}">*</span>
+                    <span>姓名：</span>
+                </p>
+                <input type="text" placeholder="请填写姓名" v-model="financingInfo.name">
             </div>
-            <div class="form-box">
-                <p class="form-box-title">联系人</p>
-                <div class="form-box-item">
-                    <p class="item-name">
-                        <span :style="{'color':financingInfo.name.trim() ? '#000':'red'}">*</span>
-                        <span>姓名：</span>
-                    </p>
-                    <input type="text" placeholder="请填写姓名" v-model="financingInfo.name">
-                </div>
-                <div class="form-box-item">
-                    <p>
-                        <span :style="{'color':financingInfo.phone.trim() ? '#000':'red'}">*</span>
-                        <span>联系方式：</span>
-                    </p>
-                    <input type="text" placeholder="请填写联系方式" v-model="financingInfo.phone">
-                </div>
+            <div class="form-box-item">
+                <p>
+                    <span :style="{'color':financingInfo.phone.trim() ? '#000':'red'}">*</span>
+                    <span>联系方式：</span>
+                </p>
+                <input type="text" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
-            <div class="form-box">
-                <p class="form-box-title">车源方</p>
-                <div class="form-box-item">
-                    <p class="item-name">
-                        <span :style="{'color':financingInfo.carname.trim() ? '#000':'red'}">*</span>
-                        <span>姓名：</span>
-                    </p>
-                    <input type="text" placeholder="请填写姓名" v-model="financingInfo.carname">
-                </div>
-                <div class="form-box-item">
-                    <p>
-                        <span :style="{'color':financingInfo.carphone.trim() ? '#000':'red'}">*</span>
-                        <span>联系方式：</span>
-                    </p>
-                    <input type="text" placeholder="请填写联系方式" v-model="financingInfo.carphone">
-                </div>
-                <div class="form-box-item">
-                    <p>
-                        <span :style="{'color':financingInfo.city.trim() ? '#000':'red'}">*</span>
-                        <span>城市：</span>
-                    </p>
-                    <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
-                </div>
-                <div class="shopname-item">
-                    <p>
-                        <span :style="{'color':financingInfo.shopname.trim() ? '#000':'red'}">*</span>
-                        <span>店名：</span>
-                    </p>
-                    <textarea @click="getPage" type="text" placeholder="请填写提供车源的店名" v-model="financingInfo.shopname"></textarea>
-                </div>
+        </div>
+        <div class="form-box">
+            <p class="form-box-title">车源方</p>
+            <div class="form-box-item">
+                <p class="item-name">
+                    <span :style="{'color':financingInfo.carname.trim() ? '#000':'red'}">*</span>
+                    <span>姓名：</span>
+                </p>
+                <input type="text" placeholder="请填写姓名" v-model="financingInfo.carname">
             </div>
-            <div class="form-box">
-                <p class="form-box-title">车型信息</p>
-                <div class="shopname-item">
-                    <p class="item-name">
-                        <span :style="{'color':financingInfo.car.trim() ? '#000':'red'}">*</span>
-                        <span>车型：</span>
-                    </p>
-                    <textarea type="text" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
-                </div>
-                <div class="shopname-item">
-                    <p>
-                        <span :style="{'color':financingInfo.color.trim() ? '#000':'red'}">*</span>
-                        <span>颜色：</span>
-                    </p>
-                    <textarea type="text" placeholder="如：金黑/深色内饰" v-model="financingInfo.color"></textarea>
-                </div>
-                <div class="form-box-item">
-                    <p>
-                        <span :style="{'color':financingInfo.num.trim() ? '#000':'red'}">*</span>
-                        <span>台数：</span>
-                    </p>
-                    <input type="text" placeholder="请填写台数" v-model="financingInfo.num">台
-                </div>
-                <div class="form-box-item">
-                    <p>
-                        <span :style="{'color':financingInfo.money.trim() ? '#000':'red'}">*</span>
-                        <span>金额：</span>
-                    </p>
-                    <input type="text" placeholder="请填写所需金额" v-model="financingInfo.money">元
-                </div>
+            <div class="form-box-item">
+                <p>
+                    <span :style="{'color':financingInfo.carphone.trim() ? '#000':'red'}">*</span>
+                    <span>联系方式：</span>
+                </p>
+                <input type="text" @click="focus" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
+            </div>
+            <div class="form-box-item">
+                <p>
+                    <span :style="{'color':financingInfo.city.trim() ? '#000':'red'}">*</span>
+                    <span>城市：</span>
+                </p>
+                <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
+            </div>
+            <div class="shopname-item">
+                <p>
+                    <span :style="{'color':financingInfo.shopname.trim() ? '#000':'red'}">*</span>
+                    <span>店名：</span>
+                </p>
+                <textarea type="text" @click="focus" @blur="blur" placeholder="请填写提供车源的店名" v-model="financingInfo.shopname"></textarea>
+            </div>
+        </div>
+        <div class="form-box">
+            <p class="form-box-title">车型信息</p>
+            <div class="shopname-item">
+                <p class="item-name">
+                    <span :style="{'color':financingInfo.car.trim() ? '#000':'red'}">*</span>
+                    <span>车型：</span>
+                </p>
+                <textarea type="text" @click="focus" @blur="blur" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
+            </div>
+            <div class="shopname-item">
+                <p>
+                    <span :style="{'color':financingInfo.color.trim() ? '#000':'red'}">*</span>
+                    <span>颜色：</span>
+                </p>
+                <textarea type="text" @click="focus" @blur="blur" placeholder="如：金黑/深色内饰" v-model="financingInfo.color"></textarea>
+            </div>
+            <div class="form-box-item">
+                <p>
+                    <span :style="{'color':financingInfo.num.trim() ? '#000':'red'}">*</span>
+                    <span>台数：</span>
+                </p>
+                <input type="text" @click="focus" @blur="blur" placeholder="请填写台数" v-model="financingInfo.num">台
+            </div>
+            <div class="form-box-item">
+                <p>
+                    <span :style="{'color':financingInfo.money.trim() ? '#000':'red'}">*</span>
+                    <span>金额：</span>
+                </p>
+                <input ref="money" @click="focus" @blur="blur" type="text" placeholder="请填写所需金额" v-model="financingInfo.money">元
             </div>
         </div>
         <div class="pos-bottom">
@@ -105,6 +104,7 @@ export default {
     name: 'financing',
     data () {
         return {
+            tokenData: '',
             showCity: false,
             defaultCityData: [], //初始化城市默认数据
             postCityData: null, //城市提交数据
@@ -132,37 +132,43 @@ export default {
         }
     },
     methods: {
-        cancelkey () {
-            // var screenHeight = document.getElementById("financing").offsetHeight;
-            // var scrollbox = document.getElementById("scrollbox")
-            // var height = scrollbox.scrollTop
-            // console.log("screenHeight", screenHeight)
-            // console.log("height", height)
-            // if (height > screenHeight) {
-            //     console.log('取消键盘')
-            //     console.log('a')
-            // }
-            // console.log('手指滑动屏幕了')
-            var input = document.getElementsByTagName("input")
-            for (var i = 0; i < input.length; i++) {
-                input[i].blur()
-                // console.log('键盘抬起消失')
+        // 手指滑动dom时，键盘抬起取消
+        // cancelkey () {
+        //     // console.log('手指滑动屏幕了')
+        //     var input = document.getElementsByTagName("input")
+        //     for (var i = 0; i < input.length; i++) {
+        //         input[i].blur()
+        //         // console.log('键盘抬起消失')
+        //     }
+        //     var textarea = document.getElementsByTagName("textarea")
+        //     for (var i = 0; i < textarea.length; i++) {
+        //         textarea[i].blur()
+        //         // console.log('键盘抬起消失')
+        //     }
+        // },
+        focus (e) {
+            let halfHeight = e.pageY / 2;
+            let domHeight = e.y;
+            let transformHeight = domHeight > halfHeight ? domHeight - halfHeight : 0;
+            var financing = document.getElementById("financing");
+            console.log(domHeight > halfHeight)
+            if (domHeight > halfHeight) {
+                financing.style.transform = `translateY(-${transformHeight}px)`
             }
-            var textarea = document.getElementsByTagName("textarea")
-            for (var i = 0; i < textarea.length; i++) {
-                textarea[i].blur()
-                // console.log('键盘抬起消失')
-            }
+console.log(e)
+            // let dom = this.$refs[name];
+            // var financing = document.getElementById("financing").scrollTop;
+            // console.log(financing)
+            // console.log(dom.offsetHeight)
+            // var screenHeight = window.screen.height;
+            // console.log(screenHeight)
+            // setTimeout(function() {
+            //     dom.scrollIntoViewIfNeeded(true);
+            //     dom.scrollIntoView(true);
+            // }, 500);
         },
-        // 获取用户点击input的位置
-        getPage (e) {
-            var halfHeight = window.screen.height / 2;
-            var screenPos = e.screenY;
-            console.log(halfHeight)
-            console.log(e.screenY)
-            if (screenPos > halfHeight) {
-                console.log('盒子上移')
-            }
+        blur (e) {var financing = document.getElementById("financing");
+            financing.style.transform = `translateY(0px)`
         },
         // 判断用户当前操作系统是否为Android
         isAndroid () {
@@ -345,12 +351,12 @@ export default {
     created () {
         document.title = "融资购车"
         this.getData()
-        this.cancelkey()
+        this.tokenData = this.$route.query.token;
     },
     mounted () {
         // sessionStorage.token = 'c9ed53c8ad5487d7aa69fd836fb43727';
         sessionStorage.token = this.$route.query.token;
-        this.cancelkey()
+        console.log('页面', sessionStorage.token)
     },
     components:{
         city,
@@ -361,15 +367,16 @@ export default {
 
 <style scoped>
 #financing {
-    position: absolute;
+    /* position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;
-    height: auto;
+    height: auto; */
+    /* transform: translateY(-40%) */
 }
 .pos-bottom {
-    position: absolute;
-    bottom: 0;
+    /* position: absolute;
+    bottom: 0; */
     width: 100%;
     height: 3rem;
     background: #fff;

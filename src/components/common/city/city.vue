@@ -58,12 +58,14 @@
                 }
             }
         },
-        props:["defaultCityData","showCity"],
+        props:["defaultCityData","showCity","token"],
         methods:{
             getCity(){
                 var that = this;
+                console.log('chengshi', that.token)
+                let tokenData = (this.token !== undefined && this.token !== '')  ? this.token : sessionStorage.token;
                 this.$http.get(
-                    "area?token=" + sessionStorage.token
+                    "area?token=" +  tokenData,
                     ).then(function(reponse){
                         this.cityData = reponse.body.data;
                         //获取默认值 省
