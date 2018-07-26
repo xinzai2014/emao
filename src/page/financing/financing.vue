@@ -5,11 +5,11 @@
     </keep-alive>
     <div id="financing" @touchmove="cancelkey">
         <div class="tip">
-            <p class="tip-p">申请融资购车、完善以下信息</p>
+            <p class="tip-p">申请融资购车，完善以下信息</p>
             <span>带*为必填项</span>
         </div>
         <div class="form-box">
-            <p class="form-box-title">联系人</p>
+            <p class="form-box-title">申请人</p>
             <div class="form-box-item">
                 <p class="item-name">
                     <span class="red">*</span>
@@ -22,7 +22,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="text" placeholder="请填写联系方式" v-model="financingInfo.phone">
+                <input type="text" @input="getLength" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
         </div>
         <div class="form-box">
@@ -39,7 +39,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input type="text" @click="focus" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
+                <input type="text" @blur="blur" placeholder="请填写联系方式" v-model="financingInfo.carphone">
             </div>
             <div class="form-box-item">
                 <p>
@@ -84,7 +84,7 @@
                     <span class="red">*</span>
                     <span>金额：</span>
                 </p>
-                <input ref="money" @click="focus" @blur="blur" type="text" placeholder="请填写所需金额" v-model="financingInfo.money">元
+                <input ref="money" @click="focus" @blur="blur" type="text" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
             </div>
         </div>
         <div class="pos-bottom">
@@ -110,6 +110,9 @@ export default {
             showCity: false,
             defaultCityData: [], //初始化城市默认数据
             postCityData: null, //城市提交数据
+            id: '0', // 经销商id
+            dealername: '', // 经销商姓名
+            cityname: '', // 经销商城市
             citydata: {
                 province_id: '',
                 province_name: '',
@@ -119,11 +122,10 @@ export default {
                 district_name: '',
             },
             financingInfo: {
-                id: '0', // 经销商id
                 name: '', // 姓名
                 phone: '', // 联系方式
-                carname: '',
-                carphone: '',
+                carname: '', // 车源方姓名
+                carphone: '', // 车源方电话
                 city: '', // 选择城市
                 shopname: '', // 店铺名字
                 car: '', // 车型
@@ -178,12 +180,18 @@ export default {
                     token: token,
                 }
             }).then(function (response) {
-                this.financingInfo.id = response.data.data.id
+                this.id = response.data.data.id
+                this.dealername = response.data.data.name
+                this.cityname = response.data.data.city_name
                 this.financingInfo.name = response.data.data.link_name
                 this.financingInfo.phone = response.data.data.link_phone
             }).catch(function (error) {
                 console.log(error)
             });
+        },
+        // 获取联系方式长度，超过11位不显示
+        getLength (e) {
+            console.log(e)
         },
         // 展示城市控件
         getDialogCity(){
@@ -210,12 +218,11 @@ export default {
         },
         // 提交表单并校验
         suresub (buttonType) {
-            console.log("提交表单")
-            this.addFn(buttonType)
             // 按钮监测
             var flag = false;
             for (var key in this.financingInfo) {
                 if (this.financingInfo[key].trim() === '') {
+                    console.log(key + '没填')
                     if (key == 'name') {
                         this.toast("请填写姓名")
                         return false
@@ -265,6 +272,10 @@ export default {
                 if (!phonereg.test(this.financingInfo.phone)) {
                     this.toast("请填写正确的手机号或电话号码")
                     return false
+                } else if (!phonereg.test(this.financingInfo.carphone)) {
+                    this.toast("请填写正确的手机号或电话号码")
+                    this.financingInfo.carphone = ''
+                    return false
                 } else if (!numreg.test(this.financingInfo.num)) {
                     this.toast('请填写台数')
                     return false
@@ -310,12 +321,17 @@ export default {
         postFormInfo () {
             console.log(this.financingInfo)
             var params = {
+                zt_name: "融资购车",
                 zt_id: "246",
                 name: this.financingInfo.name,
                 phone: this.financingInfo.phone,
                 auto_name: this.financingInfo.car,
                 other: {
-                    "dealer_id": this.financingInfo.id,
+                    "dealer_id": this.id,
+                    "dealer_name": this.dealername,
+                    "dealer_city_name": this.cityname,
+                    "source_name": this.financingInfo.carname,
+                    "source_phone": this.financingInfo.carphone,
                     "province_id": this.citydata.province_id,
                     "province_name": this.citydata.province_name,
                     "city_id": this.citydata.city_id,
@@ -335,6 +351,7 @@ export default {
             }).then(function (response) {
                 console.log(response.data.submitStatus)
                 if (response.data.submitStatus == 0) {
+                    this.addFn(buttonType)
                     this.$router.push({path: '/financing/subsuccess', query: {token: this.$route.query.token}}); //跳转提交成功页面
                 }
             }).catch(function (error) {
@@ -432,6 +449,7 @@ export default {
     display: flex;
     padding-top: 0.5rem;
     box-sizing: border-box;
+    border-bottom: 1px solid #e0e0e0;
 }
 .shopname-item textarea {
     flex: 1;
@@ -458,7 +476,7 @@ export default {
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
 }
-.form-box-item:last-child {
+.form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
 }
 .item-name {
