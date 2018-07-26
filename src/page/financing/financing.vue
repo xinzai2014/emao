@@ -455,7 +455,6 @@ export default {
     border-bottom: 1px solid #e0e0e0;
 }
 .shopname-item textarea {
-    background: lightgreen;
     caret-color:blue;
     padding: 0 .2rem;
     margin-top: .3rem;
