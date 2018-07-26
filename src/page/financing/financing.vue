@@ -498,6 +498,7 @@ export default {
     padding-right: 0.2rem;
     box-sizing: border-box;
     color: #000;
+    font-size: 0.38rem;
 }
 .input  {
     font-size: 0.35rem;
@@ -507,11 +508,11 @@ export default {
 
 .shopname-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    /* font-size: .32rem; */
+    font-size: .38rem;
 }
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    /* font-size: 0.32rem; */
+    font-size: 0.38rem;
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
