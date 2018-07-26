@@ -53,7 +53,7 @@
         </li>
         <li class="car-money">
           <span class="left">保证金</span>
-          <span class="right">{{deposit}}元</span>
+          <span class="right">￥{{deposit}}元</span>
         </li>
         <li class="car-range">
           <span class="left">可售范围</span>
@@ -141,7 +141,7 @@
           <div class="c-p-title">加价幅度</div>
           <div class="c-p-box">
             <span class="subtract-icon" @click="subtractPrice"></span>
-            <span class="add-range">{{myAddPrice}}</span>
+            <span class="add-range">￥{{myAddPrice}}</span>
             <span class="add-icon" @click="addPrice"></span>
           </div>
         </div>
@@ -440,7 +440,7 @@ export default {
         imgUrl: this.shareInfo.icon, //分享信息图片链接
         url: this.shareInfo.url, //要分享内容的 url
         shareType: "2", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享 2:抢购
-        uniqId: this.uniqId, //shareType为0时可空,分享统计id
+        uniqId: this.uniqId+'', //shareType为0时可空,分享统计id
         extra: this.$route.query.bidderId //分享需要的额外字段,竞拍id
       };
       this.tcmApp(obj);
@@ -519,6 +519,7 @@ export default {
       if(this.isTcmApp){}
       //1.竞拍未开始状态
       if (this.bidderStatus === "1" || this.bidderStatus === "2") {
+        this.current_price="起拍价"
         if(this.isTcmApp){
            //是否支付保证金
         if (this.depositStatus === "1") {
@@ -535,6 +536,7 @@ export default {
       }
       //2.竞拍进行中
       if (this.bidderStatus === "3") {
+        this.current_price="当前价"
         if(this.isTcmApp){
            //是否支付保证金
         if (this.depositStatus === "1") {
