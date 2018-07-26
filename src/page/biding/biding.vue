@@ -877,7 +877,7 @@ export default {
     },
     downloadApp(){
       this.setBtnClickLog(19)//立即下载 
-      // window.location=`http://url.cn/5Ne6oti`;
+      window.location.href=`http://url.cn/5Ne6oti`;
     },
     closeDownload(){
       this.setBtnClickLog(20)//弹窗关闭
