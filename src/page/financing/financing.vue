@@ -175,15 +175,20 @@ export default {
         getData () {
             var token = this.$route.query.token;
             console.log('url颜色', this.$route.query.color)
+            if (this.$route.query.color == "'") {
+                this.financingInfo.color = ''
+            }
             this.financingInfo.color = this.$route.query.color;
             this.autoId = this.$route.query.autoId;
             console.log('url车型id', this.autoId)
             console.log('url车型', this.$route.query.autoName)
+            if (this.$route.query.autoName == "'") {
+                this.financingInfo.car = ''
+            }
             this.financingInfo.car = this.$route.query.autoName;
             console.log('url市名', this.$route.query.cityName)
             var cityname = this.$route.query.cityName;
             console.log('url省名', this.$route.query.provinceName)
-            console.log('url省名2', decodeURIComponent(this.$route.query.provinceName))
             var provincename = this.$route.query.provinceName;
             console.log(typeof cityname)
             if (cityname == "''" && provincename == "''" ) {
