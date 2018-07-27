@@ -175,7 +175,7 @@ export default {
         getData () {
             var token = this.$route.query.token;
             console.log('url颜色', this.$route.query.color)
-            if (this.$route.query.color == "''") {
+            if (this.$route.query.color == '') {
                 this.financingInfo.color = ''
             } else if (this.$route.query.color) {
                 this.financingInfo.color = this.$route.query.color;
@@ -183,7 +183,7 @@ export default {
             this.autoId = this.$route.query.autoId;
             console.log('url车型id', this.autoId)
             console.log('url车型', this.$route.query.autoName)
-            if (this.$route.query.autoName == "''") {
+            if (this.$route.query.autoName == '') {
                 this.financingInfo.car = ''
             }
             this.financingInfo.car = this.$route.query.autoName;
@@ -192,7 +192,7 @@ export default {
             console.log('url省名', this.$route.query.provinceName)
             var provincename = this.$route.query.provinceName;
             console.log(typeof cityname)
-            if (cityname == "''" && provincename == "''" ) {
+            if (cityname == '' && provincename == '' ) {
                 this.financingInfo.city = ''
             } else if (cityname && provincename) {
                 this.financingInfo.city = provincename + '/' + cityname
