@@ -22,7 +22,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input @input="getLength(financingInfo.phone)" type="tel" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
+                <input type="tel" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
         </div>
         <div class="form-box">
@@ -84,7 +84,7 @@
                     <span class="red">*</span>
                     <span>金额：</span>
                 </p>
-                <input ref="money" @click="focus" @blur="blur" type="number" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
+                <input @click="focus" @blur="blur" type="number" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
             </div>
         </div>
         <div class="pos-bottom">
@@ -173,6 +173,19 @@ export default {
         // token获取，页面初始化数据
         getData () {
             var token = this.$route.query.token;
+            console.log('url颜色', this.$route.query.color)
+            this.financingInfo.color = this.$route.query.color;
+            console.log('url车型', this.$route.query.autoName)
+            this.financingInfo.car = this.$route.query.autoName;
+            console.log('url市名', this.$route.query.cityName)
+            var cityname = this.$route.query.cityName;
+            console.log('url省名', this.$route.query.provinceName)
+            console.log('url省名2', decodeURIComponent(this.$route.query.provinceName))
+            var provincename = this.$route.query.provinceName;
+            console.log(typeof cityname)
+            if (cityname !== '' && provincename !== '') {
+                this.financingInfo.city = provincename + '/' + cityname
+            }
             this.$http({
                 url:"dealerInfo/info",
                 method:"GET",
@@ -212,12 +225,6 @@ export default {
                 this.financingInfo.city = postData.provinceData["name"] + '/' + postData.cityData["name"] + '/' + postData.areaData["name"]
                 console.log(this.financingInfo.city)
             };
-        },
-        getLength (phone) {
-            console.log(phone.length)
-            if (phone.length > 11) {
-                phone = phone.substr(0, 11)
-            }
         },
         // 提交表单并校验
         suresub (buttonType) {
@@ -308,10 +315,22 @@ export default {
         // 添加监测
         addFn (buttonType) {
             var token = this.$route.query.token;
+            var extendType = this.$route.query.extend_type;
+            var autoId = this.$route.query.autoId; // 车型id
+            var autoSourceId = this.$route.query.autoSourceId; // 车源id
+            var activityId = this.$route.query.activityId; // 活动id
+            var extend;
+            if (autoSourceId) {
+                extend = autoSourceId
+            } else if (activityId) {
+                extend = activityId
+            }
             var params = {
                 token: token,
                 openPage: '1',
-                extendType: '5',
+                autoId: autoId,
+                extend: extend,
+                extendType: extendType,
                 projectType: buttonType,
                 noLoading: true
             }
@@ -372,6 +391,7 @@ export default {
     created () {
         document.title = "融资购车"
         this.getData()
+        this.addFn('5')
         this.tokenData = this.$route.query.token;
     },
     mounted () {
@@ -477,7 +497,7 @@ export default {
     resize:none;
     box-sizing: border-box;
     color: #000;
-    line-height: 0.4rem;
+    line-height: 0.5rem;
 }
 
 
@@ -485,7 +505,7 @@ export default {
     display: inline-block;
     height: 1.4rem;
     line-height: 1.4rem;
-    font-size: .38rem
+    font-size: .4rem
 }
 .form-box-item>input, .input {
     caret-color:blue;
@@ -498,21 +518,21 @@ export default {
     padding-right: 0.2rem;
     box-sizing: border-box;
     color: #000;
-    font-size: 0.38rem;
+    font-size: 0.4rem;
 }
 .input  {
-    font-size: 0.35rem;
+    font-size: 0.4rem;
 }
 
 
 
 .shopname-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    font-size: .38rem;
+    font-size: .4rem;
 }
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    font-size: 0.38rem;
+    font-size: 0.4rem;
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;
@@ -522,4 +542,3 @@ export default {
     color: red;
 }
 </style>
-

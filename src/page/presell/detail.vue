@@ -112,8 +112,13 @@
             <!-- 按钮 -->
             <section class="car-reserve-btn">
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
-                <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
-                <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+                <div class="bottom-btn bottom-btn-left" v-show="isTcmApp">
+                    <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
+                </div>
+                <div class="bottom-btn bottom-btn-right">
+                    <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
+                    <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+                </div>
             </section>
 
             <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
@@ -237,6 +242,7 @@ export default {
   name: "presellDetails",
   data() {
     return {
+      financingCarUrl: '', // 点击融资购车跳转表单页面
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
@@ -493,6 +499,7 @@ export default {
             params: params
         }).then(function(response) {
             let data = response.body.data;
+            this.financingCarUrl = data.financingCarUrl
             this.presellData = data;
             this.circular = data.circular;
             this.preSaleData = data.preSale;
@@ -509,6 +516,12 @@ export default {
             this.setStoreAlert(error.body.msg);
         });
       })  
+    },
+    // 点击融资购车按钮，跳转至融资购车表单页面
+    gofinancing () {
+        var token = this.$route.query.token;
+        // console.log('限时抢购页面融资购车按钮点击获取token', token)
+        window.location.href = encodeURI(this.financingCarUrl) + '&token=' + token
     },
     twoDetial (x) {
         let f = parseFloat(x)
@@ -884,10 +897,19 @@ export default {
 .presell-explain-con {padding-bottom: 0.45rem}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn {display: inline-block;position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%;margin: 0 auto;background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn {position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn .bottom-btn {
+    display: inline-block;
+}
+.car-reserve-btn .color {
+    background: #f1f1f1!important;
+}
+.car-reserve-btn .bottom-btn-right {
+    flex: 1;
+}
 .car-reserve-btn .soldOut-warning { width: 100%; line-height: 0.8rem;background: #e0c698; color: #ff5825;font-size: .34667rem}
-.car-reserve-btn .car-presell-present {display: inline-block;width: 6.667rem;height: 1.1733rem;margin: 0 auto;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #d5aa5c;}
-.car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 6.667rem;height: 1.1733rem;margin: 0 auto;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
+.car-reserve-btn .car-presell-present {display: inline-block;width: 4.2667rem;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #d5aa5c;}
+.car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 4.2667rem;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
 
 .anim {transition: all 0.5s;margin-top: -0.4rem;}
 
