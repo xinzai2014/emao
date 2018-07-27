@@ -49,7 +49,7 @@
                 <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
             </div>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>店名：</span>
                 </p>
@@ -59,14 +59,14 @@
         <div class="form-box">
             <p class="form-box-title">车型信息</p>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>车型：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
             </div>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>颜色：</span>
                 </p>
@@ -113,6 +113,7 @@ export default {
             id: '0', // 经销商id
             dealername: '', // 经销商姓名
             cityname: '', // 经销商城市
+            autoId: '', // 车型id
             citydata: {
                 province_id: '',
                 province_name: '',
@@ -175,6 +176,8 @@ export default {
             var token = this.$route.query.token;
             console.log('url颜色', this.$route.query.color)
             this.financingInfo.color = this.$route.query.color;
+            this.autoId = this.$route.query.autoId;
+            console.log('url车型id', this.autoId)
             console.log('url车型', this.$route.query.autoName)
             this.financingInfo.car = this.$route.query.autoName;
             console.log('url市名', this.$route.query.cityName)
@@ -183,8 +186,10 @@ export default {
             console.log('url省名2', decodeURIComponent(this.$route.query.provinceName))
             var provincename = this.$route.query.provinceName;
             console.log(typeof cityname)
-            if (cityname !== '' && provincename !== '') {
+            if (cityname && provincename ) {
                 this.financingInfo.city = provincename + '/' + cityname
+            } else {
+                this.financingInfo.city = ''
             }
             this.$http({
                 url:"dealerInfo/info",
@@ -330,7 +335,7 @@ export default {
                 openPage: '1',
                 autoId: autoId,
                 extend: extend,
-                extendType: extendType,
+                extendType: extendType,  
                 projectType: buttonType,
                 noLoading: true
             }
@@ -369,6 +374,7 @@ export default {
                 zt_id: "246",
                 name: this.financingInfo.name,
                 phone: this.financingInfo.phone,
+                auto_id: this.autoId,
                 auto_name: this.financingInfo.car,
                 other: JSON.stringify(other)
             }
@@ -476,28 +482,33 @@ export default {
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
 }
 
 
 .shopname-item {
-    min-height: 1.44rem;
+    min-height: 1.8rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.2rem;
     width: 100%;
     display: flex;
-    align-items: center;
     box-sizing: border-box;
     border-bottom: 1px solid #e0e0e0;
 }
 .shopname-item textarea {
     caret-color:blue;
     padding: 0 .2rem;
-    margin-top: .3rem;
     flex: 1;
     border: none;
     outline: none;
     resize:none;
     box-sizing: border-box;
     color: #000;
-    line-height: 0.5rem;
+    font-size: .38rem;
+    line-height: .53333rem;
+}
+.shop-name {
+    font-size: .38rem
 }
 
 
@@ -505,7 +516,7 @@ export default {
     display: inline-block;
     height: 1.4rem;
     line-height: 1.4rem;
-    font-size: .4rem
+    font-size: .38rem
 }
 .form-box-item>input, .input {
     caret-color:blue;
@@ -518,21 +529,22 @@ export default {
     padding-right: 0.2rem;
     box-sizing: border-box;
     color: #000;
-    font-size: 0.4rem;
+    font-size: 0.38rem;
 }
 .input  {
-    font-size: 0.4rem;
+    font-size: 0.38rem;
 }
 
 
 
 .shopname-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    font-size: .4rem;
+    font-size: .38rem;
+    line-height: 0.5rem;
 }
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
-    font-size: 0.4rem;
+    font-size: 0.38rem;
 }
 .form-box-item:last-child, .shopname-item:last-child {
     border-bottom: 0;

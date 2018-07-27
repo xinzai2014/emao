@@ -897,12 +897,15 @@ export default {
 .presell-explain-con {padding-bottom: 0.45rem}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn {position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn {display: flex; position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
 .car-reserve-btn .bottom-btn {
     display: inline-block;
 }
 .car-reserve-btn .color {
     background: #f1f1f1!important;
+}
+.car-reserve-btn .bottom-btn-left {
+    padding-left: 0.5333rem;
 }
 .car-reserve-btn .bottom-btn-right {
     flex: 1;
