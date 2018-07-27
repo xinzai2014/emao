@@ -175,14 +175,14 @@ export default {
         getData () {
             var token = this.$route.query.token;
             console.log('url颜色', this.$route.query.color)
-            if (this.$route.query.color == "'") {
+            if (this.$route.query.color == "''") {
                 this.financingInfo.color = ''
             }
             this.financingInfo.color = this.$route.query.color;
             this.autoId = this.$route.query.autoId;
             console.log('url车型id', this.autoId)
             console.log('url车型', this.$route.query.autoName)
-            if (this.$route.query.autoName == "'") {
+            if (this.$route.query.autoName == "''") {
                 this.financingInfo.car = ''
             }
             this.financingInfo.car = this.$route.query.autoName;
