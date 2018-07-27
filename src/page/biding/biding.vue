@@ -841,7 +841,10 @@ export default {
       })
         .then(function(res) {
           //按钮统计
-               
+          if(btnType==19){
+           window.location=`http://url.cn/5Ne6oti`;
+          }
+      
         })
         .catch(error => {
           console.log(error,"按钮统计错",buttonType)
@@ -882,8 +885,7 @@ export default {
       this.download_pup=download_pup;
     },
     downloadApp(){
-      this.setBtnClickLog(19)//立即下载 
-      window.location.href=`http://url.cn/5Ne6oti`;
+      this.setBtnClickLog(19)//立即下载 ；
     },
     closeDownload(){
       this.setBtnClickLog(20)//弹窗关闭
