@@ -53,7 +53,7 @@
         </li>
         <li class="car-money">
           <span class="left">保证金</span>
-          <span class="right">￥{{deposit}}元</span>
+          <span class="right">￥{{deposit}}</span>
         </li>
         <li class="car-range">
           <span class="left">可售范围</span>
