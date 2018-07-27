@@ -186,10 +186,10 @@ export default {
             console.log('url省名2', decodeURIComponent(this.$route.query.provinceName))
             var provincename = this.$route.query.provinceName;
             console.log(typeof cityname)
-            if (cityname && provincename ) {
-                this.financingInfo.city = provincename + '/' + cityname
-            } else {
+            if (cityname == "''" && provincename == "''" ) {
                 this.financingInfo.city = ''
+            } else if (cityname && provincename) {
+                this.financingInfo.city = provincename + '/' + cityname
             }
             this.$http({
                 url:"dealerInfo/info",
