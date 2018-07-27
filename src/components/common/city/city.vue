@@ -10,21 +10,21 @@
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in cityData" :class="{active:defaultData.defaultProcinveID == item.id}"  @click.stop="getCityData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in cityData" :key="index" :class="{active:defaultData.defaultProcinveID == item.id}"  @click.stop="getCityData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="cityWrap">
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in perCityData" :class="{active:defaultData.defaultCityID == item.id}" @click.stop="getAreaData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in perCityData" :key="index" :class="{active:defaultData.defaultCityID == item.id}" @click.stop="getAreaData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city-list" id="areaWrap">
                     <ul>
                         <li></li>
                         <li></li>
-                        <li v-for="(item,index) in perAreaData" :class="{active:defaultData.defaultAreaID == item.id}" @click.stop="updateAreaData(item.id,item.name,index)">{{item.name}}</li>
+                        <li v-for="(item,index) in perAreaData" :key="index" :class="{active:defaultData.defaultAreaID == item.id}" @click.stop="updateAreaData(item.id,item.name,index)">{{item.name}}</li>
                     </ul>
                 </div>
             </div>
@@ -58,12 +58,14 @@
                 }
             }
         },
-        props:["defaultCityData","showCity"],
+        props:["defaultCityData","showCity","token"],
         methods:{
             getCity(){
                 var that = this;
+                console.log('chengshi', that.token)
+                let tokenData = (this.token !== undefined && this.token !== '')  ? this.token : sessionStorage.token;
                 this.$http.get(
-                    "area?token=" + sessionStorage.token
+                    "area?token=" +  tokenData,
                     ).then(function(reponse){
                         this.cityData = reponse.body.data;
                         //获取默认值 省
@@ -151,7 +153,7 @@
                 this.defaultData.defaultCityID = id;
                 this.scrollToElement("cityScroll","cityWrap",index);
                 this.scrollToElement("areaScroll","areaWrap",0);
-                this.postData["areaData"] = {
+                this.postData["cityData"] = {
                     id:id,
                     name:name
                 };
@@ -206,7 +208,7 @@
     top:0;
     left:0;
     width:100%;
-    height:100%;
+    height:100vh;
     z-index:100;
     background:rgba(0,0,0,0.75);
 }

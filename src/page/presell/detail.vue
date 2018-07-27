@@ -21,7 +21,10 @@
                     <!-- 名字和设置提醒 -->
                     <div class="car-name">
                         <h4 class="name-content">{{presellData.autoName}}</h4>
-                        <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun">
+                        <!-- 在app内并且活动未开始才会显示 -->
+                        <!-- <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun"> -->
+                        <!-- 始终不显示 -->
+                        <div class="set-warning" v-if="false" @click="setWarningFun">
                             <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
                                 <span class="icon-warning"></span>
                                 <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
@@ -94,17 +97,16 @@
                 <img src="../../assets/car-presell-flow.png" alt="">
             </section>
 
+            <!--预售优化-->
             <section class="car-presell-explain">
                 <p class="presell-explain-title">关于限时抢购</p>
                 <ul class="presell-explain-con">
                     <li><span>1.</span>支付定金可锁定车源，车辆入库后支付全款。</li>
-                    <li><span>2.</span>提车完成后，定金退回原支付账户。</li>
-                    <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
-                    <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源。</li>
-                    <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还。</li>
-                    <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券。</li>
-                    <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致。</li>
-                    <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
+                    <li><span>2.</span>车辆到库后，可进行验车。提车完成后，定金退回原支付账户。</li>
+                    <li><span>3.</span>车辆到库后，若经销商原因致使交易未能完成，定金不予退还。</li>
+                    <li><span>4.</span>一猫原因造成车辆未能交付，将退回定金并赔付 500 元代金券；</li>
+                    <li><span>5.</span>开票及申请合格证流程，与其他零售车型一致；</li>
+                    <li><span>6.</span>.如有疑问可咨询渠道支持，或联系客服<a style="color:#d5aa5c" href="tel:4000133918">400-013-3918</a>。</li>
                 </ul>
             </section>
             <!-- 按钮 -->
@@ -733,7 +735,7 @@ export default {
             }, (end) => {
                 this.countdownArr = end;
                 this.btnState = false;
-                this.btnText = '已结束';
+                this.btnText = '已售罄';
                 this.countdownText = '距离结束还剩'
                 this.countdownState = true;
             })

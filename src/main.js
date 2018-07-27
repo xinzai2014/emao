@@ -47,10 +47,16 @@ Vue.http.options.root = "https://tcmapi.emao.com/" //接口域名
 //Vue.http.headers.common = {
 //	Accept:"application/json; version=2.1.0"
 //};
+if(sessionStorage.apiVersion){
+	Vue.http.headers.common = {
+		Accept: "application/json; version=" + sessionStorage.apiVersion
+	};
+}else{
+	Vue.http.headers.common = {
+		Accept: "application/json; version=3.5.0"
+	};
+}
 
-Vue.http.headers.common = {
-	Accept: "application/json; version=3.5.0"
-};
 
 Vue.http.headers.common['X-Emao-TCM-Wap'] = "1";
 
@@ -162,13 +168,11 @@ Vue.directive('load-more', {
 })
 
 Vue.http.interceptors.push(function(request, next) {
-	// console.log('request', request)
 	if (!request.params.noLoading) {
 		this.$store.dispatch("AJAX_LOADING", // 通过store传值
 			true
 		);
 	}
-	
     next(function (response) {
     	if(response.body){
 	    	var code = response.body.code;

@@ -171,6 +171,10 @@ const ruledetails = r => require.ensure([],() => r(require('../page/biding/ruled
 //竞拍记录列表详情页
 const recordlist = r => require.ensure([],() => r(require('../page/biding/recordlist')),'recordlist')
 
+//融资购车页面
+const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
+const subsuccess = r => require.ensure([], () => r(require('../page/financing/subsuccess')), 'subsuccess')
+
 Vue.use(Router)
 
 var router=new Router({
@@ -576,7 +580,7 @@ var router=new Router({
             path:'/test',     //领取
             name:'test',
             component:test
-        } ,
+        },
         {
             path:'/biding',     //竞拍
             name:'biding',
@@ -592,6 +596,17 @@ var router=new Router({
             name:'recordlist',
             component:recordlist
         }
+        ,
+        {
+            path:'/financing',     //融资购车
+            name:'financing',
+            component:financing
+        },
+        {
+            path:'/financing/subsuccess',     //融资购车提交成功
+            name:'subsuccess',
+            component:subsuccess
+        } 
     ]
 })
 
@@ -610,6 +625,14 @@ router.beforeEach((to, from, next) => {
                     token = href.substr(str+6,str+38);
                 }  
         }
+    };
+    var href = window.location.href,
+        str = href.indexOf('apiVersion=');
+    if(str != -1){
+        var apiVersion = href.substr(str+11,5);
+        sessionStorage.apiVersion = apiVersion;
+    }else{
+        sessionStorage.apiVersion = '';
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
