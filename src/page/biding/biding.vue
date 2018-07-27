@@ -241,7 +241,8 @@ export default {
       uniqId:'',
       download_pup:false,
       bigImg:'',
-      showBigImg:false
+      showBigImg:false,
+      endnum:0
     };
   },
   computed: {
@@ -468,7 +469,12 @@ export default {
       })
       .catch((e)=>{
         // console.log(e,"获取数据错")
-        
+        if(this.bidderStatus=="4"){
+          this.endnum++;
+          if(this.endnum==3){
+              return;
+          }
+        }
          setTimeout(this.getnewdata,1500)
       })
     },
