@@ -141,7 +141,7 @@
           <div class="c-p-title">加价幅度</div>
           <div class="c-p-box">
             <span class="subtract-icon" @click="subtractPrice"></span>
-            <span class="add-range">￥{{myAddPrice}}</span>
+            <span class="add-range">{{myAddPrice}}</span>
             <span class="add-icon" @click="addPrice"></span>
           </div>
         </div>
