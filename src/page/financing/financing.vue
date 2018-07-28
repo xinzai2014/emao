@@ -345,17 +345,21 @@ export default {
         },
         // 添加监测
         addFn (buttonType) {
+            console.log('统计')
             var token = this.$route.query.token;
             var extendType = this.$route.query.extendType; // 来源
             var autoId = this.$route.query.autoId; // 车型id
             var autoSourceId = this.$route.query.autoSourceId; // 车源id
             var activityId = this.$route.query.activityId; // 活动id
             var extend;
+            console.log("autoSourceId", autoSourceId)
+            console.log("activityId", activityId)
             if (autoSourceId) {
                 extend = autoSourceId
             } else if (activityId) {
                 extend = activityId
             }
+            console.log('extend', extend)
             var params = {
                 token: token,
                 openPage: '1',
