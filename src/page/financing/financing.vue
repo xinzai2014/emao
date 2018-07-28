@@ -346,7 +346,7 @@ export default {
         // 添加监测
         addFn (buttonType) {
             var token = this.$route.query.token;
-            var extendType = this.$route.query.extend_type;
+            var extendType = this.$route.query.extendType; // 来源
             var autoId = this.$route.query.autoId; // 车型id
             var autoSourceId = this.$route.query.autoSourceId; // 车源id
             var activityId = this.$route.query.activityId; // 活动id
