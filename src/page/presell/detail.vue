@@ -112,12 +112,14 @@
             <!-- 按钮 -->
             <section class="car-reserve-btn">
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
-                <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
-                    <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
-                </div>
-                <div class="bottom-btn bottom-btn-right">
-                    <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
-                    <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+                <div class="bottom-btn-box">
+                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
+                        <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
+                    </div>
+                    <div class="bottom-btn bottom-btn-right">
+                        <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
+                        <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+                    </div>
                 </div>
             </section>
 
@@ -897,7 +899,11 @@ export default {
 .presell-explain-con {padding-bottom: 0.45rem}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn {display: flex; position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn { position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.bottom-btn-box {
+    width: 100%;
+    display: flex;
+}
 .car-reserve-btn .bottom-btn {
     display: inline-block;
 }
