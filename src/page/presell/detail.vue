@@ -115,9 +115,9 @@
                 <div class="bottom-btn bottom-btn-left" v-show="isTcmApp">
                     <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
                 </div>
-                <div class="bottom-btn bottom-btn-right">
+                <div class="bottom-btn bottom-btn-right" v-if="btnState">
                     <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
-                    <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+                    <!-- <div class="car-presell-present-disabled">{{btnText}}</div> -->
                 </div>
             </section>
 
@@ -905,7 +905,7 @@ export default {
     background: #f1f1f1!important;
 }
 .car-reserve-btn .bottom-btn-left {
-    padding-left: 0.5333rem;
+    flex: 1;
 }
 .car-reserve-btn .bottom-btn-right {
     flex: 1;
