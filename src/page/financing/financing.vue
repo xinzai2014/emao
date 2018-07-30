@@ -417,7 +417,21 @@ export default {
                 console.log(response.data.submitStatus)
                 if (response.data.submitStatus == 0) {
                     this.addFn(buttonType)
-                    this.$router.push({path: '/financing/subsuccess', query: {token: this.$route.query.token}}); //跳转提交成功页面
+                    var autoSourceId = this.$route.query.autoSourceId; // 车源id
+                    var activityId = this.$route.query.activityId; // 活动id
+                    var extend;
+                    if (autoSourceId) {
+                        extend = autoSourceId
+                    } else if (activityId) {
+                        extend = activityId
+                    }
+                    var params = {
+                        token: this.$route.query.token,
+                        extendType: this.$route.query.extendType,
+                        autoId: this.$route.query.autoId,
+                        extend: extend
+                    }
+                    this.$router.push({path: '/financing/subsuccess', query: params}); //跳转提交成功页面
                 }
             }).catch(function (error) {
                 console.log(error)
