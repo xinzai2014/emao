@@ -164,6 +164,12 @@ const record = r => require.ensure([],() => r(require('../page/invitation/record
 const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
 
 const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
+//竞拍
+const biding = r => require.ensure([],() => r(require('../page/biding/biding')),'biding')
+//保证金规则详情页
+const ruledetails = r => require.ensure([],() => r(require('../page/biding/ruledetails')),'ruledetails')
+//竞拍记录列表详情页
+const recordlist = r => require.ensure([],() => r(require('../page/biding/recordlist')),'recordlist')
 
 //融资购车页面
 const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
@@ -575,6 +581,22 @@ var router=new Router({
             name:'test',
             component:test
         },
+        {
+            path:'/biding',     //竞拍
+            name:'biding',
+            component:biding
+        },
+        {
+            path:'/biding/ruledetails',     //保证金规则详情页
+            name:'ruledetails',
+            component:ruledetails
+        },
+        {
+            path:'/biding/recordlist',     //竞拍记录列表详情页
+            name:'recordlist',
+            component:recordlist
+        }
+        ,
         {
             path:'/financing',     //融资购车
             name:'financing',

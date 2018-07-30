@@ -22,7 +22,7 @@
                     <span class="red">*</span>
                     <span>联系方式：</span>
                 </p>
-                <input @input="getLength(financingInfo.phone)" type="tel" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
+                <input type="tel" maxlength="11" placeholder="请填写联系方式" v-model="financingInfo.phone">
             </div>
         </div>
         <div class="form-box">
@@ -49,7 +49,7 @@
                 <p class="input" @click="getDialogCity"><span style="color: #b7b7b7;" v-if="!financingInfo.city">请选择城市</span>{{financingInfo.city}}</p>
             </div>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>店名：</span>
                 </p>
@@ -59,14 +59,14 @@
         <div class="form-box">
             <p class="form-box-title">车型信息</p>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>车型：</span>
                 </p>
                 <textarea type="text" @click="focus" @blur="blur" placeholder="如：帕萨特 2017款 280TSI DSG 尊荣版" v-model="financingInfo.car"></textarea>
             </div>
             <div class="shopname-item">
-                <p class="item-name">
+                <p class="shop-name">
                     <span class="red">*</span>
                     <span>颜色：</span>
                 </p>
@@ -84,7 +84,7 @@
                     <span class="red">*</span>
                     <span>金额：</span>
                 </p>
-                <input ref="money" @click="focus" @blur="blur" type="number" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
+                <input @click="focus" @blur="blur" type="number" placeholder="请填写所需金额，单位元，如：129800" v-model="financingInfo.money">元
             </div>
         </div>
         <div class="pos-bottom">
@@ -113,6 +113,7 @@ export default {
             id: '0', // 经销商id
             dealername: '', // 经销商姓名
             cityname: '', // 经销商城市
+            autoId: '', // 车型id
             citydata: {
                 province_id: '',
                 province_name: '',
@@ -136,6 +137,26 @@ export default {
         }
     },
     methods: {
+        /*向App传值*/
+        tcmApp(obj) {
+            //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+            //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+            //或者由服务器判断响应不同的平台脚本
+            if (navigator.userAgent.indexOf("iPhone") > 0) {
+                window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
+            } else {
+                window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
+            }
+        },
+        // 页面加载时取消右上角分享按钮
+        hideShareButton() {
+            var obj = {
+                actionname:"hideShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                actionid:"",//回调 ID：可选参数，与回调函数配套使用
+                callback:""//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            };
+            this.tcmApp(obj);
+        },
         // 手指滑动dom时，键盘抬起取消
         cancelkey () {
             // console.log('手指滑动屏幕了')
@@ -173,6 +194,29 @@ export default {
         // token获取，页面初始化数据
         getData () {
             var token = this.$route.query.token;
+            console.log('url颜色', this.$route.query.color)
+            if (this.$route.query.color == '') {
+                this.financingInfo.color = ''
+            } else if (this.$route.query.color) {
+                this.financingInfo.color = this.$route.query.color;
+            }
+            this.autoId = this.$route.query.autoId;
+            console.log('url车型id', this.autoId)
+            console.log('url车型', this.$route.query.autoName)
+            if (this.$route.query.autoName == '') {
+                this.financingInfo.car = ''
+            }
+            this.financingInfo.car = this.$route.query.autoName;
+            console.log('url市名', this.$route.query.cityName)
+            var cityname = this.$route.query.cityName;
+            console.log('url省名', this.$route.query.provinceName)
+            var provincename = this.$route.query.provinceName;
+            console.log(typeof cityname)
+            if (cityname == '' && provincename == '' ) {
+                this.financingInfo.city = ''
+            } else if (cityname && provincename) {
+                this.financingInfo.city = provincename + '/' + cityname
+            }
             this.$http({
                 url:"dealerInfo/info",
                 method:"GET",
@@ -212,12 +256,6 @@ export default {
                 this.financingInfo.city = postData.provinceData["name"] + '/' + postData.cityData["name"] + '/' + postData.areaData["name"]
                 console.log(this.financingInfo.city)
             };
-        },
-        getLength (phone) {
-            console.log(phone.length)
-            if (phone.length > 11) {
-                phone = phone.substr(0, 11)
-            }
         },
         // 提交表单并校验
         suresub (buttonType) {
@@ -307,11 +345,27 @@ export default {
         },
         // 添加监测
         addFn (buttonType) {
+            console.log('统计')
             var token = this.$route.query.token;
+            var extendType = this.$route.query.extendType; // 来源
+            var autoId = this.$route.query.autoId; // 车型id
+            var autoSourceId = this.$route.query.autoSourceId; // 车源id
+            var activityId = this.$route.query.activityId; // 活动id
+            var extend;
+            console.log("autoSourceId", autoSourceId)
+            console.log("activityId", activityId)
+            if (autoSourceId) {
+                extend = autoSourceId
+            } else if (activityId) {
+                extend = activityId
+            }
+            console.log('extend', extend)
             var params = {
                 token: token,
                 openPage: '1',
-                extendType: '5',
+                autoId: autoId,
+                extend: extend,
+                extendType: extendType,  
                 projectType: buttonType,
                 noLoading: true
             }
@@ -350,6 +404,7 @@ export default {
                 zt_id: "246",
                 name: this.financingInfo.name,
                 phone: this.financingInfo.phone,
+                auto_id: this.autoId,
                 auto_name: this.financingInfo.car,
                 other: JSON.stringify(other)
             }
@@ -372,6 +427,8 @@ export default {
     created () {
         document.title = "融资购车"
         this.getData()
+        this.hideShareButton()
+        this.addFn('5')
         this.tokenData = this.$route.query.token;
     },
     mounted () {
@@ -456,28 +513,33 @@ export default {
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
 }
 
 
 .shopname-item {
-    min-height: 1.44rem;
+    min-height: 1.8rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.2rem;
     width: 100%;
     display: flex;
-    align-items: center;
     box-sizing: border-box;
     border-bottom: 1px solid #e0e0e0;
 }
 .shopname-item textarea {
     caret-color:blue;
     padding: 0 .2rem;
-    margin-top: .3rem;
     flex: 1;
     border: none;
     outline: none;
     resize:none;
     box-sizing: border-box;
     color: #000;
-    line-height: 0.4rem;
+    font-size: .38rem;
+    line-height: .53333rem;
+}
+.shop-name {
+    font-size: .38rem
 }
 
 
@@ -501,7 +563,7 @@ export default {
     font-size: 0.38rem;
 }
 .input  {
-    font-size: 0.35rem;
+    font-size: 0.38rem;
 }
 
 
@@ -509,6 +571,7 @@ export default {
 .shopname-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
     font-size: .38rem;
+    line-height: 0.5rem;
 }
 .form-box-item ::-webkit-input-placeholder { /* WebKit browsers */
     color: #b7b7b7;
@@ -522,4 +585,3 @@ export default {
     color: red;
 }
 </style>
-
