@@ -195,6 +195,7 @@ import Rulebond from "./rulebond.vue";
 //引入倒计时
 import { timeCountdown, numberCountdown } from "../../common/js/countdown.js";
 import swiper from "../../components/common/swiper/swiper";
+import share from '../../common/js/shareOnly.js';
 export default {
   name: "biding",
   data() {
@@ -242,7 +243,8 @@ export default {
       download_pup:false,
       bigImg:'',
       showBigImg:false,
-      endnum:0
+      endnum:0,
+      shareData:{}//二次分享参数
     };
   },
   computed: {
@@ -285,7 +287,7 @@ export default {
            this.addShareButton();
           })
           .catch(error => {
-            console.log(error,"app获取数据错")
+            
             this.tost(error.body.msg);
           });
       } else {
@@ -300,21 +302,23 @@ export default {
           .then(function(response) {
       
             let data = response.body.data;
-            this.assignment(data)
+            this.assignment(data);
+            share(this.shareData);
             this.getrecordlist();
             this.setClockUI();
             this.setBidingTip();
             this.setBottomBtn();
+
           })
           .catch(error => {
-            console.log(error,"wap获取数据错")
+         
           });
       }
     },
     //data赋值
     assignment(data){
            if (data) {
-        console.log(data)
+        
         this.sowingMap = data.sowingMap; //轮播图
         if(this.sowingMap.length){
           for (var i = 0; i < this.sowingMap.length; i++) {
@@ -351,6 +355,12 @@ export default {
         this.carColor = data.carColor;
         this.shopInfo = data.shopInfo;
         this.shareInfo = data.shareInfo;
+        this.shareData = {
+                title: data.shareInfo.title,
+                desc: data.shareInfo.note,
+                link: data.shareInfo.url,
+                imgUrl: data.shareInfo.icon
+            };
         this.myAddPrice=Number(this.increasePrice);
         this.bidderMoney=this.deposit;
         this.uniqId=data.uniqId
@@ -444,7 +454,7 @@ export default {
       .then((res)=>{
         if(this.bidderStatus!==4){
         let data = res.body
-        console.log("广播数据",res)
+        
         this.enrolment=data.enrolment; //报名人数
         this.settingRemind=data.settingRemind;//设置闹钟人数
         
@@ -468,7 +478,7 @@ export default {
          }
       })
       .catch((e)=>{
-        // console.log(e,"获取数据错")
+       
         if(this.bidderStatus=="4"){
           this.endnum++;
           if(this.endnum==3){
@@ -648,7 +658,7 @@ export default {
       if (!this.isBtnDisable) {
         if (this.bottomBtnText === "交保证金报名") {
           this.setBtnClickLog(1);
-          console.log("交保证金报名")
+          
           
           // 跳转到app交保证金页面
           /* openurl = emaotaochemao://push/ensureBidder&bidderId=xxx&bidderMoney=xxx 参数说明:bidderId: 竞拍id  bidderMoney: 竞拍保证金 */
@@ -658,19 +668,19 @@ export default {
         }
         if (this.bottomBtnText === "我要出价") {
           this.setBtnClickLog(2);
-          console.log("我要出价");
+          
           this.popupState = true;
         }
       }
     },
     //加价
     addPrice() {
-      console.log("加价");
+     
       this.myAddPrice = (this.myAddPrice - 0) + (this.increasePrice - 0);
     },
     //减价
     subtractPrice() {
-      console.log("减价");
+      
       if (this.myAddPrice > this.increasePrice) {
         this.myAddPrice = (this.myAddPrice - 0) - (this.increasePrice - 0);
       } else {
@@ -681,7 +691,7 @@ export default {
     bidingHandle() {
       let _this=this;
       this.setBtnClickLog(3);
-      // console.log(this.myAddPrice);
+      
       let params = {
         token: this.$route.query.token,
         bidderId: this.$route.query.bidderId,
@@ -694,7 +704,7 @@ export default {
         params: params
       })
         .then(function(res) {
-           console.log("成功",res); 
+           
           this.tost(res.body.data.msg)
           this.currentPrice=res.body.data.currentPrice
           this.popupState = false;
@@ -702,7 +712,7 @@ export default {
 
         })
         .catch(error => {
-          console.log(error,"出价错")
+          
           this.bidingErrorText = error.body.msg
           this.popupState = false;
           this.popupStatePrice = true;  
@@ -734,7 +744,7 @@ export default {
             this.clockText = "取消提醒";
           })
           .catch(error => {
-            console.log(error,"设置提醒错")
+           
             this.tost("设置失败");
           });
       } else {
@@ -756,7 +766,7 @@ export default {
             this.clockText = "设置提醒";
           })
           .catch(error => {
-            console.log(error,"取消提醒错")
+           
             this.tost("取消失败");
           });
       }
@@ -765,7 +775,7 @@ export default {
     setClockUI() {
       // 判断是否设置提醒 1-未设置 2-已设置
       if (this.remindStatus === "1") {
-        console.log("1-未设置");
+       
         //1.竞拍未开始状态
         if (this.bidderStatus === "1" || this.bidderStatus === "2") {
           this.clockText = "设置提醒";
@@ -777,7 +787,7 @@ export default {
         return false;
       }
       if (this.remindStatus === "2") {
-        console.log("2-已设置");
+       
         //1.竞拍未开始状态
         if (this.bidderStatus === "1" || this.bidderStatus === "2") {
           this.clockText = "取消提醒";
@@ -847,7 +857,7 @@ export default {
       
         })
         .catch(error => {
-          console.log(error,"按钮统计错",buttonType)
+         
         });
     },
 

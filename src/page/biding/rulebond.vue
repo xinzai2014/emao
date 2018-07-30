@@ -52,7 +52,7 @@ export default {
              this.tcmApp(obj);
             },
         checkrules (btnType) {
-            console.log('查看细则')
+           
             // 添加监测
             let token = this.$route.query.token;
             let bidderId = this.$route.query.bidderId;
@@ -88,7 +88,7 @@ export default {
                 
             })
             .catch(error => {
-                console.log(error,"查看细则错");
+               
             });
            
             
