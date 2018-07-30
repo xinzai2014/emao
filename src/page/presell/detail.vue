@@ -729,7 +729,7 @@ export default {
                 this.countdownArr = update;
                 if (update[0] === 'start') {
                     this.btnText = '等待抢购'
-                    this.btnState = false
+                    this.btnState = true
                     this.countdownText = '距离开始还剩'
                     this.countdownState = true;
                     this.isBeforeActivity = true
@@ -899,13 +899,16 @@ export default {
 .presell-explain-con {padding-bottom: 0.45rem}
 .presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
 .presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn { position: fixed;bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-reserve-btn { position: fixed;padding-left: 0.26667rem; padding-right: 0.26667rem; box-sizing: border-box; bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
 .bottom-btn-box {
     width: 100%;
     display: flex;
 }
 .car-reserve-btn .bottom-btn {
     display: inline-block;
+    padding-left: 0.26667rem;
+    padding-right: 0.26667rem;
+    box-sizing: border-box;
 }
 .car-reserve-btn .color {
     background: #f1f1f1!important;
@@ -917,8 +920,8 @@ export default {
     flex: 1;
 }
 .car-reserve-btn .soldOut-warning { width: 100%; line-height: 0.8rem;background: #e0c698; color: #ff5825;font-size: .34667rem}
-.car-reserve-btn .car-presell-present {display: inline-block;width: 4.2667rem;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #d5aa5c;}
-.car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 4.2667rem;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
+.car-reserve-btn .car-presell-present {display: inline-block;width: 100%;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #ffc900;}
+.car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 100%;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
 
 .anim {transition: all 0.5s;margin-top: -0.4rem;}
 
