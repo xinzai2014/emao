@@ -2,6 +2,7 @@ import axios from 'axios';
 import wx from 'weixin-js-sdk';
 
 let share = (shareData) => {
+ console.log("分享2",shareData) 
   let shareObj = {
     // 初始化分享
     initShare (arg) {

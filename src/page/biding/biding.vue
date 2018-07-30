@@ -303,7 +303,10 @@ export default {
       
             let data = response.body.data;
             this.assignment(data);
+            console.log("分享1",this.shareData)
+            console.log("shareInfo",this.shareInfo)
             share(this.shareData);
+            
             this.getrecordlist();
             this.setClockUI();
             this.setBidingTip();
