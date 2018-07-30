@@ -202,7 +202,8 @@ export default {
         // token获取，页面初始化数据
         getData () {
             var token = this.$route.query.token;
-            console.log("初始化数据token", token)
+            console.log("初始化数据token")
+            console.log(typeof token)
             if (this.$route.query.color == '') {
                 this.financingInfo.color = ''
             } else if (this.$route.query.color) {
