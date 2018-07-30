@@ -195,6 +195,7 @@ import Rulebond from "./rulebond.vue";
 //引入倒计时
 import { timeCountdown, numberCountdown } from "../../common/js/countdown.js";
 import swiper from "../../components/common/swiper/swiper";
+import share from '../../common/js/shareOnly.js';
 export default {
   name: "biding",
   data() {
@@ -242,7 +243,8 @@ export default {
       download_pup:false,
       bigImg:'',
       showBigImg:false,
-      endnum:0
+      endnum:0,
+      shareData:{}//二次分享参数
     };
   },
   computed: {
@@ -300,11 +302,13 @@ export default {
           .then(function(response) {
       
             let data = response.body.data;
-            this.assignment(data)
+            this.assignment(data);
+            share(this.shareData);
             this.getrecordlist();
             this.setClockUI();
             this.setBidingTip();
             this.setBottomBtn();
+
           })
           .catch(error => {
             console.log(error,"wap获取数据错")
@@ -351,6 +355,12 @@ export default {
         this.carColor = data.carColor;
         this.shopInfo = data.shopInfo;
         this.shareInfo = data.shareInfo;
+        this.shareData = {
+                title: data.shareInfo.title,
+                desc: data.shareInfo.note,
+                link: data.shareInfo.url,
+                imgUrl: data.shareInfo.icon
+            };
         this.myAddPrice=Number(this.increasePrice);
         this.bidderMoney=this.deposit;
         this.uniqId=data.uniqId
