@@ -106,6 +106,7 @@ export default {
     name: 'financing',
     data () {
         return {
+            url: '', // 跳转至成功页的url
             tokenData: '',
             showCity: false,
             defaultCityData: [], //初始化城市默认数据
@@ -154,6 +155,13 @@ export default {
                 actionname:"hideShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
                 actionid:"",//回调 ID：可选参数，与回调函数配套使用
                 callback:""//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+            };
+            this.tcmApp(obj);
+        },
+        windowOpen() {
+            var obj = {
+                actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+                url: this.url // 要打开的链接
             };
             this.tcmApp(obj);
         },
@@ -419,19 +427,18 @@ export default {
                     this.addFn(buttonType)
                     var autoSourceId = this.$route.query.autoSourceId; // 车源id
                     var activityId = this.$route.query.activityId; // 活动id
-                    var extend;
+                    var extend
                     if (autoSourceId) {
                         extend = autoSourceId
                     } else if (activityId) {
                         extend = activityId
                     }
-                    var params = {
-                        token: this.$route.query.token,
-                        extendType: this.$route.query.extendType,
-                        autoId: this.$route.query.autoId,
-                        extend: extend
-                    }
-                    this.$router.push({path: '/financing/subsuccess', query: params}); //跳转提交成功页面
+                    var token = this.$route.query.token
+                    var extendType = this.$route.query.extendType
+                    var autoId = this.$route.query.autoId
+                    this.url = "https://tcm.m.emao.com/#/financing/subsuccess?token=" + token + "&extendType=" + extendType + "&autoId=" + autoId  + "&extend=" + extend
+                    this.windowOpen()
+                    // this.$router.push({path: '/financing/subsuccess', query: params}); //跳转提交成功页面
                 }
             }).catch(function (error) {
                 console.log(error)
