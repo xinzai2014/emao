@@ -244,6 +244,7 @@ export default {
   name: "presellDetails",
   data() {
     return {
+      url: '',
       financingCarUrl: '', // 点击融资购车跳转表单页面
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
@@ -509,9 +510,12 @@ export default {
             params: params
         }).then(function(response) {
             let data = response.body.data;
-            window.token = this.$route.query.token;
-            window.financingCarUrl = data.financingCarUrl;
-            window.url = encodeURI(window.financingCarUrl) + '&token=' + window.token;
+            var token = this.$route.query.token;
+            console.log('限时抢购页面token', token)
+            this.financingCarUrl = data.financingCarUrl;
+            console.log('限时抢购页面路径', this.financingCarUrl)
+            this.url = encodeURI(this.financingCarUrl) + '&token=' + token;
+            console.log("this.url======", this.url)
             this.presellData = data;
             this.circular = data.circular;
             this.preSaleData = data.preSale;

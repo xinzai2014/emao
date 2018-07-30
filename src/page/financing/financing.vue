@@ -202,24 +202,19 @@ export default {
         // token获取，页面初始化数据
         getData () {
             var token = this.$route.query.token;
-            console.log('url颜色', this.$route.query.color)
+            console.log("初始化数据token", token)
             if (this.$route.query.color == '') {
                 this.financingInfo.color = ''
             } else if (this.$route.query.color) {
                 this.financingInfo.color = this.$route.query.color;
             }
             this.autoId = this.$route.query.autoId;
-            console.log('url车型id', this.autoId)
-            console.log('url车型', this.$route.query.autoName)
             if (this.$route.query.autoName == '') {
                 this.financingInfo.car = ''
             }
             this.financingInfo.car = this.$route.query.autoName;
-            console.log('url市名', this.$route.query.cityName)
             var cityname = this.$route.query.cityName;
-            console.log('url省名', this.$route.query.provinceName)
             var provincename = this.$route.query.provinceName;
-            console.log(typeof cityname)
             if (cityname == '' && provincename == '' ) {
                 this.financingInfo.city = ''
             } else if (cityname && provincename) {
@@ -236,7 +231,9 @@ export default {
                 this.dealername = response.data.data.name
                 this.cityname = response.data.data.city_name
                 this.financingInfo.name = response.data.data.link_name
+                console.log('申请人姓名', this.financingInfo.name)
                 this.financingInfo.phone = response.data.data.link_phone
+                console.log('申请人电话', this.financingInfo.phone)
             }).catch(function (error) {
                 console.log(error)
             });
