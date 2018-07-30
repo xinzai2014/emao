@@ -413,10 +413,18 @@ export default {
       }
     },
     // 用 JS 函数在新窗口打开指定链接
+    // windowOpen() {
+    //   var obj = {
+    //     actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+    //     url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}` // 要打开的链接
+    //   };
+    //   this.tcmApp(obj);
+    // },
+    // 用 JS 函数在新窗口打开指定链接
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        url: `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}` // 要打开的链接
+        url: window.url // 要打开的链接
       };
       this.tcmApp(obj);
     },
@@ -501,7 +509,9 @@ export default {
             params: params
         }).then(function(response) {
             let data = response.body.data;
-            this.financingCarUrl = data.financingCarUrl
+            window.token = this.$route.query.token;
+            window.financingCarUrl = data.financingCarUrl;
+            window.url = encodeURI(window.financingCarUrl) + '&token=' + window.token;
             this.presellData = data;
             this.circular = data.circular;
             this.preSaleData = data.preSale;
@@ -521,9 +531,7 @@ export default {
     },
     // 点击融资购车按钮，跳转至融资购车表单页面
     gofinancing () {
-        var token = this.$route.query.token;
-        // console.log('限时抢购页面融资购车按钮点击获取token', token)
-        window.location.href = encodeURI(this.financingCarUrl) + '&token=' + token
+        this.windowOpen()
     },
     twoDetial (x) {
         let f = parseFloat(x)

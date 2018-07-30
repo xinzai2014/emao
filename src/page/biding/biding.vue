@@ -1,5 +1,5 @@
 <template>
-  <div class="biding">
+  <div class="biding" v-if="bidderId">
     <!-- 轮播图部分 -->
     <section>
       <swiper :circular="circular" v-if="circular.length"></swiper>
@@ -303,7 +303,10 @@ export default {
       
             let data = response.body.data;
             this.assignment(data);
+            console.log("分享1",this.shareData)
+            console.log("shareInfo",this.shareInfo)
             share(this.shareData);
+            
             this.getrecordlist();
             this.setClockUI();
             this.setBidingTip();
@@ -311,7 +314,7 @@ export default {
 
           })
           .catch(error => {
-         
+         console.log("分享")
           });
       }
     },
@@ -934,7 +937,7 @@ export default {
     top: -2rem;
     left: 0.4rem;
     z-index: 9;
-    animation: fadeout 2s linear ;
+    animation: fadeout 2.5s linear ;
 }
 
 @keyframes fadeout {
