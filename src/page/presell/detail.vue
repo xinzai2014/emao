@@ -113,7 +113,7 @@
             <section class="car-reserve-btn">
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
                 <div class="bottom-btn-box">
-                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
+                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" >
                         <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
                     </div>
                     <div class="bottom-btn bottom-btn-right">
@@ -244,6 +244,7 @@ export default {
   name: "presellDetails",
   data() {
     return {
+      url: '',
       financingCarUrl: '', // 点击融资购车跳转表单页面
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
@@ -424,7 +425,7 @@ export default {
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        url: window.url // 要打开的链接
+        url: this.url // 要打开的链接
       };
       this.tcmApp(obj);
     },
@@ -509,9 +510,12 @@ export default {
             params: params
         }).then(function(response) {
             let data = response.body.data;
-            window.token = this.$route.query.token;
-            window.financingCarUrl = data.financingCarUrl;
-            window.url = encodeURI(window.financingCarUrl) + '&token=' + window.token;
+            var tokenData = this.$route.query.token;
+            console.log('限时抢购页面token', tokenData)
+            this.financingCarUrl = data.financingCarUrl;
+            console.log('限时抢购页面路径', this.financingCarUrl)
+            this.url = encodeURI(this.financingCarUrl);
+            console.log("this.url======", this.url)
             this.presellData = data;
             this.circular = data.circular;
             this.preSaleData = data.preSale;
