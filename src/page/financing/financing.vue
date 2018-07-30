@@ -201,7 +201,7 @@ export default {
         },
         // token获取，页面初始化数据
         getData () {
-            var token = this.$route.query.token;
+            //var token = this.$route.query.token;
             console.log("初始化数据token")
             console.log(typeof token)
             if (this.$route.query.color == '') {
@@ -225,7 +225,7 @@ export default {
                 url:"dealerInfo/info",
                 method:"GET",
                 params:{
-                    token: token,
+                    token:this.$route.query.token
                 }
             }).then(function (response) {
                 this.id = response.data.data.id

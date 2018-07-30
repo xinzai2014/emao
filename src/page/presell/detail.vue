@@ -514,7 +514,7 @@ export default {
             console.log('限时抢购页面token', tokenData)
             this.financingCarUrl = data.financingCarUrl;
             console.log('限时抢购页面路径', this.financingCarUrl)
-            this.url = encodeURI(this.financingCarUrl) + '&token=' + tokenData;
+            this.url = encodeURI(this.financingCarUrl);
             console.log("this.url======", this.url)
             this.presellData = data;
             this.circular = data.circular;
@@ -535,10 +535,7 @@ export default {
     },
     // 点击融资购车按钮，跳转至融资购车表单页面
     gofinancing () {
-        // this.windowOpen()
-        var token = this.$route.query.token;
-        // console.log('限时抢购页面融资购车按钮点击获取token', token)
-        window.location.href = encodeURI(this.financingCarUrl) + '&token=' + token
+        this.windowOpen()
     },
     twoDetial (x) {
         let f = parseFloat(x)
