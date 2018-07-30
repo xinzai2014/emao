@@ -113,7 +113,7 @@
             <section class="car-reserve-btn">
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
                 <div class="bottom-btn-box">
-                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
+                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" >
                         <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
                     </div>
                     <div class="bottom-btn bottom-btn-right">
@@ -510,11 +510,11 @@ export default {
             params: params
         }).then(function(response) {
             let data = response.body.data;
-            var token = this.$route.query.token;
-            console.log('限时抢购页面token', token)
+            var tokenData = this.$route.query.token;
+            console.log('限时抢购页面token', tokenData)
             this.financingCarUrl = data.financingCarUrl;
             console.log('限时抢购页面路径', this.financingCarUrl)
-            this.url = encodeURI(this.financingCarUrl) + '&token=' + token;
+            this.url = encodeURI(this.financingCarUrl + '&token=' + tokenData);
             console.log("this.url======", this.url)
             this.presellData = data;
             this.circular = data.circular;
