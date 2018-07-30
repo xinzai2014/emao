@@ -425,7 +425,7 @@ export default {
     windowOpen() {
       var obj = {
         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-        url: window.url // 要打开的链接
+        url: this.url // 要打开的链接
       };
       this.tcmApp(obj);
     },
