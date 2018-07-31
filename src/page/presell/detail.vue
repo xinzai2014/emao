@@ -114,7 +114,7 @@
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
                 <div class="bottom-btn-box">
                     <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
-                        <div class="car-presell-present-disabled color" @click="gofinancing">融资购车</div>
+                        <div class="car-presell-present-disabled color" @click="gofinancing">融资采车</div>
                     </div>
                     <div class="bottom-btn bottom-btn-right">
                         <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
