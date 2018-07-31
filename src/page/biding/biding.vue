@@ -53,7 +53,7 @@
         </li>
         <li class="car-money">
           <span class="left">保证金</span>
-          <span class="right">￥{{deposit}}</span>
+          <span class="right">{{deposit}}元</span>
         </li>
         <li class="car-range">
           <span class="left">可售范围</span>
@@ -560,7 +560,12 @@ export default {
               this.isClockShow = false;
             }
             // 倒计时更新触发的操作写在这里
-            this.bidingTipTime = `${update[1]}天${update[2]}小时${update[3]}分${update[4]}秒结束`;
+             if (update[1] === "00" ){
+                this.bidingTipTime = `${update[2]}小时${update[3]}分${update[4]}秒结束`;
+             }else{
+               this.bidingTipTime = `${update[1]}天${update[2]}小时${update[3]}分${update[4]}秒结束`;
+             }
+            
           },
           end => {
             // 倒计时结束触发的操作写在这里
@@ -711,7 +716,7 @@ export default {
           this.popupState = false;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
           //加价成功后重新对竞拍记录赋值
-          
+
           this.bidderRecord =(res.body.data.bidderRecord&& res.body.data.bidderRecord!==[])?res.body.data.bidderRecord:this.bidderRecord;           
           let len = this.bidderRecord.length
           if (len > 5) {
@@ -932,7 +937,7 @@ export default {
 
 /* 小喇叭样式 */
 .notice {
-    height: 1rem;
+    height: 0.85rem;
     font-size: 0.4rem;
     vertical-align: center;
     color: #fff;
@@ -949,7 +954,7 @@ export default {
   0%{
      background: rgba(0, 0, 0, 0.7);
     top: 0.4rem;
-    display: block;
+   
   }
   25% {
     background: rgba(0, 0, 0, 0.5);
