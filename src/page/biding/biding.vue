@@ -710,6 +710,13 @@ export default {
           this.currentPrice=res.body.data.currentPrice
           this.popupState = false;
           this.myAddPrice=this.increasePrice;//加价成功我的加价重置
+          //加价成功后重新对竞拍记录赋值
+          
+          this.bidderRecord =(res.body.data.bidderRecord&& res.body.data.bidderRecord!==[])?res.body.data.bidderRecord:this.bidderRecord;           
+          let len = this.bidderRecord.length
+          if (len > 5) {
+            this.bidderRecord = this.bidderRecord.slice(0,5)
+          }
 
         })
         .catch(error => {
