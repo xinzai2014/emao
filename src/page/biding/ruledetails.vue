@@ -14,7 +14,7 @@
         </div>
         <div class="list_item">
             <p class="item_title">3.保证金的扣除</p>
-            <div class="item_cont">1.在竞拍成功之时起的3天内未按照成交价格支付商品货款的；</div>
+            <div class="item_cont">在竞拍成功之时起的3天内未按照成交价格支付商品货款的。</div>
         </div>
     </div>
 </template>
