@@ -5,7 +5,7 @@
     </keep-alive>
     <div id="financing" @touchmove="cancelkey">
         <div class="tip">
-            <p class="tip-p">申请融资购车，完善以下信息</p>
+            <p class="tip-p">申请融资采车，完善以下信息</p>
             <span>带<span class="red">*</span>为必填项</span>
         </div>
         <div class="form-box">
