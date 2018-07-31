@@ -48,11 +48,11 @@
     <section class="car-data">
       <ul>
         <li class="car-num">
-          <span class="left">台数 :</span>
+          <span class="left">台 &nbsp;&nbsp;&nbsp;&nbsp; 数 :</span>
           <span class="right">{{platformNum}}</span>
         </li>
         <li class="car-money">
-          <span class="left">保证金 :</span>
+          <span class="left">保&nbsp;&nbsp;证&nbsp;金 :</span>
           <span class="right">￥{{deposit}}</span>
         </li>
         <li class="car-range">
