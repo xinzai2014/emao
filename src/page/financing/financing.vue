@@ -406,7 +406,7 @@ export default {
                 "price": this.financingInfo.money
             }
             var params = {
-                zt_name: "融资购车",
+                zt_name: "融资采车",
                 zt_id: "246",
                 name: this.financingInfo.name,
                 phone: this.financingInfo.phone,
@@ -445,7 +445,7 @@ export default {
         }
     },
     created () {
-        document.title = "融资购车"
+        document.title = "融资采车"
         this.getData()
         this.hideShareButton()
         this.addFn('5')
