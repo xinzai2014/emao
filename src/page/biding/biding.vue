@@ -48,27 +48,27 @@
     <section class="car-data">
       <ul>
         <li class="car-num">
-          <span class="left">台数</span>
+          <span class="left">台 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 数 :</span>
           <span class="right">{{platformNum}}</span>
         </li>
         <li class="car-money">
-          <span class="left">保证金</span>
-          <span class="right">{{deposit}}元</span>
+          <span class="left">保&nbsp;&nbsp;证&nbsp;金：</span>
+          <span class="right">￥{{deposit}}</span>
         </li>
         <li class="car-range">
-          <span class="left">可售范围</span>
+          <span class="left">可售范围 :</span>
           <span class="right">{{saleArea}}</span>
         </li>
         <li class="car-place">
-          <span class="left">提车地点</span>
+          <span class="left">提车地点 :</span>
           <span class="right">{{packUpPlace}}</span>
         </li>
         <li class="car-date">
-          <span class="left">生产日期</span>
+          <span class="left">生产日期 :</span>
           <span class="right">{{produceTime}}</span>
         </li>
         <li>
-          <span class="left">车身颜色</span>
+          <span class="left">车身颜色 :</span>
           <span class="right">{{carColor}}</span>
         </li>
       </ul>
@@ -318,7 +318,7 @@ export default {
     //data赋值
     assignment(data){
            if (data) {
-        
+      
         this.sowingMap = data.sowingMap; //轮播图
         if(this.sowingMap.length){
           for (var i = 0; i < this.sowingMap.length; i++) {
@@ -1161,19 +1161,21 @@ export default {
 .car-data ul li {
   overflow: hidden;
   padding: 0.133rem;
+  display: flex
 }
 .car-data ul li span {
-  width: 45%;
   float: left;
   font-size: 0.34667rem;
-
-  margin-left: 5%;
 }
 .car-data ul li .left {
+  margin-left: 3%;
   color: #999;
+  width: 25%;
 }
 .car-data ul li .right {
   color: #000;
+  flex: 1;
+  text-align: left;
 }
 .rulebond,
 .record {
