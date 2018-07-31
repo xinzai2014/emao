@@ -435,8 +435,9 @@ export default {
                     var extendType = this.$route.query.extendType
                     var autoId = this.$route.query.autoId
                     this.url = "https://tcm.m.emao.com/#/financing/subsuccess?token=" + token + "&extendType=" + extendType + "&autoId=" + autoId  + "&extend=" + extend
+                    window.location.href = this.url
                     // this.windowOpen()
-                    this.$router.push({path: '/financing/subsuccess', query: {token: token, extendType: extendType, autoId: autoId, extend: extend}}); //跳转提交成功页面
+                    // this.$router.push({path: '/financing/subsuccess', query: {token: token, extendType: extendType, autoId: autoId, extend: extend}}); //跳转提交成功页面
                 }
             }).catch(function (error) {
                 console.log(error)
