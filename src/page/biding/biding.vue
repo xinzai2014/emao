@@ -937,7 +937,7 @@ export default {
 
 /* 小喇叭样式 */
 .notice {
-    height: 1rem;
+    height: 0.85rem;
     font-size: 0.4rem;
     vertical-align: center;
     color: #fff;
@@ -954,7 +954,7 @@ export default {
   0%{
      background: rgba(0, 0, 0, 0.7);
     top: 0.4rem;
-    display: block;
+   
   }
   25% {
     background: rgba(0, 0, 0, 0.5);
