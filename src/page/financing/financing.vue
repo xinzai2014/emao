@@ -1,5 +1,6 @@
 <template>
 <div>
+    <button @click="buycar">融资购车专题</button>
     <keep-alive>
         <city  v-show="showCity" @closeCity="closeDialogCity" :token="tokenData" :defaultCityData="defaultCityData" :showCity="showCity"></city>
     </keep-alive>
@@ -138,6 +139,9 @@ export default {
         }
     },
     methods: {
+        buycar(){
+
+        },
         /*向App传值*/
         tcmApp(obj) {
             //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
@@ -161,7 +165,8 @@ export default {
         windowOpen() {
             var obj = {
                 actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-                url: this.url // 要打开的链接
+                // url: this.url // 要打开的链接
+                url: 'emaotaochemao://push/Customer?userName=""&phone=""&nickName=""&headImage=""'
             };
             this.tcmApp(obj);
         },
