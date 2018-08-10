@@ -4,11 +4,5 @@
   </div>
 </template>
 <script>
-export default {
-  name: "animation",
-  data() {
-    return{
 
-    }
-  }}
 </script> 
