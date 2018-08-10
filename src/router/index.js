@@ -609,7 +609,7 @@ var router=new Router({
             component:subsuccess
         } ,
         {
-            path:'/animation',     //融资购车提交成功
+            path:'/animation',     //融资
             name:'animation',
             component:animation
         } 
