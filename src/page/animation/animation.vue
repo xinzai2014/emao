@@ -87,23 +87,20 @@ width:3.62667rem;
 height: 1.97333rem;
 top: 4.4rem;
 left:.77333rem;
-animation:height 3s linear;
+animation:height 1s linear;
 }
 @keyframes height {
   0%{  
-   left:-5rem; 
+   top:6.8rem;
+   left:4rem;
+   width:0;
+   height: 0;
   }
- 25%{
-   left:-3rem
- }
- 50%{
-   left:-1rem
- }
- 75%{
-  left:0;
- }
 100% {
-   left:.77333rem;
+  width:3.62667rem;
+  height: 1.97333rem;
+  top: 4.4rem;
+  left:.77333rem;
   }
   }
 .quick{
@@ -111,23 +108,20 @@ width: 4.17333rem;
 height: 1.76rem;
 top:9.93333rem;
 right:.18667rem;
-animation:quick 3s linear;
+animation:quick 1.5s linear;
 }
 @keyframes quick {
   0%{  
-   right:-5rem; 
+   top:11rem;
+   right:1rem;
+   width:0;
+   height:0;
   }
- 25%{
-   right:-3rem
- }
- 50%{
-   right:-1rem
- }
- 75%{
-  right:0;
- }
 100% {
-   right:.18667rem;
+  top:9.93333rem;
+  right:.18667rem;
+  width: 4.17333rem;
+  height: 1.76rem;
   }
   }
 
@@ -136,23 +130,19 @@ width: 3.05333rem;
 height: 1.57333rem;
 left: .70667rem;
 top:15.12rem;
-animation:low 3s linear;
+animation:low 2s linear;
 }
 @keyframes low {
   0%{  
-   left:-5rem; 
+   width:0;
+   height:0;
   }
- 25%{
-   left:-3rem
- }
- 50%{
-   left:-1rem
- }
- 75%{
-  left:0;
- }
+ 
 100% {
-   left:.70667rem;
+   width: 3.05333rem;
+  height: 1.57333rem;
+  left: .70667rem;
+  top:15.12rem;
   }
 }
 .smart{
@@ -160,23 +150,19 @@ width: 3.33333rem;
 height: 2.12rem;
 right: .66667rem;
 top:16.88rem;
-animation:smart 3s linear;
+animation:smart 2s linear;
 }
 @keyframes smart {
   0%{  
-   right:-5rem; 
+   width:0;
+   height:0;
   }
- 25%{
-   right:-3rem
- }
- 50%{
-   right:-1rem
- }
- 75%{
-  right:0;
- }
+ 
 100% {
-   right:.18667rem;
+  width: 3.33333rem;
+  height: 2.12rem;
+  right: .66667rem;
+  top:16.88rem;
   }
 }
 .gold{
