@@ -174,6 +174,7 @@ const recordlist = r => require.ensure([],() => r(require('../page/biding/record
 //融资购车页面
 const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
 const subsuccess = r => require.ensure([], () => r(require('../page/financing/subsuccess')), 'subsuccess')
+const animation = r => require.ensure([], () => r(require('../page/animation/animation')), 'animation')
 
 Vue.use(Router)
 
@@ -606,6 +607,11 @@ var router=new Router({
             path:'/financing/subsuccess',     //融资购车提交成功
             name:'subsuccess',
             component:subsuccess
+        } ,
+        {
+            path:'/animation',     //融资购车提交成功
+            name:'animation',
+            component:animation
         } 
     ]
 })
