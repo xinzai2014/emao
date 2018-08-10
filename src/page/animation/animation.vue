@@ -90,7 +90,7 @@ width: 4.17333rem;
 height: 1.76rem;
 top:9.93333rem;
 right:.18667rem;
-animation:quick 1.5s linear;
+animation:quick 1s linear;
 }
 @keyframes quick {
   0%{  
@@ -112,12 +112,14 @@ width: 3.05333rem;
 height: 1.57333rem;
 left: .70667rem;
 top:15.12rem;
-animation:low 2s linear;
+animation:low 1s linear;
 }
 @keyframes low {
   0%{  
    width:0;
    height:0;
+   left: 3.5rem;
+   top:16.3rem;
   }
  
 100% {
@@ -138,6 +140,8 @@ animation:smart 2s linear;
   0%{  
    width:0;
    height:0;
+   right: 3rem;
+   top:19rem;
   }
  
 100% {
@@ -157,15 +161,15 @@ animation:smart 2s linear;
 }
 @keyframes gold {
   0%{  
-   opacity: 1;
+    top:4.6rem;
   }
  
  50%{
-  opacity:0.5;
+   top:4.3rem;
  }
  
 100% {
-   opacity: 1;
+    top:4.6rem;
   }
 }
 .light{
@@ -178,15 +182,15 @@ animation:smart 2s linear;
 }
 @keyframes light {
   0%{  
-   opacity: 1;
+   top:9.55rem;
   }
  
  50%{
-  opacity:0.5;
+  top:9.3rem;
  }
  
 100% {
-   opacity: 1;
+  top:9.55rem;
   }
 }
 .air{
@@ -203,7 +207,7 @@ animation:smart 2s linear;
   }
  
  50%{
- top:21.6rem;
+ top:22rem;
  }
  
 100% {
