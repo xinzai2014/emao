@@ -32,9 +32,6 @@ export default {
     },
     methods:{
       call(){
-         console.log(this.$route.query.token)
-        console.log(this.$route.query)
-        console.log(JSON.stringify(this.$route.query))
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
         method: "POST",
@@ -45,7 +42,7 @@ export default {
         }
       })
         .then(function(res) {
-         console.log("咨询客服按钮")
+        
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
         })
