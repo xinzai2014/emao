@@ -79,14 +79,23 @@ export default {
   top: 0;
   left: 0;
   animation:backg 3s linear infinite;
+  opacity: 0;
 }
 @keyframes backg {
   0%{  
-   opacity: 0.5;
+   opacity: 0.3;
   }
-
+  25%{
+   opacity: 0.5; 
+  }
+50%{
+  opacity: 0.8;
+}
+75%{
+  opacity: 1;
+}
 100% {
-   opacity: 1;
+   opacity: 0.5;
   }
 }
 .animation .people1{
