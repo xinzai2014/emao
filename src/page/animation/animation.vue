@@ -1,6 +1,7 @@
 <template>
 <div class="animation">
   <img src="./images/animation.png" alt="" class="background">
+  <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
     <img src="./images/height.png" alt="" class="height">
     <img src="./images/quick.png" alt="" class="quick">
@@ -31,15 +32,33 @@ export default {
     },
     methods:{
       call(){
-       window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
+        this.$http({
+        url: "https://tcmapi.emao.com/statistics/service/online",
+        method: "POST",
+        params: {
+          token:this.$route.query.token,
+          place:"animation",
+          extra:JSON.stringify(JSON.parse(this.$route.query))
+        }
+      })
+        .then(function(res) {
+         console.log("咨询客服按钮")
+         window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
+      
+        })
+        .catch(error => {
+         console.log(error)
+        });
+       
       },
       apply(){
-        this.$router.push({path: "/financing"})
+        this.$router.push({path: "/financing",query:{...this.$route.query}})
       }
 
     },
     created(){
       document.title="融资购车";
+     
 
     }
 }
@@ -51,6 +70,22 @@ export default {
 }
 .animation .background{
   width: 100%
+}
+.animation .backg{
+  width: 100%;
+  position:absolute;
+  top: 0;
+  left: 0;
+  animation:backg 3s linear infinite;
+}
+@keyframes backg {
+  0%{  
+   opacity: 0.5;
+  }
+
+100% {
+   opacity: 1;
+  }
 }
 .animation .people1{
   width: .53333rem;
@@ -134,7 +169,7 @@ width: 3.33333rem;
 height: 2.12rem;
 right: .66667rem;
 top:16.88rem;
-animation:smart 2s linear;
+animation:smart 1s linear;
 }
 @keyframes smart {
   0%{  
