@@ -32,6 +32,7 @@ export default {
     },
     methods:{
       call(){
+        console.log(this.$route.query.token)
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
         method: "POST",
