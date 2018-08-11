@@ -69,6 +69,7 @@ export default {
 .animation{
   width:100%;
   position: relative;
+  padding-bottom:  1.06667rem;
 }
 .animation .background{
   width: 100%
@@ -261,8 +262,11 @@ animation:smart 1s linear;
   }
 }
 .button{
+  width: 100%;
   display: flex;
   height: 1.06667rem;
+  position: fixed;
+  bottom: 0;
 
 
 }
