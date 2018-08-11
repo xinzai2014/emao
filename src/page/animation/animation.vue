@@ -32,24 +32,26 @@ export default {
     },
     methods:{
       call(){
-        
-      //   this.$http({
-      //   url: "https://tcmapi.emao.com/statistics/service/online",
-      //   method: "POST",
-      //   params: {
-      //     token:this.$route.query.token,
-      //     place:"animation",
-      //     extra:JSON.stringify(JSON.parse(this.$route.query))
-      //   }
-      // })
-      //   .then(function(res) {
-      //    console.log("咨询客服按钮")
+         console.log(this.$route.query.token)
+        console.log(this.$route.query)
+        console.log(JSON.stringify(this.$route.query))
+        this.$http({
+        url: "https://tcmapi.emao.com/statistics/service/online",
+        method: "POST",
+        params: {
+          token:this.$route.query.token,
+          place:"animation",
+          extra:JSON.stringify(this.$route.query)
+        }
+      })
+        .then(function(res) {
+         console.log("咨询客服按钮")
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
-        // })
-        // .catch(error => {
-        //  console.log(error)
-        // });
+        })
+        .catch(error => {
+         console.log(error)
+        });
        
       },
       apply(){
@@ -59,10 +61,6 @@ export default {
     },
     created(){
       document.title="融资购车";
-      console.log(this.$route.query.token)
-        console.log(this.$route.query)
-        JSON.stringify(this.$route.query)
-     
 
     }
 }
