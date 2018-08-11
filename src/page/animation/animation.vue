@@ -49,9 +49,9 @@ export default {
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
         // })
-        .catch(error => {
-         console.log(error)
-        });
+        // .catch(error => {
+        //  console.log(error)
+        // });
        
       },
       apply(){
