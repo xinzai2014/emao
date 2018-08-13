@@ -57,7 +57,7 @@ export default {
 
     },
     created(){
-      document.title="融资购车";
+      document.title="融资采车";
 
     }
 }
