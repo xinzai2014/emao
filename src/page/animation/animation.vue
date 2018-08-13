@@ -43,9 +43,12 @@ export default {
             }
         },
         windowOpen() {
-
+      
          let financing=window.location.href.replace(/animation/,function(){
             return "financing"
+          })
+          financing=financing.replace(/token=\w+/,function(){
+            return ""
           })
          
             var obj = {
