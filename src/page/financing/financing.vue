@@ -367,7 +367,7 @@ export default {
             }
             console.log('extend', extend)
             var params = {
-                token: token,
+                // token: token,
                 openPage: '1',
                 autoId: autoId,
                 extend: extend,
@@ -445,7 +445,6 @@ export default {
         }
     },
     created () {
-        console.log(2,window.location.href)
         document.title = "融资采车"
         this.getData()
         this.hideShareButton()
