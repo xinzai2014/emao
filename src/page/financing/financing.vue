@@ -367,7 +367,7 @@ export default {
             }
             console.log('extend', extend)
             var params = {
-                // token: token,
+                token: token,
                 openPage: '1',
                 autoId: autoId,
                 extend: extend,
