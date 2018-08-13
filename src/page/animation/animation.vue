@@ -75,8 +75,8 @@ export default {
        
       },
       apply(){
-        this.$router.push({path: "/financing",query:{...this.$route.query}})
-        // this.windowOpen()
+        // this.$router.push({path: "/financing",query:{...this.$route.query}})
+        this.windowOpen()
       }
 
     },
