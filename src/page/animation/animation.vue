@@ -4,14 +4,14 @@
   <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
     <div class="height">
-      <p style="font-weight:900 font-size:0.3733rem">额度高</p>
+      <p style="font-weight:900;font-size:0.3733rem">额度高</p>
       <p style="font-size:0.32rem">额度最高可破亿</p>
       <p style="font-size:0.32rem">资金稳定有保障</p>
     </div>
     <!-- <img src="./images/height.png" alt="" class="height"> -->
     <!-- <img src="./images/quick.png" alt="" class="quick"> -->
     <div class="quick">
-      <p style="font-weight:900 font-size:0.3733rem">放款快</p>
+      <p style="font-weight:900;font-size:0.3733rem">放款快</p>
       <p style="font-size:0.32rem">车辆入库后</p>
       <p style="font-size:0.32rem">最快30分钟即可放款</p>
     </div>
