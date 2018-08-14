@@ -3,8 +3,18 @@
   <img src="./images/animation.png" alt="" class="background">
   <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
-    <img src="./images/height.png" alt="" class="height">
-    <img src="./images/quick.png" alt="" class="quick">
+    <div class="height">
+      <p style="font-weight:900">额度高</p>
+      <p>额度最高可破亿</p>
+      <p>资金稳定有保障</p>
+    </div>
+    <!-- <img src="./images/height.png" alt="" class="height"> -->
+    <!-- <img src="./images/quick.png" alt="" class="quick"> -->
+    <div class="quick">
+      <p style="font-weight:900">放款快</p>
+      <p>车辆入库后</p>
+      <p>最快30分钟即可放款</p>
+    </div>
     <img src="./images/low.png" alt="" class="low">
     <img src="./images/smart.png" alt="" class="smart">
     <img src="./images/gold.png" alt="" class="gold">
@@ -127,10 +137,15 @@ export default {
   position: absolute;
 }
 .height{
+position: absolute;
 width:3.62667rem;
 height: 1.97333rem;
 top: 4.4rem;
 left:.77333rem;
+padding: .17333rem 0 .13333rem .4rem;
+background: url("./images/height.png") no-repeat ;
+background-size: 3.62667rem 1.97333rem;
+background-origin:border-box;
 animation:height 1s linear;
 }
 @keyframes height {
@@ -139,19 +154,33 @@ animation:height 1s linear;
    left:4rem;
    width:0;
    height: 0;
+   color: transparent;
+  }
+  98%{
+    color: transparent;
   }
 100% {
   width:3.62667rem;
   height: 1.97333rem;
   top: 4.4rem;
   left:.77333rem;
+  color: black
   }
+  }
+  .quick p{
+    padding-left: .8rem; 
   }
 .quick{
 width: 4.17333rem;
 height: 1.76rem;
 top:9.93333rem;
 right:.18667rem;
+position: absolute;
+padding-top: .15333rem;
+color: black;
+background: url("./images/quick.png") no-repeat ;
+background-size: 4.17333rem  1.76rem;
+background-origin:border-box;
 animation:quick 1s linear;
 }
 @keyframes quick {
@@ -160,6 +189,10 @@ animation:quick 1s linear;
    right:5rem;
    width:0;
    height:0;
+   color: transparent;
+  }
+  98%{
+    color: transparent;
   }
 100% {
   top:9.93333rem;
