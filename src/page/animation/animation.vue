@@ -1,5 +1,5 @@
 <template>
-<div class="animation">
+<div class="animation" v-show="show">
   <img src="./images/animation.png" alt="" class="background">
   <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
@@ -34,7 +34,8 @@ export default {
   name: "animation",
   data() {
     return{
-
+        i:0,
+        show:false
     }
   },
   computed:{
@@ -68,6 +69,10 @@ export default {
             this.tcmApp(obj);
         },
       call(){
+        this.i++;
+        if(this.i!==2){
+          return;
+        }
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
         method: "POST",
@@ -78,7 +83,7 @@ export default {
         }
       })
         .then(function(res) {
-        
+        this.i=1;
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
         })
@@ -96,6 +101,11 @@ export default {
     created(){
       document.title="融资采车";
 
+    },
+    mounted(){
+      setTimeout(()=>{
+        this.show=true;
+      },1500)
     }
 }
 </script>
@@ -155,6 +165,7 @@ animation:height 1s linear;
    width:0;
    height: 0;
    color: transparent;
+   background-size:0 0;
   }
   98%{
     color: transparent;
@@ -164,7 +175,8 @@ animation:height 1s linear;
   height: 1.97333rem;
   top: 4.4rem;
   left:.77333rem;
-  color: black
+  color: black;
+  background-size: 3.62667rem 1.97333rem;
   }
   }
   .quick p{
@@ -190,6 +202,7 @@ animation:quick 1s linear;
    width:0;
    height:0;
    color: transparent;
+   background-size:0 0;
   }
   98%{
     color: transparent;
@@ -199,6 +212,7 @@ animation:quick 1s linear;
   right:.18667rem;
   width: 4.17333rem;
   height: 1.76rem;
+  background-size: 4.17333rem  1.76rem;
   }
   }
 
