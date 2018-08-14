@@ -4,16 +4,16 @@
   <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
     <div class="height">
-      <p style="font-weight:900">额度高</p>
-      <p>额度最高可破亿</p>
-      <p>资金稳定有保障</p>
+      <p style="font-weight:900 font-size:0.3733rem">额度高</p>
+      <p style="font-size:0.32rem">额度最高可破亿</p>
+      <p style="font-size:0.32rem">资金稳定有保障</p>
     </div>
     <!-- <img src="./images/height.png" alt="" class="height"> -->
     <!-- <img src="./images/quick.png" alt="" class="quick"> -->
     <div class="quick">
-      <p style="font-weight:900">放款快</p>
-      <p>车辆入库后</p>
-      <p>最快30分钟即可放款</p>
+      <p style="font-weight:900 font-size:0.3733rem">放款快</p>
+      <p style="font-size:0.32rem">车辆入库后</p>
+      <p style="font-size:0.32rem">最快30分钟即可放款</p>
     </div>
     <img src="./images/low.png" alt="" class="low">
     <img src="./images/smart.png" alt="" class="smart">
@@ -83,7 +83,6 @@ export default {
         }
       })
         .then(function(res) {
-        this.i=1;
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
         })
@@ -121,7 +120,7 @@ export default {
 .animation .backg{
   width: 100%;
   position:absolute;
-  top: 0;
+  top: 0 ;
   left: 0;
   animation:backg 3s linear infinite;
   opacity: 0;
@@ -152,7 +151,8 @@ width:3.62667rem;
 height: 1.97333rem;
 top: 4.4rem;
 left:.77333rem;
-padding: .17333rem 0 .13333rem .4rem;
+color: black;
+padding: .15rem 0 .13333rem .3rem;
 background: url("./images/height.png") no-repeat ;
 background-size: 3.62667rem 1.97333rem;
 background-origin:border-box;
