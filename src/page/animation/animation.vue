@@ -86,9 +86,11 @@ export default {
         .then(function(res) {
         this.timer=setTimeout(()=>{
           window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
-                   this.timer="";
+                   
         },0)
-         
+         setTimeout(()=>{
+           this.timer="";
+         },1000)
       
         })
         .catch(error => {
