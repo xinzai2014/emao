@@ -70,7 +70,10 @@ export default {
         },
       call(){
        
-       if(this.timer){clearTimeout(this.timer)}
+       if(this.timer){clearTimeout(this.timer) 
+        
+       return 
+       }
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
         method: "POST",
@@ -83,6 +86,7 @@ export default {
         .then(function(res) {
         this.timer=setTimeout(()=>{
           window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
+                   this.timer="";
         },0)
          
       
