@@ -3,20 +3,33 @@
   <img src="./images/animation.png" alt="" class="background">
   <img src="./images/background.png" alt="" class="backg">
   <div class="alert">
-    <div class="height">
-      <p style="font-weight:900;font-size:0.3733rem">额度高</p>
-      <p style="font-size:0.32rem">额度最高可破亿</p>
-      <p style="font-size:0.32rem">资金稳定有保障</p>
+    <div id="height" >
+      <div class="height opcity">
+        <p class="title">额度高</p>
+      <p class="content" >额度最高可破亿</p>
+      <p class="content" >资金稳定有保障</p>
+      </div>
     </div>
-    <!-- <img src="./images/height.png" alt="" class="height"> -->
-    <!-- <img src="./images/quick.png" alt="" class="quick"> -->
-    <div class="quick">
-      <p style="font-weight:900;font-size:0.3733rem">放款快</p>
-      <p style="font-size:0.32rem">车辆入库后</p>
-      <p style="font-size:0.32rem">最快30分钟即可放款</p>
+    <div id="quick">
+      <div class="quick opcity">
+      <p class="title" >放款快</p>
+      <p class="content" >车辆入库后</p>
+      <p class="content" >最快30分钟即可放款</p>
     </div>
-    <img src="./images/low.png" alt="" class="low">
-    <img src="./images/smart.png" alt="" class="smart">
+    </div>
+    <div id="low">
+      <div class="low opcity" >
+      <p  class="title" style="padding-top:.1433rem; padding-left:.15rem">费率低</p>
+      <p class="content" style="padding-left:.15rem">费率低至万三</p>
+    </div>
+    </div>
+     <div id="smart">
+       <div class="smart opcity">
+      <p class="title" style="padding-top:.17rem;padding-left:.19rem">智能仓储</p>
+      <p class="content" style="padding-left:.19rem">24小时智能监管</p>
+      <p class="content" style="padding-left:.19rem">车辆安全有保障</p>
+    </div>
+     </div>
     <img src="./images/gold.png" alt="" class="gold">
     <img src="./images/light.png" alt="" class="light">
     <img src="./images/air.png" alt="" class="air">
@@ -124,6 +137,16 @@ export default {
 .animation .background{
   width: 100%
 }
+.alert .title{
+  font-weight:900;
+  font-size:0.3733rem;
+  color: #202020;
+  margin-bottom: .05rem;
+}
+.alert .content{
+  font-size:0.32rem;
+  color: #4d4d4d;
+}
 .animation .backg{
   width: 100%;
   position:absolute;
@@ -149,22 +172,18 @@ export default {
    opacity: 0.5;
   }
 }
-.alert img{
-  position: absolute;
-}
-.height{
+#height{
 position: absolute;
 width:3.62667rem;
 height: 1.97333rem;
 line-height: .44rem;
 top: 4.4rem;
 left:.77333rem;
-color: black;
-padding: .14rem 0 .14rem .3rem;
+padding: .15rem 0 .14rem .3rem;
 background: url("./images/height.png") no-repeat ;
 background-size: 3.62667rem 1.97333rem;
 background-origin:border-box;
-animation:height 1s linear;
+animation:height .5s linear;
 }
 @keyframes height {
   0%{  
@@ -172,37 +191,49 @@ animation:height 1s linear;
    left:4rem;
    width:0;
    height: 0;
-   color: transparent;
    background-size:0 0;
-  }
-  98%{
-    color: transparent;
   }
 100% {
   width:3.62667rem;
   height: 1.97333rem;
   top: 4.4rem;
   left:.77333rem;
-  color: black;
   background-size: 3.62667rem 1.97333rem;
   }
   }
-  .quick p{
+
+.opcity{
+  animation:opcity .8s linear;
+}
+@keyframes opcity {
+  0%{ 
+  opacity: 0;
+}
+50%{
+  opacity: 0;
+}
+75%{
+  opacity: .5;
+}
+100%{
+  opacity: 1;
+}
+}
+.quick p{
     padding-left: .8rem; 
   }
-.quick{
+#quick{
 width: 4.17333rem;
 height: 1.76rem;
 top:9.93333rem;
 right:.18667rem;
 line-height: .44rem;
 position: absolute;
-padding-top: .15333rem;
-color: black;
+padding-top: .1433rem;
 background: url("./images/quick.png") no-repeat ;
 background-size: 4.17333rem  1.76rem;
 background-origin:border-box;
-animation:quick 1s linear;
+animation:quick .5s linear;
 }
 @keyframes quick {
   0%{  
@@ -210,11 +241,7 @@ animation:quick 1s linear;
    right:5rem;
    width:0;
    height:0;
-   color: transparent;
    background-size:0 0;
-  }
-  98%{
-    color: transparent;
   }
 100% {
   top:9.93333rem;
@@ -225,34 +252,48 @@ animation:quick 1s linear;
   }
   }
 
-.low{
+#low{
 width: 3.05333rem;
 height: 1.57333rem;
 left: .70667rem;
 top:15.12rem;
-animation:low 1s linear;
+line-height: .44rem;
+position: absolute;
+background: url("./images/low.png") no-repeat ;
+background-size: 3.05333rem  1.57333rem;
+background-origin:border-box;
+animation:low .5s linear;
 }
+
 @keyframes low {
   0%{  
    width:0;
    height:0;
    left: 3.5rem;
    top:16.3rem;
+   background-size:0 0;
   }
- 
 100% {
    width: 3.05333rem;
   height: 1.57333rem;
   left: .70667rem;
   top:15.12rem;
+  background-size: 3.05333rem  1.57333rem;
   }
 }
-.smart{
+#smart{
 width: 3.33333rem;
 height: 2.12rem;
 right: .66667rem;
 top:16.88rem;
-animation:smart 1s linear;
+line-height: .44rem;
+position: absolute;
+position: absolute;
+background: url("./images/smart.png") no-repeat ;
+background-size: 3.33333rem  2.12rem;
+background-origin:border-box;
+animation:smart .5s linear;
+
 }
 @keyframes smart {
   0%{  
@@ -260,13 +301,14 @@ animation:smart 1s linear;
    height:0;
    right: 3rem;
    top:19rem;
+   background-size:0 0;
   }
- 
 100% {
   width: 3.33333rem;
   height: 2.12rem;
   right: .66667rem;
   top:16.88rem;
+   background-size:  3.33333rem  2.12rem;
   }
 }
 .gold{
