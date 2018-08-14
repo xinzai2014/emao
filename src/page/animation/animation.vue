@@ -183,7 +183,7 @@ padding: .15rem 0 .14rem .3rem;
 background: url("./images/height.png") no-repeat ;
 background-size: 3.62667rem 1.97333rem;
 background-origin:border-box;
-animation:height .8s linear;
+animation:height .5s linear;
 }
 @keyframes height {
   0%{  
@@ -233,7 +233,7 @@ padding-top: .1433rem;
 background: url("./images/quick.png") no-repeat ;
 background-size: 4.17333rem  1.76rem;
 background-origin:border-box;
-animation:quick .8s linear;
+animation:quick .5s linear;
 }
 @keyframes quick {
   0%{  
@@ -262,7 +262,7 @@ position: absolute;
 background: url("./images/low.png") no-repeat ;
 background-size: 3.05333rem  1.57333rem;
 background-origin:border-box;
-animation:low .8s linear;
+animation:low .5s linear;
 }
 #low .low{
   padding-left:.15rem;
@@ -294,7 +294,7 @@ position: absolute;
 background: url("./images/smart.png") no-repeat ;
 background-size: 3.33333rem  2.12rem;
 background-origin:border-box;
-animation:smart .8s linear;
+animation:smart .5s linear;
 
 }
 #smart .smart{
