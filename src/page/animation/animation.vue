@@ -183,7 +183,7 @@ padding: .15rem 0 .14rem .3rem;
 background: url("./images/height.png") no-repeat ;
 background-size: 3.62667rem 1.97333rem;
 background-origin:border-box;
-animation:height .5s linear;
+animation:height .8s linear;
 }
 @keyframes height {
   0%{  
@@ -203,7 +203,7 @@ animation:height .5s linear;
   }
 
 .opcity{
-  animation:opcity .8s linear;
+  animation:opcity 1s linear;
 }
 @keyframes opcity {
   0%{ 
@@ -233,7 +233,7 @@ padding-top: .1433rem;
 background: url("./images/quick.png") no-repeat ;
 background-size: 4.17333rem  1.76rem;
 background-origin:border-box;
-animation:quick .5s linear;
+animation:quick .8s linear;
 }
 @keyframes quick {
   0%{  
@@ -262,13 +262,10 @@ position: absolute;
 background: url("./images/low.png") no-repeat ;
 background-size: 3.05333rem  1.57333rem;
 background-origin:border-box;
-animation:low .5s linear;
+animation:low .8s linear;
 }
-/* #low .low{
-  padding-left:.15rem
-} */
-.low p{
-padding-left:15rem 
+#low .low{
+  padding-left:.15rem;
 }
 @keyframes low {
   0%{  
@@ -297,7 +294,7 @@ position: absolute;
 background: url("./images/smart.png") no-repeat ;
 background-size: 3.33333rem  2.12rem;
 background-origin:border-box;
-animation:smart .5s linear;
+animation:smart .8s linear;
 
 }
 #smart .smart{
