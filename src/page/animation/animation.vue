@@ -34,8 +34,8 @@ export default {
   name: "animation",
   data() {
     return{
-        i:0,
-        show:false
+      timer:"",
+      show:false
     }
   },
   computed:{
@@ -69,10 +69,8 @@ export default {
             this.tcmApp(obj);
         },
       call(){
-        this.i++;
-        if(this.i!==2){
-          return;
-        }
+       
+       if(this.timer){clearTimeout(this.timer)}
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
         method: "POST",
@@ -83,9 +81,10 @@ export default {
         }
       })
         .then(function(res) {
-          console.log(this.i)
-          this.i=1;
-         window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
+        this.timer=setTimeout(()=>{
+          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
+        },0)
+         
       
         })
         .catch(error => {
