@@ -19,15 +19,15 @@
     </div>
     <div id="low">
       <div class="low opcity" >
-      <p  class="title" style="padding-top:.1433rem; padding-left:.15rem">费率低</p>
-      <p class="content" style="padding-left:.15rem">费率低至万三</p>
+      <p  class="title" style="padding-top:.1433rem;">费率低</p>
+      <p class="content">费率低至万三</p>
     </div>
     </div>
      <div id="smart">
        <div class="smart opcity">
-      <p class="title" style="padding-top:.17rem;padding-left:.19rem">智能仓储</p>
-      <p class="content" style="padding-left:.19rem">24小时智能监管</p>
-      <p class="content" style="padding-left:.19rem">车辆安全有保障</p>
+      <p class="title" style="padding-top:.17rem">智能仓储</p>
+      <p class="content" >24小时智能监管</p>
+      <p class="content">车辆安全有保障</p>
     </div>
      </div>
     <img src="./images/gold.png" alt="" class="gold">
@@ -124,7 +124,7 @@ export default {
     mounted(){
       setTimeout(()=>{
         this.show=true;
-      },1000)
+      },500)
     }
 }
 </script>
@@ -219,7 +219,7 @@ animation:height .5s linear;
   opacity: 1;
 }
 }
-.quick p{
+  #quick .quick{
     padding-left: .8rem; 
   }
 #quick{
@@ -264,7 +264,12 @@ background-size: 3.05333rem  1.57333rem;
 background-origin:border-box;
 animation:low .5s linear;
 }
-
+/* #low .low{
+  padding-left:.15rem
+} */
+.low p{
+padding-left:15rem 
+}
 @keyframes low {
   0%{  
    width:0;
@@ -294,6 +299,9 @@ background-size: 3.33333rem  2.12rem;
 background-origin:border-box;
 animation:smart .5s linear;
 
+}
+#smart .smart{
+  padding-left:.19rem
 }
 @keyframes smart {
   0%{  
