@@ -83,6 +83,8 @@ export default {
         }
       })
         .then(function(res) {
+          console.log(this.i)
+          this.i=1;
          window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
       
         })
