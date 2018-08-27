@@ -1123,12 +1123,12 @@ export default {
   font-size: 0.6rem;
   color: #e51c23;
   font-weight: 700;
+  margin-right: 0.26667rem;
 }
 .infom-mid .g-price {
   font-size: 0.34667rem;
   color: #999999;
   text-decoration: line-through;
-  margin-left: 0.26667rem;
 }
 .infom-down {
 }
