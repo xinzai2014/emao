@@ -1073,7 +1073,7 @@ export default {
   padding-bottom: 1.41333rem;
 }
 .infom {
-  padding: 0.13333rem 0.3rem 0.3rem;
+  padding: 0.13333rem 0.3rem 0.15rem;
   background: #fff;
   overflow: hidden;
   display: flex;
@@ -1084,8 +1084,8 @@ export default {
   float: left;
 }
 .infom-right {
-  height: 3rem;
-  padding: 0.3rem 0.2rem 0.3rem 0.35rem;
+  /* height: 3rem; */
+  padding: 0.15rem 0.2rem 0.15rem 0.35rem;
   float: right;
   border-left: #999999 solid 0.01333rem;
 }
@@ -1107,13 +1107,13 @@ export default {
   float: left;
   font-size: 0.42667rem;
   width: 6.93333rem;
-  height: 1.33333rem;
+  /* height: 1.33333rem; */
   font-weight: 700;
   line-height: 0.66667rem;
 }
 
 .infom-mid {
-  margin-top: 0.33333rem;
+  margin-top: 0.15rem;
   margin-bottom: 0.2rem;
 }
 .infom-mid span {
