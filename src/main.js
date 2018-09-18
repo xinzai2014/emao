@@ -53,7 +53,7 @@ if(sessionStorage.apiVersion){
 	};
 }else{
 	Vue.http.headers.common = {
-		Accept: "application/json; version=3.5.0"
+		Accept: "application/json; version=3.12.0"
 	};
 }
 
