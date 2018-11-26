@@ -83,6 +83,7 @@ export default {
       // },
       // 检测用户授信申请资格
       presaleBack(data) {
+        console.log('data',data)
           var obj = {
               actionname:"checkScf",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
               data:data, //资金接口返回的json数据
@@ -131,8 +132,7 @@ export default {
         }
       })
       .then((res) =>{
-        console.log('',res)
-        // this.presaleBack(res.data)
+        this.presaleBack(res.data)
       })
       }
 
