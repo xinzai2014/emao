@@ -34,12 +34,12 @@
     <img src="./images/light.png" alt="" class="light">
     <img src="./images/air.png" alt="" class="air">
   </div>
-  
+
   <div class="button">
     <div class="left" @click="call">咨询客服</div>
     <div class="right" @click="apply">立即申请</div>
   </div>
-  
+
 </div>
 </template>
 <script>
@@ -52,40 +52,48 @@ export default {
     }
   },
   computed:{
-      
+
     },
     methods:{
-       /*向App传值*/
-        tcmApp(obj) {
-            //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
-            //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
-            //或者由服务器判断响应不同的平台脚本
-            if (navigator.userAgent.indexOf("iPhone") > 0) {
-                window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
-            } else {
-                window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
-            }
-        },
-        windowOpen() {
-      
-         let financing=window.location.href.replace(/animation/,function(){
-            return "financing"
-          })
-          financing=financing.replace(/token=\w+/,function(){
-            return ""
-          })
-         
-            var obj = {
-                actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-                url:financing // 要打开的链接  
-            };
-            this.tcmApp(obj);
+      /*向App传值*/
+      tcmApp(obj) {
+          //emaoAppObject 是 native 向 WebView 注册的用来响应 JS 消息的对象
+          //向 native 发送消息（TODO:具体使用中可根据 navigator.userAgent 中的信息来判断系统类型，在不同的系统中分别调用下面对应的代码）
+          //或者由服务器判断响应不同的平台脚本
+          if (navigator.userAgent.indexOf("iPhone") > 0) {
+              window.webkit.messageHandlers.tcmAppObject.postMessage(obj); //向 iOS 发送消息，Android 无效
+          } else {
+              window.tcmAppObject.postMessage(JSON.stringify(obj)); //向 Android 发送消息，iOS 无效
+          }
+      },
+      // windowOpen() {
+
+      //  let financing=window.location.href.replace(/animation/,function(){
+      //     return "financing"
+      //   })
+      //   financing=financing.replace(/token=\w+/,function(){
+      //     return ""
+      //   })
+
+      //     var obj = {
+      //         actionname: "windowOpen", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+      //         url:financing // 要打开的链接
+      //     };
+      //     this.tcmApp(obj);
+      // },
+      // 检测用户授信申请资格
+      presaleBack(data) {
+          var obj = {
+              actionname:"checkScf",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+              data:data, //资金接口返回的json数据
+          };
+          this.tcmApp(obj);
         },
       call(){
-       
-       if(this.timer){clearTimeout(this.timer) 
-        
-       return 
+
+       if(this.timer){clearTimeout(this.timer)
+
+       return
        }
         this.$http({
         url: "https://tcmapi.emao.com/statistics/service/online",
@@ -99,21 +107,32 @@ export default {
         .then(function(res) {
         this.timer=setTimeout(()=>{
           window.location.href='emaotaochemao://push/Customer?userName=&phone=&nickName=&headImage=&autoSourceId=&hint='
-                   
+
         },0)
          setTimeout(()=>{
            this.timer="";
          },1000)
-      
+
         })
         .catch(error => {
          console.log(error)
         });
-       
+
       },
       apply(){
         // this.$router.push({path: "/financing",query:{...this.$route.query}})
-        this.windowOpen()
+        // this.windowOpen()
+        this.$http({
+        url: "https://tcmapi.emao.com/scf/index",
+        method: "GET",
+        params: {
+          token:this.$route.query.token,
+        }
+      })
+      .then((res) =>{
+        console.log('',res)
+        this.presaleBack(res.data)
+      })
       }
 
     },
@@ -156,11 +175,11 @@ export default {
   opacity: 0;
 }
 @keyframes backg {
-  0%{  
+  0%{
    opacity: 0.3;
   }
   25%{
-   opacity: 0.5; 
+   opacity: 0.5;
   }
 50%{
   opacity: 0.8;
@@ -186,7 +205,7 @@ background-origin:border-box;
 animation:height .5s linear;
 }
 @keyframes height {
-  0%{  
+  0%{
    top:6.8rem;
    left:4rem;
    width:0;
@@ -206,7 +225,7 @@ animation:height .5s linear;
   animation:opcity 1s linear;
 }
 @keyframes opcity {
-  0%{ 
+  0%{
   opacity: 0;
 }
 50%{
@@ -220,7 +239,7 @@ animation:height .5s linear;
 }
 }
   #quick .quick{
-    padding-left: .8rem; 
+    padding-left: .8rem;
   }
 #quick{
 width: 4.17333rem;
@@ -236,7 +255,7 @@ background-origin:border-box;
 animation:quick .5s linear;
 }
 @keyframes quick {
-  0%{  
+  0%{
    top:11rem;
    right:5rem;
    width:0;
@@ -268,7 +287,7 @@ animation:low .5s linear;
   padding-left:.15rem;
 }
 @keyframes low {
-  0%{  
+  0%{
    width:0;
    height:0;
    left: 3.5rem;
@@ -301,7 +320,7 @@ animation:smart .5s linear;
   padding-left:.19rem
 }
 @keyframes smart {
-  0%{  
+  0%{
    width:0;
    height:0;
    right: 3rem;
@@ -325,14 +344,14 @@ animation:smart .5s linear;
   animation:gold 3s linear infinite;
 }
 @keyframes gold {
-  0%{  
+  0%{
     top:4.6rem;
   }
- 
+
  50%{
    top:4.3rem;
  }
- 
+
 100% {
     top:4.6rem;
   }
@@ -346,14 +365,14 @@ animation:smart .5s linear;
  animation:light 3s linear infinite;
 }
 @keyframes light {
-  0%{  
+  0%{
    top:9.55rem;
   }
- 
+
  50%{
   top:9.3rem;
  }
- 
+
 100% {
   top:9.55rem;
   }
@@ -367,14 +386,14 @@ animation:smart .5s linear;
  animation:air 4s linear infinite;
 }
 @keyframes air {
-  0%{  
+  0%{
    top:22.50667rem;
   }
- 
+
  50%{
  top:22rem;
  }
- 
+
 100% {
    top:22.50667rem;
   }
