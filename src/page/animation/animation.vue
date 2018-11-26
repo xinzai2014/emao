@@ -123,7 +123,6 @@ export default {
       apply(){
         // this.$router.push({path: "/financing",query:{...this.$route.query}})
         // this.windowOpen()
-        console.log('token',this.$route.query.token)
         this.$http({
         url: "https://tcmapi.emao.com/scf/index",
         method: "GET",
@@ -132,7 +131,7 @@ export default {
         }
       })
       .then((res) =>{
-        this.presaleBack(res.data)
+        this.presaleBack(res.data.data)
       })
       }
 
