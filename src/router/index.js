@@ -175,6 +175,8 @@ const recordlist = r => require.ensure([],() => r(require('../page/biding/record
 const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
 const subsuccess = r => require.ensure([], () => r(require('../page/financing/subsuccess')), 'subsuccess')
 const animation = r => require.ensure([], () => r(require('../page/animation/animation')), 'animation')
+// 帮助页面
+const help = r => require.ensure([], () => r(require('../page/help/help')), 'help')
 
 Vue.use(Router)
 
@@ -612,6 +614,11 @@ var router=new Router({
             path:'/animation',     //融资
             name:'animation',
             component:animation
+        }  ,
+        {
+            path:'/help',     //帮助
+            name:'help',
+            component:help
         } 
     ]
 })
