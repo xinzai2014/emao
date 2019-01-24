@@ -130,7 +130,7 @@ export default {
         }
       })
       .then((res) =>{
-        console.log('数据', res.data.data)
+        // console.log('数据', res.data.data)
         this.presaleBack(res.data.data)
       })
       }
