@@ -12,7 +12,7 @@
                     </div>
                     <div class="countdown">
                         <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
-                        <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div> 
+                        <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div>
                     </div>
                 </div>
             </section>
@@ -107,7 +107,7 @@
                     <li><span>4.</span>车辆到库3天内需完成支付全款、提车手续。延期支付全款1天，交纳100元仓储费，当交纳的仓储费达到定金费用50%时，则直接扣除定金，车辆由卖方处置。</li>
                     <li><span>5.</span>一猫原因造成车辆未能交付，将退回定金并赔付 500 元代金券；</li>
                     <li><span>6.</span>开票及申请合格证流程，与其他零售车型一致；</li>
-                    <li><span>7.</span>如有疑问可咨询渠道支持，或联系客服<a style="color:#d5aa5c" href="tel:4000133918">400-013-3918</a>。</li>
+                    <li><span>7.</span>如有疑问可咨询渠道支持，或联系客服<a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
                 </ul>
             </section>
             <!-- 按钮 -->
@@ -160,7 +160,7 @@
             </popup>
             <popup
                 class="selectPopup"
-                :showPopup="selectPopupState" 
+                :showPopup="selectPopupState"
                 :contentStyleObj="{
                     background: '#fff'
                 }"
@@ -172,10 +172,10 @@
                     <div class="color-select">
                         <h4>可选颜色</h4>
                         <ul class="color-wrapper">
-                            <li 
-                                class="color-item" 
+                            <li
+                                class="color-item"
                                 :class="{'active': selectData['selectColorIndex'] === index}"
-                                v-for="(item, index) in stock" 
+                                v-for="(item, index) in stock"
                                 :key="index"
                                 @click="selectColor(index)">
                                 {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
@@ -188,17 +188,17 @@
                             <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
                             <span class="num-content">{{selectData.carNum}}</span>
                             <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
-                        </div> 
+                        </div>
                     </div>
                     <div class="btn-go" @click="snapUpFun">立即抢购</div>
                     <span class="btn-close" @click="selectPopupState = false"></span>
                 </div>
             </popup>
         </div>
-        
+
         <popup
             class="cityPopup"
-            :showPopup="cityPopupState" 
+            :showPopup="cityPopupState"
             :clickAroundHide="true"
             :contentStyleObj="{
                 background: '#fff',
@@ -225,11 +225,11 @@
                     <div class="shadow shadow-center"></div>
                     <div class="shadow shadow-bottom"></div>
                 </div>
-                
+
             </div>
-            
-            <div class="btn" @click="confirmCity">确定</div> 
-        </popup>    
+
+            <div class="btn" @click="confirmCity">确定</div>
+        </popup>
     </div>
 </template>
 <script>
@@ -237,7 +237,7 @@ import swiper from "../../components/common/swiper/swiper";
 import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
 import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
-import {timeCountdown} from '../../common/js/countdown.js'; 
+import {timeCountdown} from '../../common/js/countdown.js';
 import share from '../../common/js/shareOnly.js';
 import BScroll from 'better-scroll';
 
@@ -250,7 +250,7 @@ export default {
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
-      selectPopupState: false, // 购买弹窗状态  
+      selectPopupState: false, // 购买弹窗状态
       cityPopupState: false, // 城市选择弹窗
       circular: [], //轮播图数据
       animate: false, //是否运动
@@ -385,7 +385,7 @@ export default {
         }).catch((error) => {
             this.setStoreAlert('设置失败！')
         })
-    },  
+    },
     // 设置弹窗状态
     changeState (state) {
         this.registerpopupState = state;
@@ -532,7 +532,7 @@ export default {
         .catch(error => {
             this.setStoreAlert(error.body.msg);
         });
-      })  
+      })
     },
     // 点击融资购车按钮，跳转至融资购车表单页面
     gofinancing () {
@@ -615,13 +615,13 @@ export default {
         let _this = this;
         return new Promise((resolve, reject) => {
             this.$http({
-                url: 'dealerInfo/area', 
+                url: 'dealerInfo/area',
                 method: 'GET',
                 params: {
                     token:this.$route.query.token,
                     province: 'notNull',
                     city: 'notNull'
-                } 
+                }
             })
             .then(response => {
                 this.isDealers = true
@@ -632,7 +632,7 @@ export default {
                 this.cityPopupState = true;
             })
         })
-        
+
     },
     // 立即抢购函数
     snapUpFun () {
@@ -691,7 +691,7 @@ export default {
     // 确认选择城市
     confirmCity (id) {
         let _this = this
-        
+
         if (this.provinceIndex !== null && this.cityIndex !== null) {
             const provinceId = this.provinceData[this.provinceIndex].id
             const cityId = this.provinceData[this.provinceIndex].city[this.cityIndex].id
@@ -714,7 +714,7 @@ export default {
             method: 'GET',
             params: {
                 token: token
-            } 
+            }
         })
         .then((res) => {
             this.provinceData = res.body.data
@@ -778,7 +778,7 @@ export default {
             this.presaleBack(presellData.isDisplay, this.$route.query.id);
         });
         this.setMoney();
-        
+
         this.renderDom();
     },
     // 根据检测标识进行监测
@@ -800,7 +800,7 @@ export default {
             this.$http({
                 url: 'preSale/confirmButton',
                 method: 'GET',
-                params: params 
+                params: params
             })
             .then((res) => {
                 this.isWatched = true;
@@ -889,7 +889,7 @@ export default {
 .car-count-down span {display: block;}
 .car-count-down span:nth-of-type(2) {font-size: 0.3467rem;font-weight: bold;}
 .car-time-place ul li {margin-bottom: 0.267rem;}
-.car-time-place ul li:after {display: block; content: '';clear: both;width: 0} 
+.car-time-place ul li:after {display: block; content: '';clear: both;width: 0}
 .car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
 .car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
 .car-reserve {padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
