@@ -89,24 +89,6 @@
                 </div>
             </section>
 
-            <section class="car-presell-flow">
-                <p>抢购流程</p>
-                <img src="../../assets/car-presell-flow.png" alt="">
-            </section>
-
-            <section class="car-presell-explain">
-                <p class="presell-explain-title">关于限时抢购</p>
-                <ul class="presell-explain-con">
-                    <li><span>1.</span>支付定金可锁定车源，车辆入库后支付全款。</li>
-                    <li><span>2.</span>提车完成后，定金退回原支付账户。</li>
-                    <li><span>3.</span>车辆到库后，若五天内未提车，将取消订单，定金不退回。</li>
-                    <li><span>4.</span>抢购车源，为一猫采购的限时限量畅销车源。</li>
-                    <li><span>5.</span>因经销商原因，导致交易无法继续，定金将不予退还。</li>
-                    <li><span>6.</span>一猫原因造成车辆延迟交付，一猫退回定金并赔付 500 元代金券。</li>
-                    <li><span>7.</span>开票及申请合格证流程，与其他零售车型一致。</li>
-                    <li><span>8.</span>如有疑问可咨询渠道支持，或联系客服 <a style="color:#d5aa5c" href="tel:4008252368">400-825-2368</a>。</li>
-                </ul>
-            </section>
             <!-- 按钮 -->
             <section class="car-reserve-btn">
                 <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
