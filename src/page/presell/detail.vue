@@ -839,7 +839,7 @@ export default {
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
 .cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
 
-.car-info-wrap{ padding:0 .4rem .4rem; background: #fff;}
+.car-info-wrap{ padding:0 .4rem 2rem; background: #fff;}
 .car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
 .car-time-place .car-name { margin: 0 -.4rem .5rem; padding: 0.2rem .4rem;min-height:1.1rem;border-bottom: 1px solid #e0e0e0;display: flex; display: -webkit-flex;  align-items: center;
     background: -moz-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
