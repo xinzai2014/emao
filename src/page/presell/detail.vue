@@ -1,217 +1,265 @@
 <template>
-    <div>
-        <div v-if="presellData !== null">
-            <!--预售详情-图片滚动-->
-            <swiper :circular="circular" v-if="circular.length"></swiper>
-            <!-- 价格和倒计时 -->
-            <section class="car-parameter">
-                <div class="car-price">
-                    <div class="price-wrapper">
-                    <h4 class="true-price">{{presellData.prePrice}} <span>万</span></h4>
-                    <h4 class="guided-price">指导价：{{presellData.guidePrice}}万 / {{presellData.disparityPrice}}万</h4>
-                    </div>
-                    <div class="countdown">
-                        <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
-                        <div v-show="countdownState"><span>{{countdownArr[1]}}</span> 天 <span>{{countdownArr[2]}}</span> : <span>{{countdownArr[3]}}</span></div>
-                    </div>
-                </div>
-            </section>
-            <section class="car-info-wrap">
-                <div class="car-time-place">
-                    <!-- 名字和设置提醒 -->
-                    <div class="car-name">
-                        <h4 class="name-content">{{presellData.autoName}}</h4>
-                        <!-- 在app内并且活动未开始才会显示 -->
-                        <!-- <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun"> -->
-                        <!-- 始终不显示 -->
-                        <div class="set-warning" v-if="false" @click="setWarningFun">
-                            <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
-                                <span class="icon-warning"></span>
-                                <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
-                                <span class="text-warning" v-else>已醒我</span>
-                            </div>
-                            <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
-                        </div>
-                    </div>
-                    <!-- 详情 -->
-                    <ul>
-                        <li>
-                            <span>可售范围：</span>
-                            <a>{{presellData.area}}</a>
-                        </li>
-                        <li>
-                            <span>到货时间：</span>
-                            <a>{{presellData.arrivalTime}}</a>
-                        </li>
-                        <li>
-                            <span>提货地点：</span>
-                            <a>{{presellData.deliveryPlace}}</a>
-                        </li>
-                        <li>
-                            <span>车型颜色：</span>
-                            <a>{{presellData.autoColor}}</a>
-                        </li>
-                        <li>
-                            <span>生产日期：</span>
-                            <a>{{presellData.productionTime}}</a>
-                        </li>
-                        <li v-if="presellData.remark != '' ">
-                            <span>备注：</span>
-                            <a>{{presellData.remark}}</a>
-                        </li>
-                    </ul>
-                    <!-- 同城 -->
-                    <div class="car-reserve" v-if="preSaleData.type == '2' ">
-                        <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
-                            <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
-                            <p class="car-reserve-tips">
-                                <span>{{preSaleData.province}}</span>再订<i>{{preSaleData.endNum}}</i>台 <span>{{preSaleData.city}}</span> 提货
-                            </p>
-                            <div class="car-reserve-roll" v-if="preSaleData.buyList.length > 0">
-                                <ul ref="con1" :class="{anim:animate==true}">
-                                    <li v-for="(item, index) in preSaleData.buyList" :key="index">
-                                        <span>{{item.time}}</span>
-                                        <span>{{item.dealer}}</span>
-                                        <span>{{item.num}}</span>
-                                    </li>
-                                </ul>
-                            </div>
+  <div>
+    <div v-if="presellData !== null">
+      <!--预售详情-图片滚动-->
+      <swiper :circular="circular" v-if="circular.length"></swiper>
+      <!-- 价格和倒计时 -->
+      <section class="car-parameter">
+        <div class="car-price">
+          <div class="price-wrapper">
+            <h4 class="true-price">
+              {{presellData.prePrice}}
+              <span>万</span>
+            </h4>
+            <h4
+              class="guided-price"
+            >指导价：{{presellData.guidePrice}}万 / {{presellData.disparityPrice}}万</h4>
+          </div>
+          <div class="countdown">
+            <h4 :class="{'activeEnd': !countdownState}">{{countdownText}}</h4>
+            <div v-show="countdownState">
+              <span>{{countdownArr[1]}}</span> 天
+              <span>{{countdownArr[2]}}</span> :
+              <span>{{countdownArr[3]}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="car-info-wrap">
+        <div class="car-time-place">
+          <!-- 名字和设置提醒 -->
+          <div class="car-name">
+            <h4 class="name-content">{{presellData.autoName}}</h4>
+            <!-- 在app内并且活动未开始才会显示 -->
+            <!-- <div class="set-warning" v-if="isTcmApp && isBeforeActivity" @click="setWarningFun"> -->
+            <!-- 始终不显示 -->
+            <div class="set-warning" v-if="false" @click="setWarningFun">
+              <div class="btn-warning" :class="{'actived': presellData.isRemind == '1'}">
+                <span class="icon-warning"></span>
+                <span class="text-warning" v-if="presellData.isRemind == '0'">提醒我</span>
+                <span class="text-warning" v-else>已醒我</span>
+              </div>
+              <h4 class="desc-warning">{{presellData.remindNum}}人已提醒</h4>
+            </div>
+          </div>
+          <!-- 详情 -->
+          <ul>
+            <li>
+              <span>可售范围：</span>
+              <a>{{presellData.area}}</a>
+            </li>
+            <li>
+              <span>到货时间：</span>
+              <a>{{presellData.arrivalTime}}</a>
+            </li>
+            <li>
+              <span>提货地点：</span>
+              <a>{{presellData.deliveryPlace}}</a>
+            </li>
+            <li>
+              <span>车型颜色：</span>
+              <a>{{presellData.autoColor}}</a>
+            </li>
+            <li>
+              <span>生产日期：</span>
+              <a>{{presellData.productionTime}}</a>
+            </li>
+            <li v-if="presellData.remark != '' ">
+              <span>备注：</span>
+              <a>{{presellData.remark}}</a>
+            </li>
+          </ul>
+					<!-- 实拍图片 -->
+					<div class="img-list" v-if="presellData.imgUrl&&presellData.imgUrl.length">
+						<h4 class="list-ttl">车辆图片</h4>
+						<div class="list-wrapper">
+							<div
+								class="list-item"
+								:style="bgObj(item)"
+								:class="{'item-center': index % 3 === 1}"
+								v-show="item !== '' && item !== null"
+								v-for="(item, index) in presellData.imgUrl"
+								:key="index"
+								@click="tapPic(item)">
+							</div>
+						</div>
+					</div>
+          <!-- 同城 -->
+          <div class="car-reserve" v-if="preSaleData.type == '2' ">
+            <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
+              <p class="car-reserve-title">同省订购每满{{presellData.number}}台，即可享受发车到省</p>
+              <p class="car-reserve-tips">
+                <span>{{preSaleData.province}}</span>再订
+                <i>{{preSaleData.endNum}}</i>台
+                <span>{{preSaleData.city}}</span> 提货
+              </p>
+              <div class="car-reserve-roll" v-if="preSaleData.buyList.length > 0">
+                <ul ref="con1" :class="{anim:animate==true}">
+                  <li v-for="(item, index) in preSaleData.buyList" :key="index">
+                    <span>{{item.time}}</span>
+                    <span>{{item.dealer}}</span>
+                    <span>{{item.num}}</span>
+                  </li>
+                </ul>
+              </div>
 
-                            <p class="car-share" v-if="isTcmApp"><img src="../../assets/presell_btn_icon.png" alt="" @click="showShareDialog"></p>
-                            <p class="car-batch-count" v-if="preSaleData.batch > 0">已有<span>&nbsp;{{preSaleData.batch}}&nbsp;</span>批车辆发往{{preSaleData.city}}</p>
-                        </div>
+              <p class="car-share" v-if="isTcmApp">
+                <img src="../../assets/presell_btn_icon.png" alt @click="showShareDialog">
+              </p>
+              <p class="car-batch-count" v-if="preSaleData.batch > 0">
+                已有
+                <span>&nbsp;{{preSaleData.batch}}&nbsp;</span>
+                批车辆发往{{preSaleData.city}}
+              </p>
+            </div>
 
-                        <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
-                            <p class="car-reserve-tips">
-                                已有<i>{{preSaleData.batch}}</i>批车辆发往 <span>{{preSaleData.city}}</span>
-                            </p>
-                            <p class="car-understock">剩余库存已不足拼版</p>
-                        </div>
+            <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '0' ">
+              <p class="car-reserve-tips">
+                已有
+                <i>{{preSaleData.batch}}</i>批车辆发往
+                <span>{{preSaleData.city}}</span>
+              </p>
+              <p class="car-understock">剩余库存已不足拼版</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- 按钮 -->
+      <section class="car-reserve-btn">
+        <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
+        <div class="bottom-btn-box">
+          <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
+            <div class="car-presell-present-disabled color" @click="gofinancing">融资采车</div>
+          </div>
+          <div class="bottom-btn bottom-btn-right">
+            <div v-if="btnState" class="car-presell-present" @click="presellReserve">{{btnText}}</div>
+            <div v-else class="car-presell-present-disabled">{{btnText}}</div>
+          </div>
+        </div>
+      </section>
 
-                    </div>
-                </div>
-            </section>
-            <!-- 按钮 -->
-            <section class="car-reserve-btn">
-                <h4 class="soldOut-warning" v-show="countdownText === '已售罄'">该商品已抢光，敬请期待下次抢购！</h4>
-                <div class="bottom-btn-box">
-                    <div class="bottom-btn bottom-btn-left" v-show="isTcmApp" v-if="btnState">
-                        <div class="car-presell-present-disabled color" @click="gofinancing">融资采车</div>
-                    </div>
-                    <div class="bottom-btn bottom-btn-right">
-                        <div v-if="btnState" class="car-presell-present"  @click="presellReserve">{{btnText}}</div>
-                        <div v-else class="car-presell-present-disabled">{{btnText}}</div>
-                    </div>
-                </div>
-            </section>
-
-            <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
-            <popup
-                class="registerPopup"
-                :showPopup="registerpopupState"
-                :clickAroundHide="true"
-                :contentStyleObj="{
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+      <popup
+        class="registerPopup"
+        :showPopup="registerpopupState"
+        :clickAroundHide="true"
+        :contentStyleObj="{
                     width: '9.2rem',
                     background: `#fff url(${alertBg}) no-repeat`,
                     backgroundSize: '100% auto',
                     borderRadius: '.13333rem',
                 }"
-                @changePopupState="changeState"
-                position="center">
-                <div class="single"></div>
-                <!-- 注册内容 -->
-                <div class="register-wrapper" v-show="popupShowWhich === 'register'">
-                    <h4 class="ttl">新注册立得<span>{{moneyVal}}元券</span></h4>
-                    <div class="input-tel">
-                        <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
-                    </div>
-                    <div class="btn-register" @click="registerFun">立即领取</div>
-                </div>
-                <!-- 注册成功内容 -->
-                <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
-                    <h4 class="ttl">欢迎加入车商猫</h4>
-                    <h4 class="desc">{{moneyVal}}元购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
-                    <div class="btn-goApp" @click="downloadApp">前往APP</div>
-                </div>
-                <!-- 已经注册弹框 -->
-                <div class="register-success-wrapper" v-show="popupShowWhich === 'registed'">
-                    <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
-                    <div class="btn-goApp" @click="downloadApp">前往APP</div>
-                </div>
-            </popup>
-            <popup
-                class="selectPopup"
-                :showPopup="selectPopupState"
-                :contentStyleObj="{
+        @changePopupState="changeState"
+        position="center"
+      >
+        <div class="single"></div>
+        <!-- 注册内容 -->
+        <div class="register-wrapper" v-show="popupShowWhich === 'register'">
+          <h4 class="ttl">
+            新注册立得
+            <span>{{moneyVal}}元券</span>
+          </h4>
+          <div class="input-tel">
+            <input type="number" class="tel" v-model="telVal" placeholder="请输入手机号">
+          </div>
+          <div class="btn-register" @click="registerFun">立即领取</div>
+        </div>
+        <!-- 注册成功内容 -->
+        <div class="register-success-wrapper" v-show="popupShowWhich === 'success'">
+          <h4 class="ttl">欢迎加入车商猫</h4>
+          <h4 class="desc">{{moneyVal}}元购车优惠券已放入您的账户中，赶紧抢购吧！</h4>
+          <div class="btn-goApp" @click="downloadApp">前往APP</div>
+        </div>
+        <!-- 已经注册弹框 -->
+        <div class="register-success-wrapper" v-show="popupShowWhich === 'registed'">
+          <h4 class="desc">您已是车商猫用户，请登录APP进行抢购！</h4>
+          <div class="btn-goApp" @click="downloadApp">前往APP</div>
+        </div>
+      </popup>
+      <popup
+        class="selectPopup"
+        :showPopup="selectPopupState"
+        :contentStyleObj="{
                     background: '#fff'
                 }"
-                position="bottom">
-                <div class="select-wrapper">
-                    <h4 class="select-ttl">限时抢购</h4>
-                    <h4 class="car-ttl">{{presellData.autoName}}</h4>
-                    <div class="price-wrapper"><em>抢购价：</em><span v-if="stock.length > 0">{{stock[selectData.selectColorIndex]['price']}} 万</span></div>
-                    <div class="color-select">
-                        <h4>可选颜色</h4>
-                        <ul class="color-wrapper">
-                            <li
-                                class="color-item"
-                                :class="{'active': selectData['selectColorIndex'] === index}"
-                                v-for="(item, index) in stock"
-                                :key="index"
-                                @click="selectColor(index)">
-                                {{stock[index]['extColor']}}/{{stock[index]['intColor']}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="num-wrapper">
-                        <h4>预定数量</h4>
-                        <div class="num-select">
-                            <span class="btn-cut" @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])">-</span>
-                            <span class="num-content">{{selectData.carNum}}</span>
-                            <span class="btn-add" @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])">+</span>
-                        </div>
-                    </div>
-                    <div class="btn-go" @click="snapUpFun">立即抢购</div>
-                    <span class="btn-close" @click="selectPopupState = false"></span>
-                </div>
-            </popup>
+        position="bottom"
+      >
+        <div class="select-wrapper">
+          <h4 class="select-ttl">限时抢购</h4>
+          <h4 class="car-ttl">{{presellData.autoName}}</h4>
+          <div class="price-wrapper">
+            <em>抢购价：</em>
+            <span v-if="stock.length > 0">{{stock[selectData.selectColorIndex]['price']}} 万</span>
+          </div>
+          <div class="color-select">
+            <h4>可选颜色</h4>
+            <ul class="color-wrapper">
+              <li
+                class="color-item"
+                :class="{'active': selectData['selectColorIndex'] === index}"
+                v-for="(item, index) in stock"
+                :key="index"
+                @click="selectColor(index)"
+              >{{stock[index]['extColor']}}/{{stock[index]['intColor']}}</li>
+            </ul>
+          </div>
+          <div class="num-wrapper">
+            <h4>预定数量</h4>
+            <div class="num-select">
+              <span
+                class="btn-cut"
+                @click="calculateFun(false, stock[selectData.selectColorIndex]['stockNum'])"
+              >-</span>
+              <span class="num-content">{{selectData.carNum}}</span>
+              <span
+                class="btn-add"
+                @click="calculateFun(true, stock[selectData.selectColorIndex]['stockNum'])"
+              >+</span>
+            </div>
+          </div>
+          <div class="btn-go" @click="snapUpFun">立即抢购</div>
+          <span class="btn-close" @click="selectPopupState = false"></span>
         </div>
+      </popup>
+    </div>
 
-        <popup
-            class="cityPopup"
-            :showPopup="cityPopupState"
-            :clickAroundHide="true"
-            :contentStyleObj="{
+    <popup
+      class="cityPopup"
+      :showPopup="cityPopupState"
+      :clickAroundHide="true"
+      :contentStyleObj="{
                 background: '#fff',
                 width: '9.2rem',
                 borderRadius: '.2rem'
             }"
-            position="center"
-            @changePopupState="changeState">
-            <div class="ttl">请选择您所在的城市</div>
-            <div class="citySelectWrapper">
-                <div class="provinceWrapper" ref="provinceWrapper">
-                    <ul class="provinceInner">
-                        <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
-                    </ul>
-                    <div class="shadow shadow-top"></div>
-                    <div class="shadow shadow-center"></div>
-                    <div class="shadow shadow-bottom"></div>
-                </div>
-                <div class="cityWrapper" ref="cityWrapper">
-                    <ul class="cityInner">
-                        <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
-                    </ul>
-                    <div class="shadow shadow-top"></div>
-                    <div class="shadow shadow-center"></div>
-                    <div class="shadow shadow-bottom"></div>
-                </div>
+      position="center"
+      @changePopupState="changeState"
+    >
+      <div class="ttl">请选择您所在的城市</div>
+      <div class="citySelectWrapper">
+        <div class="provinceWrapper" ref="provinceWrapper">
+          <ul class="provinceInner">
+            <li v-for="(item, index) in provinceData" :key="index">{{item.name}}</li>
+          </ul>
+          <div class="shadow shadow-top"></div>
+          <div class="shadow shadow-center"></div>
+          <div class="shadow shadow-bottom"></div>
+        </div>
+        <div class="cityWrapper" ref="cityWrapper">
+          <ul class="cityInner">
+            <li v-for="(item, index) in cityData" :key="index">{{item.name}}</li>
+          </ul>
+          <div class="shadow shadow-top"></div>
+          <div class="shadow shadow-center"></div>
+          <div class="shadow shadow-bottom"></div>
+        </div>
+      </div>
 
-            </div>
-
-            <div class="btn" @click="confirmCity">确定</div>
-        </popup>
-    </div>
+      <div class="btn" @click="confirmCity">确定</div>
+    </popup>
+		<!-- 图片放大组件 -->
+    <pic-view :bigImg="bigImg" v-show="showBigImg" @closeTip="closeTip"></pic-view>
+  </div>
 </template>
 <script>
 import swiper from "../../components/common/swiper/swiper";
@@ -221,11 +269,16 @@ import VerificationCode from '../../components/common/verificationCode/verificat
 import {timeCountdown} from '../../common/js/countdown.js';
 import share from '../../common/js/shareOnly.js';
 import BScroll from 'better-scroll';
+import PicView from '../../components/common/picView/picView.vue';
 
 export default {
   name: "presellDetails",
   data() {
     return {
+			// 放大图片地址
+			bigImg: '',
+			// 是否显示放大图片
+			showBigImg: false,
       url: '',
       financingCarUrl: '', // 点击融资购车跳转表单页面
       isBeforeActivity: false, // 是否是活动前
@@ -235,7 +288,7 @@ export default {
       cityPopupState: false, // 城市选择弹窗
       circular: [], //轮播图数据
       animate: false, //是否运动
-      presellData: null, //页面数据
+      presellData: {}, //页面数据
       preSaleData: {}, //预售信息
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
@@ -514,7 +567,24 @@ export default {
             this.setStoreAlert(error.body.msg);
         });
       })
-    },
+		},
+		// 获取背景图片样式
+		bgObj (url) {
+			return {
+				background: `url(${url}) no-repeat center`,
+				backgroundSize: 'cover',
+
+			}
+		},
+		// 点击缩略图
+		tapPic(item) {
+			this.bigImg = item;
+			this.showBigImg = true;
+		},
+		// 关闭大图
+		closeTip () {
+			this.showBigImg = false;
+		},
     // 点击融资购车按钮，跳转至融资购车表单页面
     gofinancing () {
         this.windowOpen()
@@ -817,156 +887,675 @@ export default {
     swiper,
     alertTip,
     Popup,
-    VerificationCode
+		VerificationCode,
+		PicView
   }
 };
 </script>
 
 <style>
-.citySelectWrapper {display: flex; justify-content: space-between;position: relative;}
-.provinceWrapper {flex: 0 0 4rem;}
-.cityWrapper{flex: 1;}
-.provinceWrapper,.cityWrapper {position: relative;overflow:hidden;height: 6rem;border-top: 1px solid #eee; border-bottom: 1px solid #eee}
-.provinceWrapper .provinceInner, .cityWrapper .cityInner {padding: 2.4rem 0;}
-.provinceWrapper .provinceInner li {margin-right:.4rem;text-align: right;}
-.cityWrapper .cityInner li {margin-left:.4rem;text-align: left}
-.provinceWrapper .provinceInner li,.cityWrapper .cityInner li{line-height: 1.2rem; font-size: .34rem; color: #2c2c2c}
-.citySelectWrapper .shadow {position:absolute; left:0;width: 100%; height: 2.4rem;background: rgba(255, 255, 255, .7);}
-.citySelectWrapper .shadow-top{top: 0;border-bottom: 1px solid #eee}
-.citySelectWrapper .shadow-bottom{bottom: 0;border-top: 1px solid #eee}
-.citySelectWrapper .shadow-center{top: 2.4rem;height: 1.2rem;background: #eee;z-index: -2;}
-
-.cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
-.cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
-
-.car-info-wrap{ padding:0 .4rem 2rem; background: #fff;}
-.car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
-.car-time-place .car-name { margin: 0 -.4rem .5rem; padding: 0.2rem .4rem;min-height:1.1rem;border-bottom: 1px solid #e0e0e0;display: flex; display: -webkit-flex;  align-items: center;
-    background: -moz-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffc8b7), color-stop(100%,#ffffff));
-    background: -webkit-linear-gradient(top, #ffc8b7 0%,#ffffff 100%);
-    background: -o-linear-gradient(top, #ffc8b7 0%,#ffffff 100%);
-    background: -ms-linear-gradient(top, #ffc8b7 0%,#ffffff 100%);
-    background: linear-gradient(to bottom, #ffc8b7 0%,#ffffff 100%);
+.citySelectWrapper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
 }
-.car-time-place .car-name .name-content {font-size:.4rem; font-weight:bold; color:#000; line-height:.6rem; flex: 1;}
-.car-time-place .car-name .set-warning {padding-left: .2rem;border-left: 1px solid #f1f1f1;}
-.car-time-place .car-name .set-warning .btn-warning span{display: block}
-.car-time-place .car-name .set-warning .btn-warning span.icon-warning {margin: 0 auto;width:0.56rem;height:0.56rem;background: url('../../assets/presell_warning.png') no-repeat;background-size: 100% 100%;}
-.car-time-place .car-name .set-warning .btn-warning span.text-warning {margin: .1rem 0;text-align:center; color: #fc3238; font-size: 0.34667rem;}
-.car-time-place .car-name .set-warning .desc-warning {text-align:center; color: #999; font-size: 0.29333rem;}
-.car-time-place .car-name .set-warning .btn-warning.actived .icon-warning {background: url('../../assets/presell_warning_actived.png') no-repeat;background-size: 100% 100%}
-.car-time-place .car-name .set-warning .btn-warning.actived .text-warning {color: #999}
+.provinceWrapper {
+  flex: 0 0 4rem;
+}
+.cityWrapper {
+  flex: 1;
+}
+.provinceWrapper,
+.cityWrapper {
+  position: relative;
+  overflow: hidden;
+  height: 6rem;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+.provinceWrapper .provinceInner,
+.cityWrapper .cityInner {
+  padding: 2.4rem 0;
+}
+.provinceWrapper .provinceInner li {
+  margin-right: 0.4rem;
+  text-align: right;
+}
+.cityWrapper .cityInner li {
+  margin-left: 0.4rem;
+  text-align: left;
+}
+.provinceWrapper .provinceInner li,
+.cityWrapper .cityInner li {
+  line-height: 1.2rem;
+  font-size: 0.34rem;
+  color: #2c2c2c;
+}
+.citySelectWrapper .shadow {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2.4rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+.citySelectWrapper .shadow-top {
+  top: 0;
+  border-bottom: 1px solid #eee;
+}
+.citySelectWrapper .shadow-bottom {
+  bottom: 0;
+  border-top: 1px solid #eee;
+}
+.citySelectWrapper .shadow-center {
+  top: 2.4rem;
+  height: 1.2rem;
+  background: #eee;
+  z-index: -2;
+}
 
-.car-price{position:relative;display: flex; display: -webkit-flex;  align-items: center;color: #fff;height: 1.80667rem;}
-.car-price .price-wrapper {flex: 1;font-size: 0.34667rem;}
-.car-price .price-wrapper .true-price {margin-bottom: .16rem;font-size: 0.58667rem;line-height: 0.58667rem;;}
-.car-price .price-wrapper .true-price span{font-size: 0.34667rem;}
-.car-price .countdown {flex: 0 0 2.26rem; text-align: center}
-.car-price .countdown .activeEnd {color: #fff; font-size: 0.37333rem}
-.car-price .countdown span {margin-top: .15rem;display: inline-block;width: 0.42667rem;line-height:0.42667rem;text-align:center;background: #fff;border-radius: .1rem;color: #fc3036}
+.cityPopup .ttl {
+  text-align: center;
+  line-height: 1.4rem;
+  font-size: 0.5rem;
+  color: #2c2c2c;
+}
+.cityPopup .btn {
+  margin: 0.6rem auto;
+  width: 80%;
+  line-height: 1.2rem;
+  background: #d5aa5c;
+  text-align: center;
+  border-radius: 0.12rem;
+  font-size: 0.4rem;
+  color: #fff;
+}
 
-.car-count-down {position: absolute;top: 0;right: -0.4rem;padding: 0.1333rem 0.4rem;color: #fff;border-top-left-radius: 0.667rem;border-bottom-left-radius: 0.667rem;background-color: #fc3238;}
-.car-count-down span {display: block;}
-.car-count-down span:nth-of-type(2) {font-size: 0.3467rem;font-weight: bold;}
-.car-time-place ul li {margin-bottom: 0.267rem;}
-.car-time-place ul li:after {display: block; content: '';clear: both;width: 0}
-.car-time-place ul li span{width:1.8rem;font-size:.346667rem;color:#999;float: left;}
-.car-time-place ul li a{width:7.2rem;font-size:.32rem;color:#333; float: left;word-break: break-all; word-wrap:break-word;}
-.car-reserve {padding: 0.467rem 0.5333rem;background-color: #fef9f1;}
-.car-reserve-title {line-height: 0.9333rem;font-size: 0.372rem;color: #000;text-align: center;}
-.car-reserve-tips {margin-bottom: 0.4rem;text-align: center;font-size: 0.3467rem;color: #ff5825;}
-.car-reserve-tips i {font-weight: bold;font-style: normal;}
-.car-reserve-roll {overflow: hidden;height: 1rem;}
-.car-reserve-roll ul li {margin-bottom: 0.267rem;line-height: 0.4rem;font-size: 0.32rem;text-align: center;color: #999;}
+.car-info-wrap {
+  padding: 0 0.4rem 2rem;
+  background: #fff;
+}
+.car-parameter {
+  overflow: hidden;
+  padding: 0 0.4rem;
+  background: url("../../assets/flashSale_bg.jpg") no-repeat;
+  background-size: 100% 100%;
+}
+.car-time-place .car-name {
+  margin: 0 -0.4rem 0.5rem;
+  padding: 0.2rem 0.4rem;
+  min-height: 1.1rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  background: -moz-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, #ffc8b7),
+    color-stop(100%, #ffffff)
+  );
+  background: -webkit-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
+  background: -o-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
+  background: -ms-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, #ffc8b7 0%, #ffffff 100%);
+}
+.car-time-place .car-name .name-content {
+  font-size: 0.4rem;
+  font-weight: bold;
+  color: #000;
+  line-height: 0.6rem;
+  flex: 1;
+}
+.car-time-place .car-name .set-warning {
+  padding-left: 0.2rem;
+  border-left: 1px solid #f1f1f1;
+}
+.car-time-place .car-name .set-warning .btn-warning span {
+  display: block;
+}
+.car-time-place .car-name .set-warning .btn-warning span.icon-warning {
+  margin: 0 auto;
+  width: 0.56rem;
+  height: 0.56rem;
+  background: url("../../assets/presell_warning.png") no-repeat;
+  background-size: 100% 100%;
+}
+.car-time-place .car-name .set-warning .btn-warning span.text-warning {
+  margin: 0.1rem 0;
+  text-align: center;
+  color: #fc3238;
+  font-size: 0.34667rem;
+}
+.car-time-place .car-name .set-warning .desc-warning {
+  text-align: center;
+  color: #999;
+  font-size: 0.29333rem;
+}
+.car-time-place .car-name .set-warning .btn-warning.actived .icon-warning {
+  background: url("../../assets/presell_warning_actived.png") no-repeat;
+  background-size: 100% 100%;
+}
+.car-time-place .car-name .set-warning .btn-warning.actived .text-warning {
+  color: #999;
+}
 
-.car-reserve-roll ul li span:nth-of-type(2) {margin-left: 0.5rem;margin-right: 0.5rem;}
+.car-price {
+  position: relative;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  color: #fff;
+  height: 1.80667rem;
+}
+.car-price .price-wrapper {
+  flex: 1;
+  font-size: 0.34667rem;
+}
+.car-price .price-wrapper .true-price {
+  margin-bottom: 0.16rem;
+  font-size: 0.58667rem;
+  line-height: 0.58667rem;
+}
+.car-price .price-wrapper .true-price span {
+  font-size: 0.34667rem;
+}
+.car-price .countdown {
+  flex: 0 0 2.26rem;
+  text-align: center;
+}
+.car-price .countdown .activeEnd {
+  color: #fff;
+  font-size: 0.37333rem;
+}
+.car-price .countdown span {
+  margin-top: 0.15rem;
+  display: inline-block;
+  width: 0.42667rem;
+  line-height: 0.42667rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 0.1rem;
+  color: #fc3036;
+}
 
-.car-share {text-align: center;}
-.car-share img {width: 7.147rem;height: 1.68rem;}
-.car-batch-count {text-align: center;color: #2c2c2c;font-size: 0.32rem;}
-.car-presell-flow {margin-top: 0.4rem;padding-top: 0.533rem;padding-bottom: 0.533rem;text-align: center;background-color: #fff;}
-.car-presell-flow p {font-size: 0.45333rem;color: #000;text-align: center;}
-.car-presell-flow img {width: 7.707rem;height: 1.88rem;margin-top: 0.867rem;}
-.car-presell-explain {margin-top: 0.4rem;margin-bottom: 1.4rem;padding: 0.533rem;background-color: #fff;}
-.presell-explain-title {margin-bottom: 0.6rem;font-size: 0.45333rem;color: #000;text-align: center}
-.presell-explain-con {padding-bottom: 0.45rem}
-.presell-explain-con li {position: relative;margin-left: 0.6rem;margin-bottom: 0.267rem;color: #999;font-size: 0.4rem;line-height: 0.533rem;}
-.presell-explain-con li span {position: absolute;left: -0.6rem;}
-.car-reserve-btn { position: fixed;padding-left: 0.26667rem; padding-right: 0.26667rem; box-sizing: border-box; bottom: 0;left: 0; min-height: 1.867rem;width: 100%; background-color: #fff;line-height: 1.867rem;text-align: center;border-top: 1px solid #e7e7e7;}
+.car-count-down {
+  position: absolute;
+  top: 0;
+  right: -0.4rem;
+  padding: 0.1333rem 0.4rem;
+  color: #fff;
+  border-top-left-radius: 0.667rem;
+  border-bottom-left-radius: 0.667rem;
+  background-color: #fc3238;
+}
+.car-count-down span {
+  display: block;
+}
+.car-count-down span:nth-of-type(2) {
+  font-size: 0.3467rem;
+  font-weight: bold;
+}
+.car-time-place ul li {
+  margin-bottom: 0.267rem;
+}
+.car-time-place ul li:after {
+  display: block;
+  content: "";
+  clear: both;
+  width: 0;
+}
+.car-time-place ul li span {
+  width: 1.8rem;
+  font-size: 0.346667rem;
+  color: #999;
+  float: left;
+}
+.car-time-place ul li a {
+  width: 7.2rem;
+  font-size: 0.32rem;
+  color: #333;
+  float: left;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.car-reserve {
+  padding: 0.467rem 0.5333rem;
+  background-color: #fef9f1;
+}
+.car-reserve-title {
+  line-height: 0.9333rem;
+  font-size: 0.372rem;
+  color: #000;
+  text-align: center;
+}
+.car-reserve-tips {
+  margin-bottom: 0.4rem;
+  text-align: center;
+  font-size: 0.3467rem;
+  color: #ff5825;
+}
+.car-reserve-tips i {
+  font-weight: bold;
+  font-style: normal;
+}
+.car-reserve-roll {
+  overflow: hidden;
+  height: 1rem;
+}
+.car-reserve-roll ul li {
+  margin-bottom: 0.267rem;
+  line-height: 0.4rem;
+  font-size: 0.32rem;
+  text-align: center;
+  color: #999;
+}
+
+.car-reserve-roll ul li span:nth-of-type(2) {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.car-share {
+  text-align: center;
+}
+.car-share img {
+  width: 7.147rem;
+  height: 1.68rem;
+}
+.car-batch-count {
+  text-align: center;
+  color: #2c2c2c;
+  font-size: 0.32rem;
+}
+.car-presell-flow {
+  margin-top: 0.4rem;
+  padding-top: 0.533rem;
+  padding-bottom: 0.533rem;
+  text-align: center;
+  background-color: #fff;
+}
+.car-presell-flow p {
+  font-size: 0.45333rem;
+  color: #000;
+  text-align: center;
+}
+.car-presell-flow img {
+  width: 7.707rem;
+  height: 1.88rem;
+  margin-top: 0.867rem;
+}
+.car-presell-explain {
+  margin-top: 0.4rem;
+  margin-bottom: 1.4rem;
+  padding: 0.533rem;
+  background-color: #fff;
+}
+.presell-explain-title {
+  margin-bottom: 0.6rem;
+  font-size: 0.45333rem;
+  color: #000;
+  text-align: center;
+}
+.presell-explain-con {
+  padding-bottom: 0.45rem;
+}
+.presell-explain-con li {
+  position: relative;
+  margin-left: 0.6rem;
+  margin-bottom: 0.267rem;
+  color: #999;
+  font-size: 0.4rem;
+  line-height: 0.533rem;
+}
+.presell-explain-con li span {
+  position: absolute;
+  left: -0.6rem;
+}
+.car-reserve-btn {
+  position: fixed;
+  padding-left: 0.26667rem;
+  padding-right: 0.26667rem;
+  box-sizing: border-box;
+  bottom: 0;
+  left: 0;
+  min-height: 1.867rem;
+  width: 100%;
+  background-color: #fff;
+  line-height: 1.867rem;
+  text-align: center;
+  border-top: 1px solid #e7e7e7;
+}
 .bottom-btn-box {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 .car-reserve-btn .bottom-btn {
-    display: inline-block;
-    padding-left: 0.26667rem;
-    padding-right: 0.26667rem;
-    box-sizing: border-box;
+  display: inline-block;
+  padding-left: 0.26667rem;
+  padding-right: 0.26667rem;
+  box-sizing: border-box;
 }
 .car-reserve-btn .color {
-    background: #f1f1f1!important;
+  background: #f1f1f1 !important;
 }
 .car-reserve-btn .bottom-btn-left {
-    flex: 1;
+  flex: 1;
 }
 .car-reserve-btn .bottom-btn-right {
-    flex: 1;
+  flex: 1;
 }
-.car-reserve-btn .soldOut-warning { width: 100%; line-height: 0.8rem;background: #e0c698; color: #ff5825;font-size: .34667rem}
-.car-reserve-btn .car-presell-present {display: inline-block;width: 100%;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #fff;border: none;border-radius: 0.5867rem;background-color: #ffc900;}
-.car-reserve-btn .car-presell-present-disabled {display: inline-block;width: 100%;height: 1.1733rem;text-align: center;line-height: 1.17333rem;font-size: 0.4rem;color: #999;border: none;border-radius: 0.5867rem;background-color: #e6e6e6;}
+.car-reserve-btn .soldOut-warning {
+  width: 100%;
+  line-height: 0.8rem;
+  background: #e0c698;
+  color: #ff5825;
+  font-size: 0.34667rem;
+}
+.car-reserve-btn .car-presell-present {
+  display: inline-block;
+  width: 100%;
+  height: 1.1733rem;
+  text-align: center;
+  line-height: 1.17333rem;
+  font-size: 0.4rem;
+  color: #fff;
+  border: none;
+  border-radius: 0.5867rem;
+  background-color: #ffc900;
+}
+.car-reserve-btn .car-presell-present-disabled {
+  display: inline-block;
+  width: 100%;
+  height: 1.1733rem;
+  text-align: center;
+  line-height: 1.17333rem;
+  font-size: 0.4rem;
+  color: #999;
+  border: none;
+  border-radius: 0.5867rem;
+  background-color: #e6e6e6;
+}
 
-.anim {transition: all 0.5s;margin-top: -0.4rem;}
+.anim {
+  transition: all 0.5s;
+  margin-top: -0.4rem;
+}
 
-.registerPopup .single {margin: 0.53333rem auto;width: 2.53333rem;height: 0.8rem;background: url('../../assets/flashSale_single.jpg') no-repeat;background-size:100% auto}
-.registerPopup .register-wrapper .ttl{margin: 0.4rem auto 0.93333rem;font-size: 0.53333rem;color: #d5aa5c;text-align: center}
-.registerPopup .register-wrapper .ttl span {color: #ff5825}
-.registerPopup .register-wrapper .input-tel {margin: auto;width: 7.6rem;display: flex;font-size: 0.32rem}
-.registerPopup .register-wrapper .input-tel .tel {padding: 0 .4rem;width: 6.8rem; height: 1.2rem; line-height: 0.5rem; border: 1px solid #999;font-size: .34667rem;}
-.registerPopup .register-wrapper .btn-register {margin: 1.2rem auto;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
-.registerPopup .register-success-wrapper .ttl {text-align: center;font-size: 0.64rem;color: #ff5825;}
-.registerPopup .register-success-wrapper .desc {margin: .53333rem auto 1.2rem;padding: 0 .4rem;text-align: center;font-size: 0.4rem;color: #2c2c2c;}
-.registerPopup .register-success-wrapper .btn-goApp {margin: 0 auto .8rem;width: 6.66667rem;line-height: 1.2rem;background: #d5aa5c; border-radius: .6rem;text-align: center;font-size: 0.45333rem;color: #fff}
+.registerPopup .single {
+  margin: 0.53333rem auto;
+  width: 2.53333rem;
+  height: 0.8rem;
+  background: url("../../assets/flashSale_single.jpg") no-repeat;
+  background-size: 100% auto;
+}
+.registerPopup .register-wrapper .ttl {
+  margin: 0.4rem auto 0.93333rem;
+  font-size: 0.53333rem;
+  color: #d5aa5c;
+  text-align: center;
+}
+.registerPopup .register-wrapper .ttl span {
+  color: #ff5825;
+}
+.registerPopup .register-wrapper .input-tel {
+  margin: auto;
+  width: 7.6rem;
+  display: flex;
+  font-size: 0.32rem;
+}
+.registerPopup .register-wrapper .input-tel .tel {
+  padding: 0 0.4rem;
+  width: 6.8rem;
+  height: 1.2rem;
+  line-height: 0.5rem;
+  border: 1px solid #999;
+  font-size: 0.34667rem;
+}
+.registerPopup .register-wrapper .btn-register {
+  margin: 1.2rem auto;
+  width: 6.66667rem;
+  line-height: 1.2rem;
+  background: #d5aa5c;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-size: 0.45333rem;
+  color: #fff;
+}
+.registerPopup .register-success-wrapper .ttl {
+  text-align: center;
+  font-size: 0.64rem;
+  color: #ff5825;
+}
+.registerPopup .register-success-wrapper .desc {
+  margin: 0.53333rem auto 1.2rem;
+  padding: 0 0.4rem;
+  text-align: center;
+  font-size: 0.4rem;
+  color: #2c2c2c;
+}
+.registerPopup .register-success-wrapper .btn-goApp {
+  margin: 0 auto 0.8rem;
+  width: 6.66667rem;
+  line-height: 1.2rem;
+  background: #d5aa5c;
+  border-radius: 0.6rem;
+  text-align: center;
+  font-size: 0.45333rem;
+  color: #fff;
+}
 
-.select-wrapper {position: relative; overflow: hidden; padding: 0.53333rem .4rem;}
-.select-wrapper .select-ttl {height: 0.53333rem;line-height: 0.53333rem;padding-left: .4rem;border-left: 0.05333rem solid #000;font-size: 0.50667rem;color: #000}
-.select-wrapper .car-ttl {margin: .8rem 0 .4rem; line-height: 0.6rem;font-size: 0.42667rem;color: #000}
-.select-wrapper .price-wrapper {margin-bottom: 0.5333rem; padding-bottom: 0.5333rem;border-bottom: 1px solid #eee; font-size: 0.37333rem; color: #fc3036}
-.select-wrapper .price-wrapper em {font-style:normal;font-weight:bold;font-size: 0.37333rem;}
-.select-wrapper .price-wrapper span {font-size: 0.48rem;}
-.select-wrapper .color-select h4 {margin-bottom: .4rem;font-size: 0.34667rem;color: #2c2c2c}
-.select-wrapper .color-select ul li {display:inline-block;margin: 0 .2rem .2rem 0;padding: .2rem .4rem;background: #f6f6f7;border-radius:0.10667rem;font-size: 0.34667rem;color: #2c2c2c}
-.select-wrapper .color-select ul li.active {background: #d4a962;color: #fff}
-.select-wrapper .num-wrapper {display: flex; overflow: hidden;align-items: center; justify-content: space-between; padding: 0.49333rem 0 .4rem;border-bottom: 1px solid #eee;}
-.select-wrapper .num-wrapper h4 { flex: 0 0 2rem;font-size: 0.37333rem;color: #000}
-.select-wrapper .num-wrapper .num-select {display:flex;flex: 0 0 3rem; width: 3rem;}
-.select-wrapper .num-wrapper .num-select span {flex: 1; text-align: center; line-height: 0.8rem; font-size: .8rem; color: #e6b255;}
-.select-wrapper .num-wrapper .num-select span.num-content {flex: 0 0 1.2rem; border: 1px solid #e6b255;border-radius: 0.1rem; font-size: 0.37333rem; color:#2c2c2c}
-.select-wrapper .btn-go {margin: .8rem auto .4rem; width: 5.33333rem; height: 1.2rem; line-height: 1.2rem; border-radius: .6rem; text-align: center; background: #d4a962; font-size: 0.45333rem; color: #fff}
-.select-wrapper .btn-close {position: absolute; top:0;right:0;width: 1rem; height: 1rem;background: url('../../assets/presell_close.png') no-repeat center center; background-size: 0.32rem 0.32rem;}
-    .user-tit{font-weight:normal;}
-    .declare-head{position:relative;}
-    .declare-head em{position:absolute;right:.4rem;color:#d5aa5c;}
-    .car-parameter{border-bottom:1px solid #e0e0e0;}
-    .car-parameter .car-name{font-size:.4rem;font-weight:bold;color:#000;line-height:.9333rem;}
-    .car-price{position:relative;}
-    .car-price p:nth-of-type(1) {color:#fc3036;font-size:.4rem;}
-    .car-price p:nth-of-type(1) strong{font-size:.427rem;font-weight:bold;}
-    .car-price p:nth-of-type(1) em{font-size:.32rem;}
-    .car-price p:nth-of-type(2) {font-size:.32rem;color:#999;}
-    .car-price p:nth-of-type(2) em{text-decoration:line-through;}
-    .car-price p:nth-of-type(2) em i{color:#999;}
-    .car-count-down{position:absolute;top:0;right:-.4rem;padding:.1333rem .4rem;color:#fff;border-top-left-radius:.667rem;border-bottom-left-radius:.667rem;background-color:#fc3238;}
-    .car-count-down span{display:block;}
-    .car-count-down span:nth-of-type(2){font-size:.3467rem;font-weight:bold;}
-    .car-parameter-tips{margin-top:.32rem;color:#ff825c;font-size:.3467rem;}
-    .car-time-place ul li{margin-bottom:.267rem;}
-    .car-time-place ul li span{font-size:.32rem;color:#999;}
-    .car-time-place ul li em{font-size:.32rem;color:#333;}
-    .car-reserve{padding:.467rem .5333rem;background-color:#fef9f1;}
-    .car-reserve-title{line-height:.9333rem;font-size:.372rem;color:#000;text-align:center;}
-    .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
-    .car-reserve-tips i{font-weight:bold;font-style:normal;}
-    .car-understock{font-size:.32rem;text-align:center;color:#999;}
+.select-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 0.53333rem 0.4rem;
+}
+.select-wrapper .select-ttl {
+  height: 0.53333rem;
+  line-height: 0.53333rem;
+  padding-left: 0.4rem;
+  border-left: 0.05333rem solid #000;
+  font-size: 0.50667rem;
+  color: #000;
+}
+.select-wrapper .car-ttl {
+  margin: 0.8rem 0 0.4rem;
+  line-height: 0.6rem;
+  font-size: 0.42667rem;
+  color: #000;
+}
+.select-wrapper .price-wrapper {
+  margin-bottom: 0.5333rem;
+  padding-bottom: 0.5333rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.37333rem;
+  color: #fc3036;
+}
+.select-wrapper .price-wrapper em {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 0.37333rem;
+}
+.select-wrapper .price-wrapper span {
+  font-size: 0.48rem;
+}
+.select-wrapper .color-select h4 {
+  margin-bottom: 0.4rem;
+  font-size: 0.34667rem;
+  color: #2c2c2c;
+}
+.select-wrapper .color-select ul li {
+  display: inline-block;
+  margin: 0 0.2rem 0.2rem 0;
+  padding: 0.2rem 0.4rem;
+  background: #f6f6f7;
+  border-radius: 0.10667rem;
+  font-size: 0.34667rem;
+  color: #2c2c2c;
+}
+.select-wrapper .color-select ul li.active {
+  background: #d4a962;
+  color: #fff;
+}
+.select-wrapper .num-wrapper {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.49333rem 0 0.4rem;
+  border-bottom: 1px solid #eee;
+}
+.select-wrapper .num-wrapper h4 {
+  flex: 0 0 2rem;
+  font-size: 0.37333rem;
+  color: #000;
+}
+.select-wrapper .num-wrapper .num-select {
+  display: flex;
+  flex: 0 0 3rem;
+  width: 3rem;
+}
+.select-wrapper .num-wrapper .num-select span {
+  flex: 1;
+  text-align: center;
+  line-height: 0.8rem;
+  font-size: 0.8rem;
+  color: #e6b255;
+}
+.select-wrapper .num-wrapper .num-select span.num-content {
+  flex: 0 0 1.2rem;
+  border: 1px solid #e6b255;
+  border-radius: 0.1rem;
+  font-size: 0.37333rem;
+  color: #2c2c2c;
+}
+.select-wrapper .btn-go {
+  margin: 0.8rem auto 0.4rem;
+  width: 5.33333rem;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  background: #d4a962;
+  font-size: 0.45333rem;
+  color: #fff;
+}
+.select-wrapper .btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1rem;
+  height: 1rem;
+  background: url("../../assets/presell_close.png") no-repeat center center;
+  background-size: 0.32rem 0.32rem;
+}
+.user-tit {
+  font-weight: normal;
+}
+.declare-head {
+  position: relative;
+}
+.declare-head em {
+  position: absolute;
+  right: 0.4rem;
+  color: #d5aa5c;
+}
+.car-parameter {
+  border-bottom: 1px solid #e0e0e0;
+}
+.car-parameter .car-name {
+  font-size: 0.4rem;
+  font-weight: bold;
+  color: #000;
+  line-height: 0.9333rem;
+}
+.car-price {
+  position: relative;
+}
+.car-price p:nth-of-type(1) {
+  color: #fc3036;
+  font-size: 0.4rem;
+}
+.car-price p:nth-of-type(1) strong {
+  font-size: 0.427rem;
+  font-weight: bold;
+}
+.car-price p:nth-of-type(1) em {
+  font-size: 0.32rem;
+}
+.car-price p:nth-of-type(2) {
+  font-size: 0.32rem;
+  color: #999;
+}
+.car-price p:nth-of-type(2) em {
+  text-decoration: line-through;
+}
+.car-price p:nth-of-type(2) em i {
+  color: #999;
+}
+.car-count-down {
+  position: absolute;
+  top: 0;
+  right: -0.4rem;
+  padding: 0.1333rem 0.4rem;
+  color: #fff;
+  border-top-left-radius: 0.667rem;
+  border-bottom-left-radius: 0.667rem;
+  background-color: #fc3238;
+}
+.car-count-down span {
+  display: block;
+}
+.car-count-down span:nth-of-type(2) {
+  font-size: 0.3467rem;
+  font-weight: bold;
+}
+.car-parameter-tips {
+  margin-top: 0.32rem;
+  color: #ff825c;
+  font-size: 0.3467rem;
+}
+.car-time-place ul li {
+  margin-bottom: 0.267rem;
+}
+.car-time-place ul li span {
+  font-size: 0.32rem;
+  color: #999;
+}
+.car-time-place ul li em {
+  font-size: 0.32rem;
+  color: #333;
+}
+.car-reserve {
+  padding: 0.467rem 0.5333rem;
+  background-color: #fef9f1;
+}
+.car-reserve-title {
+  line-height: 0.9333rem;
+  font-size: 0.372rem;
+  color: #000;
+  text-align: center;
+}
+.car-reserve-tips {
+  margin-bottom: 0.4rem;
+  text-align: center;
+  font-size: 0.3467rem;
+  color: #ff5825;
+}
+.car-reserve-tips i {
+  font-weight: bold;
+  font-style: normal;
+}
+.car-understock {
+  font-size: 0.32rem;
+  text-align: center;
+  color: #999;
+}
+
+.img-list .list-ttl {padding: 0.53333rem 0;font-size: 0.42667rem; color: #2c2c2c;}
+.img-list .list-wrapper {display: flex; display: -webkit-flex; width: 100%; flex-wrap: wrap;}
+.img-list .list-item {flex: 0 0 2.98667rem; margin-bottom: 0.13999rem; height: 2.98667rem;}
+.img-list .list-item img {width: 100%; height: 100%;}
+.img-list .list-item.item-center {margin: 0 0.12rem;}
 </style>

@@ -57,6 +57,21 @@
                             <a>{{presellData.remark}}</a>
                         </li>
                     </ul>
+                    <!-- 实拍图片 -->
+                    <div class="img-list" v-if="presellData.imgUrl&&presellData.imgUrl.length">
+                    <h4 class="list-ttl">车辆图片</h4>
+                    <div class="list-wrapper">
+                        <div
+                        class="list-item"
+                        :style="bgObj(item)"
+                        :class="{'item-center': index % 3 === 1}"
+                        v-show="item !== '' && item !== null"
+                        v-for="(item, index) in presellData.imgUrl"
+                        :key="index"
+                        @click="tapPic(item)">
+                        </div>
+                    </div>
+                    </div>
                     <!-- 同城 -->
                     <div class="car-reserve" v-if="preSaleData.type == '2' ">
                         <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
@@ -189,6 +204,8 @@
             </div>
             <div class="btn" @click="confirmCity">确定</div>
         </popup>
+        <!-- 图片放大组件 -->
+        <pic-view :bigImg="bigImg" v-show="showBigImg" @closeTip="closeTip"></pic-view>
     </div>
 </template>
 <script>
@@ -199,11 +216,16 @@ import VerificationCode from '../../components/common/verificationCode/verificat
 import {timeCountdown} from '../../common/js/countdown.js';
 import share from '../../common/js/shareOnly.js';
 import BScroll from 'better-scroll';
+import PicView from '../../components/common/picView/picView.vue';
 
 export default {
   name: "presellDetails",
   data() {
     return {
+      // 放大图片地址
+      bigImg: '',
+      // 是否显示放大图片
+      showBigImg: false,
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
@@ -468,6 +490,23 @@ export default {
         });
       })
     },
+    // 获取背景图片样式
+      bgObj (url) {
+        return {
+          background: `url(${url}) no-repeat center`,
+          backgroundSize: 'cover',
+
+        }
+      },
+      // 点击缩略图
+      tapPic(item) {
+        this.bigImg = item;
+        this.showBigImg = true;
+      },
+      // 关闭大图
+      closeTip () {
+        this.showBigImg = false;
+      },
     twoDetial (x) {
         let f = parseFloat(x)
         if (isNaN(f)) {
@@ -706,7 +745,8 @@ export default {
     swiper,
     alertTip,
     Popup,
-    VerificationCode
+    VerificationCode,
+    PicView
   }
 };
 </script>
@@ -722,7 +762,7 @@ export default {
 .cityPopup .ttl {text-align:center;line-height:1.4rem;font-size: .5rem; color: #2c2c2c;}
 .cityPopup .btn {margin:.6rem auto;width:80%;line-height: 1.2rem; background: #d5aa5c; text-align: center; border-radius: .12rem; font-size: .4rem; color: #fff}
 
-.car-info-wrap{ padding:0 .4rem .4rem; background: #fff;}
+.car-info-wrap{ padding:0 0.4rem 2rem; background: #fff;}
 .car-parameter{overflow: hidden;padding: 0 .4rem;background: url('../../assets/flashSale_bg.jpg') no-repeat;background-size: 100% 100%;}
 .car-time-place .car-name { margin: 0 -.4rem .5rem; padding: 0.2rem .4rem;min-height:1.1rem;border-bottom: 1px solid #e0e0e0;display: flex; display: -webkit-flex;  align-items: center;
     background: -moz-linear-gradient(top, #ffc8b7 0%, #ffffff 100%);
@@ -833,4 +873,10 @@ export default {
     .car-reserve-tips{margin-bottom:.4rem;text-align:center;font-size:.3467rem;color:#ff5825;}
     .car-reserve-tips i{font-weight:bold;font-style:normal;}
     .car-understock{font-size:.32rem;text-align:center;color:#999;}
+
+    .img-list .list-ttl {padding: 0.53333rem 0;font-size: 0.42667rem; color: #2c2c2c;}
+    .img-list .list-wrapper {display: flex; display: -webkit-flex; width: 100%; flex-wrap: wrap;}
+    .img-list .list-item {flex: 0 0 2.98667rem; margin-bottom: 0.13999rem; height: 2.98667rem;}
+    .img-list .list-item img {width: 100%; height: 100%;}
+    .img-list .list-item.item-center {margin: 0 0.12rem;}
 </style>
