@@ -69,21 +69,10 @@
               <a>{{presellData.remark}}</a>
             </li>
           </ul>
-					<!-- 实拍图片 -->
-					<div class="img-list" v-if="presellData.imgUrl&&presellData.imgUrl.length">
-						<h4 class="list-ttl">车辆图片</h4>
-						<div class="list-wrapper">
-							<div
-								class="list-item"
-								:style="bgObj(item)"
-								:class="{'item-center': index % 3 === 1}"
-								v-show="item !== '' && item !== null"
-								v-for="(item, index) in presellData.imgUrl"
-								:key="index"
-								@click="tapPic(item)">
-							</div>
-						</div>
-					</div>
+          <!-- 实拍图片 -->
+          <div class="img-list" v-if="presellData.imgUrl&&presellData.imgUrl.length">
+            <img v-for="(item, index) in presellData.imgUrl" :key="index" :src="item" alt>
+          </div>
           <!-- 同城 -->
           <div class="car-reserve" v-if="preSaleData.type == '2' ">
             <div class="car-reserve-in" v-show=" preSaleData.canAssembly == '1' ">
@@ -257,30 +246,27 @@
 
       <div class="btn" @click="confirmCity">确定</div>
     </popup>
-		<!-- 图片放大组件 -->
-    <pic-view :bigImg="bigImg" v-show="showBigImg" @closeTip="closeTip"></pic-view>
   </div>
 </template>
 <script>
 import swiper from "../../components/common/swiper/swiper";
 import alertTip from "../../components/common/alertTip/alertTip";
 import Popup from "../../components/common/popup/popup.vue";
-import VerificationCode from '../../components/common/verificationCode/verificationCode.vue';
-import {timeCountdown} from '../../common/js/countdown.js';
-import share from '../../common/js/shareOnly.js';
-import BScroll from 'better-scroll';
-import PicView from '../../components/common/picView/picView.vue';
+import VerificationCode from "../../components/common/verificationCode/verificationCode.vue";
+import { timeCountdown } from "../../common/js/countdown.js";
+import share from "../../common/js/shareOnly.js";
+import BScroll from "better-scroll";
 
 export default {
   name: "presellDetails",
   data() {
     return {
-			// 放大图片地址
-			bigImg: '',
-			// 是否显示放大图片
-			showBigImg: false,
-      url: '',
-      financingCarUrl: '', // 点击融资购车跳转表单页面
+      // 放大图片地址
+      bigImg: "",
+      // 是否显示放大图片
+      showBigImg: false,
+      url: "",
+      financingCarUrl: "", // 点击融资购车跳转表单页面
       isBeforeActivity: false, // 是否是活动前
       stock: [], // 颜色选择列表
       registerpopupState: false, // 注册弹窗
@@ -292,138 +278,145 @@ export default {
       preSaleData: {}, //预售信息
       showAlert: false, //是否显示弹窗
       alertText: null, //弹窗提示信息
-      popupShowWhich: 'register', // 显示哪个弹窗，register和success
-      telVal: '', // 电话号码
+      popupShowWhich: "register", // 显示哪个弹窗，register和success
+      telVal: "", // 电话号码
       btnState: true, // 按钮状态
-      btnText: '立即抢购', // 按钮文案
-      countdownText: '距离开始还剩', // 倒计时文案
+      btnText: "立即抢购", // 按钮文案
+      countdownText: "距离开始还剩", // 倒计时文案
       countdownState: true, // 倒计时文案状态
       countdownArr: [], // 倒计时数组
-      selectData: { // 用户选择订购车辆的信息
-          selectColorIndex: 0,
-          carNum: 1
+      selectData: {
+        // 用户选择订购车辆的信息
+        selectColorIndex: 0,
+        carNum: 1
       },
       moneyVal: 0, // 优惠券金额
       provinceData: [], // 城市信息
       provinceIndex: 0, // 选择的是第几个省份
       cityIndex: 0, // 选择的是第几个城市
       isDealers: false, // 是否是经销商
-      isWatched: false, // 是否监测
+      isWatched: false // 是否监测
     };
   },
   computed: {
     // 弹窗背景的图片
-    alertBg () {
-        return require('../../assets/flashSale_alert_bg.jpg')
+    alertBg() {
+      return require("../../assets/flashSale_alert_bg.jpg");
     },
     /*判断是否是App*/
-    isTcmApp () {
-        if (
-            typeof this.$route.query.token == "undefined" ||
-            this.$route.query.token == ""
-        ) {
-            return false;
-        } else {
-            return true;
-        }
+    isTcmApp() {
+      if (
+        typeof this.$route.query.token == "undefined" ||
+        this.$route.query.token == ""
+      ) {
+        return false;
+      } else {
+        return true;
+      }
     },
     /*判断浏览器来源*/
-    getSource(){
-        var browser = {
-            versions: function () {
-                var u = navigator.userAgent, app = navigator.appVersion;
-                return {     //移动终端浏览器版本信息
-                    trident: u.indexOf('Trident') > -1, //IE内核
-                    presto: u.indexOf('Presto') > -1, //opera内核
-                    webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-                    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-                    mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-                    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
-                    iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-                    iPad: u.indexOf('iPad') > -1, //是否iPad
-                    webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
-                };
-            }(),
-            language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    getSource() {
+      var browser = {
+        versions: (function() {
+          var u = navigator.userAgent,
+            app = navigator.appVersion;
+          return {
+            //移动终端浏览器版本信息
+            trident: u.indexOf("Trident") > -1, //IE内核
+            presto: u.indexOf("Presto") > -1, //opera内核
+            webKit: u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+            gecko: u.indexOf("Gecko") > -1 && u.indexOf("KHTML") == -1, //火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+            android: u.indexOf("Android") > -1 || u.indexOf("Linux") > -1, //android终端或uc浏览器
+            iPhone: u.indexOf("iPhone") > -1, //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf("iPad") > -1, //是否iPad
+            webApp: u.indexOf("Safari") == -1 //是否web应用程序，没有头部与底部
+          };
+        })(),
+        language: (
+          navigator.browserLanguage || navigator.language
+        ).toLowerCase()
+      };
+      if (browser.versions.mobile) {
+        //判断是否是移动设备打开。browser代码在下面
+        var ua = navigator.userAgent.toLowerCase(); //获取判断用的对象
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+          //在微信中打开
+          return 3;
         }
-        if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
-            var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
-            if (ua.match(/MicroMessenger/i) == "micromessenger") {
-                //在微信中打开
-                return 3;
-            }
-            if (ua.match(/WeiBo/i) == "weibo") {
-                //在新浪微博客户端打开
-                return 5;
-            }
-            if (ua.match(/QQ/i) == "qq") {
-                //在QQ空间打开
-                return 4;
-            }
-            if (browser.versions.ios) {
-                //是否在IOS浏览器打开
-                return 7
-            }
-            if (browser.versions.android) {
-                //是否在安卓浏览器打开
-                return 7
-            }
-        } else {
-            //否则就是PC浏览器打开
-            return 7
+        if (ua.match(/WeiBo/i) == "weibo") {
+          //在新浪微博客户端打开
+          return 5;
         }
+        if (ua.match(/QQ/i) == "qq") {
+          //在QQ空间打开
+          return 4;
+        }
+        if (browser.versions.ios) {
+          //是否在IOS浏览器打开
+          return 7;
+        }
+        if (browser.versions.android) {
+          //是否在安卓浏览器打开
+          return 7;
+        }
+      } else {
+        //否则就是PC浏览器打开
+        return 7;
+      }
     },
-    cityData () {
-        if (this.provinceData.length > 0) {
-            return this.provinceData[this.provinceIndex].city
-        }
-        return []
+    cityData() {
+      if (this.provinceData.length > 0) {
+        return this.provinceData[this.provinceIndex].city;
+      }
+      return [];
     }
   },
   methods: {
     // 前往下载
-    downloadApp () {
-        window.location.href = `http://url.cn/5Ne6oti`
+    downloadApp() {
+      window.location.href = `http://url.cn/5Ne6oti`;
     },
     // 设置优惠券金额
-    setMoney () {
-        this.$http({
-            url: 'https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew',
-            method: 'GET'
-        })
-        .then(response => {
-            this.moneyVal = response.data.data.price
-        })
+    setMoney() {
+      this.$http({
+        url: "https://tcmapi.emao.com/withoutAuth/coupon/preSale/pullNew",
+        method: "GET"
+      }).then(response => {
+        this.moneyVal = response.data.data.price;
+      });
     },
     // 点击设置提醒按钮
-    setWarningFun () {
-        if ( this.presellData.isRemind == '1') {
-            this.setStoreAlert('已经设置过了哟！')
-            return;
-        }
-        const params = {
-            token: this.$route.query.token,
-            preSaleId: this.$route.query.id
-        }
+    setWarningFun() {
+      if (this.presellData.isRemind == "1") {
+        this.setStoreAlert("已经设置过了哟！");
+        return;
+      }
+      const params = {
+        token: this.$route.query.token,
+        preSaleId: this.$route.query.id
+      };
 
-        this.$http({
-            url: "order/preSale/setReminder",
-            method: "GET",
-            params: params
-        }).then(function(response) {
-            const data = response.body.data;
-            this.setStoreAlert('设置成功！')
-            this.presellData.remindNum = data.remindNum;
-            this.presellData.isRemind = data.isRemind
-        }).catch((error) => {
-            this.setStoreAlert('设置失败！')
+      this.$http({
+        url: "order/preSale/setReminder",
+        method: "GET",
+        params: params
+      })
+        .then(function(response) {
+          const data = response.body.data;
+          this.setStoreAlert("设置成功！");
+          this.presellData.remindNum = data.remindNum;
+          this.presellData.isRemind = data.isRemind;
         })
+        .catch(error => {
+          this.setStoreAlert("设置失败！");
+        });
     },
     // 设置弹窗状态
-    changeState (state) {
-        this.registerpopupState = state;
-        this.cityPopupState = state;
+    changeState(state) {
+      this.registerpopupState = state;
+      this.cityPopupState = state;
     },
     //单行文字滚动
     scroll() {
@@ -466,60 +459,60 @@ export default {
     },
     /*区分app与wap做不同的渲染*/
     renderDom() {
-        document.title = "限时抢购";
+      document.title = "限时抢购";
     },
     // 显示分享弹窗
     showShareDialog() {
-        var obj = {
-            actionname:"showShareDialog",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            actionid:"",//回调 ID：可选参数，与回调函数配套使用
-            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-            title: this.presellData.shareInfo.shareText,
-            subTitle: this.presellData.shareInfo.shareDescription,
-            imgUrl:this.presellData.shareInfo.shareImg,
-            url:this.presellData.shareInfo.shareUrl, //要分享内容的 url
-            shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
-            extra: this.$route.query.id //分享需要的额外字段,预售id
-        };
-        this.tcmApp(obj);
+      var obj = {
+        actionname: "showShareDialog", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+        actionid: "", //回调 ID：可选参数，与回调函数配套使用
+        callback: "", //回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+        title: this.presellData.shareInfo.shareText,
+        subTitle: this.presellData.shareInfo.shareDescription,
+        imgUrl: this.presellData.shareInfo.shareImg,
+        url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
+        shareType: "1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
+        uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
+        extra: this.$route.query.id //分享需要的额外字段,预售id
+      };
+      this.tcmApp(obj);
     },
     //向导航条上添加分享按钮
     addShareButton() {
-        let _this = this;
-        var obj = {
-            actionname:"addShareButton",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            actionid:"",//回调 ID：可选参数，与回调函数配套使用
-            callback:"",//回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
-            buttonTitle:"分享",//分享按钮的标题；可选参数，与 buttonImage 二选一
-            buttonImage:"",//分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
-            title: this.presellData.shareInfo.shareText,
-            subTitle: this.presellData.shareInfo.shareDescription,
-            imgUrl: this.presellData.shareInfo.shareImg,
-            url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
-            shareType:"1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
-            uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
-            extra: this.$route.query.id //分享需要的额外字段,预售id
-        };
-        this.tcmApp(obj);
+      let _this = this;
+      var obj = {
+        actionname: "addShareButton", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+        actionid: "", //回调 ID：可选参数，与回调函数配套使用
+        callback: "", //回调函数：可选参数，native 处理完该消息之后回调 JS 的函数
+        buttonTitle: "分享", //分享按钮的标题；可选参数，与 buttonImage 二选一
+        buttonImage: "", //分享按钮的图片地址；可选参数，与 buttonTitle 二选一；若没有该参数，或者 image 的地址为空，则使用 buttonTitle。若有此参数则优先使用该参数
+        title: this.presellData.shareInfo.shareText,
+        subTitle: this.presellData.shareInfo.shareDescription,
+        imgUrl: this.presellData.shareInfo.shareImg,
+        url: this.presellData.shareInfo.shareUrl, //要分享内容的 url
+        shareType: "1", //此字段用于后续统计区别类型, 0:普通分享,不需要统计 1:预售分享
+        uniqId: this.presellData.shareInfo.uniqId, //shareType为0时可空,分享统计id
+        extra: this.$route.query.id //分享需要的额外字段,预售id
+      };
+      this.tcmApp(obj);
     },
     //抢购详情返回按钮信息
     presaleBack(isDisplay, presaleId) {
-        let obj = {
-            actionname:"presaleBack",//Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
-            isDisplay:isDisplay, //0为不显示, 1为显示
-            presaleId:presaleId //预售id
-        };
-        this.tcmApp(obj);
+      let obj = {
+        actionname: "presaleBack", //Native 函数名称：必填，Native 提供给 JS 的可用函数的函数名称
+        isDisplay: isDisplay, //0为不显示, 1为显示
+        presaleId: presaleId //预售id
+      };
+      this.tcmApp(obj);
     },
     /*立即预定*/
     presellReserve() {
       this.doWatch();
       if (this.isTcmApp) {
         if (this.isDealers) {
-            this.selectPopupState = true;
+          this.selectPopupState = true;
         } else {
-            this.cityPopupState = true;
+          this.cityPopupState = true;
         }
       } else {
         this.registerpopupState = true;
@@ -530,27 +523,28 @@ export default {
       return new Promise((resolve, reject) => {
         var dataToken = sessionStorage.token;
         var params = {
-            id: this.$route.query.id
+          id: this.$route.query.id
         };
         if (this.isTcmApp) {
-            params.token = this.$route.query.token
+          params.token = this.$route.query.token;
         } else {
-            params.provinceId = this.$route.query.provinceId
-            params.type = 6
-            params.source = this.getSource
+          params.provinceId = this.$route.query.provinceId;
+          params.type = 6;
+          params.source = this.getSource;
         }
         this.$http({
-            url: "preSale/detail",
-            method: "GET",
-            params: params
-        }).then(function(response) {
+          url: "preSale/detail",
+          method: "GET",
+          params: params
+        })
+          .then(function(response) {
             let data = response.body.data;
             var tokenData = this.$route.query.token;
-            console.log('限时抢购页面token', tokenData)
+            console.log("限时抢购页面token", tokenData);
             this.financingCarUrl = data.financingCarUrl;
-            console.log('限时抢购页面路径', this.financingCarUrl)
+            console.log("限时抢购页面路径", this.financingCarUrl);
             this.url = encodeURI(this.financingCarUrl);
-            console.log("this.url======", this.url)
+            console.log("this.url======", this.url);
             this.presellData = data;
             this.circular = data.circular;
             this.preSaleData = data.preSale;
@@ -562,333 +556,329 @@ export default {
             window.presellPrice = data.prePrice;
             window.deliveryPlace = data.deliveryPlace;
             localStorage.setItem("deliveryPlace", data.deliveryPlace);
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             this.setStoreAlert(error.body.msg);
-        });
-      })
-		},
-		// 获取背景图片样式
-		bgObj (url) {
-			return {
-				background: `url(${url}) no-repeat center`,
-				backgroundSize: 'cover',
-
-			}
-		},
-		// 点击缩略图
-		tapPic(item) {
-			this.bigImg = item;
-			this.showBigImg = true;
-		},
-		// 关闭大图
-		closeTip () {
-			this.showBigImg = false;
-		},
+          });
+      });
+    },
     // 点击融资购车按钮，跳转至融资购车表单页面
-    gofinancing () {
-        this.windowOpen()
+    gofinancing() {
+      this.windowOpen();
     },
-    twoDetial (x) {
-        let f = parseFloat(x)
-        if (isNaN(f)) {
-            return false
-        }
-        f = Math.round(x * 100) / 100
-        let s = f.toString()
-        let rs = s.indexOf('.')
-        if (rs < 0) {
-            rs = s.length
-            s += '.'
-        }
-        while (s.length <= rs + 2) {
-            s += '0'
-        }
-        return s
+    twoDetial(x) {
+      let f = parseFloat(x);
+      if (isNaN(f)) {
+        return false;
+      }
+      f = Math.round(x * 100) / 100;
+      let s = f.toString();
+      let rs = s.indexOf(".");
+      if (rs < 0) {
+        rs = s.length;
+        s += ".";
+      }
+      while (s.length <= rs + 2) {
+        s += "0";
+      }
+      return s;
     },
-     // 注册
-    registerFun () {
-        let _this = this
-        if (this.telVal === '') {
-            this.initAlert('电话号码不能为空哟！', true);
-            return
+    // 注册
+    registerFun() {
+      let _this = this;
+      if (this.telVal === "") {
+        this.initAlert("电话号码不能为空哟！", true);
+        return;
+      }
+      if (!/^\d{11}$/g.test(this.telVal)) {
+        this.initAlert("电话号码为11位数字", true);
+        return;
+      }
+      this.$http({
+        url: "withoutAuth/passport/registerWithoutCode",
+        method: "GET",
+        params: {
+          phone: _this.telVal,
+          invite: _this.$route.query.invite,
+          invitees: _this.$route.query.invitees
         }
-        if (!/^\d{11}$/g.test(this.telVal)) {
-            this.initAlert('电话号码为11位数字', true);
-            return
-        }
-        this.$http({
-            url: 'withoutAuth/passport/registerWithoutCode',
-            method: 'GET',
-            params: {
-                phone: _this.telVal,
-                invite: _this.$route.query.invite,
-                invitees: _this.$route.query.invitees
-            }
+      })
+        .then(res => {
+          _this.popupShowWhich = "success";
         })
-        .then((res) => {
-            _this.popupShowWhich = 'success';
-        })
-        .catch((err) => {
-            _this.$store.dispatch("AJAX_LOADING", false)
-            if (err.data.code === 400) {
-                _this.popupShowWhich = 'registed';
-                return
-            }
-            this.$store.dispatch("ALERT", {
-                flag:true,
-                text:err.data.msg
-            });
-        })
+        .catch(err => {
+          _this.$store.dispatch("AJAX_LOADING", false);
+          if (err.data.code === 400) {
+            _this.popupShowWhich = "registed";
+            return;
+          }
+          this.$store.dispatch("ALERT", {
+            flag: true,
+            text: err.data.msg
+          });
+        });
     },
     //设置store
-    setStoreAlert (content) {
-        this.$store.dispatch("ALERT", {
-            flag: true,
-            text: content
-        })
+    setStoreAlert(content) {
+      this.$store.dispatch("ALERT", {
+        flag: true,
+        text: content
+      });
     },
     // 选择颜色
-    selectColor (index) {
-        this.selectData.selectColorIndex = index
-        this.selectData.carNum = 1
+    selectColor(index) {
+      this.selectData.selectColorIndex = index;
+      this.selectData.carNum = 1;
     },
     // 计算预定数量
-    calculateFun (boolean, sum) {
-        if (boolean) {
-            this.selectData.carNum = ++this.selectData.carNum > sum ? sum : this.selectData.carNum
-            return
-        }
-        this.selectData.carNum = --this.selectData.carNum < 1 ? 1 : this.selectData.carNum
+    calculateFun(boolean, sum) {
+      if (boolean) {
+        this.selectData.carNum =
+          ++this.selectData.carNum > sum ? sum : this.selectData.carNum;
+        return;
+      }
+      this.selectData.carNum =
+        --this.selectData.carNum < 1 ? 1 : this.selectData.carNum;
     },
     // 校验是否是经销商
-    checkInventory () {
-        let _this = this;
-        return new Promise((resolve, reject) => {
-            this.$http({
-                url: 'dealerInfo/area',
-                method: 'GET',
-                params: {
-                    token:this.$route.query.token,
-                    province: 'notNull',
-                    city: 'notNull'
-                }
-            })
-            .then(response => {
-                this.isDealers = true
-                this.cityPopupState = false;
-            })
-            .catch(error => {
-                this.isDealers = false;
-                this.cityPopupState = true;
-            })
+    checkInventory() {
+      let _this = this;
+      return new Promise((resolve, reject) => {
+        this.$http({
+          url: "dealerInfo/area",
+          method: "GET",
+          params: {
+            token: this.$route.query.token,
+            province: "notNull",
+            city: "notNull"
+          }
         })
-
+          .then(response => {
+            this.isDealers = true;
+            this.cityPopupState = false;
+          })
+          .catch(error => {
+            this.isDealers = false;
+            this.cityPopupState = true;
+          });
+      });
     },
     // 立即抢购函数
-    snapUpFun () {
-        this.selectPopupState = false
-        window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${this.$route.query.id}&extColorId=${this.stock[this.selectData.selectColorIndex].extColorId}&intColorId=${this.stock[this.selectData.selectColorIndex].intColorId}&presaleNum=${this.selectData.carNum}`
+    snapUpFun() {
+      this.selectPopupState = false;
+      window.location = `emaotaochemao://push/PresaleConfirmOrder?eventId=${
+        this.$route.query.id
+      }&extColorId=${
+        this.stock[this.selectData.selectColorIndex].extColorId
+      }&intColorId=${
+        this.stock[this.selectData.selectColorIndex].intColorId
+      }&presaleNum=${this.selectData.carNum}`;
     },
-    initAlert (content) {
-        this.$store.dispatch("ALERT", // 通过store传值
-            {
-                flag:true,
-                text:content
-            }
-        );
+    initAlert(content) {
+      this.$store.dispatch(
+        "ALERT", // 通过store传值
+        {
+          flag: true,
+          text: content
+        }
+      );
     },
     // 城市选择滚动
-    initCityScroll () {
-        let _this = this
-        this.cityScroll = new BScroll(_this.$refs.cityWrapper, {
-            probeType: 1,
-            click: true,
-            momentumLimitTime:50,
-            momentumLimitDistance:1,
-        })
-        this.cityScroll.on('scroll', (length) => {
-            this.cityIndex = null
-        })
-        this.cityScroll.on('scrollEnd', (length) => {
-            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
-            let scrollEndNum = Math.abs(length.y);
-            let num = Math.round(scrollEndNum / itemLength);
-            this.cityScroll.scrollTo(0, -(num * itemLength), 200);
-            this.cityIndex = num
-        })
+    initCityScroll() {
+      let _this = this;
+      this.cityScroll = new BScroll(_this.$refs.cityWrapper, {
+        probeType: 1,
+        click: true,
+        momentumLimitTime: 50,
+        momentumLimitDistance: 1
+      });
+      this.cityScroll.on("scroll", length => {
+        this.cityIndex = null;
+      });
+      this.cityScroll.on("scrollEnd", length => {
+        let itemLength =
+          _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
+        let scrollEndNum = Math.abs(length.y);
+        let num = Math.round(scrollEndNum / itemLength);
+        this.cityScroll.scrollTo(0, -(num * itemLength), 200);
+        this.cityIndex = num;
+      });
     },
     // 省份选择滚动窗
-    initprovinceScroll () {
-        let _this = this
-        this.provinceScroll = new BScroll(_this.$refs.provinceWrapper, {
-            probeType: 1,
-            click: true,
-            momentumLimitTime:50,
-            momentumLimitDistance:1,
-        })
-        this.provinceScroll.on('scroll', (length) => {
-            this.provinceIndex = null
-        })
-        this.provinceScroll.on('scrollEnd', (length) => {
-            let itemLength = _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
-            let scrollEndNum = Math.abs(length.y);
-            let num = Math.round(scrollEndNum / itemLength);
-            this.provinceScroll.scrollTo(0, -(num * itemLength), 200);
-            this.provinceIndex = num
-            this.cityScroll.scrollTo(0, 0)
-        })
+    initprovinceScroll() {
+      let _this = this;
+      this.provinceScroll = new BScroll(_this.$refs.provinceWrapper, {
+        probeType: 1,
+        click: true,
+        momentumLimitTime: 50,
+        momentumLimitDistance: 1
+      });
+      this.provinceScroll.on("scroll", length => {
+        this.provinceIndex = null;
+      });
+      this.provinceScroll.on("scrollEnd", length => {
+        let itemLength =
+          _this.$refs.provinceWrapper.children[0].children[0].offsetHeight;
+        let scrollEndNum = Math.abs(length.y);
+        let num = Math.round(scrollEndNum / itemLength);
+        this.provinceScroll.scrollTo(0, -(num * itemLength), 200);
+        this.provinceIndex = num;
+        this.cityScroll.scrollTo(0, 0);
+      });
     },
     // 确认选择城市
-    confirmCity (id) {
-        let _this = this
+    confirmCity(id) {
+      let _this = this;
 
-        if (this.provinceIndex !== null && this.cityIndex !== null) {
-            const provinceId = this.provinceData[this.provinceIndex].id
-            const cityId = this.provinceData[this.provinceIndex].city[this.cityIndex].id
-            this.$http.post('dealerInfo/area', {
-                token: this.$route.query.token,
-                provinceId: provinceId,
-                cityId: cityId
-            })
-            .then(response => {
-                _this.loadData();
-                _this.cityPopupState = false
-            })
-        }
+      if (this.provinceIndex !== null && this.cityIndex !== null) {
+        const provinceId = this.provinceData[this.provinceIndex].id;
+        const cityId = this.provinceData[this.provinceIndex].city[
+          this.cityIndex
+        ].id;
+        this.$http
+          .post("dealerInfo/area", {
+            token: this.$route.query.token,
+            provinceId: provinceId,
+            cityId: cityId
+          })
+          .then(response => {
+            _this.loadData();
+            _this.cityPopupState = false;
+          });
+      }
     },
     //获取城市信息
-    getprovinceData () {
-        let token = this.$route.query.token
-        this.$http({
-            url: 'area',
-            method: 'GET',
-            params: {
-                token: token
-            }
-        })
-        .then((res) => {
-            this.provinceData = res.body.data
-        })
+    getprovinceData() {
+      let token = this.$route.query.token;
+      this.$http({
+        url: "area",
+        method: "GET",
+        params: {
+          token: token
+        }
+      }).then(res => {
+        this.provinceData = res.body.data;
+      });
     },
     // 加载信息
-    loadData () {
-        if (!sessionStorage.token) {
-            sessionStorage.token = this.$route.query.token;
+    loadData() {
+      if (!sessionStorage.token) {
+        sessionStorage.token = this.$route.query.token;
+      }
+      this.getPresellDetails().then(presellData => {
+        const startTime = new Date(presellData.preSaleStartTime);
+        const endTime = new Date(presellData.preSaleEndTime);
+        const shareInfo = presellData.shareInfo;
+        const shareData = {
+          title: shareInfo.shareText,
+          desc: shareInfo.shareDescription,
+          link: shareInfo.shareUrl,
+          imgUrl: shareInfo.shareImg
+        };
+        if (presellData.preSale.buyList.length > 1) {
+          setInterval(this.scroll, 2000);
         }
-        this.getPresellDetails().then((presellData) => {
-            const startTime = new Date(presellData.preSaleStartTime);
-            const endTime = new Date(presellData.preSaleEndTime);
-            const shareInfo = presellData.shareInfo;
-            const shareData = {
-                title: shareInfo.shareText,
-                desc: shareInfo.shareDescription,
-                link: shareInfo.shareUrl,
-                imgUrl: shareInfo.shareImg
-            };
-            if (presellData.preSale.buyList.length > 1) {
-            setInterval(this.scroll,2000);
+        timeCountdown(
+          { startTime, endTime },
+          update => {
+            this.countdownArr = update;
+            if (update[0] === "start") {
+              this.btnText = "等待抢购";
+              this.btnState = true;
+              this.countdownText = "距离开始还剩";
+              this.countdownState = true;
+              this.isBeforeActivity = true;
             }
-            timeCountdown({startTime, endTime}, (update) => {
-                this.countdownArr = update;
-                if (update[0] === 'start') {
-                    this.btnText = '等待抢购'
-                    this.btnState = true
-                    this.countdownText = '距离开始还剩'
-                    this.countdownState = true;
-                    this.isBeforeActivity = true
-                }
-                if (update[0] === 'ing') {
-                    this.btnText = '立即抢购'
-                    this.btnState = true
-                    this.countdownText = '距离结束还剩'
-                    this.countdownState = true;
-                    this.isBeforeActivity = false;
-                }
-                if (update[0] === 'ing' && presellData.state == 3) {
-                    this.btnText = '已售罄'
-                    this.btnState = false
-                    this.countdownText = '已售罄'
-                    this.countdownState = false;
-                }
-            }, (end) => {
-                this.countdownArr = end;
-                this.btnState = false;
-                this.btnText = '已售罄';
-                this.countdownText = '距离结束还剩'
-                this.countdownState = true;
-            })
-            // 测试
-            if (this.isTcmApp) {
-                this.addShareButton();
-                this.getprovinceData();
-                this.checkInventory();
-            } else {
-                share(shareData);
+            if (update[0] === "ing") {
+              this.btnText = "立即抢购";
+              this.btnState = true;
+              this.countdownText = "距离结束还剩";
+              this.countdownState = true;
+              this.isBeforeActivity = false;
             }
-            this.presaleBack(presellData.isDisplay, this.$route.query.id);
-        });
-        this.setMoney();
+            if (update[0] === "ing" && presellData.state == 3) {
+              this.btnText = "已售罄";
+              this.btnState = false;
+              this.countdownText = "已售罄";
+              this.countdownState = false;
+            }
+          },
+          end => {
+            this.countdownArr = end;
+            this.btnState = false;
+            this.btnText = "已售罄";
+            this.countdownText = "距离结束还剩";
+            this.countdownState = true;
+          }
+        );
+        // 测试
+        if (this.isTcmApp) {
+          this.addShareButton();
+          this.getprovinceData();
+          this.checkInventory();
+        } else {
+          share(shareData);
+        }
+        this.presaleBack(presellData.isDisplay, this.$route.query.id);
+      });
+      this.setMoney();
 
-        this.renderDom();
+      this.renderDom();
     },
     // 根据检测标识进行监测
-    doWatch (){
-        let token = this.$route.query.token;
-        let id = this.$route.query.id;
-        let params = null;
-        if (this.isTcmApp) {
-            params = {
-                token: token,
-                id: id
-            }
-        } else {
-            params = {
-                id: id
-            }
-        }
-        if (!this.isWatched) {
-            this.$http({
-                url: 'preSale/confirmButton',
-                method: 'GET',
-                params: params
-            })
-            .then((res) => {
-                this.isWatched = true;
-            })
-        }
+    doWatch() {
+      let token = this.$route.query.token;
+      let id = this.$route.query.id;
+      let params = null;
+      if (this.isTcmApp) {
+        params = {
+          token: token,
+          id: id
+        };
+      } else {
+        params = {
+          id: id
+        };
+      }
+      if (!this.isWatched) {
+        this.$http({
+          url: "preSale/confirmButton",
+          method: "GET",
+          params: params
+        }).then(res => {
+          this.isWatched = true;
+        });
+      }
     }
   },
   created() {
     this.loadData();
   },
-  mounted: function () {
-    this.$nextTick(function () {
-        setTimeout(() => {
-            this.initprovinceScroll()
-            this.initCityScroll()
-        }, 1000)
-    })
+  mounted: function() {
+    this.$nextTick(function() {
+      setTimeout(() => {
+        this.initprovinceScroll();
+        this.initCityScroll();
+      }, 1000);
+    });
   },
-  update () {
-      if (this.provinceScroll) {
-          this.provinceScroll.refresh()
-      } else {
-          this.initprovinceScroll()
-      }
-      if (this.cityScroll) {
-          this.cityScroll.refresh()
-      } else {
-          this.initCityScroll()
-      }
-
+  update() {
+    if (this.provinceScroll) {
+      this.provinceScroll.refresh();
+    } else {
+      this.initprovinceScroll();
+    }
+    if (this.cityScroll) {
+      this.cityScroll.refresh();
+    } else {
+      this.initCityScroll();
+    }
   },
   components: {
     swiper,
     alertTip,
     Popup,
-		VerificationCode,
-		PicView
+    VerificationCode
   }
 };
 </script>
@@ -1553,9 +1543,6 @@ export default {
   color: #999;
 }
 
-.img-list .list-ttl {padding: 0.53333rem 0;font-size: 0.42667rem; color: #2c2c2c;}
-.img-list .list-wrapper {display: flex; display: -webkit-flex; width: 100%; flex-wrap: wrap;}
-.img-list .list-item {flex: 0 0 2.98667rem; margin-bottom: 0.13999rem; height: 2.98667rem;}
-.img-list .list-item img {width: 100%; height: 100%;}
-.img-list .list-item.item-center {margin: 0 0.12rem;}
+.img-list { margin: 0 -.4rem }
+.img-list img { font-size: 0 }
 </style>
