@@ -1543,27 +1543,6 @@ export default {
   color: #999;
 }
 
-.img-list .list-ttl {
-  padding: 0.53333rem 0;
-  font-size: 0.42667rem;
-  color: #2c2c2c;
-}
-.img-list .list-wrapper {
-  display: flex;
-  display: -webkit-flex;
-  width: 100%;
-  flex-wrap: wrap;
-}
-.img-list .list-item {
-  flex: 0 0 2.98667rem;
-  margin-bottom: 0.13999rem;
-  height: 2.98667rem;
-}
-.img-list .list-item img {
-  width: 100%;
-  height: 100%;
-}
-.img-list .list-item.item-center {
-  margin: 0 0.12rem;
-}
+.img-list { margin: 0 -.4rem }
+.img-list img { font-size: 0 }
 </style>
