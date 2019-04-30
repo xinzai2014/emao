@@ -1393,5 +1393,5 @@ export default {
 }
 
 .img-list { margin: 0 -.4rem }
-.img-list img { font-size: 0 }
+.img-list img { width: 100%; font-size: 0 }
 </style>
