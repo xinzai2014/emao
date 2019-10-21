@@ -13,7 +13,6 @@
               <p v-if="orderInfo.status=='27'">原因：{{orderInfo.auditInstructions}}</p>
           </div>
           <div class="details-addres" v-if="address.id" @click="toAddress">
-              <i class="white-rt"></i>
               <div class="details-user">
                   <span>{{address.phone}}</span>收货人：{{address.name}}
               </div>
@@ -32,21 +31,58 @@
                   <p class="interior">{{orderInfo.color}}</p>
                   <p class="payment"><em> ×1</em>全款购买：<span>{{orderInfo.price}}元</span></p>
               </div>
-              <p class="leave">
+              <p class="leave" v-if="orderInfo.remark">
                   <span>买家留言：</span>{{orderInfo.remark||'未留言'}}
               </p>
+              <p class="car-vin" v-if="orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'"><span>{{vinActive}}</span>车辆VIN码：{{orderInfo.vinNumber}}</p>
               <div class="settlement">
-                  <p><span>￥{{capitalInfo.totalPrice}}</span>商品总价：</p>
-                  <!--<p><span>-￥{{capitalInfo.deposit||'0.00'}}</span>已付保证金：</p>-->
-                  <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣：</p>
+                  <p><span>￥{{capitalInfo.totalPrice}}</span>订单总价：</p>
+                  <p v-if="capitalInfo.deposit!='0.00'"><span>-￥{{capitalInfo.deposit}}</span>已付保证金：</p>
+                  <p><span>-￥{{capitalInfo.coupon}}</span>优惠券抵扣（不可开票）：</p>
                   <p><span>-￥{{capitalInfo.capital}}</span>营销支持费抵扣：</p>
                   <p><span>-￥{{capitalInfo.rebate}}</span>返利资金抵扣（不可开票）：</p>
-                  <p><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+                  <p v-if="orderInfo.status=='7'||orderInfo.status=='27'||orderInfo.status=='6'"><span>￥{{capitalInfo.deduction}}</span>需付款：</p>
+                  <p v-else><span>￥{{capitalInfo.deduction}}</span>实付款：</p>
               </div>
           </div>
           <div class="request-ct" v-if="orderInfo.status!='6'">
-              <p class="remit-tit">汇款信息</p>
-              <div class="send-to" v-if="bankInfo.accountType==1">
+              <p class="remit-tit" v-if="orderInfo.status=='7'||orderInfo.status=='27'">汇款信息</p>
+              <p class="remit-tit" v-else>付款信息</p>
+              <div class="send-to" v-if="bankInfo.accountType!=2 && bankInfo.accountType">
+
+
+                       <p>
+                          <label>汇款单位：</label>
+                          <span>{{bankInfo.companyName}}</span>
+                      </p>
+                      <p>
+                          <label>开户行：</label>
+                          <span>{{bankInfo.bankName}}</span>
+                      </p>
+                      <!-- <p>
+                          <label>账号：</label>
+                          <span>{{bankInfo.account}}</span>
+                      </p> -->
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+                    <p class="send-phone">查看详情</p>
+                  </router-link>
+              </div>
+              <div class="send-to" v-if="bankInfo.accountType==2">
+                  <p>
+                      <label>付款人：</label>
+                      <span>{{bankInfo.companyName}}</span>
+                  </p>
+                  <p>
+                      <label>银行：</label>
+                      <span>{{bankInfo.bankName}}</span>
+                  </p>
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
+                    <p class="send-phone">查看详情</p>
+                  </router-link>
+              </div>
+              <div class="send-to" v-if="bankInfo.accountType==''">
                   <p>
                       <label>汇款银行：</label>
                       <span>{{bankInfo.bankName}}</span>
@@ -56,39 +92,24 @@
                       <span>{{bankInfo.companyName}}</span>
                   </p>
                   <p>
-                      <label>汇款银行：</label>
+                      <label>账号：</label>
                       <span>{{bankInfo.account}}</span>
                   </p>
-                  <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
+                  <p :class=" huang ? 'send-phone huang':'send-phone'" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
                   <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-                    <p class="send-phone">查看详细</p>
+                    <p class="send-phone">查看详情</p>
                   </router-link>
               </div>
-              <div class="send-to" v-if="bankInfo.accountType==2">
-                  <p>
-                      <label>付款人：</label>
-                      <span>{{bankInfo.bankName}}</span>
-                  </p>
-                  <p>
-                      <label>付款账户：</label>
-                      <span>{{bankInfo.account}}</span>
-                  </p>
-                  <p class="send-phone" @click="sendMes" v-if="orderInfo.status=='7'||orderInfo.status=='27'">{{sendText}}</p>
-                  <router-link :to="{name:'payment',params:{id:orderInfo.orderNum}}" v-if="orderInfo.status=='8'||orderInfo.status=='3'||orderInfo.status=='4'||orderInfo.status=='5'">
-                    <p class="send-phone">查看详细</p>
-                  </router-link>
-              </div>
-              <div class="nstructions">
+              <div class="nstructions" v-if="orderInfo.status!='8'&&orderInfo.status!='3'&&orderInfo.status!='4'&&orderInfo.status!='5'">
                   <span>汇款说明：</span>
                   <em>1.汇款后请上传汇款凭证</em>
                   <em>2.未按时间付款的订单系统将自动取消</em>
               </div>
-              <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消申请</p>
+              <p class="cancel" @click="PopShow" v-if="orderInfo.status=='7'||orderInfo.status=='27'">取消订单</p>
           </div>
           <p class="visib-98"></p>
-          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'">
-              <router-link :to="{name:'paymentSubmit',query:{/*'price':orderInfo.price,
-          'remark':orderInfo.remark,*/'orderNum':orderInfo.orderNum,'orderId':orderInfo.id}}">提交汇款凭证</router-link>
+          <div class="remits-fixed" v-if="orderInfo.status=='7'||orderInfo.status=='27'" @click="paymentSubmit">
+             提交汇款凭证
           </div>
           <div class="remits-fixed active" v-if="orderInfo.status=='8'" >提交汇款凭证</div>
           <div class="remits-fixed" v-if="orderInfo.status=='4'" @click="confirmCar">确认收货</div>
@@ -111,13 +132,32 @@
                   <b>请确认随车附件：</b>
                   <p>{{receiptData.attachment}}</p>
               </div>
-              <div class="receipt-btn" @click="receiptStatus">确认收货</div>
+              <p class="prompt-btn"><span @click="hidePop">取消</span><span class="confirm" @click="receiptStatus">确认收货</span></p>
           </div>
       </div>
+
+      <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+      <transition name="slide">
+        <section class="fixed_box" v-if="success">
+          <div class="brand-header-out">
+              <header class="brand-list-header">
+                  <i class="white-lt brand-left-cion" @click="hide_success"></i>
+                  <strong class="brand-list-title">收货成功</strong>
+              </header>
+          </div>
+          <section class="no-auto">
+              <img src="../../assets/receipt-succeed.png" alt="">
+              <p>收货成功</p>
+              <p>可在 <router-link :to="{name:'declare'}"><span>售车申报</span></router-link>中查看并管理</p>
+          </section>
+
+        </section>
+        </transition>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -133,12 +173,53 @@ export default {
         Token:sessionStorage.getItem('token'),
         receiptData:{},
         receiptShow:false,
+        showAlert: false, //弹出框
+        alertText: null, //弹出信息
+        vinActive:'',
+        success:false,
+        huang:true
     }
-  },
+  },     components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
+      /*if(sessionStorage.orderDetailUrl == 'displayDetail' || sessionStorage.orderDetailUrl == 'resultSuccess'){
         this.$router.go(-1);
+      }else{
+        this.$router.push({name:sessionStorage.orderDetailUrl});
+      }*/
+      if(sessionStorage.infoUrl == 'displayDetail'){
+        this.$router.go(-1);
+      }else if(sessionStorage.infoUrl == 'resultSuccess'){
+         this.$router.push({name:'resultSuccess'});
+      }else{
+          var data = this.$store.getters.getOrderURL;
+          this.$router.push({
+              path:"/" + data.tag +"/"+ data.id
+          });
+      }
+      
+    },
+    hide_success(){
+      this.success=false;
+      this.fillData();
+    },
+    paymentSubmit(){
+      this.$router.push({name:'paymentSubmit'});
+      this.$store.dispatch("RETURN_DATA", // 通过store传值
+        {
+            orderNum:this.orderInfo.orderNum,
+            orderId:this.orderInfo.id
+        }
+      );
+      this.$store.dispatch("PAYMENT_URL", // 通过store传值
+        {
+          tag:"orderDetail",
+          id:this.orderInfo.orderNum
+        }
+      );
     },
     confirmCar(){ //确认收货弹框信息
       this.receiptShow = !this.receiptShow;
@@ -151,11 +232,10 @@ export default {
           method:"GET",
           params:data
       }).then(function (response) {
-        console.log(response)
         this.receiptData = response.body.data;
-          console.log(this.receiptData)
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+           this.alertText = error.body.msg||"请求失败了";
       });
     },
     receiptStatus(){
@@ -166,10 +246,14 @@ export default {
       }
       this.$http.post("order/full/receipt",data)
       .then(function (response) {
-        this.orderInfo.status='5';
-        this.orderInfo.state='交易完成';
+         this.showAlert = true;
+        this.alertText = '确认收货成功！';
+        this.success=true;
+        //this.orderInfo.status='5';
+        //this.orderInfo.state='交易完成';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
     },
     toAddress(){
@@ -180,6 +264,7 @@ export default {
     },
     hidePop(){
       this.pop=false;
+      this.receiptShow=false;
     },
     getQuery(){
       return this.$route.query.address;
@@ -194,34 +279,40 @@ export default {
         this.orderInfo.status=6;
         this.orderInfo.state='已取消';
       }).catch(function (error) {
-          console.log("请求失败了");
+          this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
       });
-      
+
     },
     sendMes(){
-        this.$http.post("message/send",{
-          token:sessionStorage.token,
-          content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
-          phone:''
-        }).then(function (response) {
-            var num=60;
-            let timer = setInterval(()=>{
-              num--;
-              this.sendText = num+"s";
-              if(!num){
-                this.sendText = "发送到手机";
-                clearInterval(timer);
-                return false;
-              }
-            },1000);
-        }).catch(function (error) {
-            console.log("请求失败了");
-        });
+        if(this.huang){
+            this.$http.post("message/send",{
+              token:sessionStorage.token,
+              content:'汇款信息：'+'\n'+'汇款银行：'+this.bankInfo.bankName+'\n'+'公司名称:'+this.bankInfo.companyName+'\n'+'汇款账户:'+this.bankInfo.account,
+              phone:''
+            }).then(function (response) {
+                var num=60;
+                let timer = setInterval(()=>{
+                  num--;
+                  this.huang = false;
+                  this.sendText = num+"s";
+                  if(!num){
+                    this.sendText = "发送到手机";
+                    this.huang = true;
+                    clearInterval(timer);
+                    return false;
+                  }
+                },1000);
+            }).catch(function (error) {
+                this.showAlert = true;
+            this.alertText = error.body.msg||"请求失败了";
+            });
+        }
     },
     remainingTime(item){
-        clearInterval(item.timer);        
-        item.timer = setInterval(() => {           
-            if(item.remainingTime != 0) {              
+        clearInterval(item.timer);
+        item.timer = setInterval(() => {
+            if(item.remainingTime != 0) {
               item.remainingTime = parseInt(item.remainingTime)-60;
               if (item.remainingTime <=0) {
                   clearInterval(item.timer);
@@ -229,10 +320,10 @@ export default {
                   item.state='已取消';
               }
               this.countNum=item.remainingTime;
-              item.remaining=this.remaining;  
+              item.remaining=this.remaining;
             }
         }, 60000);
-    } ,   
+    } ,
     fillData(){
         var order_num=this.$route.params.id;
         var dataToken = sessionStorage.token;
@@ -246,24 +337,41 @@ export default {
             params:data
         }).then(function (response) {
             if(this.getQuery()){
-              this.setAddress(this.getQuery()); 
+              this.setAddress(this.getQuery());
             }else{
               this.address=response.body.data.address;
             }
             this.bankInfo=response.body.data.bankInfo;
+            for(var i in response.body.data.capitalInfo){
+              response.body.data.capitalInfo[i]=Number(response.body.data.capitalInfo[i]).toLocaleString();
+              var arr=response.body.data.capitalInfo[i].split('.');
+              if(arr[1]){
+                if(arr[1].length==2){
+                  arr[1]=arr[1];
+                }else if(arr[1].length==1){
+                  arr[1]=arr[1]+'0';
+                }else{
+                  arr[1]=arr[1].substring(0,2);
+                }
+              }else{
+                arr[1]='00';
+              }
+              response.body.data.capitalInfo[i]=arr.join('.');
+            }
             this.capitalInfo=response.body.data.capitalInfo;
             var orderInfo=response.body.data.orderInfo;
-            this.stateAdd(orderInfo);  
+            this.stateAdd(orderInfo);
             this.orderInfo=orderInfo;
             this.countTime=this.orderInfo.orderTime;
-            
+
         }).catch(function (error) {
-            console.log("请求失败了");
-        }); 
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
+        });
     },
     stateAdd(obj){
         switch (obj.status){
-          case '7' : 
+          case '7' :
               obj.state='等待付款';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=6;
@@ -274,7 +382,7 @@ export default {
                   this.remainingTime(obj);
               }
           break;
-          case '27' : 
+          case '27' :
               obj.state='请重新提交';
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=6;
@@ -283,22 +391,25 @@ export default {
                   this.countNum=obj.remainingTime;
                   obj.remaining=this.remaining;
                   this.remainingTime(obj);
-              }        
+              }
           break;
-          case '8' : 
+          case '8' :
               obj.state='付款审核中,请耐心等待';
-          break; 
-          case '6' : 
+          break;
+          case '6' :
               obj.state='已取消';
-          break; 
-          case '5' : 
+          break;
+          case '5' :
               obj.state='交易完成';
+              this.vinActive="已收货";
           break;
-          case '3' : 
+          case '3' :
               obj.state='车辆出库中';
+              this.vinActive="出库中";
           break;
-          case '4' : 
+          case '4' :
               obj.state='车辆在途';
+              this.vinActive="已发货";
               if (obj.remainingTime=='0' || obj.remainingTime==''){
                   //obj.status=5;
                   //obj.state='交易完成';
@@ -308,8 +419,8 @@ export default {
               }
           break;
         }
-          
-    },   
+
+    },
     // 返回顶部
     backTop(){
       document.body.scrollTop=0;
@@ -334,19 +445,27 @@ export default {
             }
             this.address=data;
         }).catch(function (error) {
-            console.log("请求失败了");
+            this.showAlert = true;
+        this.alertText = error.body.msg||"请求失败了";
         });
-    }
+    },
+      toDouble(num){
+        if(num>9){
+          return num;
+        }else{
+          return '0'+num;
+        }
+      }
   },
   mounted(){
     //组件初始完成需要做什么
     this.fillData();
-    this.backTop();  
-    
+    this.backTop();
+
   },
-  watch:{ 
+  watch:{
     $route(){
-        this.fillData();   
+        this.fillData();
     }
   },
   computed: {
@@ -370,26 +489,36 @@ export default {
           }else{
             return hours + '小时' + minutes + '分钟';
           }
-          
+
       },
       time:function(){
+        var that=this;
         Date.prototype.toLocaleString = function() {
-            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + "-" + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds();
+            return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " +that.toDouble( this.getHours()) + ":" +that.toDouble( this.getMinutes());
         };
         var time=new Date(parseInt(this.countTime)*1000).toLocaleString();
         return  time;
-      }   
+      }
 
   },
-  beforeRouteLeave(to, from, next){
+  beforeRouteEnter(to, from, next){
+
     next(vm => {
-      /*if(to.name=='paymentSubmit'){
-        to.query={
-          'price':vm.orderInfo.price,
-          'remark':vm.orderInfo.remark
-         }
-         console.log(to);
+      if(from.name=='declare'){
+        vm.success=true;
+      }
+/*      if(from.name=='order'||from.name=='obliga'||from.name=='sending'||from.name=='receiving' || from.name == 'messageOrder' || from.name=='displayDetail' || from.name =='resultSuccess' || from.name == 'messageRebate'){
+        sessionStorage.orderDetailUrl=from.name;
       }*/
+
+      if(from.name != 'paymentSubmit' && from.name != 'payment'){
+          if(from.name=='displayDetail' || from.name == 'resultSuccess'){
+            sessionStorage.infoUrl = from.name;
+          }else{
+            sessionStorage.infoUrl = '';
+          }
+      }
+
     });
   }
 
@@ -397,6 +526,35 @@ export default {
 </script>
 
 <style>
+.send-to .send-phone.huang{
+  background:#d5aa5c;
+}
+.fixed_box{
+  position:fixed;
+  width:10rem;
+  height:110%;
+  top:0;
+  bottom:0;
+  z-index: 300;
+}
+.brand-header-out {
+    position: relative;
+    z-index: 3;
+}
+.no-auto p span {
+    color: #d6ab55;
+    border-bottom: 1px solid #d6ab55;
+}
+.no-auto{
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 .details-addres .out.white-rt{
   top:0.62rem;
 }
@@ -447,7 +605,7 @@ export default {
   top:1.306667rem;
 }
 .order-ct{
-  padding:0.533333rem 0.4rem;
+  padding:0.533333rem 0.4rem 0;
   background:#fff;
 }
 .order-number{
@@ -467,6 +625,7 @@ export default {
 }
 .order-full h3 {
     font-size: 0.426667rem;
+    padding: 0.3rem 0;
 }
 .order-full .interior {
     color: #999;
@@ -514,18 +673,22 @@ export default {
   color:#fc3036;
 }
 .request-ct{
-  padding:0.533333rem 0.4rem;
+  padding:0 0.4rem;
   background:#fff;
   margin-top:0.4rem;
+  overflow:hidden;
 }
 .remit-tit{
   font-size:0.453333rem;
-  padding-bottom:0.533333rem;
+  padding:0.533333rem 0;
   border-bottom:1px solid #e0e0e0;
 }
 .send-to{
   border:1px solid #d5aa5c;
   margin:0.533333rem auto;
+}
+.send-to{
+  display:block;
 }
 .send-to p{
   overflow:hidden;
@@ -552,7 +715,7 @@ export default {
   text-align:center;
   height:1.173333rem;
   line-height:1.173333rem;
-  background:#d5aa5c;
+  background: #dbdbdb;
 }
 .nstructions{
   color:#999;
@@ -572,7 +735,6 @@ export default {
   padding-top:0.4rem;
   font-size:0.453333rem;
   color:#2c2c2c;
-  text-decoration:underline;
 }
 .mask{
   width:100%;
@@ -669,7 +831,7 @@ export default {
 }
 .options b{
   display:block;
-  
+
 }
 .receipt-btn{
   font-size:0.453333rem;
@@ -680,5 +842,16 @@ export default {
 }
 .remits-fixed a{
   color:white;
+}
+.car-vin{
+    border-bottom: 1px solid #e0e0e0;
+    color: #2c2c2c;
+    overflow:hidden;
+    font-size:0.373333rem;
+    padding: 0.533333rem 0;
+}
+.car-vin span{
+  color:#999;
+  float:right;
 }
 </style>

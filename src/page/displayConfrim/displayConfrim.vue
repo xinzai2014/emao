@@ -17,8 +17,8 @@
         </div>
         <div class="order-address">
             地址：<strong>{{address.address}}</strong>
-            <i class="white-rt"></i>
         </div>
+        <i class="white-rt"></i>
     </section>
     <!--购车确认-车型信息-->
     <section class="order-car-info">
@@ -32,7 +32,7 @@
         </div>
         <div class="order-message">
             <span>买家留言：</span>
-            <input type="text" v-model="remark" placeholder="选填（对此展车的相关说明）"/>
+            <input type="text" v-model="remark" placeholder="选填 (对此展车的相关说明) "/>
         </div>
     </section>
     <!--购车确认-劵信息-->
@@ -61,21 +61,22 @@
 
         <div class="order-rental-info">
             <span>应付金额</span>
-            <p><strong>￥{{totalData|getMoney}}</strong></p>
+            <p><strong><em>￥{{totalData|getMoney}}</em></strong></p>
         </div>
     </section>
 
     <!--确认提交-->
+    <p class="footer-bt"></p>
     <section class="order-present-info">
-        <div class="order-present" @click="showAgreementDialog">确认提交</div>
+        <div class="order-present" @click="sumbitOrder">确认提交</div>
         <div class="order-price">
-            需支付：
-            <strong>￥{{totalData}}</strong>
+            应付金额：
+            <strong>￥{{totalData|getMoney}}</strong>
         </div>
     </section>
-    
+
     <!-- 选择优惠券 -->
-	<section class="coupon-popup" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
+	<section class="coupon-popup" v-how="showCoupon" :class="{anmiteStatus:coupon.length>0&&showCoupon}" @click="closeCouponDialog">
         <div class="coupon-in">
             <div class="coupon-title">
                 <p>请选择1张优惠券</p>
@@ -83,12 +84,11 @@
             </div>
              <div class="coupon-list" id="couponList">
                 <ul class="coupon-con">
-                    <li v-for="(item,index) in coupon" :couponId="item.id" @click.stop="chooseCoupon(item,index)">
+                    <li v-for="(item,index) in coupon" :couponId="item.id" @click="chooseCoupon(item,index)">
                         <dl class="clearfix">
-                            <dt>¥ {{item.price}}</dt>
+                            <dt>¥ {{parseInt(item.price).toLocaleString()}}</dt>
                             <dd>
                                 <p class="coupon-name">{{item.name}}</p>
-                                <p class="coupon-info">{{item.detail}}</p>
                                 <p class="coupon-date">有效期：<span>{{item.startDate}} - {{item.endDate}}</span></p>
                             </dd>
                         </dl>
@@ -99,11 +99,9 @@
         </div>
     </section>
 
-    
     <!--购车协议-->
     <section class="buy-agreement-pupop" v-if="showAgreement">
         <div class="buy-agreement-in">
-            <p class="buy-agreement-title">一猫特约经销商购车协议</p>
             <div class="buy-agreement-info">
                 <p class="buy-agreement-con">
                     <iframe src="//tcmapi.emao.com/app_html/agreement/show" class="agreemenIframe"></iframe></p>
@@ -114,36 +112,12 @@
             </ul>
         </div>
     </section>
-
-    <div class="dialog-content" v-if="showSuccessResult" :class="{dialogAnimateStyle:showSuccessResult}">
-        <!--首页-订单确认-头部-->
-        <header class="brand-list-header">
-            <i class="white-lt brand-left-cion" @click="goback"></i>
-            <strong class="brand-list-title">订购成功</strong>
-        </header>
-        <!--订购成功-->
-        <section class="order-succeed">
-            <p class="order-succeed-first"><i class="order-first-logo"></i>申请展车成功 <i class="order-succeed-logo"></i></p>
-            <div class="order-second-out">
-                <p class="order-succeed-second"><i></i>请在 <span>24小时</span>内汇款至以下银行账户</p>
-                <div class="order-succeed-info">
-                    <p class="clearfix"><span>汇款银行：</span><strong>{{successData.bankName}}</strong></p>
-                    <p class="clearfix"><span>公司名称：</span><strong>{{successData.companyName}}</strong></p>
-                    <p class="clearfix"><span>账号：</span><strong>{{successData.account}}</strong></p>
-                    <p class="order-send" @click="sendMessage" :class='{"color-disabled":disabled}'>{{codeText}}</p>
-                </div>
-                <ul class="order-secceed-explain">
-                    <li>汇款说明：</li>
-                    <li>1.汇款后请上传汇款凭证</li>
-                    <li>2.未按时间付款的订单系统将自动取消</li>
-                </ul>
-            </div>
-            <p class="order-succeed-second order-succeed-third"><i></i>一猫确认收款后发货</p>
-        </section>
-        <section class="order-succeed-bottom clearfix">
-            <div class="order-to-apply" @click="goIndex">返回订车页</div>
-            <div class="order-to-check" @click="goDeatail(successData.orderNum)">查看详情</div>
-        </section>
+    <!--是否使用优惠券弹窗-->
+    <div class="display-coupon-mask" v-if="showDisplayCouponMask">
+        <div class="display-coupon-cancel-car">
+            <p class="display-coupon-prompt-tit">您有{{coupon.length}}张优惠券可以使用，是否使用</p>
+            <p class="display-coupon-prompt-btn"><span @click.stop="displayCouponDisuse">不用</span><span class="display-coupon-confirm" @click.stop="backToUseDisplayCoupon">使用</span></p>
+        </div>
     </div>
 
 </div>
@@ -163,68 +137,25 @@ export default {
             showCoupon:false,     //优惠券弹出窗
             couponData:{},        //选中的优惠券初始数据
             checkCoupun:false,    //判断是否选择了优惠券
+            scrollWrap:null,      //优惠券滚动容器
             formData:{
-          
+
             },
             remark:null,             //备注信息
             showAgreement:false,
-            showSuccessResult:false,
-            successData:null,
-            messageData:{},
-            codeText:"发送到手机", //下单成功后发送短信到手机
-            num:60, //下单成功后倒计时
-            disabled:false,
-            routerAddress:false
+            routerAddress:false,
+            showDisplayCouponMask:false
  	    }
 	  },
 	  methods:{
         goback(){
-            this.$router.push("/serie/" + this.serieId);
-        },
-        goIndex(){
-            this.$router.go("index");
-        },
-        goDeatail(id){
-             this.$router.push("/displayDetail/" + id);
+          var data = this.$store.getters.getSuccessURL;
+          this.$router.push({
+            path:"/" + data.tag +"/"+ data.id
+          });
         },
         goAdressList(){
             this.$router.push("/profile/info/address");
-        },
-        sendMessage(){  //发送成功短信
-            if(this.disabled){
-                return false;
-            }
-            this.messageData["token"] = sessionStorage.token;
-            this.messageData["phone"] = this.address.phone;
-            this.messageData["content"] = "【一猫汽车】您已提交订单，请在24小时内汇款，逾期订单取消需重新下单。汇款银行：" + 
-                this.successData.bankName+ ",账号：" + 
-                this.successData.account + ",公司名称：" + 
-                this.successData.companyName + "如有疑问可拨打客服：400-000-1234。"
-            this.$http.post(
-                  "message/send",
-                  this.messageData,
-              ).then(function (response) {
-                this.setCode();
-            },function(){
-
-            })
-        },
-        setCode(){
-            this.codeText = this.num+"s";
-            this.disabled = true;
-            var that = this;
-            window.timer = window.setInterval(()=>{
-                that.num--;
-                that.codeText = this.num+"s";
-                this.disabled = true;
-                if(!this.num){
-                    this.codeText = "发送到手机";
-                    this.num = 60;
-                    this.disabled = false;
-                    window.clearInterval(window.timer);
-                    return false;
-                }
-            },1000);
         },
 	  	getData(){
 			this.$http({
@@ -234,14 +165,12 @@ export default {
 		      }).then(function (response) {
 		      	   var data = response.body.data;
 		           if(this.routerAddress){
-                        this.address = {
-                            "address":sessionStorage.addresstxt,
-                            "id":sessionStorage.addressId,
-                            "name":sessionStorage.addressName,
-                            "phone":sessionStorage.addressPhone
-                        }
+                        this.address = this.$store.getters.getDefaultAddress;
                    }else{
                         this.address = data.address;
+                        this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                            data.address
+                        );
                    }
 		           this.car = data.car;
                    var coupon = data.coupon;
@@ -249,34 +178,35 @@ export default {
                         ele.check = false;
                    })
 		           this.coupon = coupon;
+                   if(coupon.length>0){
+                        this.initIscroll("couponList",this.scrollWrap);
+                   }
                    //初始化提交表单信息
                    this.formData.total_price = data.car.price;
-                   this.formData.address_id = data.address.id;
 		        },function(){
 
 		        })
 	  	},
         showCouponDialog(){ //显示优惠券弹窗
             this.showCoupon = !this.showCoupon;
-            this.initIscroll("couponList",this.scrollWrap);
         },
         closeCouponDialog(){ //关闭优惠券弹出窗
             this.showCoupon = !this.showCoupon;
         },
         chooseCoupon(item,index){  //选择优惠券
-            console.log(item.check)
-            console.log(item);
-            console.log(index);
             this.coupon.forEach(function(ele,ind){
-                console.log(ind);
-                if(index!=ind){
-                  ele.check = false;   
-                }
-            });
-            item.check = !item.check;
-            this.couponData = (item.check?item:{});
-            this.checkCoupun = (item.check?true:false);
-
+              if(index!=ind){
+                ele.check = false;
+              }
+            })
+            this.coupon[index].check = !this.coupon[index].check;
+            if(this.coupon[index].check){
+              this.couponData = this.coupon[index];
+              this.checkCoupun = true;
+            }else{
+              this.couponData = {};
+              this.checkCoupun = false;
+            }
         },
         showAgreementDialog(){ //协议弹出窗
             this.showAgreement = true;
@@ -286,25 +216,51 @@ export default {
             this.showAgreement = false;
             return false;
         },
+          /*使用优惠券按钮*/
+          backToUseDisplayCoupon(){
+              this.showDisplayCouponMask = false;
+              this.showCouponDialog();
+          },
+          /*不使用优惠券按钮*/
+          displayCouponDisuse(){
+              this.showDisplayCouponMask = false;
+              setTimeout(this.sumbitOrderData,1000);
+          },
         getAgreementData(){
             this.$http.get(
                 "order/show/agreement?token="+sessionStorage.token).then(function (response) {
               },function(response){
             });
         },
+          /*提交展车数据函数*/
+        sumbitOrderData(){
+              this.closeAgreementDialog();
+              this.formData.deduction = this.totalData;
+              this.formData.address_id = this.address.id;
+              this.formData.remark = this.remark;
+              this.formData.coupon_price = this.couponData.price?this.couponData.price:0;
+              this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
+              this.$http.post(
+                      "order/show/create?token="+sessionStorage.token,
+                      this.formData).then(function (response) {
+                          var data = response.body.data;
+                          data["flag"] = true;
+                          data["addressFlag"] = "displayConfrim";
+                          data["telephone"] = this.address.phone;
+                          this.$store.dispatch("SUCCESS_DATA", // 通过store传值
+                                  data
+                          )
+                          this.$router.push("/resultSuccess");
+                      },function(){
+                      });
+        },
         sumbitOrder(){ //提交表单
-            this.closeAgreementDialog();
-            this.formData.deduction = this.totalData;
-            this.formData.remark = this.remark;
-            this.formData.coupon_price = this.couponData.price?this.couponData.price:0;
-            this.formData.coupon_id = this.couponData.id?this.couponData.id:0;
-            this.$http.post(
-                "order/show/create?token="+sessionStorage.token,
-                this.formData).then(function (response) {
-                    this.showSuccessResult = true;
-                    this.successData = response.body.data;
-              },function(){
-            });
+          if (this.coupon.length>0&&!this.checkCoupun) {
+              this.showDisplayCouponMask = true;
+              return;
+          }
+          /*调用提交数据函数*/
+          this.sumbitOrderData();
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             setTimeout(function(){
@@ -312,7 +268,7 @@ export default {
                    probeType: 3,
                    click:true
                 });
-            },1000) 
+            },0)
         },
 	  },
       filters:{
@@ -320,11 +276,17 @@ export default {
             if(isNaN(num)){
                 num = 0;
             }
-            return parseInt(num).toFixed(2);
+            var arr = num.toString().split(".");
+            var tagNum = arr.length>1?parseInt(arr[0]).toLocaleString() + "." + arr[1]:parseInt(arr[0]).toLocaleString() +".00"
+            return tagNum;
         }
       },
 	  mounted(){
         this.serieId = this.$router.currentRoute.query.serieId;
+        this.$store.dispatch("ADDRESS_FLAG",{
+          tag:"displayConfrim",
+          serieId:this.$store.getters.getDisplayData.serieId
+        });//全款下单标识,后面选地址会用到
 	  },
       computed:{
         totalData:function(){
@@ -335,7 +297,8 @@ export default {
 	  beforeRouteEnter (to, from, next) {
 		  next(vm => {
 		    // 通过 `vm` 访问组件实例
-		    vm.initData = vm.$router.currentRoute.query;
+		    vm.initData = vm.$store.getters.getDisplayData;  //vuex中获取展车数据
+        vm.address = vm.$store.getters.getDefaultAddress; //从vuex中获取
 		    vm.initData.token = sessionStorage.token;
 		    vm.getData();
             //保存提交信息
@@ -343,7 +306,7 @@ export default {
             vm.formData.ext_color_id =  vm.initData.colorId;   //外观颜色
             vm.formData.int_color_id =  vm.initData.inColorId; //内饰颜色
 
-            if(from.name=='address'){
+            if((from.name=='address')||(from.name=="addressAdd")){
                 vm.routerAddress = true;
             }else{
                 vm.routerAddress = false;
@@ -361,20 +324,18 @@ export default {
 <style>
 
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-.brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 	/*订单确认*/
-.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;}
+.order-confirmation-address{padding:.533rem .4rem;margin-bottom:.4rem;font-size:.4rem;color:#2c2c2c;background-color:#fff;position:relative;}
 .order-name{float:left;}
 .order-phone{float:right;margin-right:.7733rem;}
-.order-address{position:relative;margin-top:.4rem;padding-right:.4rem;}
-.order-address i{position:absolute;top:0;right:.1333rem;}
-.order-car-info{background-color:#fff;padding:.5333rem .4rem;margin-bottom:.4rem;}
-.order-car-name{font-size: .42667rem;color: #333;font-weight:600;}
-.order-car-color{display:block;margin-top:.1333rem;font-size: .3467rem;color: #999;}
-.order-price-count{margin-top:.4667rem;margin-bottom:.4rem;font-size:.3733rem;}
+.order-address{margin-top:.4rem;padding-right:.4rem;}
+.order-confirmation-address i{position:absolute;top:0;left:auto;right:0.4rem;bottom:0;margin:auto;}
+.order-car-info{background-color:#fff;padding:.5333rem .4rem 0;margin-bottom:.4rem;}
+.order-car-name{font-size: .4rem;color: #333;font-weight:600;}
+.order-car-color{display:block;margin-top:.1833rem;font-size: .3467rem;color: #999;}
+.order-price-count{margin-top:.3667rem;margin-bottom:.4rem;font-size:.3733rem;}
 .order-car-price{float:left;color:#2c2c2c;}
 .order-car-price span{color:#fc3036;}
 .order-car-count{float:right;color:#999;}
@@ -392,40 +353,41 @@ export default {
 .order-support-con{float:left;color:#999;font-size:.3733rem;}
 .order-support-con span{margin-left:.4rem;color:#d5aa5c;font-size:.3733rem;font-weight:600;}
 /*checkbox按钮开始*/
-.order-suport-switch{float:right;margin-right:0;width: .6933rem;font-size:0;}
-.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width: .6933rem;height: .4267rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 16px; box-sizing: border-box;
+.order-suport-switch{float:right;margin-right:0;font-size:0;line-height:1;margin-top:0.273rem;}
+.order-suport-switch input{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;appearance: none;position: relative;width:1.4rem;height: 0.9rem; border: 1px solid #dfdfdf;outline: 0;border-radius: 0.45rem; box-sizing: content-box;
      background-color: #dfdfdf;  -webkit-transition: background-color .1s,border .1s;  transition: background-color .1s,border .1s;-webkit-tap-highlight-color: rgba(0,0,0,0);}
 .order-suport-switch input:checked{border-color: #04be02;background-color: #04be02;}
 .order-suport-switch input:after,.order-suport-switch input:before{content: " ";position: absolute;top: 0;left: 0;height:.4rem;border-radius:.2rem;-webkit-transition: -webkit-transform .3s;}
-.order-suport-switch input:before{width: .667rem; background-color: #fdfdfd;}
+.order-suport-switch input:before{width:100%; background-color: #fdfdfd;height:0.9rem;border-radius: 0.45rem; }
 .order-suport-switch input:checked:before{transform: scale(0);}
-.order-suport-switch input:after{width: .4rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);}
-.order-suport-switch input:checked:after{transform: translateX(.2667rem);}
+.order-suport-switch input:after{width: .9rem;height:0.9rem;background-color: #fff;transition: transform .35s cubic-bezier(.4,.4,.25,1.35),-webkit-transform .35s cubic-bezier(.4,.4,.25,1.35);border-radius:50%;box-shadow:0 1px 3px rgba(0, 0, 0, 0.4);}
+.order-suport-switch input:checked:after{transform: translateX(.5rem);}
 /*checkbox按钮结束*/
 .order-rental{margin-bottom:1.667rem;padding:.533rem .4rem;font-size:.3467rem;background-color:#fff;}
 .order-rental-info{height:.8667rem;line-height:.8667rem;}
 .order-rental-info span{display:block;float:left;color:#999;}
 .order-rental-info p{float:right;}
 .order-rental-info strong{color:#2c2c2c;}
+.order-rental-info em{color:#fc3036;}
 .order-present-info{position:fixed;bottom:0;width:10rem;background-color:#fff;}
-.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:.3467rem;color:#fff;background-color:#d5aa5c;}
+.order-present{float:right;width:3rem;height:1.2667rem;text-align:center;line-height:1.2667rem;font-size:0.4rem;color:#fff;background-color:#d5aa5c;}
 .order-price{float:right;height:1.2667rem;margin-right: .4rem;line-height: 1.2667rem;font-size:.3467rem;color:#2c2c2c;}
 .order-price strong{font-size:.4267rem;color:#fc3036;}
 
 
 /*选择优惠券-浮层*/
-.coupon-popup{position:fixed;z-index:2;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
-.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:65%;}
+.coupon-popup{position:fixed;z-index:30;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);transform:translateY(100%);}
+.coupon-in{position:fixed;bottom:0;width:10rem;background-color:#f5f5f5;height:50%;}
 .coupon-title{position:relative;height:1.533rem;padding-left:.4rem;font-size:.5067rem;color:#000;line-height:1.5333rem;}
 .coupon-title i{display:block;position:absolute;top:.5333rem;right:.4667rem;width:.3733rem;height:.3733rem;background:url("../../assets/close.png") no-repeat;background-size:contain;}
 .coupon-con{padding: 0 .533rem .5333rem .533rem;}
-.coupon-con li{position:relative;width:9.1467rem;height:2.9467rem;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
+.coupon-con li{position:relative;margin-top:.4rem;background:url("../../assets/coupon-bg.png") no-repeat;background-size:100% 100%;}
 .coupon-con dt{float:left;width:2.7733rem;height:2.7733rem;text-align:center;line-height:2.7733rem;font-size:.533rem;color:#d5aa5c;}
 .coupon-con  dd{margin-left:2.7733rem;padding:.4rem;}
 .coupon-name{font-size:.4rem;color:#2c2c2c;}
 .coupon-info{font-size:.32rem;color:#999;}
-.coupon-date{font-size:.32rem;color:#999;}
-.coupon-chose-logo{position:absolute;top:-.1333rem;left:-.1333rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
+.coupon-date{font-size:.32rem;color:#999;margin-top:0.25rem}
+.coupon-chose-logo{position:absolute;top:0.1rem;left:0.1rem;display:block;width:.4rem;height:.4rem;background:url("../../assets/chose-icon.png") no-repeat;background-size:contain;}
 
 /*营销支持费，返利*/
 .use-coupon-popup{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
@@ -442,7 +404,7 @@ export default {
 .use-coupon-choose span.active{color:#fff;background-color:#d5aa5c;}
 
 /*购车协议*/
-.buy-agreement-pupop{position:fixed;z-index:5;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
+.buy-agreement-pupop{position:fixed;z-index:99;top:0;left:0;width:10rem;height:100%;background:rgba(0,0,0,0.8);}
 .buy-agreement-in{position:relative;height:80%;margin:1.7067rem .5333rem 1.9333rem .5333rem;font-size:.4rem;border-radius:.1333rem;background-color:#fff;}
 .buy-agreement-info{padding:.4rem .533rem .4rem .533rem;}
 .buy-agreement-title{height:1.2rem;padding-left:.5333rem;color:#2c2c2c;line-height:1.2rem;border-bottom:1px solid #eee;}
@@ -463,7 +425,7 @@ export default {
     left:0;
     height:100%;
     width:100%;
-    transform:translateX(100%); 
+    transform:translateX(100%);
 }
 
 
@@ -510,7 +472,7 @@ export default {
 .order-succeed-info .order-send{height:1.2rem;margin-bottom:0;line-height:1.2rem;font-size:.4533rem;color:#fff;text-align:center;background-color:#d5aa5c;}
 .order-succeed-info .color-disabled{background:#999}
 .order-secceed-explain{margin:.4rem .8rem 0 .8rem;}
-.order-secceed-explain li{margin-bottom:.1333rem;font-size:.32rem;color:#999;}
+.order-secceed-explain li{margin-bottom:.3333rem;font-size:.32rem;color:#999;}
 .order-succeed-second{font-size:.4rem;color:#2c2c2c;}
 .order-succeed-second i{display:inline-block;width:.5333rem;height:.533rem;margin-right:.2667rem;background:url("../../assets/third-icon.png");background-size:100% 100%;}
 .order-succeed-bottom{position:fixed;bottom:.533rem;left:.4rem;right:.4rem;}
@@ -527,11 +489,64 @@ export default {
 .order-failure-logo img{width:4rem;height:4rem;}
 .order-failure-message{font-size:.4rem;color:#2c2c2c;text-align:center;}
 .order-failure-back{width:1.9333rem;height:1.0667rem;margin:.8rem auto 0;line-height:1.0667rem;text-align:center;border:1px solid #d5aa5c;border-radius:2.66rem;}
-
+.buy-agreement-con{
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    height:10rem;
+}
 .agreemenIframe{
     width:100%;
-    height:10rem;
     border:none;
+    height:100%;
+}
+
+/*是否使用弹窗样式*/
+.display-coupon-mask{
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:203;
+}
+.display-coupon-cancel-car{
+    position:fixed;
+    width:7.2rem;
+    height:3.65rem;
+    background:#fff;
+    border-radius:0.133333rem;
+    overflow:hidden;
+    left:50%;
+    top:50%;
+    margin-top:-1.866667rem;
+    margin-left:-3.6rem;
+}
+.display-coupon-prompt-tit{
+    text-align:center;
+    font-size:0.4rem;
+    color:#2c2c2c;
+    margin:0.986667rem 0;
+}
+.display-coupon-prompt-btn{
+    background:#f5f5f5;
+    overflow:hidden;
+    height:1.173333rem;
+    line-height:1.173333rem;
+}
+.display-coupon-prompt-btn span{
+    display:block;
+    width:50%;
+    float:left;
+    text-align:center;
+    font-size:0.453333rem;
+}
+.display-coupon-prompt-btn span.display-coupon-confirm{
+    background:#d6ab55;
+    color:#fff;
 }
 </style>
+
+
+
 

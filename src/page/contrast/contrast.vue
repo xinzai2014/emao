@@ -1,14 +1,14 @@
 <template>
 <div>
     <!--首页-品牌列表-头部-->
-    <header class="brand-list-header">
+    <header class="brand-list-header heads" ref="header">
         <i class="white-lt brand-left-cion" @click="goBack"></i>
         <strong class="brand-list-title" >{{serieName}}</strong>
-        <span class="brand-switch" v-if="checkALl" @click="looALl">全部配置</span>
-        <span class="brand-switch" v-if="!checkALl" @click="looALl">不同配置</span>
+        <span class="brand-switch" v-if="!checkALl" @click="looALl">全部配置</span>
+        <span class="brand-switch" v-if="checkALl" @click="looALl">不同配置</span>
     </header>
-    <section>
-        <div class="config marb">
+    <section class="contrast-wrap">
+        <div class="config marb" ref="nav">
             <div class="config-left">
                 <div class="config-nothing"></div>
             </div>
@@ -24,18 +24,16 @@
                 </div>
             </div>
         </div>
-        <div class="config marCon" ref="carWrap">         
-            <div class="config-left">  
+        <div class="config marCon" ref="carWrap">
+            <div class="config-left">
                 <template  v-for = "(itemWrap,indexWrap) in dataList" v-if="indexWrap == 0">
-                    <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff> 
-                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}">
-                            <span class="cell-text" :class="{'head-fixed':scrollIndex == index}">{{item.name}}</span>
+                    <div class="config-param-names" v-for = "(item,index) in itemWrap.param" v-if = item.diff>
+                        <div class="row-head row-heads"  :style="{zIndex:dataList.length+1}" :class="{'head-fixed':scrollIndex == index}">
+                            <span class="cell-text" >{{item.name}}</span>
                         </div>
                         <div class="row" v-for="(e,i) in item.list" v-if = e.diff>
                             <div class="cell">
-
                                 <span class="cell-text" >{{e.name}}</span>
-
                             </div>
                         </div>
                     </div>
@@ -44,7 +42,7 @@
             <div class="config-right">
                  <div class="config-param-list">
                     <div class="config-wrap">
-                        <ul v-drag="drag" ref="dragContent">
+                        <ul v-drag="drag" ref="dragContent" class="drag">
                             <li class="config-list config-con" v-for = "(itemWrap,indexWrap) in dataList">
                                 <template v-for = "(item,index) in itemWrap.param" v-if = item.diff >
                                     <div class="config-list-t2" :style="{width:styleData,zIndex:dataList.length-indexWrap}" :class="{'head-fixed':scrollIndex == index}">
@@ -52,8 +50,8 @@
                                             <span>●标配</span><span>○选配</span><span>-无</span>
                                          </template>
                                     </div>
-                                   
-                                    <div class="table-row" v-for="(e,i) in item.list" v-if = e.diff>
+
+                                    <div class="table-row" :class="{color3:!e.styleTag}" v-for="(e,i) in item.list" v-if = e.diff>
                                         <em class="config-list-t3" >{{e.value}}</em>
                                     </div>
                                 </template>
@@ -70,9 +68,10 @@
                             <div class="cell-text">{{e.value}}</div>
                         </div>
                     </div> -->
-                </div> 
+                </div>
             </div>
         </div>
+        <div class="con-msg">注：以上仅供参考,请以实车为准</div>
     </section>
 </div>
 </template>
@@ -87,15 +86,17 @@
                 dataList:[],
                 scrollIndex:0,
                 carScrollHeight:[],
-                checkALl:true,
-                styleWidth:3.2,
+                checkALl:false,
+                styleWidth:4.5,
                 styleData:0,
-                drags:[]
+                drags:[],
+                initData:[],
+                tagHeight:0
             }
         },
         created:function(){
             this.$nextTick(()=>{
-                //console.log(this.$refs.drag);
+                
             })
         },
         methods:{
@@ -106,7 +107,9 @@
                     this.getALl(this.dataList);
                 };
                 this.checkALl = !this.checkALl;
-
+                setTimeout(()=>{
+                        this.countHeight();
+                    },100)
             },
             drag(style){
                 this.$refs.dragCompare.style.left=style.left;
@@ -132,12 +135,12 @@
                     this.$refs.dragContent.style.width = this.styleWidth*data.length + "rem";
                     this.$refs.dragCompare.style.width = this.styleWidth*data.length + "rem";
                     this.styleData = this.styleWidth*data.length + "rem";
-                    console.log(this.$refs.carText);
                     //this.$refs.carText.style.width = this.styleWidth*data.length + "rem";
                     this.serieName = reponse.body.data.name;
 
                     this.getALl(data);
                     //this.getDifferent();
+                    this.getDifferent();
                     setTimeout(()=>{
                         this.countHeight();
                     },100)
@@ -148,6 +151,7 @@
             countHeight(){ //记录初始楼层高度
                 const carContainer = this.$refs.carWrap;
                 const listArr = Array.from(carContainer.children[0].children);
+                this.carScrollHeight = [];
                 listArr.forEach((item, index) => {
                     this.carScrollHeight[index] = item.offsetTop;
                 });
@@ -155,12 +159,12 @@
                 document.addEventListener('scroll',function(){
                     var scrollTop = document.body.scrollTop;
                     that.carScrollHeight.forEach((item,index) => {
-                        if(scrollTop>item){
+                        if(scrollTop>(item-that.tagHeight)){
                             that.scrollIndex = index;
                         }
                     })
                 });
-            }, 
+            },
             getALl(data){
                 var that = this;
                 data.forEach(function(item,index){
@@ -171,21 +175,18 @@
                         })
                     })
                 });
-                this.dataList = data;
+                this.initData = data;
             },
             getDifferent(){
                 var dataArray = [];
                 var that = this;
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
                             if (typeof(dataArray[num]) == 'undefined') {
                                 dataArray[num] = [];
                             }
-                            //dataArray[index][i][ind] = it.name + "---" + it.value;
-                            // console.log(dataArray);
-                            // console.log(dataArray.length);
                             var flag = dataArray[num].find(function(value, index, arr) {
                               return value == it.value;
                             })
@@ -197,13 +198,13 @@
                     })
                 });
 
-                this.dataList.forEach(function(item,index){
+                this.initData.forEach(function(item,index){
                     var num = 0;
                     item.param.forEach(function(e,i){
                         e.list.forEach(function(it,ind){
-                            var diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
-                            it.diff = diff;
+                            it.diff = (dataArray[num].length == 1) ? false : true;//如果是1表明这一组内容相同,diff = true否则diff
                             //that.dataList[index]['param'][i]['list'][ind]['diff'] = diff;
+                             it.styleTag = (dataArray[num].length == 1) ? false : true;//
                             num++;
                         })
                         var a = e.list.findIndex(function(value,index,arr){
@@ -216,24 +217,27 @@
                         }
                     })
                 });
+                this.dataList = this.initData;
             },
         },
         mounted(){
             var autoId = this.$router.currentRoute.query.id;
-            //console.log(autoId);
             //获取数据
             this.autoId = autoId;
             this.getData();
+            this.tagHeight = this.$refs.header.offsetHeight + this.$refs.nav.offsetHeight;
         },
         components:{
 
         },
         directives:{
             drag:{
-                bind:function (el, binding) {
+                inserted:function (el, binding) {
                     var that=this;
                     function Drag(ele){
                       this.ele=ele;
+                      this.elWidth = ele.style.width;
+
                     }
                     Drag.prototype={
                        fndown:function(event){
@@ -255,6 +259,10 @@
                            document.addEventListener('touchend',_this.bindup,false);
                        },
                        fnmove:function(event){
+                             var wrapWidth = this.ele.clientWidth;
+                             var leftConWidth = document.querySelectorAll(".config-left")[0].clientWidth;
+                             var windowWidth = window.innerWidth;
+                             var maxValue = wrapWidth-(windowWidth-leftConWidth); //计算最大可滚动距离
                             let touch = event.touches[0]; //获取第一个触点
                             let x = Number(touch.pageX); //页面触点X坐标
                             let y = Number(touch.pageY); //页面触点Y坐标
@@ -262,16 +270,14 @@
                                 x:x-this.disP.x,
                                 y:y-this.disP.y
                             };
-                            var sizePx=parseInt(document.getElementsByTagName('html')[0].style.fontSize);
-                            var sizeRem=this.move.x/sizePx;
-                            if(this.move.x>0){
-                                this.move.x=0;
-                                this.ele.style.left=this.move.x+'px';
-                            }else if(sizeRem<'-5'){
-                                this.ele.style.left='-5rem';
-                            }else{
-                                this.ele.style.left=this.move.x+'px';
-                            }
+                             if(-this.move.x>maxValue){ //达到最右边就不让滚动了
+                               this.ele.style.left= -maxValue + 'px';
+                             }else if(this.move.x>0){ //如果是向左移动，最左边滚动不可能大于0
+                               this.move.x=0;
+                               this.ele.style.left=this.move.x+'px';
+                              } else{  //其它没超过最大距离
+                                    this.ele.style.left=this.move.x+'px';
+                             }
                             this.ele.style.top=this.ele.offsetTop+'px';
                             var style={
                                 left:this.ele.style.left,
@@ -285,7 +291,7 @@
                             document.removeEventListener('touchmove',_this.bindmove);
                             document.removeEventListener('touchend',_this.bindup);
                        },
-                       init:function(){                        
+                       init:function(){
                            var self=this;
                            self.ele.addEventListener('touchstart', function(event) {
                                 event=event||window.event;
@@ -307,27 +313,28 @@
 .table-row{
     display: table;
     width: 100%;
+    color:red;
 }
-*{box-sizing:border-box;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;position:fixed;width:100%;z-index: 25;}
-.brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
-.brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
+.heads{position:fixed;left:0;top:0;width:100%;}
+.color3{color:#333;}
+.contrast-wrap *{box-sizing:border-box;}
+.brand-switch{position:absolute;right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 
 .marb{padding-top:1.1733rem;}
 .config{display: table; width: 100%;}
-.config-left{display: table-cell;width: 2.133rem;border-top: 1px solid #ccc;border-left: 1px solid #ccc;}
+.config-left{display: table-cell;width: 2.133rem;border-left: 1px solid #ccc;}
 .config-right{display: table-cell;
     overflow: hidden;
-    position: relative;border-top: 1px solid #ccc;vertical-align: top;border-right: 1px solid #ccc;}
-.config-nothing{width:2.133rem;height:1.7333rem;background-color:#fff;}
+    position: relative;vertical-align: top;}
+.config-nothing{height:1.7333rem;background-color:#fff;}
 /*.row-head{line-height: .52rem;height: auto;border-bottom: 1px solid #ccc;}*/
 .config-param-head{height:1.1733rem;}
 
-.config-param-names .row-head{height:1.4267rem;white-space:nowrap;background:#f5f5f5}
+.config-param-names .row-head{height:1.4267rem;line-height:1.4267rem;white-space:nowrap;background:#f5f5f5}
 .config-param-names .row-head .cell-text{display:block;height:1.4267rem;line-height:1.4267rem;color:#2c2c2c;font-size:.4rem;text-align: center;font-weight: 700;width:2.133rem;}
 
-.config-param-names .row{display: table;width: 100%;}
-.config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
+.config-left .config-param-names .row{display: table;width: 100%;}
+.config-left .config-param-names .row .cell{display: table-cell;height:1.36rem;background-color:#fff;border-top:1px solid #ccc;border-right:1px solid #ccc;vertical-align: middle;text-align: center;}
 
 
 .config-param-head{height:1.733rem;background-color:#fff;}
@@ -342,17 +349,20 @@
 .config-param-list .row .cell{display:inline-block;width:100%;border-right:1px solid #ccc;}
 .config-param-list .row .cell-text{height:1.36rem;font-size:.32rem;color:#666;line-height:1.36rem;text-align:center;}
 
-.head-fixed{
+.config-right .head-fixed,.config-left .head-fixed{
     position:fixed;
     top:2.906rem;;
     background:#f5f5f5;
 }
 
-.config-list{width:3.2rem;float:left;}
-.config-con{padding-top:1.35rem;}
+.config-right .head-fixed{
+  left:2.133rem;
+}
+
+.config-list{width:4.5rem;float:left;}
 .config-wrap ul{position: absolute;}
 .config-list-t1{height:1.733rem;padding:0.25rem 0.15rem;background:#FFF;border-left:1px solid #CCC;}
-.config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:3.2rem;}
+.config-list-t2{line-height:1.4267rem;height:1.4267rem;text-indent:4.5rem;}
 .config-list-t2 span{margin-left:0.15rem;}
 .config-list-t3{height: 1.36rem;
     display: table-cell;
@@ -364,8 +374,13 @@
 
 
 .marb{position:fixed;left:0;z-index:10;}
-.marCon{padding-top:2.906rem;}
-
+.marCon{padding-top:4.332rem;}
+.con-msg{
+  line-height: 1.2rem;
+  color:red;
+  padding-left:0.25rem;
+  font-size:0.35rem;
+}
 
 </style>
 

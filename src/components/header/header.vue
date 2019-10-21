@@ -1,7 +1,7 @@
 <template>
 
 	<header class="index-header">
-	    <strong class="index-title">淘车猫</strong>
+	    <strong class="index-title">车商猫</strong>
 	    <div class="index-news news-icon"  @click="goMess">
 	        <span v-show="myMessage">{{myMessage}}</span>
 	    </div>
@@ -26,8 +26,14 @@ export default {
 	  			url:"dealerMessage/messageList?token=" + sessionStorage.token,
 	  			type:"GET"
 	  		}).then(function(response){
-	  			console.log(response);
-	  			this.myMessage = response.body.data.length;
+	  			var myMessage = response.body.data;
+	  			var that = this;
+          if(myMessage.length>0){
+            myMessage.forEach(function(e,index){
+              var num = e.num?parseInt(e.num):0;
+              that.myMessage += num;
+            })
+          }
 	  		},function(){
 
 	  		})
@@ -37,7 +43,7 @@ export default {
 		this.getMessList();
 	  },
 	  watch:{
-	   
+
 	  }
 }
 </script>

@@ -9,18 +9,19 @@
 			<div class="adres-ct" v-if="showRemit">
 				<div class="remits-item" v-for="(item,index) in infoData">
 					<div class="remite-lt" v-show="isCheck">
-						<i class="icon" @click="iconId(item)"></i>
+						<i :class="remitId == item.id ? 'icon active' :'icon'" @click="iconId(item)"></i>
 					</div>
 					<div :class="isCheck ? 'remits-rt':''">
 						<p class="remits-info" v-if="item.account_type == 1">{{item.pay_company}}</p>
 						<p class="remits-info" v-else>{{item.name}}</p>
 						<p class="remits-add">汇款账户：{{item.account}}</p>
-						<p class="remits-add">开户行：{{item.bank_name}}</p>
+						<p class="remits-add"  v-if="item.account_type == 1">开户行：{{item.bank_name}}</p>
+						<p class="remits-add"  v-else>银行：{{item.bank_name}}</p>
 						<p class="remits-btn">
-							<router-link :to="{name:'remitEdit',params:{id:item.id}}">
-								<i class="edit">编辑</i>
-							</router-link>
 							<i class="del" @click="remitDel(index,item.id)" >删除</i>
+							<router-link tag="i" class="edit" :to="{name:'remitEdit',params:{id:item.id}}">
+								编辑
+							</router-link>
 						</p>
 					</div>
 				</div>
@@ -31,27 +32,35 @@
 		    </section>
 			<p class="visib-98"></p>
 			<router-link :to="{name:'remitAdd'}">
-					<div class="remits-fixed">新增账户</div>
+					<div class="remits-fixed">新增汇款账户</div>
 			</router-link>
 		</section>
 		<transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
               //初始数据结构
-              infoData:[],
-              showRemit:true, //有没有数据
-              isCheck:false, //判断是否显示选择按钮
-              btnIcon:false,
-              url:''
+	            infoData:[],
+	            showRemit:true, //有没有数据
+	            isCheck:false, //判断是否显示选择按钮
+	            btnIcon:false,
+	            url:'',
+	            showAlert: false, //弹出框
+	            alertText: null, //弹出信息
+	            remitId:sessionStorage.paymentId
             }
         },
+        components:{
+	    	alertTip
+	    },
         created : function(){
             //初始化
             this.mountedData();
@@ -59,7 +68,11 @@
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+            	if(this.isCheck){
+            		this.$router.push({name:sessionStorage.remitName});
+            	}else{
+            		this.$router.push({name:'info'});
+            	} 
             },
             iconId(item){
             	this.$router.push({
@@ -81,7 +94,8 @@
 		            	this.infoData.splice(index,1)
 		            	this.dataLength();
 		            }).catch(function (error) {
-		                console.log("请求失败了");
+		                this.showAlert = true;
+                    	this.alertText = error.body.msg
 		            });
 	           	}else{
 	                 return false;
@@ -100,7 +114,8 @@
 	                this.infoData = response.body.data;
 	                this.dataLength();
 	            }).catch(function (error) {
-	                console.log("请求失败了");
+	                this.showAlert = true;
+                    this.alertText = error.body.msg
 	            });
            
             },
@@ -123,9 +138,12 @@
 			    if(from.name=='paymentSubmit'){
 	        		vm.isCheck=true; 
 	        		vm.url=from.fullPath;
-	        		console.log(vm.url);
+	        		sessionStorage.remitName = from.name;
+	        		sessionStorage.url = from.fullPath;
 	        	}else{
 	        		vm.isCheck=false;
+	        		sessionStorage.remitName = '';
+	        		sessionStorage.url = '';
 	        	}
 			  });
         },
@@ -141,6 +159,14 @@
 .router-slid-enter, .router-slid-leave-active {
     transform: translate3d(2rem, 0, 0);
     opacity: 0;
+}
+.remits-wrap{
+	position: absolute;
+    width: 10rem;
+    top: 1.173333rem;
+    bottom: 0;
+    overflow-y: auto;
+    background-color: #f5f5f5;
 }
 /*汇款账户管理*/
 .remits-item{
@@ -159,11 +185,12 @@
 	margin-top:0.266667rem;
 }
 .remits-btn{
-	text-align:right;
 	margin-top:0.8rem;
+	overflow:hidden;
 }
 .remits-btn i{
-	display:inline-block;
+	display:block;
+	float:right;
 	width:1.573333rem;
 	height:0.773333rem;
 	line-height:0.773333rem;
@@ -173,6 +200,7 @@
 	text-align:center;
 	border-radius:0.066667rem;
 	margin-left:0.4rem;
+	cursor:pointer;
 }
 .remits-fixed{
 	width:10.0rem;
@@ -209,7 +237,7 @@
 	background:url(../../../../../assets/check.png) no-repeat;
 	background-size:contain;
 }
-.remite-lt i.icon:hover{
+.remite-lt i.icon:hover,.remite-lt i.icon.active{
 	background:url(../../../../../assets/check-active.png) no-repeat;
 	background-size:contain;
 }

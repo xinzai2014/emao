@@ -1,13 +1,12 @@
 <template>
 	<div>
 		<div class="login-code clearfix">
-            <input type="text" v-model="code"  name="code"  @click="checkCode" ref="code">
+            <input type="text" v-model="code" placeholder="验证码"  name="code"  ref="code">
             <i v-text="codeText" @click="getCode" :class='{"color-disabled":disabled}'></i>
             <span class="login-errror" :class="{fadeIn:errorCode}" v-show="errorCode">请输入正确格式的验证码</span>
         </div>
-	    <input class="login-btn" type="text" name="" value="登录" @click="login">
-        <p class="login-another" @click="checkNav"><span>账号登录</span></p>
-        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+	    <input class="login-btn" type="button" name="" value="登录 / 注册" @click="login">
+        <p class="login-another" @click="checkNav"><span>账号密码登录</span></p>
 	</div>
 </template>
 <script>
@@ -15,7 +14,6 @@ import MD5 from 'crypto-js/md5';
 import hmac from 'crypto-js/hmac-md5';
 import Utf8 from 'crypto-js/enc-utf8';
 import Base64 from 'crypto-js/enc-base64';
-import alertTip from '../../../components/common/alertTip/alertTip'
 	export default {
 		name:'code',
 		data () {
@@ -24,14 +22,12 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		      codeText:"获取验证码",
 		      num:60,
 		      errorCode:false,
-		      disabled:false,
-		      showAlert:false,  //错误弹出窗
-		      alertText:null //错误提醒信息
+		      disabled:false
 		    }
 		},
-		components:{
-	    	alertTip
-	    },
+		mounted(){
+    		this.getDataToken();
+    },
 		methods:{
 			codeToMD5(passwordWord){
 				var password = passwordWord;
@@ -46,7 +42,6 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		           this.$parent.telError = false;
 		         }else{
 		           this.$parent.telError = true;
-		           console.log("手机号码错误了");
 		           this.$parent.$refs.telephone.focus();
 		           setTimeout(()=>{
 		           		this.$parent.telError = false;
@@ -86,15 +81,15 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
+		            sessionStorage.telephone = this.$parent.telephone;
 		            this.passportCheck();
 		          },function(error){
-		          	this.showAlert = true;
-		          	this.alertText = error.body.msg;
+
 		          }).catch(function (error) {
 
 		          }).finally(function(){
 		          	 this.getDataToken();
-		          });;
+		          })
 		    },
 		    passportCheck(){ //登录成功后判断是否已通过注册认证
 				this.$http({
@@ -108,7 +103,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        		this.$router.push('/authResult');
 		        	}else{
 		        		this.$router.push('/auth');
-		        	} 
+		        	}
 		        	// //路由跳转
 		        },function(){
 
@@ -117,7 +112,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    checkNav(){
 		    	 this.$router.push('account'); //路由跳转
 		    },
-		    getCode(){
+		    getCode(){  //获取验证码
 		    	if(this.disabled){
 		    		return false;
 		    	};
@@ -133,10 +128,9 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        	this.setCode();
 		            //this.$router.push('/index'); //路由跳转
 		          },function(error){
-		          	this.showAlert = true;
-		          	this.alertText = error.body.msg;
+
 		          }).catch(function (error) {
-		          	console.log(error);
+
 		          }).finally(function(){
 		          	 this.getDataToken();
 		          });
@@ -165,8 +159,6 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        }).then(function (response) {
 		            sessionStorage.dataToken = response.body.data.dataToken;
 		          }).catch(function (error) {
-		          	console.log(error);
-		            console.log("登录失败了");
 		          });
 		    }
 	    },
@@ -176,7 +168,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 	    beforeRouteLeave (to, from, next) {
 		    window.clearInterval(window.timer);
 	    	next();
-	  }
+	  	}
 	}
 
 </script>

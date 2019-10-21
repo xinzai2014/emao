@@ -18,7 +18,7 @@ body {
   background:#f5f5f5;
 }
 body{
-  width:10.0rem;
+  /*max-width:10.0rem;*/
   margin:0 auto;
 }
 /* 内外边距通常让各个浏览器样式的表现位置不同 */
@@ -67,6 +67,7 @@ input,
 select,
 textarea {
   font-size: 100%;
+  font-family: "Helvetica Neue",Helvetica,STHeiTi,"Microsoft Yahei",Arial,sans-serif;
 }
 /* 去掉各 Table  cell 的边距并让其边重合 */
 table {
@@ -159,3 +160,8 @@ a {
 }
 /*清楚浮动*/
 .clearfix::after{display:block;overflow:hidden;clear:both;height:0;content:'';}
+input:-webkit-autofill {background-color: none;background-image: none;}
+input[type="button"], input[type="submit"], input[type="reset"] {
+-webkit-appearance: none;
+}
+textarea { -webkit-appearance: none;}

@@ -1,23 +1,22 @@
 <template>
 	<div>
 		<div class="login-phone">
-	      <input type="password" placeholder="密码" v-model="pass" maxlength="20" ref="password"> 
+	      <input type="password" placeholder="密码" v-model="pass" maxlength="20" ref="password">
 	      <span class="login-errror" :class="{fadeIn:errorPass}" v-show="errorPass">请输入密码</span>
 	    </div>
 	    <input class="login-btn" type="button" name="" value="登录" @click="login">
-        <p class="login-another" @click="checkNav"><span>验证码登录</span></p>
-        <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+        <p class="login-another" @click="checkNav"><span>免密码登录</span></p>
         <section class="login-popup" v-show="showPasswordDialog">
 	        <!--密码多次输入错误-->
 	        <div class="login-failure">
 	            <div class="login-failure-in">
 	                <p class="login-tip">密码多次输入错误</p>
-	                <p class="login-by-code">您可以先用验证码登录</p>
+	                <p class="login-by-code">您可以先用账号密码登录</p>
 	                <p class="login-set-password">登录重新设置密码</p>
 	            </div>
 	            <p class="login-choose clearfix">
 	                <span @click="closePasswordDialog">我再试试</span>
-	                <span class="active" @click="checkNav">验证码登录</span>
+	                <span class="active" @click="checkNav">免密码登录</span>
 	            </p>
 	        </div>
 	    </section>
@@ -28,7 +27,6 @@ import MD5 from 'crypto-js/md5';
 import hmac from 'crypto-js/hmac-md5';
 import Utf8 from 'crypto-js/enc-utf8';
 import Base64 from 'crypto-js/enc-base64';
-import alertTip from '../../../components/common/alertTip/alertTip'
 
 	export default {
 		name:'pass',
@@ -36,13 +34,12 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		    return {
 		      pass:"",
 		      errorPass:false,
-		      showAlert:false,  //错误弹出窗
-		      alertText:null, //错误提醒信息
 		      showPasswordDialog:false, //三次输错密码提示框
 		      errorPasswordCount:0
 		    }
 		},
 		mounted(){
+		    this.getDataToken();
 			// 100服务器用户名密码 13522641774 000000
 		  },
 		methods:{
@@ -95,9 +92,9 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		            params:data
 		        }).then(function (response) {
 		            sessionStorage.token = response.body.data.token;
+		            sessionStorage.telephone = this.$parent.telephone;
 		            this.passportCheck();
 		          },function(error){
-		          	console.log(error);
 		          	if(error.body.code == 4011){
 		          		this.errorPasswordCount++;
 		          	}
@@ -105,8 +102,6 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		          		this.showPasswordDialog = true;
 		          		return false;
 		          	}
-		          	this.showAlert = true;
-		          	this.alertText = error.body.msg;
 		          }).catch(function (error) {
 
 		          }).finally(function(){
@@ -126,9 +121,7 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        		this.$router.push('/authResult');
 		        	}else{
 		        		this.$router.push('/auth');
-		        	} 
-		        	
-		        	// //路由跳转
+		        	}
 		        },function(){
 
 		        });
@@ -146,13 +139,8 @@ import alertTip from '../../../components/common/alertTip/alertTip'
 		        }).then(function (response) {
 		            sessionStorage.dataToken = response.body.data.dataToken;
 		          }).catch(function (error) {
-		          	console.log(error);
-		            console.log("登录失败了");
 		          });
 		    }
-	    },
-	    components:{
-	    	alertTip
 	    }
 	}
 </script>

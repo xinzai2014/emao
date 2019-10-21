@@ -1,13 +1,11 @@
 <template>
     <div class="mask-loader">
-    	<div class="loader-box">
-    		<div class="loader-circle">
-    			<p class="circle-box"></p>
-    		</div>
-    		<div class="loader">
-    			<div class="element-animation"></div>
-    		</div>
-    	</div>
+    	<!-- <p class="loading-icon"><img src="../../../assets/loading.gif"></p> -->
+        <div class="la-ball-triangle-path la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 </template>
 <style>
@@ -18,158 +16,90 @@
     top:0;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.7);
+    z-index:999;
 }
-.loader-box{
-    position: fixed;
-    left:50%;
-    top:50%;
-    margin-left:-0.8rem;
-    margin-top:-0.666667rem;
+.loading-icon{
+    width:1rem;
+    height:1rem;
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    right:0;
+    margin:auto;
 }
-@supports (animation:animationFrames linear 2s){
-    .loader-box{
-        width: 1.613333rem;
-        height: 1.573333rem;
-    }
-    .loader{
-        position: absolute;
-        top: 0.093333rem;
-        left: 0.133333rem;
-        width:1.333333rem;
-        height:1.36rem;
-        overflow:hidden;
-        display:block;
-        -moz-border-radius:100%;
-        -webkit-border-radius:100%;
-        border-radius:100%;
-        margin:0 auto;
-        z-index:1;
-    }
-    .element-animation{
-        margin-top: 0.333333rem;
-        animation:animationFrames linear 2s;
-        animation-iteration-count: infinite;
-        animation-fill-mode: forwards; /*when the spec is finished*/
-        -webkit-animation: animationFrames linear 2s;
-        -webkit-animation-iteration-count: infinite;
-        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
-        -moz-animation: animationFrames linear 2s;
-        -moz-animation-iteration-count: infinite;
-        -moz-animation-fill-mode:forwards; /*FF 5+*/
-        -o-animation: animationFrames linear 2s;
-        -o-animation-iteration-count: infinite;
-        -o-animation-fill-mode:forwards; /*Not implemented yet*/
-        -ms-animation: animationFrames linear 2s;
-        -ms-animation-iteration-count: infinite;
-        -ms-animation-fill-mode:forwards; /*IE 10+*/
-        width: 13.333333rem;
-        height: 0.666667rem;
-        background: url(../../../assets/loading.png) no-repeat;
-		background-size:contain;
-    }
-    .loader-circle {
-        position: relative;
-        margin: 0 auto;
-        width: 1.333333rem;
-        height: 1.346667rem;
-        border: 0.106667rem solid;
-        border-top-color: hsl(154,100%,31%);
-        border-left-color: hsl(216,87%,52%);
-        border-bottom-color: hsl(8,66%,50%);
-        border-right-color: hsl(42,100%,51%);
-        border-radius: 50%;
-        transform: rotate(45deg);
-    }
-    .circle-box {
-        position: absolute;
-        top: 0.213333rem;
-        left: 0;
-        display: inline-block;
-        width: 1.426667rem;
-        height: 1.426667rem;
-        /* The background is used to specify the border background */
-        background: linear-gradient(90deg, hsla(212,67%,36%,0) 0%,
-        hsla(207,69%,51%,0) 76%,
-        hsla(0,0%,100%,1) 85%,
-        hsla(0,0%,100%,1) 100%); /* W3C */
-        /* Background origin is the padding box by default.
-        Override to make the background cover the border as well. */
-        -moz-background-origin: border;
-        background-origin: border-box;
-        /* A transparent border determines the width */
-        border: 0.08rem solid transparent;
-        border-radius: 50%;
-        box-shadow: inset -999px 0 0; /* The background color */
-        transform: translate(-0.106667rem, 0.733333rem);
-        animation: loading 1s linear infinite;
-    }
+.loading-icon img{
+    width:100%;
+    height:100%;
+}
+.mask-loader *{
+    box-sizing:content-box;
 }
 
-
-@keyframes animationFrames{
-    0% {
-        transform: translate(-11.28rem,0.2rem)  ;
-    }
-    100% {
-        transform: translate(0px,0.2rem)  ;
-    }
+.la-ball-triangle-path{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box
+}
+.la-ball-triangle-path{
+  display:block;font-size:0;color:rgb(204, 204, 204)
+}
+.la-ball-triangle-path.la-dark{
+  color:#333
+}
+.la-ball-triangle-path>div{
+  display:inline-block;float:none;background-color:currentColor;border:0 solid currentColor
+}
+.la-ball-triangle-path{
+  width: .42667rem;
+  height: .42667rem
+}
+.la-ball-triangle-path>div{
+  position:absolute;top:0;left:0;width: .13333rem;height:.13333rem;border-radius:100%
+}
+.la-ball-triangle-path>div:nth-child(1){
+  -webkit-animation:ball-triangle-path-ball-one 2s 0s ease-in-out infinite;
+  animation:ball-triangle-path-ball-one 2s 0s ease-in-out infinite
+}
+.la-ball-triangle-path>div:nth-child(2){
+  -webkit-animation:ball-triangle-path-ball-two 2s 0s ease-in-out infinite;
+  animation:ball-triangle-path-ball-two 2s 0s ease-in-out infinite
+}
+.la-ball-triangle-path>div:nth-child(3){
+  -webkit-animation:ball-triangle-path-ball-three 2s 0s ease-in-out infinite;
+  animation:ball-triangle-path-ball-three 2s 0s ease-in-out infinite
+  }
+.la-ball-triangle-path.la-sm{
+    width:.21333rem;
+    height:.21333rem
+}
+.la-ball-triangle-path.la-sm>div{
+    width:.05333rem;
+    height:.05333rem
+}
+.la-ball-triangle-path.la-2x{width:.85333rem;height:.85333rem}
+.la-ball-triangle-path.la-2x>div{width:.24rem;height:.24rem}
+@keyframes ball-triangle-path-ball-one{
+    0%{-webkit-transform:translate(0, 0);transform:translate(0, 0)}
+    66%{-webkit-transform:translate(220%, 0);transform:translate(220%, 0)}
+    33%{-webkit-transform:translate(110%, 220%);transform:translate(110%, 220%)}
+    100%{-webkit-transform:translate(0, 0);transform:translate(0, 0)}}
+@keyframes ball-triangle-path-ball-two{
+    0%{-webkit-transform:translate(220%, 0);transform:translate(220%, 0)}
+    66%{-webkit-transform:translate(110%, 220%);transform:translate(110%, 220%)}
+    33%{-webkit-transform:translate(0, 0);transform:translate(0, 0)}
+    100%{-webkit-transform:translate(220%, 0);transform:translate(220%, 0)}}
+@keyframes ball-triangle-path-ball-three{
+  0%{-webkit-transform:translate(110%, 220%);transform:translate(110%, 220%)}
+  66%{-webkit-transform:translate(0, 0);transform:translate(0, 0)}
+  33%{-webkit-transform:translate(220%, 0);transform:translate(220%, 0)}
+  100%{-webkit-transform:translate(110%, 220%);transform:translate(110%, 220%)}
 }
 
-@-moz-keyframes animationFrames{
-    0% {
-        transform: translate(-15.466667rem,0.2rem)  ;
-    }
-    100% {
-        transform: translate(0px,0.2rem)  ;
-    }
-}
-
-@-webkit-keyframes animationFrames {
-    0% {
-        transform: translate(-15.466667rem,0.2rem)  ;
-    }
-    100% {
-        transform: translate(0px,0.2rem)  ;
-    }
-}
-
-@-o-keyframes animationFrames {
-    0% {
-        transform: translate(-15.466667rem,0.2rem)  ;
-    }
-    100% {
-        transform: translate(-0px,0.2rem)  ;
-    }
-}
-
-@-ms-keyframes animationFrames {
-    0% {
-        transform: translate(-15.466667rem,0.2rem)  ;
-    }
-    100% {
-        transform: translate(0px,0.2rem)  ;
-    }
-}
-
-@keyframes loading {
-    0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
-    100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
-}
-@-webkit-keyframes loading {
-    0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
-    100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
-}
-@-moz-keyframes loading {
-    0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
-    100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
-}
-@-o-keyframes loading {
-    0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
-    100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
-}
-@-ms-keyframes loading {
-    0% { transform: translate(-0.12rem, -0.333333rem) rotate(0deg); }
-    100% { transform: translate(-0.12rem, -0.333333rem) rotate(360deg); }
-}
 </style>

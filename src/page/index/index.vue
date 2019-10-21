@@ -1,29 +1,32 @@
 <template>
-  <div>
+  <div v-if="ajaxLoading">
 
     <!--首页头部-->
     <header-mess ></header-mess>
     <!--首页图片滚动-->
+    <div class="auth-mess" v-if="showAuthMess" @click="goAuth">
+      <div>
+         {{authData}}
+         <span @click.stop="closeAuthMess">×</span>
+      </div>
+    </div>
     <swiper :circular="circular" v-if="circular.length"></swiper>
 
     <!--首页品牌-->
-    <brand :brandList="brands"></brand>
+    <brand :brandList="brands" v-if="brands.length"></brand>
 
     <!--本地车源-->
-    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" ></serie>
+    <serie :serieList="serieList" :initData="initData" :serieMore="serieMore" @subSerieList="subSerieList" v-if="serieList.length"></serie>
 
+    <!-- store传值 -->
+    <search></search>
 
-    <!--查询表单--> 
-    <search @getCar="getCar" :carMess="carMess" :title="title" @subAlert = "getAlert"></search>
-
-    
-    <!-- 车型数据 -->
-    <car :showBrand="showbrand"  @getBrandChild="brandStatus" v-if="showbrand"></car>
-
-    <alert-tip v-if="showAlert" @closeTip = "showAlert = false" :alertText="alertText"></alert-tip>
+    <!-- store传值 -->
+    <car v-if="showbrandTag"></car>
 
     <!--首页底部-->
     <footerTo></footerTo>
+
   </div>
 
 </template>
@@ -31,7 +34,6 @@
 <script>
 import headerMess from '../../components/header/header'
 import swiper from '../../components/common/swiper/swiperIndex'
-import alertTip from '../../components/common/alertTip/alertTip'
 import brand from './brand'
 import serie from './serie'
 import search from './search'
@@ -43,16 +45,8 @@ export default {
   name: 'index',
   data () {
     return {
-        showbrand:false, //车型弹层
         lookAll:true, //品牌查看更多
         serieMore:false,//车系查看更多
-        carMess:{     //搜索车型的时的数据
-          carName:"选择车型",
-          brandId:null,
-          serieId:null,
-          carId:null
-        },
-        title:"急需要什么车型？告诉我",
         initData:{ //初始化接口数据
             token:null,
             ltime:0,
@@ -66,29 +60,14 @@ export default {
 
         ],
         serieList:[], //车系数据
-        showAlert:false,
-        alertText:null
+        showAuthMess:false, //是否展示授权信息
+        authData:null,
+        ajaxLoading:false
     }
   },
-  methods:{ //选取车型后回传
-    brandStatus(brandId,serieId,carId,carName){
-        if(arguments.length){
-           this.carMess.carName = carName;
-           this.carMess.brandId = brandId;
-           this.carMess.serieId = serieId;
-           this.carMess.carId = carId;
-        };
-        this.showbrand = false;
-    },
+  methods:{
     goBrand(brandID){ //点击品牌跳转
         this.$router.push('/brand/'+brandID); //品牌路由跳转
-    },
-    getAlert(msg){
-      this.showAlert = true;
-      this.alertText = msg;
-    },
-    getCar(carBoolean){ //自组件选车型控制显示隐藏
-      this.showbrand = carBoolean;
     },
     getSerie(){ //获取车系数据
        this.initData.token = sessionStorage.token
@@ -103,14 +82,52 @@ export default {
             if(response.body.data.series.length>=this.initData.len){
               this.serieMore = !this.serieMore;
             }
+            this.ajaxLoading = true;
           }).catch(function (error) {
-            console.log("请求失败了");
+
           });
+    },
+    subSerieList(list){
+        this.serieList = this.serieList.concat(list);
+        if(list.length<this.initData.len){
+            this.serieMore = !this.serieMore;
+        }
+    },
+    closeAuthMess(){
+        this.showAuthMess = false;
+        sessionStorage.setItem("idCardAuth",null);
+    },
+    getAuth(){
+      this.$http({
+        url:"dealerInfo/dataStatus?token="+sessionStorage.token,
+        method:"GET"
+      }).then(function (response) {
+          var data = response.body;
+          if(data.data.data_status == 2){
+            this.authData = "您还有部分信息待完善，立即完善";
+            this.showAuthMess = true;
+          }
+          if(data.data.data_status == 4){
+            this.authData = "您填写的公司信息未通过审核，点击查看详情";
+            this.showAuthMess = true;
+          }
+      },function(){
+
+      });
+    },
+    goAuth(){
+      this.$router.push("/auth")
     }
   },
   mounted(){
     //组件初始完成需要做什么
     this.getSerie();
+    this.getAuth();
+  },
+  computed:{
+    showbrandTag(){
+      return this.$store.state.chooseCar;
+    }
   },
   components:{
     headerMess,
@@ -119,15 +136,10 @@ export default {
     serie,
     search,
     car,
-    alertTip,
     footerTo:footer
   },
   beforeRouteEnter (to, from, next) {
-       
-        next();
-    },
-    beforeRouteLeave (to, from, next) {
-        
+
         next();
   }
 }
@@ -136,13 +148,14 @@ export default {
 <style>
 
 /*首页*/
+
+.auth-mess{line-height:1.2rem;background:#d5aa5c;padding-left:0.4rem;color:#FFF;font-size:0.38rem;letter-spacing:0.03rem;}
+.auth-mess span{float:right;margin-right:0.5rem;font-size:0.5rem;}
 /*首页头部*/
 .index-header{position:relative;height:1.1733rem;text-align:center;line-height:1.1733rem;background-color:#27282f;}
 .index-title{font-size:.5333rem;color:#d5aa5c;}
 .index-news{position:absolute;right:.4rem;top:.333rem;}
 .index-news span{position:absolute;top:-.2rem;left:.2666rem;display:block;width:.4rem;height:.4rem;line-height:.4rem;color:#fff;border-radius:.2666rem;background-color:#ff0043;}
-
-
 
 /*首页底部定位*/
 .index-fooer{position:fixed;bottom:0;width:10rem;height:1.3066rem;background-color:#fff;}
@@ -159,3 +172,4 @@ export default {
 .index-my.active{color:#d5aa5c;}
 
 </style>
+

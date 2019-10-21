@@ -1,26 +1,27 @@
 <template>
         
-	<section class="index-slider">
+	<section class="look-slider">
 		<div class="swiper-container swiperWrap1">
 			<div class="swiper-wrapper">
-				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="lookFull()">
+				<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" @click="lookFull()" :key="index">
 					<img  :src=item.imgUrl  >
 				</a>
 			</div>
-			<ul class="index-icon">
+			<ul class="look-icon">
             </ul>
 		</div>
 
 		<div class="swiper-fullpage"  @click="closeFull" :class="{translateY:showFull}">
 			<div class="swiper-container swiperWrap2">
 				<div class="swiper-wrapper">
-					<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide">
+					<a v-for="(item,index) in circular" :circuid=item.id  class="swiper-slide" :key="index">
 						<img  :src=item.imgUrl  >
 					</a>
 				</div>
-				<ul class="index-icon">
-	            </ul>
 			</div>
+			<ul class="fullpage-icon">
+	        	<li v-for="(item,index) in circular" :class='{active:activeIndex == index}' :key="index"></li>
+	        </ul>
 		</div>
 
 	 </section>
@@ -35,13 +36,14 @@ export default {
 	    return {
 	     	showFull:false,
 	     	mySwiper1:null,
-	     	mySwiper2:null
+	     	mySwiper2:null,
+	     	activeIndex:0
 	    }
 	  },
 	  methods:{
 	  	lookFull(){ //打开全屏模式
 	  		var activeIndex = this.mySwiper1.activeIndex;
-	  		this.mySwiper2.slideTo(activeIndex);
+	  		this.mySwiper2.slideTo(activeIndex-1);
 	  		this.showFull = true;
 	  	},
 	  	closeFull(index){
@@ -49,42 +51,41 @@ export default {
 	  	}
 	  },
 	  mounted(){
-	  	console.log("数据取到了");
+
+	  	var that = this;
 
 		this.mySwiper1 = new Swiper('.swiperWrap1', {
 			autoplay: 3000,//可选选项，自动滑动
-			pagination : '.index-icon',
+			pagination : '.look-icon',
 			paginationElement:"li",
 			loop:true
 		});
 
 		this.mySwiper2 = new Swiper('.swiperWrap2', {
 			autoplay: 3000,//可选选项，自动滑动
-			pagination : '.index-icon',
 			paginationElement:"li",
-			loop:true
+			onSlideChangeEnd:function(swiper){
+				that.activeIndex = swiper.activeIndex;
+			}
 		});
-	  },
-	  watch:{
-	   circular(){
-	   		
-	   }
 	  }
 }
 </script>
 
 <style>
 /*首页图片滚动*/
-.index-slider{position:relative;height:4.5333rem;}
-.index-slider img{width:100%;height:4.5333rem;}
-.index-icon{position:absolute;left:.4rem !important;bottom:.24rem !important;z-index:1;}
-.index-icon li{float:left;width:.1333rem;height:.1333rem;background-color:red;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;}
-.index-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;}
+.look-slider{position:relative;}
+.look-slider img{width:100%;}
+.look-icon{position:absolute;right:.4rem !important;bottom:.24rem !important;z-index:1;left:auto !important;width:auto !important;}
+.look-icon li{float:left;width:.1333rem;height:.1333rem;background-color:#FFF;margin:0 .1333rem 0 0 !important;border-radius:0.0666rem;opacity:1 !important}
+.look-icon li.swiper-pagination-bullet-active{width:.2666rem;background-color:#d6ab55;opacity:1 !important}
 
 .news_title h3{
 	font-size:0.5rem;
 }
-
+.fullpage-icon{position:fixed;left:0;bottom:0.75rem;text-align:center;width:100%;}
+.fullpage-icon li{display:inline-block;width:0.133rem;height:0.133rem;background:#FFF;border-radius:0.0666rem;margin:0 0.133rem;}
+.fullpage-icon .active{background:#d6ab55;width:0.266rem;}
 .swiper-fullpage{
 	position: fixed;
 	top:0;

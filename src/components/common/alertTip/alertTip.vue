@@ -1,8 +1,7 @@
 <template>
     <div class="alet_container fadeIn">
         <section class="tip_text_container">
-
-            <p class="tip_text">{{alertText}}</p>
+            <p class="tip_text">{{alertTextState}}</p>
         </section>
     </div>
 </template>
@@ -14,16 +13,24 @@
 
             }
         },
+        props: ['alertText'],
         mounted(){
-            var that=this;
+            var that = this;
             setTimeout(function(){
-                that.closeTip();
+                that.$store.dispatch("ALERT", // 通过store传值
+                  {
+                    flag:false,
+                    text:""
+                  }
+                );
+                that.$emit("closeTip");
             },2000);
         },
-        props: ['alertText'],
         methods: {
-            closeTip(){
-                this.$emit('closeTip');
+        },
+        computed:{
+            alertTextState(){
+                return this.$store.state.alert.text||this.alertText;
             }
         }
     }
@@ -32,18 +39,20 @@
 <style>
 .alet_container{
     position:fixed;
-    z-index:25;
+    z-index:250; 
 }
 
 .tip_text{
     background: #666;
     color: white;
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.5rem;
     position: fixed;
     left:50%;
     transform:translateX(-50%);
     bottom: 3rem;
     font-size: 0.35rem;
-    background:rgba(0,0,0,0.75)
+    background:rgba(0,0,0,0.75);
+    white-space:nowrap;
+    border-radius: .12rem
 }
 </style>

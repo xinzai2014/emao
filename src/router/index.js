@@ -12,8 +12,8 @@ const login = r => require.ensure([], () => r(require('../page/login/login')), '
 const account = r => require.ensure([], () => r(require('../page/login/children/account')), 'account')
 const code = r => require.ensure([], () => r(require('../page/login/children/code')), 'code')
 const auth = r => require.ensure([], () => r(require('../page/auth/auth')), 'auth')
-const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'auth')
-//const auth = r => require.ensure([], () => r(require('../components/common/uploader/uploader')), 'auth')
+const authResult = r => require.ensure([], () => r(require('../page/authResult/authResult')), 'authResult')
+const aptitude = r => require.ensure([], () => r(require('../page/aptitude/aptitude')), 'aptitude')
 
 
 //首页相关组件
@@ -39,6 +39,19 @@ const addressEdit = r => require.ensure([], () => r(require('../page/profile/chi
 const remit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/remit')), 'remit')
 const remitAdd = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/add')), 'remitAdd')
 const remitEdit = r => require.ensure([], () => r(require('../page/profile/children/children/remit/children/edit')), 'remitEdit')
+
+const password = r => require.ensure([], () => r(require('../page/profile/children/children/password/password')), 'password')
+
+
+const passwordEdit = r => require.ensure([], () => r(require('../page/profile/children/children/password/children/edit')), 'passwordEdit')
+
+const setting = r => require.ensure([], () => r(require('../page/profile/children/children/setting/setting')), 'setting')
+
+const about = r => require.ensure([], () => r(require('../page/profile/children/children/setting/children/about')), 'about')
+
+const companyInfo = r => require.ensure([], () => r(require('../page/profile/children/children/companyInfo/companyInfo')), 'companyInfo')
+const agreement = r => require.ensure([], () => r(require('../page/profile/children/children/agreement/agreement')), 'agreement')
+
 
 //优惠券
 const coupon = r => require.ensure([], () => r(require('../page/coupon/coupon')), 'coupon')
@@ -81,11 +94,20 @@ const declare = r => require.ensure([], () => r(require('../page/declare/declare
 const soldCar = r => require.ensure([], () => r(require('../page/soldCar/soldCar')), 'soldCar')
 
 //售车申报资料提交组件
-const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
+//const editDeclare = r => require.ensure([],() => r(require('../page/editDeclare/editDeclare')),'editDeclare')
 
+//售车申报资料审核中组件
+//const auditDeclare = r => require.ensure([],() => r(require('../page/auditDeclare/auditDeclare')),'auditDeclare')
+
+//售车申报资料组件
+const rejectDeclare = r => require.ensure([],() => r(require('../page/rejectDeclare/rejectDeclare')),'rejectDeclare')
+
+//已售车申报资料详情页组件
+const soldCarDetail = r => require.ensure([],() => r(require('../page/soldCarDetail/soldCarDetail')),'soldCarDetail')
 
 //全款购车确认订单
 const orderConfrim = r => require.ensure([], () => r(require('../page/orderConfrim/orderConfrim')), 'orderConfrim')
+const resultSuccess = r => require.ensure([], () => r(require('../page/orderConfrim/children/resultSuccess')), 'resultSuccess')
 
 //申请展车确认订单
 const displayConfrim = r => require.ensure([], () => r(require('../page/displayConfrim/displayConfrim')), 'displayConfrim')
@@ -96,16 +118,75 @@ const balanceConfrim = r => require.ensure([], () => r(require('../page/balanceC
 //中转库组件
 const storage = r => require.ensure([], () => r(require('../page/storage/storage')), 'storage')
 
+//后期淘车猫加入专题
+const auction = r => require.ensure([], () => r(require('../page/topic/20171111/auction')), 'auction')
+
+//授权店认证
+const empower = r => require.ensure([], () => r(require('../page/empower/empower')), 'empower')
+
+//授权店升级引导
+const empowerGuide = r => require.ensure([], () => r(require('../page/empower/empowerGuide')), 'empowerGuide')
+
+//授权店提交成功
+const empowerSuccess = r => require.ensure([], () => r(require('../page/empower/empowerSuccess')), 'empowerSuccess')
+
+//授权店审核中
+const empowerAudit = r => require.ensure([], () => r(require('../page/empower/empowerAudit')), 'empowerAudit')
+
+//授权店审核通过
+const empowerAdopt = r => require.ensure([], () => r(require('../page/empower/empowerAdopt')), 'empowerAdopt')
+
+//app1.5.0加盟店H5
+const problem = r => require.ensure([], () => r(require('../page/storesH5/problem')), 'problem')
+const authorize = r => require.ensure([], () => r(require('../page/storesH5/authorize')), 'authorize')
+
+//预售详情
+const presellDetails = r => require.ensure([], () => r(require('../page/presell/presellDetails')),'presellDetails')
+// 新预售详情
+const detail = r => require.ensure([], () => r(require('../page/presell/detail')),'detail')
+
+//预售确认预定
+const presellReserve = r => require.ensure([], () => r(require('../page/presell/presellReserve')),'presellReserve')
+
+//预售预定成功
+const presellSuccess = r => require.ensure([],() => r(require('../page/presell/presellSuccess')),'presellSuccess')
+
+//预售订单列表
+const presellList = r => require.ensure([],() => r(require('../page/presell/presellList')),'presellList')
+
+//邀请注册
+const invitation = r => require.ensure([],() => r(require('../page/invitation/invitation')),'invitation')
+
+//纪录
+const record = r => require.ensure([],() => r(require('../page/invitation/record')),'record')
+
+//领取
+const receive = r => require.ensure([],() => r(require('../page/invitation/receive')),'receive')
+
+const test = r => require.ensure([],() => r(require('../page/test/test')),'test')
+//竞拍
+const biding = r => require.ensure([],() => r(require('../page/biding/biding')),'biding')
+//保证金规则详情页
+const ruledetails = r => require.ensure([],() => r(require('../page/biding/ruledetails')),'ruledetails')
+//竞拍记录列表详情页
+const recordlist = r => require.ensure([],() => r(require('../page/biding/recordlist')),'recordlist')
+
+//融资购车页面
+const financing = r => require.ensure([], () => r(require('../page/financing/financing')), 'financing')
+const subsuccess = r => require.ensure([], () => r(require('../page/financing/subsuccess')), 'subsuccess')
+const animation = r => require.ensure([], () => r(require('../page/animation/animation')), 'animation')
+// 帮助页面
+const help = r => require.ensure([], () => r(require('../page/help/help')), 'help')
 
 Vue.use(Router)
 
 var router=new Router({
     routes: [
-        {
-            path: '/',
-            name: 'loading',
-            component: loading  //loading页面
-        },
+        // {
+        //     path: '*',
+        //     name: 'loading',
+        //     component: loading  //默认路由，匹配不到的时候跳转loading
+        // },
         {
             path: '/login',     //登录页面
             name: 'login',
@@ -134,6 +215,11 @@ var router=new Router({
             component: authResult
         },
         {
+            path: '/aptitude',  //登录注册个人认证
+            name: 'aptitude',
+            component: aptitude
+        },
+        {
             path: '/index',  //首页
             name: 'index',
             component: index
@@ -159,12 +245,17 @@ var router=new Router({
             component: orderConfrim
         },
         {
+            path: '/resultSuccess',  //下单成功页
+            name: 'resultSuccess',
+            component: resultSuccess
+        },
+        {
             path: '/balanceConfrim/:id',  //补余款下单页面
             name: 'balanceConfrim',
             component: balanceConfrim
         },
         {
-            path: '/contrast',  //全款购车结果页
+            path: '/contrast',  //配置对比页面
             name: 'contrast',
             component: contrast
         },
@@ -221,6 +312,41 @@ var router=new Router({
                                     component: remitEdit
                                 }
                             ]
+                        },
+                        {
+                            path: 'password',   //汇款账户列表
+                            name: 'password',
+                            component: password,
+                            children: [
+                                {
+                                    path: 'edit',   //新增账户列表
+                                    name: 'passwordEdit',
+                                    component: passwordEdit
+                                }
+                            ]
+                        },
+                        {
+                            path: 'setting',   //汇款账户列表
+                            name: 'setting',
+                            component: setting,
+                            children: [
+                                {
+                                    path: 'about',   //新增账户列表
+                                    name: 'about',
+                                    component: about
+                                }
+                            ]
+                        }
+                        ,
+                        {
+                            path: 'companyInfo',   //汇款账户列表
+                            name: 'companyInfo',
+                            component: companyInfo
+                        },
+                        {
+                            path: 'agreement',   //汇款账户列表
+                            name: 'agreement',
+                            component: agreement
                         }
                     ]
                 }
@@ -286,18 +412,6 @@ var router=new Router({
             name: 'displayDetail',
             component: displayDetail
         },
-        // {
-        //   path: '/declare',  //我的售车申报列表
-        //   name: 'declare',
-        //   component: declare,
-        //   children: [
-        //     {
-        //       path: '/edit/:id',   //提交申报资料
-        //       name: 'editDeclare',
-        //       component: editDeclare
-        //     }
-        //   ]
-        // },
         {
             path: '/message',  //我的消息列表
             name: 'message',
@@ -344,23 +458,31 @@ var router=new Router({
             path: '/declare',  //我的售车申报列表
             name: 'declare',
             component: declare
-            //children: [
-            //  {
-            //    path: 'edit/:id',   //提交申报资料
-            //    name: 'editDeclare',
-            //    component: editDeclare
-            //  }
-            //]
         },
+        //{
+        //    path: '/editDeclare/:id',   //提交申报资料
+        //    name: 'editDeclare',
+        //    component: editDeclare
+        //},
+        //{
+        //    path: '/auditDeclare/:id',   //提交申报资料审核中
+        //    name: 'auditDeclare',
+        //    component: auditDeclare
+        //},
         {
-            path: '/editDeclare/:id',   //提交申报资料
-            name: 'editDeclare',
-            component: editDeclare
+            path: '/rejectDeclare',   //提交申报资料三种状态
+            name: 'rejectDeclare',
+            component: rejectDeclare
         },
         {
             path: '/soldCar',  //已售车辆申报列表
             name: 'soldCar',
             component: soldCar
+        },
+        {
+            path: '/soldCarDetail/:id',   //已售车辆申报资料详情页
+            name: 'soldCarDetail',
+            component: soldCarDetail
         },
         {
             path: '/storage',  //我的中转库列表
@@ -371,21 +493,173 @@ var router=new Router({
             path: '/paymentSubmit',  //提交汇款凭证
             name: 'paymentSubmit',
             component: paymentSubmit,
+        },
+        {
+          path: '/zt/201711/auction',  //提交汇款凭证
+          name: 'auction',
+          component: auction,
+        },
+        {
+            path: '/empower',  //授权店认证
+            name: 'empower',
+            component: empower
+        },
+        {
+            path: '/empower/empowerGuide',  //授权店升级引导
+            name: 'empowerGuide',
+            component: empowerGuide
+        },
+        {
+            path: '/empower/empowerSuccess',  //授权店提交成功
+            name: 'empowerSuccess',
+            component: empowerSuccess
+        },
+        {
+            path: '/empower/empowerAudit',  //授权店审核中
+            name: 'empowerAudit',
+            component: empowerAudit
+        },
+        {
+            path: '/empower/empowerAdopt',  //授权店审核通过
+            name: 'empowerAdopt',
+            component: empowerAdopt
+        },
+        {
+
+            path: '/storesH5/problem',  //几个小问题
+            name: 'problem',
+            component: problem
+        },
+        {
+            path: '/storesH5/authorize',  //授权店
+            name: 'authorize',
+            component: authorize
+        } ,
+        {
+            path:'/presell/detail',  //预售详情页
+            name:'detail',
+            component:detail
+        },
+        {
+            path:'/presell/presellReserve/:id',   //预售确认预定
+            name:'presellReserve',
+            component:presellReserve
+        },
+        {
+            path:'/presell/presellDetails',   //预售确认预定
+            name:'presellDetails',
+            component:presellDetails
+        },
+        {
+            path:'/presell/presellSuccess',  //预定成功
+            name:'presellSuccess',
+            component:presellSuccess
+        },
+        {
+            path:'/presell/presellList',     //预售订单列表
+            name:'presellList',
+            component:presellList
         }
+        ,
+        {
+            path:'/invitation/invitation',     //邀请注册
+            name:'invitation',
+            component:invitation
+        }
+        ,
+        {
+            path:'/invitation/record',     //纪录
+            name:'record',
+            component:record
+        }
+        ,
+        {
+            path:'/invitation/receive',     //领取
+            name:'receive',
+            component:receive
+        }
+        ,
+        {
+            path:'/test',     //领取
+            name:'test',
+            component:test
+        },
+        {
+            path:'/biding',     //竞拍
+            name:'biding',
+            component:biding
+        },
+        {
+            path:'/biding/ruledetails',     //保证金规则详情页
+            name:'ruledetails',
+            component:ruledetails
+        },
+        {
+            path:'/biding/recordlist',     //竞拍记录列表详情页
+            name:'recordlist',
+            component:recordlist
+        }
+        ,
+        {
+            path:'/financing',     //融资购车
+            name:'financing',
+            component:financing
+        },
+        {
+            path:'/financing/subsuccess',     //融资购车提交成功
+            name:'subsuccess',
+            component:subsuccess
+        } ,
+        {
+            path:'/animation',     //融资
+            name:'animation',
+            component:animation
+        }  ,
+        {
+            path:'/help',     //帮助
+            name:'help',
+            component:help
+        } 
     ]
 })
 
 
 
-
-
 router.beforeEach((to, from, next) => {
-    var token=sessionStorage.getItem('token');
-    if(token||to.name=="loading"||to.name=='account'||to.name=='code'){
+    var token = sessionStorage.getItem('token');
+
+    if(token == null){ //用于app内部跳转多个参数后续完善
+        if(to.name=='receive'){
+            next();
+        }else{
+            var href = window.location.href,
+                str = href.indexOf('token=');
+                if(str != -1){
+                    token = href.substr(str+6,str+38);
+                }  
+        }
+    };
+    var href = window.location.href,
+        str = href.indexOf('apiVersion=');
+    if(str != -1){
+        var apiVersion = href.substr(str+11,5);
+        sessionStorage.apiVersion = apiVersion;
+    }else{
+        sessionStorage.apiVersion = '';
+    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    //如何做登录完了回到某个页面去呢  
+    if(to.name=='receive'||to.name=="loading"||to.name=='account'||to.name=='code'||to.name == "auction"||to.name == "receive"||to.name == "presellDetails"){ //不需要登录可以直接跳转的 //专题后面想想能不能单独路由
+        next();
+    }else if(!!(token&&(to.name=="auth"||to.name=='authResult'||to.name=='aptitude'))){ //需要登录但是不用认证才能进去的页面
+        next();
+    }else if(!!token){ //登录并且已经认证过需要认证
         next();
     }else{
-        next('/');
+        next();
     }
 })
+
 
 export default router;

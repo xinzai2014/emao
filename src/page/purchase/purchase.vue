@@ -5,19 +5,20 @@
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>已购展车
 		</header>
 		<!--退订展车-->
-	    <section class="bought" v-scroll="getMore">
+	    <section v-if="infoData.length" class="bought" v-scroll="getMore" ref="load" @click="purchaseUrl">
 	        <div class="bought-item" v-for="(item,index) in infoData">
 	            <router-link :to="{name:'displayDetail',params:{id:item.orderNum}}">
-		            <div class="bought-ct">
+		            <div class="bought-ct bought-bt">
 		                <p class="bought-tit">{{item.name}}</p>
 		                <p class="bought-color">{{item.color}}</p>
-		                <p class="bought-state">已补余款：<span>{{item.price}}</span></p>
 		            </div>
-		            <p class="bought-spend">已购买</p>
 	            </router-link>
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
+	    <section class="no-auto server-no-response" v-else>
+            <img src="../../assets/no-order.png" alt="">
+            <p>暂无展车</p>
+        </section>
     </div>
 </template>
 <script>
@@ -31,7 +32,8 @@
 	            nowPage : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
-	            loadingData : false //是否加载完
+	            loadingData : false, //是否加载完
+				scrollTimer: null
 
             }
         },
@@ -51,7 +53,6 @@
 	                method:"GET",
 	                params:data
 	            }).then(function (response) {
-	            	console.log(response)
 	                this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.lastPage;
 	                this.switchShow=!this.switchShow;
@@ -60,22 +61,33 @@
 	                console.log("请求失败了");
             	});
 			},
-			getMore: function () {
-				if(this.nowPage >= this.lastPage){
-					this.switchShow=this.switchShow;
-				}else{
-					if(this.loadingData){
-						this.switchShow=!this.switchShow;
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+			getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 0);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
-			}
+			},
+			purchaseUrl(){
+            	this.$store.dispatch("ORDER_URL",{
+                  tag:"purchase",
+                  id:""
+                });
+            }
 
         },
         mounted(){
@@ -85,16 +97,15 @@
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }   
 </script>
 <style>
@@ -103,7 +114,7 @@
 	padding:0.533333rem 0.4rem;
 	background:#fff;
 	overflow:hidden;
-	border-bottom:1px solid #2c2c2c;
+	border-bottom:1px solid #c0c0c0;
 }
 .bought-item:last-child{
 	border-bottom:none;
@@ -119,7 +130,9 @@
 }
 .bought-ct{
 	padding-bottom:0.533333rem;
-	border-bottom:1px solid #e0e0e0;
+}
+.bought-bt{
+	border-bottom:none;
 }
 .bought-state{
 	padding-top:0.533333rem;
@@ -142,4 +155,15 @@
 	line-height:1.0rem;
 	font-size:0.266667rem;
 }
+.no-auto{
+    text-align: center;
+    font-size: 0.453333rem;
+    padding: 4.0rem 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+.no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
+.no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
+.no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 </style>

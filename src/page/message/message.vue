@@ -8,7 +8,7 @@
             <div class="news-item" v-for="(item,index) in mesList">
               <router-link :to="'/message/'+item.url">
                 <div class="news-lt">
-                    <i class="envelope"></i>
+                    <i class="envelope" :class="'envelope'+item.typeId"></i>
                     <span v-if="item.num">{{item.num}}</span>
                 </div>
                 <div class="news-rt">
@@ -26,21 +26,29 @@
         <transition name="router-slid">
             <router-view></router-view>
         </transition>
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
       mesList:{},
       showRemit:false, //有没有数据
+      showAlert: false, //弹出框
+      alertText: null, //弹出信息
+      url:''
     }
   },
+        components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
-        this.$router.go(-1);
+      this.$router.push({ name: sessionStorage.messageFlag});              
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -57,7 +65,8 @@ export default {
             this.mesList=mesList;
             this.dataLength();
         }).catch(function (error) {
-             console.log("请求失败了");
+             this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     dataLength(){
@@ -101,19 +110,33 @@ export default {
     $route(){
         this.fillData();
     }
-  }
+  },
+
+    beforeRouteEnter(to, from, next){
+      next(vm => {
+        if(from.name=="index"||from.name=="profile"){
+            sessionStorage.messageFlag = from.name;
+            vm.$store.dispatch("MESSAGE_FLAG",from.name );
+            
+        } 
+      });
+    }
+
 }
 </script>
 
 <style>
-.rating_page{
+html,body{
+  height:auto;
+}
+.rating_pages{
     position: absolute;
     top: 0;
     left: 0;
     background-color: #f5f5f5;
     width:10.0rem;
     z-index: 203;
-    min-height:120%;
+    min-height:150%;
 }
 .router-slid-enter-active, .router-slid-leave-active {
         transition: all .4s;
@@ -149,6 +172,34 @@ export default {
   background-size:contain;
   margin:0.2rem 0 0 0.2rem;
 }
+.news-lt .envelope1{
+  background:url(../../assets/envelope1.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope2{
+  background:url(../../assets/envelope2.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope3{
+  background:url(../../assets/envelope3.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope4{
+  background:url(../../assets/envelope4.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope5{
+  background:url(../../assets/envelope5.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope6{
+  background:url(../../assets/envelope6.png) no-repeat;
+  background-size:contain;
+}
+.news-lt .envelope7{
+  background:url(../../assets/envelope7.png) no-repeat;
+  background-size:contain;
+}
 .news-lt span{
   color:#fff;
   font-size:0.293333rem;
@@ -166,6 +217,7 @@ export default {
 .news-remind{
   font-size:0.426667rem;
   color:#2c2c2c;
+  font-weight:bold;
 }
 .news-infos{
   font-size:0.4rem;

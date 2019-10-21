@@ -7,10 +7,10 @@
                 <i></i>
                 <span>订车</span>
             </li>
-            <li class="index-my">
-                <i></i>
-                <span @click="goHome">我的</span>
-            </li>
+            <router-link to="/profile" tag="li" class="index-my">
+	                <i></i>
+	                <span>我的</span>
+            </router-link>
         </ul>
     </footer>
 	</div>

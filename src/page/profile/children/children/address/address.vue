@@ -2,7 +2,7 @@
     <div class="rating_page">
 		<!--头部-->
 		<header class="user-tit">
-			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>收货地址管理
+			<a href="javascript:;" class="white-lt" @click="resetIndex"></a>{{title}}
 		</header>
 		<!--收货地址管理-->
 		<section class="adders-wrap" v-if="!show">
@@ -10,7 +10,7 @@
 				<div class="addres-item" v-for="(item,index) in addressList">
 					<label :for="item.id" @click="orderAddress(item)">
 						<div class="weui-cell__hd" v-if="radio">
-		                    <input type="radio" class="weui-check" :id="item.id" name="radio">
+		                    <input type="radio" class="weui-check" :id="item.id" name="radio" :checked="$store.getters.getDefaultAddress.id==item.id">
 		                    <i class="weui-icon-checked"></i>
 		                </div>
 		            </label>
@@ -18,23 +18,23 @@
 						<p class="addres-info">{{item.name}}<span>{{item.phone}}</span></p>
 						<p class="addres-add">地址：{{item.address}}</p>
 						<p class="addres-btn">
-							<router-link :to="{name:'addressEdit',params:{id:item.id}}">
-								<i class="edit">编辑</i>
+                            <i class="del" @click="remove(item,index)">删除</i>
+							<router-link class="edit" tag="i" :to="{name:'addressEdit',params:{id:item.id}}">
+								编辑
 							</router-link>
-					        <i class="del" @click="remove(item,index)">删除</i>
 						</p>
 					</div>
-					
+
 				</div>
-			</div>	
+			</div>
+            <p class="visib-98"></p>
 		</section>
 
 		<section class="no-auto server-no-response" v-if="show">
 	        <img src="../../../../../assets/no-addres.png" alt="">
-	        <p>未添加收货地址</p>
+	        <p>尚未添加收货地址</p>
 	    </section>
 
-	    <p class="visib-98"></p>
 		<router-link to="/profile/info/address/add">
 			<div class="addres-fixed">新增收货地址</div>
 		</router-link>
@@ -42,36 +42,49 @@
 		<transition name="router-slid">
             <router-view></router-view>
         </transition>
+
+		 <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
+
     </div>
 </template>
 
 <script>
+	import alertTip from '../../../../../components/common/alertTip/alertTip'
     export default {
         data () {
             return {
               //初始数据结构
               addressList:[],
-              show:true,
+              show:false,
               radio:false,
-              url:''
+              url:'',
+              showAlert: false, //弹出框
+              alertText: null, //弹出信息
+              title:'收货地址管理',
+              loading:false,
+              defaultID:null
             }
         },
+        components:{
+		    alertTip
+		  },
         methods:{
             //组件方法
             resetIndex(){
-                this.$router.go(-1);
+                var addressFlag=this.$store.getters.getAddress;
+                this.$router.push({path:"/" + addressFlag.tag + "/" + addressFlag.serieId});
             },
             orderAddress(item){
-            	this.$router.push({
-            		path:this.url,
-            		/*query:{
-            			'address':item.id
-            		}*/
-            	});
-            	sessionStorage.addressId=item.id;
-            	sessionStorage.addresstxt=item.address;
-            	sessionStorage.addressPhone=item.phone;
-            	sessionStorage.addressName=item.name;
+            	  var addressFlag = this.$store.getters.getAddress;
+		    	      this.$router.push({name:addressFlag.tag,params:{id:addressFlag.serieId}});
+                this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+                  {
+                    id:item.id,
+                    address:item.address,
+                    phone:item.phone,
+                    name:item.name
+                  }
+                );
             },
             remove(item,index){
             	if(confirm('确认要删除么?')){
@@ -86,8 +99,17 @@
 			            data
 			        ).then(function (response) {
 			            this.addressList.splice(index, 1);
+					    this.$store.dispatch("DEFAULT_ADDRESS", // 通过store传值
+					        {
+					          id:this.addressList[0].id,
+					          address:this.addressList[0].address,
+					          phone:this.addressList[0].phone,
+					          name:this.addressList[0].name
+					        }
+					    );
 			        }).catch(function (error) {
-			            console.log("请求失败了");
+           				this.alertText = error.body.msg||"请求失败了";
+           				this.showAlert = true;
 			        });
 		    	}
             },
@@ -103,15 +125,29 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
+		        	//this.loading=true;
 		            this.addressList = response.body.data;
 		        }).catch(function (error) {
-		            console.log("请求失败了");
+		            this.showAlert = true;
+           			this.alertText = error.body.msg||"请求失败了";
 		        });
             }
         },
         mounted(){
         //组件初始完成需要做什么
         	this.fillData();
+
+          var addressFlag=this.$store.getters.getAddress["tag"];
+          if(addressFlag=='orderConfrim'||addressFlag=='displayConfrim'){
+            this.radio=true;
+            this.title='选择收货地址';
+          }else{
+            this.radio=false;
+            this.title='收货地址管理';
+            this.url='';
+          }
+
+          this.defaultID = this.$store.getters.getDefaultAddress;
         },
         watch:{
         	addressList(curVal,oldVal){
@@ -125,21 +161,8 @@
         	$route(){
         		this.fillData();
         	}
-        },
-        beforeRouteEnter(to, from, next){
-        	next(vm => {
-			    if(from.name=='orderDetail'||from.name=='orderConfrim'||from.name=='displayConfrim'||from.name=='balanceConfrim'){
-	        		vm.radio=true;
-	        		vm.url=from.fullPath;
-	        	}else{
-	        		vm.radio=false;
-	        	}
-			  });
-        },
-        created(){
-        	//this.fillData();
         }
-   	 }   
+   	 }
 </script>
 
 <style>
@@ -187,14 +210,14 @@
 }
 
 .info-box{
-	
+
 }
-.no-auto{position: absolute;
+.no-auto{position: fixed;
     width: 10rem;
     top: 1.173333rem;
-    bottom: 1.306667rem;
+    /*bottom: 1.306667rem;*/
+    /* height: 110%; */
     overflow-y: auto;
-    background-color: #fff;
     padding-top: 3.867rem;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
@@ -204,18 +227,18 @@
 	position: absolute;
     width: 10rem;
     top: 1.173333rem;
-    bottom: 1.306667rem;
+    bottom: 0;
     overflow-y: auto;
     background-color: #f5f5f5;
 }
 .rating_page{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    /* height: 100%; */
+    overflow-y: auto;
     background-color: #f5f5f5;
-    width:10.0rem;
+    width: 10.0rem;
     z-index: 203;
 }
 /*收货地址管理*/
@@ -240,9 +263,11 @@
 .addres-btn{
 	text-align:right;
 	margin-top:0.8rem;
+    overflow:hidden;
 }
 .addres-btn i{
-	display:inline-block;
+	display:block;
+    float:right;
 	width:1.573333rem;
 	height:0.773333rem;
 	line-height:0.773333rem;

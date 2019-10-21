@@ -41,10 +41,10 @@
                         <label>汇款账户：</label>
                         <input type="text" v-model="personData.account">
                     </div>
-                    <div class="payment-up">
+                    <!-- <div class="payment-up">
                         <p class="payment-up-tit">代付款说明</p>
                         <uploader :uploadData="uploadData1" @getUpload="getUpload"></uploader>              
-                    </div>
+                    </div> -->
                     <button class="close-bt" @click="submitPerson">保存并使用</button>
                 </div>
             </div>
@@ -71,14 +71,15 @@
                     token:sessionStorage.getItem('token'),
                     name:'',//个人名称
                     bank_name:'',//账户名称
-                    account:'',//账号
-                    explan_path:'' //待付款说明图片
+                    account:''//账号
+                    //explan_path:'' //待付款说明图片
                 },
                 accountType:true, //切换显示
                 uploadData1:{
                     url:"https://tcmapi.emao.com/upload",
                     count:1,
-                    flag:"door"
+                    flag:"door",
+                    image:'static/sample3.jpg'
                 },
                 dataURL:{},
                 showAlert: false, //弹出框
@@ -101,17 +102,17 @@
                 var reg = /^[0-9]*$/;
                 if(!this.acountData.pay_company){
                     this.showAlert = true;
-                    this.alertText = '汇款单位不能为空！';
+                    this.alertText = '请填写汇款单位信息';
                     return;
                 }
                 if(!this.acountData.bank_name){
                     this.showAlert = true;
-                    this.alertText = '开户行不能为空！';
+                    this.alertText = '请填写开户行信息';
                     return;
                 }
                 if(!this.acountData.account){
                     this.showAlert = true;
-                    this.alertText = '汇款账户不能为空！';
+                    this.alertText = '请填写汇款账户信息';
                     return;
                 }
                 if(!reg.test(this.acountData.account)){
@@ -122,48 +123,69 @@
                 this.$http.post("dealerBank/createBank",this.acountData
                 ).then(function (response) {
                     this.$set(this.acountData,{});
-                    this.resetIndex();
+                    if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':response.body.data.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
                 }).catch(function (error) {
-                    console.log("请求失败了");
+                    this.showAlert = true;
+                    this.alertText = error.body.msg
                 });
+                
             },
-            getUpload(data,flag){
+            /*getUpload(data,flag){
                 this.dataURL[flag] = data;
                 this.personData.explan_path = data[0];
-            },
+            },*/
             submitPerson(){//个人账户
                 var reg = /^[0-9]*$/;
                 if(!this.personData.name){
                     this.showAlert = true;
-                    this.alertText = '姓名不能为空！';
+                    this.alertText = '请填写姓名信息';
                     return;
                 }
                 if(!this.personData.bank_name){
                     this.showAlert = true;
-                    this.alertText = '银行不能为空！';
+                    this.alertText = '请填写银行信息';
                     return;
                 }
                 if(!this.personData.account){
                     this.showAlert = true;
-                    this.alertText = '汇款账户不能为空！';
+                    this.alertText = '请填写汇款账户信息';
                     return;
                 }
                 if(!reg.test(this.personData.account)){
                     this.showAlert = true;
-                    this.alertText = '汇款账户只能是数字！';
+                    this.alertText = '汇款账户只能是数字';
                     return;
                 }
-                if(!this.personData.explan_path){
+                /*if(!this.personData.explan_path){
                     this.showAlert = true;
-                    this.alertText = '请提交待付款说明！';
+                    this.alertText = '请上传代付款说明照片';
                     return;
-                }
+                }*/
                 this.$http.post("dealerBank/createPersonBank",this.personData
                 ).then(function (response) {
                     this.$set(this.personData,{});
-                    this.resetIndex();
+                    if(sessionStorage.remitName == 'paymentSubmit'){
+                        this.$router.push({
+                            path:sessionStorage.url,
+                            query:{
+                                'id':response.body.data.id
+                            }
+                        });
+                    }else{
+                        this.resetIndex();
+                    }
                 }).catch(function (error) {
-                    console.log("请求失败了");
+                    this.showAlert = true;
+                    this.alertText = error.body.msg
                 });
             }        
         },
@@ -205,6 +227,9 @@
     font-size:0.4rem;
     background:#fff;
 }
+.account-lt-item{
+    border-bottom:1px solid #e0e0e0;
+}
 .account-lt-item label{
     width:2.0rem;
 }
@@ -218,10 +243,9 @@
     background:#fff;
     overflow:hidden;
 }
-
-.submit-lt{
+/* .submit-lt{
     margin-left:0.8rem !important;
-}
+} */
 .layer{
     line-height:0.8rem;
     height:0.8rem;

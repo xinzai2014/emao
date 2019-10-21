@@ -2,9 +2,14 @@
     <div>
         <!--头部-->
         <header class="user-tit declare-head">
-            <router-link to="/profile">
-                <a href="javascript:;" class="white-lt"></a>
-            </router-link>
+
+
+            <!--<router-link to="/profile">-->
+                <!--<a href="javascript:;" class="white-lt"></a>-->
+            <!--</router-link>-->
+
+
+            <span class="white-lt" @click="resetIndex"></span>
             售车申报
             <router-link to="/soldCar">
                 <span>已售车辆</span>
@@ -14,12 +19,27 @@
         <section class="sales-wrap" v-if="declareList.length">
             <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore"  infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
                 <div class="sales-item" v-for="(item,index) in declareList">
-                    <h3>{{item.serie_name}} {{item.auto_name}}</h3>
+                    <h3>{{item.brand_name}} {{item.auto_name}}</h3>
                     <p class="sales-color">{{item.ext_color}}/{{item.int_color}}</p>
                     <p class="sales-number">VIN：{{item.vin_num}}</p>
-                    <p class="sales-time">
-                        <span :vinNumValue = item.order_num @click="goEdit(item.order_num,item.goods_stock_id)">售车申报</span>
-                        {{item.add_order_time}}入库
+                    <!--<p class="sales-time">-->
+                        <!--<span :vinNumValue = item.order_num @click="goEdit(item.order_num,item.goods_stock_id)">售车申报</span>-->
+                        <!--<i v-if="item.is_sell==4">申报审核未通过，请重新提交</i>-->
+                        <!--<i v-if="item.is_sell==1">申报审核中</i>-->
+                        <!--<i v-if="item.is_sell==2">申报待提交</i>-->
+                    <!--</p>-->
+                    <p class="sales-time" v-if="item.is_sell==4">
+                        <span :vinNumValue = item.order_num @click=goReject(item)>售车申报</span>
+                        <i>申报审核未通过，请重新提交</i>
+                    </p>
+                    <p class="sales-time" v-if="item.is_sell==1">
+                        <span :vinNumValue = item.order_num @click=goReject(item)>查看详情</span>
+                        <i>申报审核中</i>
+                    </p>
+                    <p class="sales-time" v-if="item.is_sell==2">
+                        <!--<span :vinNumValue = item.order_num @click="goEdit(item.id)">售车申报</span>-->
+                        <span :vinNumValue = item.order_num @click=goReject(item)>售车申报</span>
+                        <i>申报待提交</i>
                     </p>
                 </div>
             </div>
@@ -32,37 +52,85 @@
 
 
         <section class="no-auto server-no-response" v-if="showNoDataVal">
+            <img src="../../assets/no-vehicles-sold-news.png" alt="">
             <p>暂无待申报车辆信息</p>
         </section>
+
 
         <transition name="fade">
             <router-view></router-view>
         </transition>
-
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 
 </template>
 <script>
+    import alertTip from '../../components/common/alertTip/alertTip';
     export default{
         data(){
             return{
                 name:'declare',
-                current_page :'1',
-                last_page:'0',
-                per_page:'10',
-                touchend:false,
-                preventRepeatReuqest:false,
-                showLoading: true,
-                declareList:[],
-                add_order_time:'',
-                showNoDataVal:false
+                current_page :'1', //当前页
+                last_page:'0', //上一页
+                per_page:'10', //每页的数量
+                touchend:false, //是否触摸到底部
+                preventRepeatReuqest:false, //阻止重复请求
+                showLoading: true, //正在加载
+                declareList:[], //售车申报列表
+                add_order_time:'', //售车申报入库时间
+                showNoDataVal:false, //显示没有数据
+                showAlert:false, //提示框显示与否
+                alertText:null //提示内容
             }
         },
+        components:{
+            alertTip
+        },
         methods:{
-            //组件方法
-            goEdit(orderNum,goodsStockId){
-                this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
+            //回到上一级
+            resetIndex(){
+                this.$router.push({"name":sessionStorage.getItem("prePath")})
             },
+            //组件方法
+//            //跳转到提交申报资料页
+//            goEdit(orderNum,goodsStockId){
+//                this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );//售车申报资料页跳转
+//            },
+            //跳转到申报资料审核页
+//            goAudit(id){
+//                this.$router.push('/auditDeclare/'+ id );//售车申报资料页跳转
+//            },
+//
+//            //跳转到申报资料审核未通过页
+//            goReject(id){
+//                this.$router.push('/rejectDeclare/'+ id);//售车申报资料页跳转
+//            },
+
+            //跳转到申报资料审核未通过页
+            goReject(item){
+                if (item.id){
+                    this.$router.push({
+                        path:'rejectDeclare',
+                        query:{
+                            id:item.id,
+                            is_sell:item.is_sell
+                        }
+                    })
+                    //this.$router.push('/editDeclare/'+ orderNum + '?goods_stock_id=' + goodsStockId );
+                }else{
+                    this.$router.push({
+                        path:'rejectDeclare',
+                        query:{
+                            is_sell:item.is_sell,
+                            orderNum : item.order_num,
+                            goods_stock_id : item.goods_stock_id
+                        }
+                    })
+                }
+
+            },
+
+
             //把时间戳换成时间格式
             getLocalTime(timestamp) {
                 var date = new Date(parseInt(timestamp) * 1000);
@@ -110,13 +178,15 @@
                         return
                     }
                 }).catch(function(error){
-                    console.log("请求失败");
-                    console.log(error);
+                    this.showAlert = true;
+                    this.alertText = error.body.msg;
                 })
             },
+            //隐藏加载状态
             hideLoading(){
                 this.showLoading = false;
             },
+            //加载更多
             loaderMore(){
                 if (this.touchend){
                     return
@@ -128,8 +198,8 @@
 
                 this.showLoading = true;
                 this.preventRepeatReuqest = true;
-                this.currentPage = parseInt(this.currentPage) + 1;
-
+                this.current_page = parseInt(this.current_page) + 1;
+                this.getDeclaerData();
             }
         },
         mounted(){
@@ -140,6 +210,21 @@
             $route(){
                 this.fillData();
             }
+        },
+        //路由判断
+        beforeRouteEnter (to, from, next) {
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+            next();
+//            if (!(from.name == null || from.name == "soldCar" || from.name == "editDeclare" || from.name == "soldCarDetail")) {
+//                sessionStorage.setItem("prePath",from.name);
+//            }
+
+            console.log(from);
+            if (!(from.name == null || from.name == "soldCar" || from.name == "rejectDeclare" || from.name == "soldCarDetail")) {
+                sessionStorage.setItem("prePath",from.name);
+            }
+
         }
     }
 </script>
@@ -214,13 +299,12 @@
         line-height: 2rem;
     }
 
-    .no-auto{background-color: #fff;
+    .no-auto{
         text-align: center;
         font-size: 0.453333rem;
         padding: 4.0rem 0;
         position: absolute;
         width: 100%;
-        left: 0;
-        height: 100%;}
+        left: 0;}
     .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 </style>

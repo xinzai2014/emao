@@ -1,18 +1,18 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>订单提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="remind" v-scroll="getMore">
+	    <section class="remind" v-scroll="getMore" ref="load" @click="orderData">
 	        <div class="remind-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/orderDetail/'+item.order_num">
 		            <div class="remind-tit">{{item.created_at}}</div>
-		            <div :class="isActive(item)">
+		            <div class="remind-ct">
 		                <div class="remind-tp">{{item.content_header}}</div>
 		                <div class="remind-bt">
-		                    <p class="remind-auto">购买车辆：{{item.content_body}}</p>
+		                    <p class="remind-auto"><em>购买车辆：</em><span>{{item.content_body}}</span></p>
 		                    <p class="remind-stat" v-if="item.type == 201">
 		                        <i class="white-rt"></i>
 		                        需支付：<span>{{item.content_footer}}</span>
@@ -43,8 +43,9 @@
 	            nowPage : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
-	            loadingData : false
-                
+	            loadingData : false,
+				scrollTimer: null
+
             }
         },
         methods:{
@@ -52,75 +53,78 @@
             resetIndex(){
                 this.$router.push({name:'message'});
             },
+            orderData(){
+			    this.$store.dispatch("ORDER_URL",{
+			        tag:"message/order",
+			        id:""
+			    });
+		    },
             moreFn(itemIndex){
 		        var data = {
-		            token:this.token, 
+		            token:this.token,
 		            typeId:this.typeId,
 		            perPage:this.perPage,
-		            page:itemIndex         
+		            page:itemIndex
 		        }
 		        this.$http({
 		            url:"dealerMessage/detail",
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
+		            this.nowPage = response.body.data.page.current_page;
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
 	                this.loadingData = !this.loadingData;
-
 		        }).catch(function (error) {
 		            console.log("请求失败了");
 		        });
             },
-            getMore: function () {
-				if(this.nowPage >= this.lastPage){
-					this.switchShow=this.switchShow;
-				}else{
-					if(this.loadingData){
-						this.switchShow=!this.switchShow;
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+			getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 100);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
-			},
-			isActive(item){
-				if(item.type == 104){ //已取消
-					return 'remind-ct remind-green'
-				}else if(item.type == 101){ //未支付
-					return 'remind-ct remind-red'
-				}else{
-					return 'remind-ct'
-				}
 			}
-            
+
         },
         mounted(){
          	this.moreFn(this.nowPage);
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
-    }   
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
+    }
 </script>
 
 <style>
 /*订单提醒*/
+.remind-item{
+	background:#f5f5f5;
+}
 .remind{
 	padding-bottom:0.666667rem;
 }
@@ -136,36 +140,42 @@
 	padding:0 0.133333rem;
 	margin:0.4rem auto 0 auto;
 	border-radius:0.133333rem;
-	border-left:0.053333rem solid #ccc;
 }
 .remind-tp{
 	color:#2c2c2c;
 	padding:0.533333rem 0.2rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .remind-bt{
 	padding:0.533333rem 0.2rem;
 }
 .remind-auto{
-	width:7.333333rem;
-	height:0.4rem;
-	line-height:0.4rem;
+	line-height:0.6rem;
 	font-size:0.4rem;
 	overflow:hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+}
+.remind-auto em{
+	float:left;
+	width:2.3rem;
+}
+.remind-auto span{
+	float:left;
+	width:5.8rem;
+	line-height:0.6rem;
 }
 .remind-stat{
 	font-size:0.4rem;
 	color:#999;
 	margin-top:0.4rem;
+	width:100%;
 }
 .remind-stat span{
 	color:#fc3036;
 }
 .remind-stat i{
-	float:right;
+	float:right !important;
 }
 .remind-red{
 	border-color:#ff6469;

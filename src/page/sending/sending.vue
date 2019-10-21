@@ -1,17 +1,17 @@
 <template>
-    <div>
+    <div v-if="loading">
         <!--头部-->
         <header class="user-tit">
-          <a href="javascript:;" class="white-lt" @click="resetIndex"></a>全部订单
+          <a href="javascript:;" class="white-lt" @click="resetIndex"></a>待发货
         </header>
         <!--全部订单-->
         <section v-if="orderList.length">
-          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10">
+          <div class="full-wrap" v-load-more="loaderMore" v-infinite-scroll="loaderMore" infinite-scroll-disabled="preventRepeatReuqest" infinite-scroll-distance="10" @click="sendingData">
               <div class="full-item" v-for="(item,index) in orderList">
                 <router-link :to="{name:'orderDetail',params:{id:item.orderNum}}">
                   <h3>{{item.name}}</h3>
                   <p class="interior">{{item.color}}</p>
-                  <p class="payment">需付款：<span>{{item.price}}元</span></p>
+                  <p class="payment">已付款：<span>{{item.price}}元</span></p>
                   <div class="full-state">
                       <div class="state-lt">
                           <p class="state-wait">{{item.state}}</p>
@@ -33,10 +33,13 @@
             <img src="../../assets/no-order.png" alt="">
             <p>暂无此类订单</p>
         </section>
+
+        <alert-tip v-if="showAlert" @closeTip="showAlert = false" :alertText="alertText"></alert-tip>
     </div>
 </template>
 
 <script>
+import alertTip from '../../components/common/alertTip/alertTip'
 export default {
   data () {
     return {
@@ -48,12 +51,23 @@ export default {
         preventRepeatReuqest: false,
         showLoading: true,
         countNum:0,
+        showAlert: false, //弹出框
+      alertText: null, //弹出信息
+      loading:false
     }
-  },
+  }, components:{
+        alertTip
+      },
   methods:{
     //组件方法
     resetIndex(){
         this.$router.push({name:'profile'});
+    },
+    sendingData(){
+      this.$store.dispatch("ORDER_URL",{
+        tag:"sending",
+        id:""
+      });
     },
     fillData(){
         var dataToken =sessionStorage.token;
@@ -67,6 +81,7 @@ export default {
             method:"GET",
             params:data
         }).then(function (response) {
+          this.loading=true;
             var orderList=response.body.data.list;
             this.stateAdd(orderList);
             this.orderList=this.orderList.concat(orderList);
@@ -80,7 +95,8 @@ export default {
               return
             }
         }).catch(function (error) {
-             console.log("请求失败了");
+             this.showAlert = true;
+          this.alertText = error.body.msg||"请求失败了"; 
         });
     },
     stateAdd(arr){
@@ -90,7 +106,7 @@ export default {
                 arr[i].state='车辆出库中';
             break;
             case '8' : 
-                arr[i].state='审核中';
+                arr[i].state='付款审核中';
             break; 
           }
           
@@ -134,21 +150,19 @@ export default {
 .full-wrap{
   height: 100%;
 }
-.no-auto{background-color: #fff;
+.no-auto{
     text-align: center;
     font-size: 0.453333rem;
     padding: 4.0rem 0;
     position: absolute;
     width: 100%;
-    left: 0;
-    height: 100%;}
+    left: 0;}
 .no-auto img{display:block;width:3.0667rem;height:3.0667rem;margin:0 auto .4rem;}
 .no-auto p{color:#2c2c2c;font-size:.4533rem;line-height:.8667rem;text-align:center;}
 .no-auto input{display:block;width:3.893rem;height:1.1733rem;margin:2.3467rem auto 0;color:#d6ab55;font-size:.4533rem;line-height:1.1733rem;text-align:center;background-color:transparent;border:1px solid #d6ab55;border-radius:.533rem;}
 
 /*全部订单*/
 .full-item{
-  height: 4.5rem;
   padding:0.533333rem 0.4rem;
   border-bottom:1px solid #2c2c2c;
   overflow:hidden;

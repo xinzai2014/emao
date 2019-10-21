@@ -1,11 +1,11 @@
 <template>
-    <div class="rating_page">
+    <div class="rating_pages">
 		<!--头部-->
 		<header class="user-tit">
 			<a @click="resetIndex" href="javascript:;" class="white-lt"></a>中转库变动提醒
 		</header>
 		<!--订单提醒-->
-	    <section class="notice" v-scroll="getMore">
+	    <section class="notice" v-scroll="getMore" ref="load">
 	        <div class="notice-item" v-for="(item,index) in infoData">
 		        <router-link  :to="'/storage/'">
 		            <div class="notice-tit">{{item.created_at}}</div>
@@ -16,7 +16,6 @@
 		        </router-link>
 	        </div>
 	    </section>
-	    <p class="loading" v-show="switchShow">数据已加载完</p>
     </div>
 </template>
 
@@ -33,7 +32,8 @@
 	            nowPage : 1, //第几页
 	            lastPage : 0,
 	            switchShow :false, //加载更多
-	            loadingData : false
+	            loadingData : false,
+				scrollTimer: null
                 
             }
         },
@@ -54,7 +54,6 @@
 		            method:"GET",
 		            params:data
 		        }).then(function (response) {
-		        	console.log(response);
 		            this.infoData = this.infoData.concat(response.body.data.list);
 	                this.lastPage = response.body.data.page.last_page;
 	                this.switchShow=!this.switchShow;
@@ -64,18 +63,23 @@
 		            console.log("请求失败了");
 		        });
             },
-            getMore: function () {
-				if(this.nowPage >= this.lastPage){
-					this.switchShow=this.switchShow;
-				}else{
-					if(this.loadingData){
-						this.switchShow=!this.switchShow;
-						this.nowPage++;
-						this.moreFn(this.nowPage);
-						this.loadingData = !this.loadingData;
+            getMore: function (el) {
+				clearTimeout(this.scrollTimer);
+				this.scrollTimer = setTimeout(() => {
+					var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					if(scrollTop + window.innerHeight >= this.$refs.load.clientHeight ) {
+		                if(this.nowPage >= this.lastPage){
+		                  this.switchShow=this.switchShow;
+		                }else{
+		                  if(this.loadingData){
+		                    this.switchShow=!this.switchShow;
+		                    this.nowPage = parseInt(this.nowPage)+1;
+		                    this.moreFn(this.nowPage);
+		                    this.loadingData = !this.loadingData;
+		                  }
+		                }
 					}
-				}
-				
+				}, 100);
 			},
 			init: function () {
 				this.moreFn(this.nowPage);
@@ -87,21 +91,23 @@
         },
         directives: {// 自定义指令
 			scroll: {
-				bind: function (el, binding){
-					window.addEventListener('scroll', function () {
-						if(document.body.scrollTop + window.innerHeight >= el.clientHeight) {
-							var fnc = binding.value; 
-							fnc(); 
-						}
-					})
+	        	inserted: function (el, binding){
+	          		window.addEventListener('scroll',binding.value,false);
 				}
 			}
-		}
+		},
+		beforeRouteLeave(to,form,next){
+	      	window.removeEventListener('scroll',this.getMore,false);
+	      	next();
+	    }
     }   
 </script>
 
 <style>
 /*通知*/
+.notice-item{
+	background:#f5f5f5;
+}
 .notice-tit{
 	padding-top:0.4rem;
 	color:#999;
@@ -117,15 +123,16 @@
 	padding:0.8rem 0.4rem;
 	font-size:0.426667rem;
 	border-bottom:1px solid #eee;
+	font-weight:bold;
 }
 .notice-bt{
 	padding:0.533333rem 0.4rem;
-	font-size:0.4rem;
+	font-size:0.346667rem;
 	color:#2c2c2c;
 	line-height:0.4rem;
 }
 .notice-bt i{
-	float:right;
+	float:right !important;
 }
 .notice-bt span{
 	color:#fc3036;

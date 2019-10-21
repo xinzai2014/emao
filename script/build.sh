@@ -11,8 +11,10 @@ app_path='/data/www/project-taochemao-wap'
 main()
 {
     cd ${app_path}
-    npm install
-    npm run build
+    # npm install
+    #	npm run build
+    cnpm install
+    /bin/npm run build
 }
 
 main

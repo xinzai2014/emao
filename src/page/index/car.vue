@@ -1,7 +1,7 @@
 <template>
   <div>
-    
-  <div class="brand"  :class="{anmiteStatus:showBrand}">
+
+  <div class="brand"  :class="{anmiteStatus:this.$store.state.chooseCar}">
     <!--首页-选择车型-头部-->
     <header class="brand-list-header">
         <i class="white-lt brand-left-cion" @click="closebrand"></i>
@@ -84,21 +84,31 @@
                 url:"car/choose/brand?token=" + token,
                 method:"GET"
             }).then(function (response) {
-                console.log(response);
                 this.brandList = response.body.data;
                 this.initIscroll("brandWrap");
                 setTimeout(function(){
                     that.countHeight();
-                },1000)
+                },100)
               }).catch(function (error) {
-                console.log("请求失败了");
+
               });
         },
         //组件方法
         submitCar(carId,carName){ //回调
            this.showSerie = false;
            this.showCar = false;
-           this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName);
+           this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+            false
+           );
+           //this.$emit('getBrandChild',this.globalBrandID,this.globalSerieID,carId,carName); //通过组件传值
+           this.$store.dispatch("CAR_DATA", // 通过store传值
+              {
+                globalBrandID:this.globalBrandID,
+                globalSerieID:this.globalSerieID,
+                carId:carId,
+                carName:carName
+              }
+            );
         },
         initIscroll(id,scrollWrap){ //初始化滚动容器
             var that = this;
@@ -107,7 +117,7 @@
                    probeType: 3,
                    click:true
                 });
-            },1000) 
+            },100)
         },
         countHeight(){ //记录初始楼层高度
             const brandContainer = this.$refs.brandWrapper;
@@ -132,7 +142,7 @@
                 this.initIscroll("serieWrap",this.serieScroll);
                 this.globalBrandID = response.body.data.id;
               }).catch(function (error) {
-                console.log("请求失败了");
+
             });
         },
         getCarById(id){ //根据车系获取
@@ -146,14 +156,21 @@
                 }
             }).then(function (response) {
                 this.carData = response.body.data.list;
-                this.initIscroll("carWrap",this.carScroll); 
+                this.initIscroll("carWrap",this.carScroll);
                 this.globalSerieID = response.body.data.id;
               }).catch(function (error) {
-                console.log("请求失败了");
+
             });
         },
         closebrand(){
-          this.$emit('getBrandChild');
+          //this.$emit('getBrandChild'); //父子传值
+          if(this.showCar){
+            this.showCar = !this.showCar;
+            return false;
+          }
+          this.$store.dispatch("CHOOSE_CAR", // 通过store传值
+            false
+          );
         }
       },
       mounted(){
@@ -173,26 +190,8 @@
 }
 
 
-.anmiteStatus {
-    animation: myfirst 0.8s;
-    animation-iteration-count:1;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
-
-
-@keyframes myfirst
-{
-0% {transform:translateX(100%);opacity: 0}
-100% {transform:translateX(0);opacity: 1}
-}
-
-
-
 /*品牌列表页-头部*/
 .brand-header-out{position:relative;z-index:3;}
-.brand-list-header{overflow:hidden;height:1.1733rem;text-align:center;line-height:1.1733rem;font-size:.5333rem;color:#fff;background-color:#27282f;}
-.brand-left-cion{float:left;margin-left:.4666rem;margin-top:.4rem;}
 .brand-switch{float:right;margin-right:.4666rem;font-size:.4rem;color:#d5aa5c;}
 .brand-list-open{position:absolute;z-index:4;width:10rem;top:1.1733rem;left:0;background-color:#fff;}
 
@@ -213,7 +212,7 @@
 /*首页-选择车型-车型按字母排序*/
 .brand-list-in{position:relative;height:100%;}
 .brand-content-list{background-color:#fff;height:100%;overflow:hidden;}
-.brand-content-list ul{}
+.brand-content-list ul{padding-bottom:1.7rem;}
 .brand-content-list ul li p{height:.8rem;padding-left:.4rem;font-size:.2933rem;color:#999;line-height:.8rem;background-color:#f5f5f5;}
 .brand-content-list ul li .brand-wrap{height:1.4133rem;font-size:.4rem;line-height:1.4133rem;}
 .brand-content-list ul li .brand-wrap{display:block;height:100%;margin-left:.8rem;margin-right:.8rem;border-bottom:1px solid #f0f0f0;}
@@ -228,10 +227,10 @@
 
 
 /*首页-选择车型-车型列表页*/
-.brand-models{transform:translateX(100%);width:8.42667rem;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;}
-.brand-models ul{}
-.brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;}
-.brand-models ul li p{height:1.44rem;margin-left:0;padding-left:.4rem;line-height:1.44rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
+.brand-models{transform:translateX(100%);width:73%;position:absolute;top:0;right:0;z-index:5;background-color:#fff;height:100%;overflow:hidden;box-shadow: 0 0 14px 0 #e0e0e0;}
+.brand-models ul{padding-bottom:1.7rem;}
+.brand-models ul .serie-wrap{height:1.3867rem;line-height:1.3867rem;margin-left:.4rem;font-size:.3733rem;border-bottom:1px solid #e0e0e0;overflow:hidden;}
+.brand-models ul li p{height:1.2rem;margin-left:0;padding-left:.4rem;line-height:1.2rem;font-size:.4rem;font-weight:bold;color:#333;background-color:#f5f5f5;}
 
 .brand-details{
     width:100%;
